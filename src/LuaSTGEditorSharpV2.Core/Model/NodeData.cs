@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
     {
         [JsonProperty] public string TypeUID { get; private set; } = string.Empty;
         [JsonProperty] public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>();
-        [JsonProperty] public List<NodeData> PhysicalChildren { get; private set; } = new List<NodeData>();
+        [JsonProperty("Children")] public List<NodeData> PhysicalChildren { get; private set; } = new List<NodeData>();
         [JsonProperty] public bool IsActive { get; set; } = true;
 
         [JsonIgnore] public NodeData? PhysicalParent { get; private set; } = null;

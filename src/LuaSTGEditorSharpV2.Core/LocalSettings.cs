@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public record LocalSettings(string IndentionString);
+    public record LocalSettings(string IndentionString = "\t");
 }

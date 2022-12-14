@@ -1,0 +1,6 @@
+{
+  "$type":"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProviderService, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID":"while",
+  "Captures":[ "condition" ],
+  "Text":"while {0}"
+}

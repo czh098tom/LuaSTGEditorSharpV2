@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <BaseOutputPath>..\..\bin\</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.Building\LuaSTGEditorSharpV2.Core.Building.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.ViewModel\LuaSTGEditorSharpV2.Core.ViewModel.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.PackageManagement\LuaSTGEditorSharpV2.PackageManagement.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj" />
+  </ItemGroup>
+
+</Project>

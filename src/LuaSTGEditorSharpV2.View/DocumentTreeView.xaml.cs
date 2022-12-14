@@ -13,14 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LuaSTGEditorSharpV2
+namespace LuaSTGEditorSharpV2.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// DocumentTreeView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DocumentTreeView : UserControl
     {
-        public MainWindow()
+        public TreeView Tree => tree;
+
+        public DocumentTreeView()
         {
             InitializeComponent();
         }

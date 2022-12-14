@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:LuaSTGEditorSharpV2"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

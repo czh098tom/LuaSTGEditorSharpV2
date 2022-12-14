@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 using Newtonsoft.Json;
 
@@ -16,13 +17,17 @@ namespace LuaSTGEditorSharpV2.Core
         where TContext : NodeContext
     {
         protected static Func<TService> _defaultServiceGetter = () => throw new NotImplementedException();
-        private static readonly Dictionary<string, TService> _registered = new();
+        private static readonly Dictionary<string, PriorityQueue<TService, PackageInfo>> _registered = new();
 
-        protected static void Register(string typeID, TService service)
+        public static void Register(string typeID, PackageInfo packageInfo, TService service)
         {
             try
             {
-                _registered.Add(typeID, service);
+                if (!_registered.ContainsKey(typeID))
+                {
+                    _registered.Add(typeID, new PriorityQueue<TService, PackageInfo>());
+                }
+                _registered[typeID].Enqueue(service, packageInfo);
             }
             catch (ArgumentException e)
             {
@@ -30,24 +35,47 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        protected static TService GetServiceOfTypeID(string typeUID)
+        public static void UnloadPackage(PackageInfo packageInfo)
         {
-            if (_registered.ContainsKey(typeUID))
+            List<TService> services = new();
+            List<PackageInfo> packageInfos = new();
+            foreach (var kvp in _registered)
             {
-                return _registered[typeUID];
-            }
-            else
-            {
-                return _defaultServiceGetter();
+                var pq = kvp.Value;
+                services.Clear();
+                packageInfos.Clear();
+                services.Capacity = services.Capacity < pq.Count ? pq.Count : services.Capacity;
+                packageInfos.Capacity = packageInfos.Capacity < pq.Count ? pq.Count : packageInfos.Capacity;
+                while (pq.TryDequeue(out TService? s, out PackageInfo? pi))
+                {
+                    if (pi != packageInfo)
+                    {
+                        services.Add(s);
+                        packageInfos.Add(pi);
+                    }
+                }
+                for (int i = 0; i < services.Count; i++)
+                {
+                    pq.Enqueue(services[i], packageInfos[i]);
+                }
             }
         }
 
-        protected static TService GetServiceOfNode(NodeData node)
+        public static TService GetServiceOfTypeID(string typeUID)
+        {
+            if (_registered.ContainsKey(typeUID) && _registered[typeUID].Count > 0)
+            {
+                return _registered[typeUID].Peek();
+            }
+            return _defaultServiceGetter();
+        }
+
+        public static TService GetServiceOfNode(NodeData node)
         {
             return GetServiceOfTypeID(node.TypeUID);
         }
 
-        protected static TContext GetContextOfNode(NodeData node, LocalSettings localSettings)
+        public static TContext GetContextOfNode(NodeData node, LocalSettings localSettings)
         {
             var service = GetServiceOfTypeID(node.TypeUID);
             return service.BuildContextForNode(node, localSettings);
