@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LuaSTGEditorSharpV2.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -47,5 +48,12 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
         private string _text = "";
         private bool _isActivated = true;
         private readonly ObservableCollection<NodeViewModel> _children = new();
+
+        public NodeData Source { get; private set; }
+
+        public NodeViewModel(NodeData source)
+        {
+            Source = source;
+        }
     }
 }

@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="advancedrepeat.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
   </ItemGroup>
 
@@ -18,6 +22,7 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.ViewModel\LuaSTGEditorSharpV2.Core.ViewModel.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.PackageManagement\LuaSTGEditorSharpV2.PackageManagement.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Resources.Shared\LuaSTGEditorSharpV2.Resources.Shared.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj" />
   </ItemGroup>
 

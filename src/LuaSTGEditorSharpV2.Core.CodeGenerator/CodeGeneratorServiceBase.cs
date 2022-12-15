@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
     [ServiceShortName("cgen")]
     public class CodeGeneratorServiceBase : NodeService<CodeGeneratorServiceBase, CodeGenerationContext>
     {
-        private static readonly CodeGeneratorServiceBase _defaultService = new CodeGeneratorServiceBase();
+        private static readonly CodeGeneratorServiceBase _defaultService = new();
 
         static CodeGeneratorServiceBase()
         {

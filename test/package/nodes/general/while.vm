@@ -2,5 +2,6 @@
   "$type":"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProviderService, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID":"while",
   "Captures":[ "condition" ],
+  "Icon":"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/16x16/repeat.png",
   "Text":"while {0}"
 }

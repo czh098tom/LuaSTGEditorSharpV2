@@ -1,0 +1,126 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <BaseOutputPath>..\..\bin\</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="images\16x16\advancedrepeat.png" />
+    <None Remove="images\16x16\archispace.png" />
+    <None Remove="images\16x16\break.png" />
+    <None Remove="images\16x16\callbackfunc.png" />
+    <None Remove="images\16x16\code.png" />
+    <None Remove="images\16x16\codeblock.png" />
+    <None Remove="images\16x16\codesegment.png" />
+    <None Remove="images\16x16\comment.png" />
+    <None Remove="images\16x16\CustomInterpolationVariable.png" />
+    <None Remove="images\16x16\definemacro.png" />
+    <None Remove="images\16x16\else.png" />
+    <None Remove="images\16x16\elseif.png" />
+    <None Remove="images\16x16\folder.png" />
+    <None Remove="images\16x16\if.png" />
+    <None Remove="images\16x16\LinearVariable.png" />
+    <None Remove="images\16x16\macrodefine.png" />
+    <None Remove="images\16x16\pack.png" />
+    <None Remove="images\16x16\patch.png" />
+    <None Remove="images\16x16\properties.png" />
+    <None Remove="images\16x16\ReboundingVariable.png" />
+    <None Remove="images\16x16\region.png" />
+    <None Remove="images\16x16\repeat.png" />
+    <None Remove="images\16x16\setting.png" />
+    <None Remove="images\16x16\SinusoidalInterpolationVariable.png" />
+    <None Remove="images\16x16\SinusoidalMovementVariable.png" />
+    <None Remove="images\16x16\SinusoidalOscillationVariable.png" />
+    <None Remove="images\16x16\then.png" />
+    <None Remove="images\16x16\unidentifiedNode.png" />
+    <None Remove="images\16x16\userdefinednode.png" />
+    <None Remove="images\advancedrepeat.png" />
+    <None Remove="images\archispace.png" />
+    <None Remove="images\break.png" />
+    <None Remove="images\code.png" />
+    <None Remove="images\codeblock.png" />
+    <None Remove="images\codesegment.png" />
+    <None Remove="images\comment.png" />
+    <None Remove="images\CustomInterpolationVariable.png" />
+    <None Remove="images\definemacro.png" />
+    <None Remove="images\elseif.png" />
+    <None Remove="images\Error.png" />
+    <None Remove="images\folder.png" />
+    <None Remove="images\if.png" />
+    <None Remove="images\Info.png" />
+    <None Remove="images\LinearVariable.png" />
+    <None Remove="images\pack.png" />
+    <None Remove="images\patch.png" />
+    <None Remove="images\ReboundingVariable.png" />
+    <None Remove="images\region.png" />
+    <None Remove="images\repeat.png" />
+    <None Remove="images\SinusoidalInterpolationVariable.png" />
+    <None Remove="images\SinusoidalMovementVariable.png" />
+    <None Remove="images\SinusoidalOscillationVariable.png" />
+    <None Remove="images\unidentifiedNode.png" />
+    <None Remove="images\userdefinednode.png" />
+    <None Remove="images\Warning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\16x16\advancedrepeat.png" />
+    <Resource Include="images\16x16\archispace.png" />
+    <Resource Include="images\16x16\break.png" />
+    <Resource Include="images\16x16\callbackfunc.png" />
+    <Resource Include="images\16x16\code.png" />
+    <Resource Include="images\16x16\codeblock.png" />
+    <Resource Include="images\16x16\codesegment.png" />
+    <Resource Include="images\16x16\comment.png" />
+    <Resource Include="images\16x16\CustomInterpolationVariable.png" />
+    <Resource Include="images\16x16\definemacro.png" />
+    <Resource Include="images\16x16\else.png" />
+    <Resource Include="images\16x16\elseif.png" />
+    <Resource Include="images\16x16\folder.png" />
+    <Resource Include="images\16x16\if.png" />
+    <Resource Include="images\16x16\LinearVariable.png" />
+    <Resource Include="images\16x16\macrodefine.png" />
+    <Resource Include="images\16x16\pack.png" />
+    <Resource Include="images\16x16\patch.png" />
+    <Resource Include="images\16x16\properties.png" />
+    <Resource Include="images\16x16\ReboundingVariable.png" />
+    <Resource Include="images\16x16\region.png" />
+    <Resource Include="images\16x16\repeat.png" />
+    <Resource Include="images\16x16\setting.png" />
+    <Resource Include="images\16x16\SinusoidalInterpolationVariable.png" />
+    <Resource Include="images\16x16\SinusoidalMovementVariable.png" />
+    <Resource Include="images\16x16\SinusoidalOscillationVariable.png" />
+    <Resource Include="images\16x16\then.png" />
+    <Resource Include="images\16x16\unidentifiedNode.png" />
+    <Resource Include="images\16x16\userdefinednode.png" />
+    <Resource Include="images\advancedrepeat.png" />
+    <Resource Include="images\archispace.png" />
+    <Resource Include="images\break.png" />
+    <Resource Include="images\code.png" />
+    <Resource Include="images\codeblock.png" />
+    <Resource Include="images\codesegment.png" />
+    <Resource Include="images\comment.png" />
+    <Resource Include="images\CustomInterpolationVariable.png" />
+    <Resource Include="images\definemacro.png" />
+    <Resource Include="images\elseif.png" />
+    <Resource Include="images\Error.png" />
+    <Resource Include="images\folder.png" />
+    <Resource Include="images\if.png" />
+    <Resource Include="images\Info.png" />
+    <Resource Include="images\LinearVariable.png" />
+    <Resource Include="images\pack.png" />
+    <Resource Include="images\patch.png" />
+    <Resource Include="images\ReboundingVariable.png" />
+    <Resource Include="images\region.png" />
+    <Resource Include="images\repeat.png" />
+    <Resource Include="images\SinusoidalInterpolationVariable.png" />
+    <Resource Include="images\SinusoidalMovementVariable.png" />
+    <Resource Include="images\SinusoidalOscillationVariable.png" />
+    <Resource Include="images\unidentifiedNode.png" />
+    <Resource Include="images\userdefinednode.png" />
+    <Resource Include="images\Warning.png" />
+  </ItemGroup>
+
+</Project>

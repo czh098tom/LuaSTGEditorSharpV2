@@ -9,17 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Core", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Core.CodeGenerator", "src\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj", "{D203B63F-67DA-457A-B8E3-0030EEBBF52E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.CLI", "src\LuaSTGEditorSharpV2.CLI\LuaSTGEditorSharpV2.CLI.csproj", "{703E1DE2-F921-4253-B1A3-5655C49FAA98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.CLI", "src\LuaSTGEditorSharpV2.CLI\LuaSTGEditorSharpV2.CLI.csproj", "{703E1DE2-F921-4253-B1A3-5655C49FAA98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.PackageManagement", "src\LuaSTGEditorSharpV2.PackageManagement\LuaSTGEditorSharpV2.PackageManagement.csproj", "{7311CC04-4D92-4730-95DF-543D265863F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.PackageManagement", "src\LuaSTGEditorSharpV2.PackageManagement\LuaSTGEditorSharpV2.PackageManagement.csproj", "{7311CC04-4D92-4730-95DF-543D265863F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BED9D5AD-3555-420E-87F8-35D6C45F34CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Core.Building", "src\LuaSTGEditorSharpV2.Core.Building\LuaSTGEditorSharpV2.Core.Building.csproj", "{DD92D1D5-16C3-4123-92DA-59A0563389FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Core.Building", "src\LuaSTGEditorSharpV2.Core.Building\LuaSTGEditorSharpV2.Core.Building.csproj", "{DD92D1D5-16C3-4123-92DA-59A0563389FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Core.ViewModel", "src\LuaSTGEditorSharpV2.Core.ViewModel\LuaSTGEditorSharpV2.Core.ViewModel.csproj", "{9CB15FE6-2552-427A-BC6F-22ADF9E22F5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Core.ViewModel", "src\LuaSTGEditorSharpV2.Core.ViewModel\LuaSTGEditorSharpV2.Core.ViewModel.csproj", "{9CB15FE6-2552-427A-BC6F-22ADF9E22F5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.View", "src\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj", "{F9D78733-B453-40CA-AAA3-8DF45CA670A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.View", "src\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj", "{F9D78733-B453-40CA-AAA3-8DF45CA670A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Resources.Shared", "src\LuaSTGEditorSharpV2.Resources.Shared\LuaSTGEditorSharpV2.Resources.Shared.csproj", "{FD9F0355-DFEA-42C8-BA86-8158A54787C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{F9D78733-B453-40CA-AAA3-8DF45CA670A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9D78733-B453-40CA-AAA3-8DF45CA670A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9D78733-B453-40CA-AAA3-8DF45CA670A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD9F0355-DFEA-42C8-BA86-8158A54787C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD9F0355-DFEA-42C8-BA86-8158A54787C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD9F0355-DFEA-42C8-BA86-8158A54787C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD9F0355-DFEA-42C8-BA86-8158A54787C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{DD92D1D5-16C3-4123-92DA-59A0563389FF} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{9CB15FE6-2552-427A-BC6F-22ADF9E22F5A} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{F9D78733-B453-40CA-AAA3-8DF45CA670A6} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
+		{FD9F0355-DFEA-42C8-BA86-8158A54787C4} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A88633F9-126D-4418-B464-61038BFEB74C}

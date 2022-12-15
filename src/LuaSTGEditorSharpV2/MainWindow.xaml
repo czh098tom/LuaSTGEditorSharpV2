@@ -14,8 +14,8 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TreeView FontFamily="Terminal"
-                  SelectedItemChanged="WorkSpaceSelectedChanged"
-                  Grid.Column="2" VirtualizingPanel.IsVirtualizing="True">
+                  Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
+                  ItemsSource="{Binding Tree}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal">

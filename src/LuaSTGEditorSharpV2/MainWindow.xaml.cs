@@ -11,9 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.IO;
+
+using Newtonsoft.Json;
 
 using Xceed.Wpf.AvalonDock.Controls;
+
+using LuaSTGEditorSharpV2.Core.ViewModel;
+using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -25,6 +30,28 @@ namespace LuaSTGEditorSharpV2
         public MainWindow()
         {
             InitializeComponent();
+
+            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\test");
+
+            try
+            {
+                string testSrc;
+                using (FileStream fs = new(Path.Combine(testPath, "test.lstg"), FileMode.Open, FileAccess.Read))
+                {
+                    using StreamReader sr = new(fs);
+                    testSrc = sr.ReadToEnd();
+                }
+                NodeData root = JsonConvert.DeserializeObject<NodeData>(testSrc) ?? throw new Exception();
+                DocumentViewModel dvm = new();
+
+                DataContext = dvm;
+
+                ViewModelProviderServiceBase.CreateRoot(dvm.Tree, root);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

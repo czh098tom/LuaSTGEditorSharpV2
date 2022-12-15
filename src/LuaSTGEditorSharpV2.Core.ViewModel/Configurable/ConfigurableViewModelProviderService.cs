@@ -12,7 +12,7 @@ using System.Xml.Linq;
 namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
 {
     [Serializable]
-    public class ConfigurableViewModelProviderService : ViewModelProviderService
+    public class ConfigurableViewModelProviderService : ViewModelProviderServiceBase
     {
         [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
         [JsonProperty] public string Icon { get; private set; } = "";
@@ -20,7 +20,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
 
         private string?[]? _captureResult;
 
-        protected override void UpdateViewModel(NodeViewModel viewModel, NodeData dataSource)
+        protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource)
         {
             _captureResult ??= new string[GetCaptureCacheLength()];
             int n;
