@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Globalization;
+
+using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -11,6 +13,7 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\test");
             try
             {

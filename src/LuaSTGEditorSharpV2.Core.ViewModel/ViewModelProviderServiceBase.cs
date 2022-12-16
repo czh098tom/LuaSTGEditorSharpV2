@@ -21,12 +21,12 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
             _defaultServiceGetter = () => _defaultService;
         }
 
-        public static void UnloadNodeData(NodeData target)
+        public static void UnloadNodeViewModelData(NodeData target)
         {
             _mapping.Remove(target);
             foreach (var child in target.PhysicalChildren)
             {
-                UnloadNodeData(child);
+                UnloadNodeViewModelData(child);
             }
         }
 
@@ -46,7 +46,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
 
         public static void AddNodeAt(NodeData parent, int position, NodeData source)
         {
-            parent.PhysicalChildren.Insert(position, source);
+            parent.Insert(position, source);
             _mapping[parent].Children.Insert(position, CreateViewModelFor(source));
             CreateViewModelRecursive(_mapping[parent].Children[position].Children, source.PhysicalChildren);
         }
@@ -77,7 +77,8 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
         public static void RemoveNodeAt(NodeData parent, int position)
         {
             _mapping[parent].Children.RemoveAt(position);
-            UnloadNodeData(parent.PhysicalChildren[position]);
+            UnloadNodeViewModelData(parent.PhysicalChildren[position]);
+            parent.Remove(position);
         }
 
         public override ViewModelContext GetEmptyContext(LocalSettings localSettings)

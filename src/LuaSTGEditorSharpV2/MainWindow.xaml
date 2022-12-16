@@ -11,20 +11,89 @@
     
         x:Class="LuaSTGEditorSharpV2.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TreeView FontFamily="Terminal"
-                  Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
-                  ItemsSource="{Binding Tree}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Icon}"
-                               Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"/>
-                        <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
-    </Grid>
+        Title="LuaSTG Editor Sharp V2" Height="450" Width="800">
+    <DockPanel>
+        <Border DockPanel.Dock="Top">
+            <Menu>
+                <MenuItem Header="_File"></MenuItem>
+            </Menu>
+        </Border>
+        <Border DockPanel.Dock="Top">
+            <ToolBarTray>
+                <ToolBar>
+                    <Button>
+                        <Button.Content>
+                            <Image Source="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/new.png" Stretch="Fill" Width="24" Height="24"/>
+                        </Button.Content>
+                        <Button.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="New File (Ctrl+N)"/>
+                            </ToolTip>
+                        </Button.ToolTip>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
+        </Border>
+        <xcad:DockingManager>
+            <xcad:LayoutRoot>
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutAnchorablePane DockWidth="200">
+                        <xcad:LayoutAnchorable Title="Property">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+                                <ItemsControl>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,0,5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="100" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}" />
+                                                <TextBox Grid.Column="1" Text="{Binding Value}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
+                    <xcad:LayoutPanel Orientation="Vertical">
+                        <xcad:LayoutDocumentPaneGroup>
+                            <xcad:LayoutDocumentPane>
+                                <xcad:LayoutDocument Title="Document 1">
+                                    <TreeView FontFamily="Terminal"
+                                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
+                                              ItemsSource="{Binding Tree}">
+                                        <TreeView.ItemTemplate>
+                                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{Binding Icon}"
+                                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"/>
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
+                                                </StackPanel>
+                                            </HierarchicalDataTemplate>
+                                        </TreeView.ItemTemplate>
+                                    </TreeView>
+                                </xcad:LayoutDocument>
+                            </xcad:LayoutDocumentPane>
+                        </xcad:LayoutDocumentPaneGroup>
+                        <xcad:LayoutAnchorablePaneGroup DockHeight="150">
+                            <xcad:LayoutAnchorablePane>
+                                <xcad:LayoutAnchorable Title="Error">
+                                    <DataGrid>
+                                        
+                                    </DataGrid>
+                                </xcad:LayoutAnchorable>
+                                <xcad:LayoutAnchorable Title="Output">
+                                    <TextBox>
+
+                                    </TextBox>
+                                </xcad:LayoutAnchorable>
+                            </xcad:LayoutAnchorablePane>
+                        </xcad:LayoutAnchorablePaneGroup>
+                    </xcad:LayoutPanel>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+    </DockPanel>
 </Window>

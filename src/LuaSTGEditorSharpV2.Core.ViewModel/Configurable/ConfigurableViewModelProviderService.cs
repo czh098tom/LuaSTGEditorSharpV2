@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
-using System.Xml.Linq;
 
 namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
 {
@@ -17,6 +17,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
         [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
         [JsonProperty] public string Icon { get; private set; } = "";
         [JsonProperty] public string Text { get; private set; } = "";
+        [JsonProperty] public Dictionary<string, string> LocalizedText { get; private set; } = new();
 
         private string?[]? _captureResult;
 
@@ -28,8 +29,19 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
             {
                 _captureResult[n] = dataSource.Properties[Captures[n]];
             }
-            viewModel.Text = string.Format(Text, _captureResult);
+            string text = GetLocalizedTextIfExists();
+            viewModel.Text = string.Format(text, _captureResult);
             viewModel.Icon = Icon;
+        }
+
+        private string GetLocalizedTextIfExists()
+        {
+            var text = Text;
+            if (LocalizedText.ContainsKey(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName))
+            {
+                text = LocalizedText[CultureInfo.CurrentUICulture.TwoLetterISOLanguageName];
+            }
+            return text;
         }
 
         private int GetCaptureCacheLength()
