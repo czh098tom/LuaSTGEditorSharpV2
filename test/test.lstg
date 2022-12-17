@@ -14,11 +14,7 @@
       "Children":
       [
         {
-          "TypeUID":"code block",
-          "Properties":
-          {
-            "name":"aa"
-          },
+          "TypeUID":"task",
           "Children":[]
         },
         {

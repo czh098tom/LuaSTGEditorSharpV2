@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2
         {
             InitializeComponent();
 
-            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\test");
+            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
 
             try
             {

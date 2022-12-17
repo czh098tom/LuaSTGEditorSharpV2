@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.ViewModel.Configurable;
 
 namespace LuaSTGEditorSharpV2.Core.ViewModel
 {
-    [ServiceShortName("vm")]
+    [ServiceName("ViewModel"), ServiceShortName("vm")]
     public class ViewModelProviderServiceBase : NodeService<ViewModelProviderServiceBase, ViewModelContext>
     {
         private static readonly DefaultViewModelProviderService _defaultService = new();

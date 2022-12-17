@@ -13,7 +13,6 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.ViewModel;
-using LuaSTGEditorSharpV2.PackageManagement;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -26,12 +25,14 @@ namespace LuaSTGEditorSharpV2
         {
             base.OnStartup(e);
 
-            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\test");
+            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
+            string legacyPath = Path.Combine(Directory.GetCurrentDirectory(), @"packages\LegacyNode");
             try
             {
                 PackageManager.UseService(typeof(CodeGeneratorServiceBase));
                 PackageManager.UseService(typeof(ViewModelProviderServiceBase));
                 PackageManager.LoadPackage(Path.Combine(testPath, "package"));
+                PackageManager.LoadPackage(legacyPath);
             }
             catch (Exception ex)
             {

@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <BuildProjectReferences>false</BuildProjectReferences>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LuaSTGEditorSharpV2.Core">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaSTGEditorSharpV2.Core.CodeGenerator">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.CodeGenerator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="nodes\task\task.cgen">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

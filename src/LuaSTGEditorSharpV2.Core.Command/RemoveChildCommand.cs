@@ -30,7 +30,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void RevertExecution()
         {
-            if (child == null) throw new InvalidOperationException()"Command has not been executed yet.";
+            if (child == null) throw new InvalidOperationException("Command has not been executed yet.");
             ViewModelProviderServiceBase.AddNodeAt(Parent, Position, child);
         }
     }

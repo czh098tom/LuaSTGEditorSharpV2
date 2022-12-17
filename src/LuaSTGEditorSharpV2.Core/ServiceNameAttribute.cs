@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace LuaSTGEditorSharpV2.Core
 {
     /// <summary>
-    /// Provide short name when loading textual service for given node.
+    /// Provide service name when loading service functions from assemnbly.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class ServiceShortNameAttribute : Attribute
+    public class ServiceNameAttribute : Attribute
     {
         public string Name { get; private set; }
 
-        public ServiceShortNameAttribute(string name)
+        public ServiceNameAttribute(string name)
         {
             Name = name;
         }

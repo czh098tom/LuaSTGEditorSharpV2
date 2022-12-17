@@ -8,13 +8,13 @@ using System.Reflection;
 
 using Newtonsoft.Json;
 
-using LuaSTGEditorSharpV2.Core;
-using System.Diagnostics.CodeAnalysis;
+using LuaSTGEditorSharpV2.Core.Exception;
 
-namespace LuaSTGEditorSharpV2.PackageManagement
+namespace LuaSTGEditorSharpV2.Core
 {
     public class PackageManager
     {
+        private static readonly string _packageBasePath = "package";
         private static readonly string _manifestName = "manifest";
         private static readonly string _nodeDataBasePath = "nodes";
 
@@ -44,6 +44,16 @@ namespace LuaSTGEditorSharpV2.PackageManagement
             if(!string.IsNullOrWhiteSpace(packageInfo.LibraryPath))
             {
                 Assembly.LoadFrom(Path.Combine(basePath,packageInfo.LibraryPath));
+                foreach (Type serviceType in _services)
+                {
+                    string serviceName = serviceType.GetCustomAttribute<ServiceNameAttribute>()?.Name ?? serviceType.Name;
+                    string serviceAssembly = Path.Combine(basePath, 
+                        $"{Path.GetFileNameWithoutExtension(packageInfo.LibraryPath)}.{serviceName}.dll");
+                    if (File.Exists(serviceAssembly))
+                    {
+                        Assembly.LoadFrom(serviceAssembly);
+                    }
+                }
             }
             object?[] param = new object?[3];
             param[1] = packageInfo;
@@ -97,7 +107,7 @@ namespace LuaSTGEditorSharpV2.PackageManagement
                 return JsonConvert.DeserializeObject<PackageInfo>(manifestString)
                     ?? throw new PackageLoadingException($"Failed to deserialize package manifest at {path} .");
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 throw new PackageLoadingException($"Failed to load package manifest at {path} .", e);
             }

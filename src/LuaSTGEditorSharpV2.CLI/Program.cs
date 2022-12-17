@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
-using LuaSTGEditorSharpV2.PackageManagement;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -14,7 +13,7 @@ namespace LuaSTGEditorSharpV2.CLI
         static void Main(string[] args)
         {
             Console.WriteLine(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\test");
+            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
             try
             {
                 PackageManager.UseService(typeof(CodeGeneratorServiceBase));
