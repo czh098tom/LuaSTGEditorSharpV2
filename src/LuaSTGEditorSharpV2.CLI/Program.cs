@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.CLI
             try
             {
                 PackageManager.UseService(typeof(CodeGeneratorServiceBase));
-                PackageManager.LoadPackage(Path.Combine(testPath, "package"));
+                PackageManager.LoadPackageFromDirectory(Path.Combine(testPath, "package"));
 
                 string testSrc;
                 using (FileStream fs = new(Path.Combine(testPath, "test.lstg"), FileMode.Open, FileAccess.Read))
@@ -27,10 +27,7 @@ namespace LuaSTGEditorSharpV2.CLI
                 }
                 NodeData? root = JsonConvert.DeserializeObject<NodeData>(testSrc) ?? throw new Exception();
 
-                var ctx = CodeGeneratorServiceBase.GetContextOfNode(root, new LocalSettings());
-                var service = CodeGeneratorServiceBase.GetServiceOfNode(root);
-
-                foreach (CodeData codeData in service.GenerateCodeWithContext(root, ctx))
+                foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalSettings()))
                 {
                     Console.Write(codeData.Content);
                 }

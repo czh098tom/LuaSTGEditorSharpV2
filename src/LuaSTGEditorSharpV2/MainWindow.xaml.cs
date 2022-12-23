@@ -19,6 +19,7 @@ using Xceed.Wpf.AvalonDock.Controls;
 
 using LuaSTGEditorSharpV2.Core.ViewModel;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -27,6 +28,9 @@ namespace LuaSTGEditorSharpV2
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly MainViewModel vm = new();
+        private readonly EditingDocumentModel doc;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,23 +39,42 @@ namespace LuaSTGEditorSharpV2
 
             try
             {
-                string testSrc;
-                using (FileStream fs = new(Path.Combine(testPath, "test.lstg"), FileMode.Open, FileAccess.Read))
-                {
-                    using StreamReader sr = new(fs);
-                    testSrc = sr.ReadToEnd();
-                }
-                NodeData root = JsonConvert.DeserializeObject<NodeData>(testSrc) ?? throw new Exception();
-                DocumentViewModel dvm = new();
+                doc = new EditingDocumentModel(new DocumentModel(Path.Combine(testPath, "test.lstg")));
 
-                DataContext = dvm;
+                DataContext = vm;
 
-                ViewModelProviderServiceBase.CreateRoot(dvm.Tree, root);
+                ViewModelProviderServiceBase.CreateRoot(vm.Document.Tree, doc.Root);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            if (doc == null) throw new FileNotFoundException();
+        }
+
+        private void PropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var tree = sender as TreeView;
+            if (tree?.SelectedItem is NodeViewModel selectedVM)
+            {
+                var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(selectedVM.Source);
+                vm.PropertyPage.LoadProperties(list, selectedVM.Source);
+            }
+        }
+
+        private void PropertyTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is not TextBox textbox 
+                || _propertyView.DataContext is not PropertyPageViewModel propview 
+                || (textbox?.Parent as FrameworkElement)?.DataContext is not PropertyViewModel prop 
+                || propview.Source == null) return;
+            doc.CommandBuffer.Execute(PropertyViewServiceBase.GetCommandOfEditingNode(propview.Source, propview.Properties
+                , propview.Properties.IndexOf(prop), textbox.Text));
         }
     }
 }

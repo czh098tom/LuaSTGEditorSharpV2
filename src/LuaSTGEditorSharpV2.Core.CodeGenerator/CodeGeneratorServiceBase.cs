@@ -31,6 +31,13 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             context.Pop(indentionIncrement);
         }
 
+        public static IEnumerable<CodeData> GenerateCode(NodeData nodeData, LocalSettings settings)
+        {
+            var ctx = GetContextOfNode(nodeData, settings);
+            var service = GetServiceOfNode(nodeData);
+            return service.GenerateCodeWithContext(nodeData, ctx);
+        }
+
         public override sealed CodeGenerationContext GetEmptyContext(LocalSettings localSettings)
         {
             return new CodeGenerationContext(localSettings);

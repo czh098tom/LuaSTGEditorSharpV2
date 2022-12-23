@@ -61,7 +61,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static TService GetServiceOfTypeID(string typeUID)
+        protected static TService GetServiceOfTypeID(string typeUID)
         {
             if (_registered.ContainsKey(typeUID) && _registered[typeUID].Count > 0)
             {
@@ -70,12 +70,12 @@ namespace LuaSTGEditorSharpV2.Core
             return _defaultServiceGetter();
         }
 
-        public static TService GetServiceOfNode(NodeData node)
+        protected static TService GetServiceOfNode(NodeData node)
         {
             return GetServiceOfTypeID(node.TypeUID);
         }
 
-        public static TContext GetContextOfNode(NodeData node, LocalSettings localSettings)
+        protected static TContext GetContextOfNode(NodeData node, LocalSettings localSettings)
         {
             var service = GetServiceOfTypeID(node.TypeUID);
             return service.BuildContextForNode(node, localSettings);

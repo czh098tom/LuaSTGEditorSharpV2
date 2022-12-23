@@ -10,47 +10,29 @@ using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core.Model
 {
-    public class DocumentModel
+    public class DocumentModel : DocumentModelBase
     {
-        private static readonly JsonSerializerSettings _savingSerializer = new()
-        {
-            Formatting = Formatting.Indented
-        };
+        private NodeData _root;
 
-        public static NodeData CreateFromFile(string filePath)
+        public override NodeData Root 
         {
-            try
-            {
-                string testSrc;
-                using (FileStream fs = new(Path.Combine(filePath, "test.lstg"), FileMode.Open, FileAccess.Read))
-                {
-                    using StreamReader sr = new(fs);
-                    testSrc = sr.ReadToEnd();
-                }
-                return JsonConvert.DeserializeObject<NodeData>(testSrc)
-                    ?? throw new InvalidOperationException("File opened is empty.");
-            }
-            catch (System.Exception e)
-            {
-                throw new OpenFileException($"Could not open file at {filePath}", e);
-            }
+            get => _root;
+            protected set => _root = value;
         }
 
-        public string? FilePath { get; private set; }
+        public virtual string? FilePath { get; private set; }
 
-        public NodeData Root { get; private set; }
-
-        public bool IsOnDisk => string.IsNullOrWhiteSpace(FilePath);
+        public virtual bool IsOnDisk => !string.IsNullOrWhiteSpace(FilePath);
 
         public DocumentModel()
         {
-            Root = new NodeData();
+            _root = new NodeData();
         }
 
         public DocumentModel(string filePath)
         {
             FilePath = filePath;
-            Root = CreateFromFile(filePath);
+            _root = CreateFromFile(filePath);
         }
 
         public void Save()
@@ -59,7 +41,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
             SaveAs(FilePath);
         }
 
-        public void SaveAs(string filePath)
+        public override void SaveAs(string filePath)
         {
             try
             {

@@ -7,11 +7,14 @@
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+
+    <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <ExcludeAssets>manifest</ExcludeAssets>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
@@ -23,10 +26,14 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="manifest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode</YourDestinationDirectory>
+    </PropertyGroup>
+    <Copy SourceFiles="$(YourSourceDirectory)\manifest"
+          DestinationFiles="$(YourDestinationDirectory)\manifest"
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

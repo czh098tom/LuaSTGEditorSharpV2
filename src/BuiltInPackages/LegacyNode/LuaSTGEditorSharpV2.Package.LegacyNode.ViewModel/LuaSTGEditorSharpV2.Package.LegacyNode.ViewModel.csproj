@@ -7,7 +7,9 @@
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+
+    <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,10 +32,17 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="nodes\task\task.vm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode\Nodes</YourDestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)"
+          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)"
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

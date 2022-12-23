@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <BaseOutputPath>..\..\bin\</BaseOutputPath>
+    <BaseOutputPath>$(MSBuildProjectDirectory)..\..\..\bin\</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
@@ -16,10 +16,18 @@
     <Folder Include="Specialized\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="package\Core\General\code block.cgen">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory"
+          Condition="$(InReferenceParent)!='true'">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\package\Core\Nodes</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\package\Core\Nodes</YourDestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)" 
+          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" 
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

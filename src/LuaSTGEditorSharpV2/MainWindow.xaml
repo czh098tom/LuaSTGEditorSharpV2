@@ -8,10 +8,24 @@
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
-    
+        xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
         x:Class="LuaSTGEditorSharpV2.MainWindow"
         mc:Ignorable="d"
         Title="LuaSTG Editor Sharp V2" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate x:Key="defaultPropertyView">
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Name}" />
+                <TextBox Grid.Column="1" Text="{Binding Value, Mode=OneWay}" LostFocus="PropertyTextBox_LostFocus"/>
+                <Button Grid.Column="2" Height="15" Content="..." Click="PropertyButton_Click"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Top">
             <Menu>
@@ -35,24 +49,19 @@
             </ToolBarTray>
         </Border>
         <xcad:DockingManager>
+            <xcad:DockingManager.Theme>
+                <xcad:VS2010Theme/>
+            </xcad:DockingManager.Theme>
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">
                         <xcad:LayoutAnchorable Title="Property">
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
-                                <ItemsControl>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="0,0,0,5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="100" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding Name}" />
-                                                <TextBox Grid.Column="1" Text="{Binding Value}" />
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible"
+                                          DataContext="{Binding PropertyPage}">
+                                <ItemsControl x:Name="_propertyView" ItemsSource="{Binding Properties}" Background="FloralWhite">
+                                    <ItemsControl.ItemTemplateSelector>
+                                        <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
+                                    </ItemsControl.ItemTemplateSelector>
                                 </ItemsControl>
                             </ScrollViewer>
                         </xcad:LayoutAnchorable>
@@ -62,13 +71,14 @@
                             <xcad:LayoutDocumentPane>
                                 <xcad:LayoutDocument Title="Document 1">
                                     <TreeView FontFamily="Terminal"
-                                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
-                                              ItemsSource="{Binding Tree}">
+                                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True" DataContext="{Binding Document}"
+                                              ItemsSource="{Binding Tree}" SelectedItemChanged="TreeView_SelectedItemChanged">
                                         <TreeView.ItemTemplate>
                                             <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Source="{Binding Icon}"
-                                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"/>
+                                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" 
+                                                           VerticalAlignment="Top"/>
                                                     <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
                                                 </StackPanel>
                                             </HierarchicalDataTemplate>

@@ -7,14 +7,18 @@
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+
+    <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <ExcludeAssets>manifest</ExcludeAssets>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj">
+      <ExcludeAssets>**\*.cgen</ExcludeAssets>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
@@ -30,10 +34,17 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="nodes\task\task.cgen">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode\Nodes</YourDestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)" 
+          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" 
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

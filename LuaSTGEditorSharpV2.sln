@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package.LegacyNode.ViewModel", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.ViewModel\LuaSTGEditorSharpV2.Package.LegacyNode.ViewModel.csproj", "{807C80B2-066F-45AD-A2C3-4AB1436FD622}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.PropertyView", "src\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj", "{F43DBFAC-9CBB-464E-8957-C5C128D4ECEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{807C80B2-066F-45AD-A2C3-4AB1436FD622}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{807C80B2-066F-45AD-A2C3-4AB1436FD622}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{807C80B2-066F-45AD-A2C3-4AB1436FD622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F43DBFAC-9CBB-464E-8957-C5C128D4ECEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F43DBFAC-9CBB-464E-8957-C5C128D4ECEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F43DBFAC-9CBB-464E-8957-C5C128D4ECEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F43DBFAC-9CBB-464E-8957-C5C128D4ECEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +112,7 @@ Global
 		{FA07BED9-82DD-4BB7-8054-D0972CA9B324} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
 		{9CE643AD-3382-48C4-B6EC-82248E6C2087} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
 		{807C80B2-066F-45AD-A2C3-4AB1436FD622} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
+		{F43DBFAC-9CBB-464E-8957-C5C128D4ECEA} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A88633F9-126D-4418-B464-61038BFEB74C}

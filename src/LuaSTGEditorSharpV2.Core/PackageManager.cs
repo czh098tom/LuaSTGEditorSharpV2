@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 
 using Newtonsoft.Json;
 
@@ -16,7 +17,7 @@ namespace LuaSTGEditorSharpV2.Core
     {
         private static readonly string _packageBasePath = "package";
         private static readonly string _manifestName = "manifest";
-        private static readonly string _nodeDataBasePath = "nodes";
+        private static readonly string _nodeDataBasePath = "Nodes";
 
         private static readonly JsonSerializerSettings _serviceDeserializationSettings = new ()
         {
@@ -38,7 +39,14 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void LoadPackage(string basePath)
+        public static void LoadPackage(string packageName)
+        {
+            var path = Process.GetCurrentProcess().MainModule?.FileName;
+            LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
+                ?? throw new InvalidOperationException(), _packageBasePath, packageName));
+        }
+
+        public static void LoadPackageFromDirectory(string basePath)
         {
             PackageInfo packageInfo = LoadManifest(Path.Combine(basePath, _manifestName));
             if(!string.IsNullOrWhiteSpace(packageInfo.LibraryPath))
