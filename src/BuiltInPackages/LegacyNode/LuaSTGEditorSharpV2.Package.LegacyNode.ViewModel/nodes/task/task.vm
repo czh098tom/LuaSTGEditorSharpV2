@@ -1,5 +1,5 @@
 ﻿{
-  "$type":"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProviderService, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "$type":"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID":"task",
   "Text":"Create task",
   "LocalizedText":

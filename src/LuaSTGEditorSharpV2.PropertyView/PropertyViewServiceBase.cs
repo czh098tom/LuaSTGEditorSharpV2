@@ -21,15 +21,15 @@ namespace LuaSTGEditorSharpV2.PropertyView
             _defaultServiceGetter = () => _defaultService;
         }
 
-        public static IReadOnlyList<PropertyViewModel> GetPropertyViewModelOfNode(NodeData nodeData)
+        public static IReadOnlyList<PropertyViewModel> GetPropertyViewModelOfNode(NodeData nodeData, int subtype = 0)
         {
-            return GetServiceOfNode(nodeData).ResolvePropertyViewModelOfNode(nodeData);
+            return GetServiceOfNode(nodeData).ResolvePropertyViewModelOfNode(nodeData, subtype);
         }
 
         public static CommandBase GetCommandOfEditingNode(NodeData nodeData
-            , IReadOnlyList<PropertyViewModel> propertyList, int index, string edited)
+            , IReadOnlyList<PropertyViewModel> propertyList, int index, string edited, int subtype = 0)
         {
-            return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData, propertyList, index, edited);
+            return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData, propertyList, index, edited, subtype);
         }
 
         public override sealed PropertyViewContext GetEmptyContext(LocalSettings localSettings)
@@ -37,7 +37,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             return new PropertyViewContext(localSettings);
         }
 
-        protected virtual IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData)
+        protected virtual IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData, int subtype = 0)
         {
             List<PropertyViewModel> result = new(nodeData.Properties.Count);
             foreach (var prop in nodeData.Properties)
@@ -48,7 +48,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         }
 
         protected virtual CommandBase ResolveCommandOfEditingNode(NodeData nodeData
-            , IReadOnlyList<PropertyViewModel> propertyList, int index, string edited)
+            , IReadOnlyList<PropertyViewModel> propertyList, int index, string edited, int subtype = 0)
         {
             return new EditPropertyCommand(nodeData, propertyList[index].Name, edited);
         }

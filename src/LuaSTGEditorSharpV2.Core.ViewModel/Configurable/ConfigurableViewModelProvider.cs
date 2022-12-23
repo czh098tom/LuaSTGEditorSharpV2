@@ -12,7 +12,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
 {
     [Serializable]
-    public class ConfigurableViewModelProviderService : ViewModelProviderServiceBase
+    public class ConfigurableViewModelProvider : ViewModelProviderServiceBase
     {
         [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
         [JsonProperty] public string Icon { get; private set; } = "";
@@ -36,12 +36,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
 
         private string GetLocalizedTextIfExists()
         {
-            var text = Text;
-            if (LocalizedText.ContainsKey(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName))
-            {
-                text = LocalizedText[CultureInfo.CurrentUICulture.TwoLetterISOLanguageName];
-            }
-            return text;
+            return LocalizedText.GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, Text);
         }
 
         private int GetCaptureCacheLength()

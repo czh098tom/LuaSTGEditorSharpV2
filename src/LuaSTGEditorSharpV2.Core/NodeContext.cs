@@ -45,7 +45,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public NodeData? PeekType(string type)
         {
-            if (_contextData.ContainsKey(type) && _contextData[type].Count>0)
+            if (_contextData.ContainsKey(type) && _contextData[type].Count > 0)
             {
                 return _contextData[type].Peek();
             }
