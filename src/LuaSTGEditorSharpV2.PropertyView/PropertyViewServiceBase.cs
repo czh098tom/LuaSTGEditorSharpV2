@@ -50,7 +50,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         protected virtual CommandBase ResolveCommandOfEditingNode(NodeData nodeData
             , IReadOnlyList<PropertyViewModel> propertyList, int index, string edited, int subtype = 0)
         {
-            return new EditPropertyCommand(nodeData, propertyList[index].Name, edited);
+            return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, propertyList[index].Name, edited);
         }
     }
 }

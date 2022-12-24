@@ -30,7 +30,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
                 int n;
                 for (n = 0; n < Captures.Length; n++)
                 {
-                    _captureResult[n] = dataSource.Properties[Captures[n]];
+                    _captureResult[n] = dataSource.GetProperty(Captures[n]);
                 }
                 ViewModelTextSelection[] text = LocalizedText
                     .GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, Text);

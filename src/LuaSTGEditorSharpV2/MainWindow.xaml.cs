@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.IO;
+using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
+
+using Microsoft.Xaml.Behaviors.Core;
 
 using Newtonsoft.Json;
 
@@ -31,9 +35,14 @@ namespace LuaSTGEditorSharpV2
         private readonly MainViewModel vm = new();
         private readonly EditingDocumentModel doc;
 
+        public ICommand CommitEdit { get; private set; }
+        public ICommand ShowEditWindow { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
+
+            InitializeCommand();
 
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
 
@@ -52,6 +61,23 @@ namespace LuaSTGEditorSharpV2
             if (doc == null) throw new FileNotFoundException();
         }
 
+        [MemberNotNull(nameof(CommitEdit))]
+        [MemberNotNull(nameof(ShowEditWindow))]
+        private void InitializeCommand()
+        {
+            CommitEdit = new ActionCommand(args =>
+            {
+                if (args is not RoutedEventArgs rea
+                    || rea.Source is not TextBox textBox
+                    || _propertyView.DataContext is not PropertyPageViewModel propview
+                    || (textBox?.Parent as FrameworkElement)?.DataContext is not PropertyViewModel prop
+                    || propview.Source == null) return;
+                doc.CommandBuffer.Execute(PropertyViewServiceBase.GetCommandOfEditingNode(propview.Source, propview.Properties
+                    , propview.Properties.IndexOf(prop), textBox.Text));
+            });
+            ShowEditWindow = new ActionCommand(args => { });
+        }
+
         private void PropertyButton_Click(object sender, RoutedEventArgs e)
         {
 
@@ -65,16 +91,6 @@ namespace LuaSTGEditorSharpV2
                 var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(selectedVM.Source);
                 vm.PropertyPage.LoadProperties(list, selectedVM.Source);
             }
-        }
-
-        private void PropertyTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (sender is not TextBox textbox 
-                || _propertyView.DataContext is not PropertyPageViewModel propview 
-                || (textbox?.Parent as FrameworkElement)?.DataContext is not PropertyViewModel prop 
-                || propview.Source == null) return;
-            doc.CommandBuffer.Execute(PropertyViewServiceBase.GetCommandOfEditingNode(propview.Source, propview.Properties
-                , propview.Properties.IndexOf(prop), textbox.Text));
         }
     }
 }

@@ -28,7 +28,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                 propertyViewModels.Add(new PropertyViewModel(
                     Mapping[i].LocalizedCaption.GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
                         , Mapping[i].Caption)
-                    , nodeData.Properties[Mapping[i].Mapping], Mapping[i].Type));
+                    , nodeData.GetProperty(Mapping[i].Mapping), Mapping[i].Type));
             }
             return propertyViewModels;
         }

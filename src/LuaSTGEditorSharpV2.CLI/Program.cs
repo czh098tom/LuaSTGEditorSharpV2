@@ -12,12 +12,12 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
             try
             {
                 PackageManager.UseService(typeof(CodeGeneratorServiceBase));
-                PackageManager.LoadPackageFromDirectory(Path.Combine(testPath, "package"));
+                var resc = PackageManager.LoadPackage("Core");
+                var resln = PackageManager.LoadPackage("LegacyNode");
 
                 string testSrc;
                 using (FileStream fs = new(Path.Combine(testPath, "test.lstg"), FileMode.Open, FileAccess.Read))

@@ -12,8 +12,7 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
   </ItemGroup>
 
-  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory"
-          Condition="$(InReferenceParent)!='true'">
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory" Condition="$(InReferenceParent)!='true'">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\package\Core\Nodes</YourSourceDirectory>
       <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\package\Core\Nodes</YourDestinationDirectory>
@@ -21,9 +20,7 @@
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(ExtraFiles)"
-          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

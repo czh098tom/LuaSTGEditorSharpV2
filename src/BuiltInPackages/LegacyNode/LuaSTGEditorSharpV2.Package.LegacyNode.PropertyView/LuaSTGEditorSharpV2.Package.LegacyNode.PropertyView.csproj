@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+
+    <BuildProjectReferences>false</BuildProjectReferences>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+
+    <InReferenceParent>true</InReferenceParent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LuaSTGEditorSharpV2.Core">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaSTGEditorSharpV2.Core.ViewModel">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.PropertyView.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Nodes\Task\" />
+  </ItemGroup>
+
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode\Nodes</YourDestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

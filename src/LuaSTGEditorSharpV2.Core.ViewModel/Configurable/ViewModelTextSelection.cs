@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
     {
         public bool ShouldAppend(NodeData source)
         {
-            bool isTrue = source.Properties.GetValueOrDefault(ConditionOn, "true").ToLower().Trim() == "true";
+            bool isTrue = source.GetProperty(ConditionOn, "true").ToLower().Trim() == "true";
             return (isTrue && !Inversed) || (!isTrue && Inversed);
         }
     }

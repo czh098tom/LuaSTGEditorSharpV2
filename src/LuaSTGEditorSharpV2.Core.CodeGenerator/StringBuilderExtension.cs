@@ -13,8 +13,12 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             string[] seg = toAppend.Split('\n');
             for (int i = 0; i < seg.Length; i++)
             {
-                builder.Append(indention);
-                builder.Append(seg[i]);
+                if (seg[i] != string.Empty)
+                {
+                    builder.Append(indention);
+                    builder.Append(seg[i]);
+                    builder.Append('\n');
+                }
             }
             return builder;
         }

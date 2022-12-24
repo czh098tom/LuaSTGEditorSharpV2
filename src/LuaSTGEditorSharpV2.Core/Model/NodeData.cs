@@ -12,18 +12,18 @@ namespace LuaSTGEditorSharpV2.Core.Model
     [Serializable]
     public class NodeData
     {
-        [JsonProperty] 
+        [JsonProperty]
         public string TypeUID { get; private set; } = string.Empty;
-        [JsonProperty] 
-        public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>();
         [JsonProperty]
         public bool IsActive { get; set; } = true;
+        [JsonProperty]
+        public Dictionary<string, string> Properties { get; private set; } = new();
 
         [JsonIgnore]
-        public IReadOnlyList<NodeData> PhysicalChildren =>_physicalChildren;
+        public IReadOnlyList<NodeData> PhysicalChildren => _physicalChildren;
 
         [JsonProperty("Children")]
-        private List<NodeData> _physicalChildren = new List<NodeData>();
+        private List<NodeData> _physicalChildren = new();
         [JsonIgnore] public NodeData? PhysicalParent { get; private set; } = null;
 
         [OnDeserialized]
@@ -34,6 +34,10 @@ namespace LuaSTGEditorSharpV2.Core.Model
                 PhysicalChildren[i].PhysicalParent = this;
             }
         }
+
+        public string GetProperty(string key, string @default = "") => Properties.GetValueOrDefault(key, @default);
+
+        public bool HasProperty(string key) => Properties.ContainsKey(key);
 
         public void Insert(int position, NodeData node)
         {

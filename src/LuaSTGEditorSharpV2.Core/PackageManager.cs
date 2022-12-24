@@ -39,19 +39,21 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void LoadPackage(string packageName)
+        public static IReadOnlyList<Assembly> LoadPackage(string packageName)
         {
             var path = Process.GetCurrentProcess().MainModule?.FileName;
-            LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
+            return LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
                 ?? throw new InvalidOperationException(), _packageBasePath, packageName));
         }
 
-        public static void LoadPackageFromDirectory(string basePath)
+        public static IReadOnlyList<Assembly> LoadPackageFromDirectory(string basePath)
         {
+            List<Assembly> assembly = new();
             PackageInfo packageInfo = LoadManifest(Path.Combine(basePath, _manifestName));
             if(!string.IsNullOrWhiteSpace(packageInfo.LibraryPath))
             {
-                Assembly.LoadFrom(Path.Combine(basePath,packageInfo.LibraryPath));
+                Assembly asm = Assembly.LoadFrom(Path.Combine(basePath,packageInfo.LibraryPath));
+                assembly.Add(asm);
                 foreach (Type serviceType in _services)
                 {
                     string serviceName = serviceType.GetCustomAttribute<ServiceNameAttribute>()?.Name ?? serviceType.Name;
@@ -59,7 +61,8 @@ namespace LuaSTGEditorSharpV2.Core
                         $"{Path.GetFileNameWithoutExtension(packageInfo.LibraryPath)}.{serviceName}.dll");
                     if (File.Exists(serviceAssembly))
                     {
-                        Assembly.LoadFrom(serviceAssembly);
+                        asm = Assembly.LoadFrom(serviceAssembly);
+                        assembly.Add(asm);
                     }
                 }
             }
@@ -100,6 +103,7 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                 }
             }
+            return assembly;
         }
 
         private static PackageInfo LoadManifest(string path)

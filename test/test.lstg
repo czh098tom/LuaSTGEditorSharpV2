@@ -1,29 +1,32 @@
 {
-  "Properties":
-  {
-    "name":"test"
+  "Properties": {
+    "name": "test"
   },
-  "Children":
-  [
+  "Children": [
     {
-      "TypeUID":"while",
-      "Properties":
-      {
-        "condition":"x>0"
+      "TypeUID": "while",
+      "Properties": {
+        "condition": "x>0"
       },
-      "Children":
-      [
+      "Children": [
         {
-          "TypeUID":"task",
-          "Children":[]
-        },
-        {
-          "TypeUID":"code block",
-          "Properties":
-          {
-            "name":"bb"
-          },
-          "Children":[]
+          "TypeUID": "task",
+          "Children": [
+            {
+              "TypeUID": "code block",
+              "Properties": {
+                "name": "bb"
+              },
+              "Children": []
+            },
+            {
+              "TypeUID": "code",
+              "Properties": {
+                "code": "do\u000Aend\u000A"
+              },
+              "Children": []
+            }
+          ]
         }
       ]
     }

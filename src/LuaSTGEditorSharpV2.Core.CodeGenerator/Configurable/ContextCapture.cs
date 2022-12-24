@@ -12,9 +12,9 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
     public record class ContextCapture
     {
         [JsonProperty] public string TypeUID { get; private set; }
-        [JsonProperty] public string[] Property { get; private set; }
+        [JsonProperty] public CaptureWithMacroOption[] Property { get; private set; }
 
-        public ContextCapture(string typeUID, string[] property)
+        public ContextCapture(string typeUID, CaptureWithMacroOption[] property)
         {
             TypeUID = typeUID;
             Property = property;

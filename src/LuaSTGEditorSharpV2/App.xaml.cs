@@ -14,6 +14,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView;
+using System.Reflection;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -26,14 +27,17 @@ namespace LuaSTGEditorSharpV2
         {
             base.OnStartup(e);
 
+            var dt = Resources["PropertyDataTemplates"];
+
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
             try
             {
                 PackageManager.UseService(typeof(CodeGeneratorServiceBase));
                 PackageManager.UseService(typeof(ViewModelProviderServiceBase));
                 PackageManager.UseService(typeof(PropertyViewServiceBase));
-                PackageManager.LoadPackage("Core");
-                PackageManager.LoadPackage("LegacyNode");
+                var resc = PackageManager.LoadPackage("Core");
+                var resln = PackageManager.LoadPackage("LegacyNode");
+                ResourceManager.MergeResources();
             }
             catch (Exception ex)
             {

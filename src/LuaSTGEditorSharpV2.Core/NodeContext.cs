@@ -51,5 +51,23 @@ namespace LuaSTGEditorSharpV2.Core
             }
             return null;
         }
+
+        public IEnumerable<NodeData> EnumerateTypeFromNearest(string type)
+        {
+            if (_contextData.ContainsKey(type))
+            {
+                return _contextData[type];
+            }
+            return Enumerable.Empty<NodeData>();
+        }
+
+        public IEnumerable<NodeData> EnumerateTypeFromFarest(string type)
+        {
+            if (_contextData.ContainsKey(type))
+            {
+                return _contextData[type].Reverse();
+            }
+            return Enumerable.Empty<NodeData>();
+        }
     }
 }

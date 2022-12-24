@@ -27,7 +27,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
             int n;
             for (n = 0; n < Captures.Length; n++)
             {
-                _captureResult[n] = dataSource.Properties[Captures[n]];
+                _captureResult[n] = dataSource.GetProperty(Captures[n]);
             }
             string text = GetLocalizedTextIfExists();
             viewModel.Text = string.Format(text, _captureResult);

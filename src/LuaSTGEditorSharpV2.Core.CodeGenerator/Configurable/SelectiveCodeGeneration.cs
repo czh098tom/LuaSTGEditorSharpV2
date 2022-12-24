@@ -1,17 +1,19 @@
-﻿using LuaSTGEditorSharpV2.Core.Model;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
+
+using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 {
     [Serializable]
     public class SelectiveCodeGeneration : CodeGeneratorServiceBase
     {
-        [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
+        [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = Array.Empty<CaptureWithMacroOption>();
         [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = Array.Empty<ContextCapture>();
         [JsonProperty] public CodeSelection[]? Head { get; private set; } = Array.Empty<CodeSelection>();
         [JsonProperty] public CodeSelection[]? Tail { get; private set; } = Array.Empty<CodeSelection>();
@@ -26,13 +28,21 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             int n;
             for (n = 0; n < Captures.Length; n++)
             {
-                _captureResult[n] = node.Properties[Captures[n]];
+                _captureResult[n] = Captures[n].ApplyMacro(node, context);
             }
             for (int i = 0; i < ContextCaptures.Length; i++)
             {
                 for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
                 {
-                    _captureResult[n] = context.PeekType(ContextCaptures[i].TypeUID)?.Properties[ContextCaptures[i].Property[j]];
+                    var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
+                    if (contextNode != null)
+                    {
+                        _captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNode, context);
+                    }
+                    else
+                    {
+                        _captureResult[n] = string.Empty;
+                    }
                     n++;
                 }
             }

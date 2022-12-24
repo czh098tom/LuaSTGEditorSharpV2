@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
     [Serializable]
     public class ConfigurableCodeGeneration : CodeGeneratorServiceBase
     {
-        [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
+        [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = Array.Empty<CaptureWithMacroOption>();
         [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = Array.Empty<ContextCapture>();
         [JsonProperty] public string? Head { get; private set; }
         [JsonProperty] public string? Tail { get; private set; }
@@ -29,13 +29,21 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             int n;
             for (n = 0; n < Captures.Length; n++)
             {
-                _captureResult[n] = node.Properties[Captures[n]];
+                _captureResult[n] = Captures[n].ApplyMacro(node, context);
             }
             for (int i = 0; i < ContextCaptures.Length; i++)
             {
                 for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
                 {
-                    _captureResult[n] = context.PeekType(ContextCaptures[i].TypeUID)?.Properties[ContextCaptures[i].Property[j]];
+                    var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
+                    if (contextNode != null)
+                    {
+                        _captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNode, context);
+                    }
+                    else
+                    {
+                        _captureResult[n] = string.Empty;
+                    }
                     n++;
                 }
             }
