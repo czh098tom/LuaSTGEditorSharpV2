@@ -4,10 +4,7 @@
   },
   "Children": [
     {
-      "TypeUID": "while",
-      "Properties": {
-        "condition": "x>0"
-      },
+      "TypeUID": "task",
       "Children": [
         {
           "TypeUID": "task",
