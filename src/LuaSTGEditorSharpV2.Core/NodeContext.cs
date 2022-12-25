@@ -19,7 +19,7 @@ namespace LuaSTGEditorSharpV2.Core
             LocalSettings = localSettings;
         }
 
-        internal protected void Push(NodeData current)
+        public void Push(NodeData current)
         {
             if (!_contextData.ContainsKey(current.TypeUID))
             {
@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.Core
             _top.Push(current);
         }
 
-        internal protected NodeData Pop()
+        public NodeData Pop()
         {
             if (_top.Count != 0)
             {
@@ -50,6 +50,33 @@ namespace LuaSTGEditorSharpV2.Core
                 return _contextData[type].Peek();
             }
             return null;
+        }
+
+        public NodeData? Peek()
+        {
+            if (_top.Count > 0)
+            {
+                return _top.Peek();
+            }
+            return null;
+        }
+
+        public IEnumerable<NodeData> EnumerateFromNearest()
+        {
+            if (_top.Count > 0)
+            {
+                return _top;
+            }
+            return Enumerable.Empty<NodeData>();
+        }
+
+        public IEnumerable<NodeData> EnumerateFromFarest()
+        {
+            if (_top.Count > 0)
+            {
+                return _top.Reverse();
+            }
+            return Enumerable.Empty<NodeData>();
         }
 
         public IEnumerable<NodeData> EnumerateTypeFromNearest(string type)

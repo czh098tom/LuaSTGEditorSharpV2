@@ -39,6 +39,14 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         public bool HasProperty(string key) => Properties.ContainsKey(key);
 
+        public IEnumerable<NodeData> GetLogicalChildren()
+        {
+            foreach(var child in PhysicalChildren)
+            {
+                if(child.IsActive) yield return child;
+            }
+        }
+
         public void Insert(int position, NodeData node)
         {
             _physicalChildren.Insert(position, node);

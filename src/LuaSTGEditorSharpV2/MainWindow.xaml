@@ -32,7 +32,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </TextBox>
-                <Button Grid.Column="2" Height="15" Content="...">
+                <Button Grid.Column="2" Height="16" Content="...">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:InvokeCommandAction PassEventArgsToCommand="True"

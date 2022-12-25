@@ -29,7 +29,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public static CommandBase GetCommandOfEditingNode(NodeData nodeData
             , IReadOnlyList<PropertyViewModel> propertyList, int index, string edited, int subtype = 0)
         {
-            return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData, propertyList, index, edited, subtype);
+            return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData, propertyList
+                , index, edited, subtype);
         }
 
         public override sealed PropertyViewContext GetEmptyContext(LocalSettings localSettings)
@@ -37,7 +38,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
             return new PropertyViewContext(localSettings);
         }
 
-        protected virtual IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData, int subtype = 0)
+        protected virtual IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
+            , int subtype = 0)
         {
             List<PropertyViewModel> result = new(nodeData.Properties.Count);
             foreach (var prop in nodeData.Properties)

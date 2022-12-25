@@ -21,7 +21,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public static IEnumerable<CodeData> ProceedWithIndention(NodeData node, CodeGenerationContext context, int indentionIncrement)
         {
             context.Push(node, indentionIncrement);
-            foreach (NodeData child in node.PhysicalChildren)
+            foreach (NodeData child in node.GetLogicalChildren())
             {
                 foreach (CodeData s in GetServiceOfNode(child).GenerateCodeWithContext(child, context))
                 {

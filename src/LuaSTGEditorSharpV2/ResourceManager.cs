@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2
     {
         private static readonly string[] builtInUris = new string[]
         {
-            "pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/BasicPropertyView.xaml"
+            "pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/PropertyView.xaml"
         };
 
         public static void MergeResources()

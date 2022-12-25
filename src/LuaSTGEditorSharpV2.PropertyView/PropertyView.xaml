@@ -9,7 +9,8 @@
                 <ColumnDefinition Width="16" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="{Binding Name}"  />
-            <TextBox Grid.Column="1" Text="{Binding Value, Mode=OneWay}" AcceptsReturn="True" AcceptsTab="True">
+            <TextBox Grid.Column="1" Text="{Binding Value, Mode=OneWay}"
+                     AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="LostFocus">
                         <i:InvokeCommandAction PassEventArgsToCommand="True"
@@ -18,7 +19,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
-            <Button Grid.Column="2" Height="15" Content="...">
+            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction PassEventArgsToCommand="True"
