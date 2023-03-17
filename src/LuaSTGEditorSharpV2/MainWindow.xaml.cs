@@ -49,10 +49,11 @@ namespace LuaSTGEditorSharpV2
             try
             {
                 doc = new EditingDocumentModel(new DocumentModel(Path.Combine(testPath, "test.lstg")));
-
+                var dvm = new DocumentViewModel();
+                vm.Documents.Add(dvm);
                 DataContext = vm;
 
-                ViewModelProviderServiceBase.CreateRoot(vm.Document.Tree, doc.Root);
+                ViewModelProviderServiceBase.CreateRoot(dvm.Tree, doc.Root);
             }
             catch (Exception ex)
             {

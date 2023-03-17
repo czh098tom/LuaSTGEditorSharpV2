@@ -32,5 +32,18 @@ namespace LuaSTGEditorSharpV2.Core
                 return @default;
             }
         }
+
+        public static void AddOrSet<TKey, TValue>(this Dictionary<TKey, TValue> values, TKey key, TValue value)
+            where TKey : notnull
+        {
+            if (values.ContainsKey(key))
+            {
+                values[key] = value;
+            }
+            else
+            {
+                values.Add(key, value);
+            }
+        }
     }
 }

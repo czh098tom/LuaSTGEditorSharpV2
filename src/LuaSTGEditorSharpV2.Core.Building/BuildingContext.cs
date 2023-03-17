@@ -8,5 +8,18 @@ namespace LuaSTGEditorSharpV2.Core.Building
 {
     public class BuildingContext
     {
+        private Dictionary<string, string[]> _contextVariables = new();
+
+        public string TemporaryFolderPath { get; set; } = Path.GetTempPath();
+        public LocalSettings LocalSettings { get; set; }
+
+        public BuildingContext(LocalSettings settings) 
+        {
+            LocalSettings = settings;
+        }
+
+        public void SetVariable(string key, string[] value) => _contextVariables.AddOrSet(key, value);
+
+        public string[] GetVariables(string key) => _contextVariables.GetValueOrDefault(key, Array.Empty<string>());
     }
 }

@@ -25,11 +25,11 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return GetInvalidPositionsRecursive(root, ctx);
         }
 
-        public static bool CanInsert(NodeData parent, NodeData toinsert, LocalSettings settings)
+        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalSettings settings)
         {
             var ctx = GetContextOfNode(parent, settings);
             ctx.Push(parent);
-            return GetInvalidPositionsRecursive(toinsert, ctx).Any();
+            return GetInvalidPositionsRecursive(toInsert, ctx).Any();
         }
 
         public static bool CanInactivateFor(NodeData node)

@@ -10,6 +10,7 @@
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
+        xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.Core.ViewModel;assembly=LuaSTGEditorSharpV2.Core.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
         x:Class="LuaSTGEditorSharpV2.MainWindow"
         mc:Ignorable="d"
@@ -66,10 +67,28 @@
                 </ToolBar>
             </ToolBarTray>
         </Border>
-        <xcad:DockingManager>
+        <xcad:DockingManager DocumentsSource="{Binding Documents}">
             <xcad:DockingManager.Theme>
                 <xcad:VS2010Theme/>
             </xcad:DockingManager.Theme>
+            <xcad:DockingManager.Resources>
+                <DataTemplate DataType="{x:Type lvm:DocumentViewModel}"> 
+                    <TreeView FontFamily="Terminal"
+                                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
+                                              ItemsSource="{Binding Tree}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon}"
+                                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" 
+                                                           VerticalAlignment="Top"/>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </DataTemplate>
+            </xcad:DockingManager.Resources>
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">
@@ -87,22 +106,6 @@
                     <xcad:LayoutPanel Orientation="Vertical">
                         <xcad:LayoutDocumentPaneGroup>
                             <xcad:LayoutDocumentPane>
-                                <xcad:LayoutDocument Title="Document 1">
-                                    <TreeView FontFamily="Terminal"
-                                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True" DataContext="{Binding Document}"
-                                              ItemsSource="{Binding Tree}" SelectedItemChanged="TreeView_SelectedItemChanged">
-                                        <TreeView.ItemTemplate>
-                                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="{Binding Icon}"
-                                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" 
-                                                           VerticalAlignment="Top"/>
-                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
-                                                </StackPanel>
-                                            </HierarchicalDataTemplate>
-                                        </TreeView.ItemTemplate>
-                                    </TreeView>
-                                </xcad:LayoutDocument>
                             </xcad:LayoutDocumentPane>
                         </xcad:LayoutDocumentPaneGroup>
                         <xcad:LayoutAnchorablePaneGroup DockHeight="150">

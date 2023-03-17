@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public abstract class BuildingTaskBase
+    public class ResourceGatheringContext : NodeContext
     {
-        public abstract void Execute(BuildingContext context);
+        public ResourceGatheringContext(LocalSettings localSettings) : base(localSettings)
+        {
+        }
     }
 }
