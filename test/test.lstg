@@ -22,6 +22,53 @@
                 "code": "do\u000Aend\u000A"
               },
               "Children": []
+            },
+            {
+              "TypeUID": "if control flow",
+              "Properties": {
+                "condition": "1 == 1"
+              },
+              "Children": [
+                {
+                  "TypeUID": "if control flow then",
+                  "Children": [
+                    {
+                      "TypeUID": "code",
+                      "Properties": {
+                        "code": "do\u000Aend\u000A"
+                      },
+                      "Children": []
+                    }
+                  ]
+                },
+                {
+                  "TypeUID": "if control flow elseif",
+                  "Properties": {
+                    "condition": "nmsl ~= nil"
+                  },
+                  "Children": [
+                    {
+                      "TypeUID": "code",
+                      "Properties": {
+                        "code": "do\u000Aend\u000A"
+                      },
+                      "Children": []
+                    }
+                  ]
+                },
+                {
+                  "TypeUID": "if control flow else",
+                  "Children": [
+                    {
+                      "TypeUID": "code",
+                      "Properties": {
+                        "code": "do\u000Aend\u000A"
+                      },
+                      "Children": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }

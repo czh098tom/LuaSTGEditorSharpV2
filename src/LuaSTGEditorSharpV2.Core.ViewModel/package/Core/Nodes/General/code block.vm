@@ -3,5 +3,9 @@
   "TypeUID":"code block",
   "Captures":[ "name" ],
   "Icon":"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
-  "Text":"{0}"
+  "Text":"Code Block: {0}",
+  "LocalizedText": 
+  {
+    "zh": "代码块：{0}"
+  }
 }

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.lstg": "json",
+        "*.vm": "json",
+        "*.cgen": "json",
+        "*.prop": "json"
+    }
+}

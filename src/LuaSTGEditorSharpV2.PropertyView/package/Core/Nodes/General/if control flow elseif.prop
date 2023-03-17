@@ -1,0 +1,16 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "if control flow elseif",
+  "Mapping": 
+  [
+    {
+      "Mapping": "condition",
+      "Caption": "Condition",
+      "LocalizedCaption": 
+      {
+        "zh": "条件"
+      },
+      "Type": "if control flow elseif"
+    }
+  ]
+}

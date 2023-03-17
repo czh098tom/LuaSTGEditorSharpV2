@@ -1,0 +1,10 @@
+{
+  "$type":"LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID":"if control flow",
+  "Captures":[
+    { "Capture": "condition" }
+  ],
+  "Head":"if ({0}) then\u000A",
+  "Tail":"end\u000A",
+  "IndentionIncrement": 0
+}
