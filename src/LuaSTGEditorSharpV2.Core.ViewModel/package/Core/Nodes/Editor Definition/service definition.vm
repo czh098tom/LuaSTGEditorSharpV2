@@ -1,0 +1,15 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Specialized.ServiceDefinition, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "service definition",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/setting.png",
+  "DeclarationCaputure": "serviceDeclaration",
+  "ShortNameCaputure": "serviceShortName",
+  "Text": "define node service of type {0} to node type {1}",
+  "LocalizedText": {
+    "zh": "针对节点类型{1}定义节点服务{0}"
+  },
+  "ErrorText": "define node service of type {0}",
+  "LocalizedErrorText": {
+    "zh": "定义节点服务：{0}"
+  }
+}

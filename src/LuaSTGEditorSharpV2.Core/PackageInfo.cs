@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LuaSTGEditorSharpV2.Core
 {
     [Serializable]
-    public record class PackageInfo(string Name, int VersionNumber, string? LibraryPath) : IComparable<PackageInfo>
+    public record class PackageInfo(string Name, Version VersionNumber, string? LibraryPath) : IComparable<PackageInfo>
     {
         public int CompareTo(PackageInfo? other)
         {

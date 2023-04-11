@@ -48,7 +48,7 @@ namespace LuaSTGEditorSharpV2
 
             try
             {
-                doc = new EditingDocumentModel(new DocumentModel(Path.Combine(testPath, "test.lstg")));
+                doc = new EditingDocumentModel(DocumentModel.CreateFromFile(Path.Combine(testPath, "test.lstg")));
                 var dvm = new DocumentViewModel();
                 vm.Documents.Add(dvm);
                 DataContext = vm;

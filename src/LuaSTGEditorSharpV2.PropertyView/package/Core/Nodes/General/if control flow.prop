@@ -9,8 +9,7 @@
       "LocalizedCaption": 
       {
         "zh": "条件"
-      },
-      "Type": "if control flow"
+      }
     }
   ]
 }

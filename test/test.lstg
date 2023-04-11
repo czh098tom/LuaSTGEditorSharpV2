@@ -4,67 +4,87 @@
   },
   "Children": [
     {
-      "TypeUID": "task",
+      "TypeUID": "definition root",
+      "Children": [
+        {
+          "TypeUID": "service definition",
+          "Properties": {
+            "serviceShortName": "vm",
+            "serviceDeclaration": "{ \"$type\":\"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\", \"TypeUID\":\"test\", \"Captures\":[ \"name\" ], \"Icon\":\"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png\", \"Text\":\"test: {0}\", \"LocalizedText\": { \"zh\": \"测试：{0}\" } }"
+          }
+        }
+      ]
+    },
+    {
+      "TypeUID": "build root"
+    },
+    {
+      "TypeUID": "compile root",
       "Children": [
         {
           "TypeUID": "task",
           "Children": [
             {
-              "TypeUID": "code block",
-              "Properties": {
-                "name": "bb"
-              },
-              "Children": []
-            },
-            {
-              "TypeUID": "code",
-              "Properties": {
-                "code": "do\u000Aend\u000A"
-              },
-              "Children": []
-            },
-            {
-              "TypeUID": "if control flow",
-              "Properties": {
-                "condition": "1 == 1"
-              },
+              "TypeUID": "task",
               "Children": [
                 {
-                  "TypeUID": "if control flow then",
-                  "Children": [
-                    {
-                      "TypeUID": "code",
-                      "Properties": {
-                        "code": "do\u000Aend\u000A"
-                      },
-                      "Children": []
-                    }
-                  ]
+                  "TypeUID": "code block",
+                  "Properties": {
+                    "name": "bb"
+                  },
+                  "Children": []
                 },
                 {
-                  "TypeUID": "if control flow elseif",
+                  "TypeUID": "code",
                   "Properties": {
-                    "condition": "nmsl ~= nil"
+                    "code": "do\u000Aend\u000A"
+                  },
+                  "Children": []
+                },
+                {
+                  "TypeUID": "if control flow",
+                  "Properties": {
+                    "condition": "1 == 1"
                   },
                   "Children": [
                     {
-                      "TypeUID": "code",
-                      "Properties": {
-                        "code": "do\u000Aend\u000A"
-                      },
-                      "Children": []
-                    }
-                  ]
-                },
-                {
-                  "TypeUID": "if control flow else",
-                  "Children": [
+                      "TypeUID": "if control flow then",
+                      "Children": [
+                        {
+                          "TypeUID": "test",
+                          "Properties": {
+                            "code": "AAAAAAA"
+                          },
+                          "Children": []
+                        }
+                      ]
+                    },
                     {
-                      "TypeUID": "code",
+                      "TypeUID": "if control flow elseif",
                       "Properties": {
-                        "code": "do\u000Aend\u000A"
+                        "condition": "nmsl ~= nil"
                       },
-                      "Children": []
+                      "Children": [
+                        {
+                          "TypeUID": "code",
+                          "Properties": {
+                            "code": "do\u000Aend\u000A"
+                          },
+                          "Children": []
+                        }
+                      ]
+                    },
+                    {
+                      "TypeUID": "if control flow else",
+                      "Children": [
+                        {
+                          "TypeUID": "code",
+                          "Properties": {
+                            "code": "do\u000Aend\u000A"
+                          },
+                          "Children": []
+                        }
+                      ]
                     }
                   ]
                 }

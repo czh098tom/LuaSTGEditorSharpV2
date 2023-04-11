@@ -87,7 +87,8 @@ namespace LuaSTGEditorSharpV2.Core
         public virtual TContext GetEmptyContext(LocalSettings localSettings)
         {
             return (TContext?)Activator.CreateInstance(typeof(TContext), new object[] { localSettings })
-                ?? throw new NotImplementedException($"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalSettings)}.");
+                ?? throw new NotImplementedException(
+                    $"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalSettings)}.");
         }
 
         protected TContext BuildContextForNode(NodeData node, LocalSettings localSettings)
