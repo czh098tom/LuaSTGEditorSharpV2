@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Exception;
+using System.Reflection.PortableExecutable;
 
 namespace LuaSTGEditorSharpV2.Core.Model
 {
@@ -25,14 +26,9 @@ namespace LuaSTGEditorSharpV2.Core.Model
         {
             try
             {
-                string testSrc;
-                using (FileStream fs = new(filePath, FileMode.Open, FileAccess.Read))
-                {
-                    using StreamReader sr = new(fs);
-                    testSrc = sr.ReadToEnd();
-                }
-                var node = JsonConvert.DeserializeObject<NodeData>(testSrc)
-                    ?? throw new InvalidOperationException("File opened is empty.");
+                using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
+                using StreamReader sr = new(fs);
+                var node = DocumentFormatBase.CreateByExtension(Path.GetExtension(filePath)).CreateFromStream(sr);
                 return new DocumentModel(filePath, node);
             }
             catch (System.Exception e)
@@ -41,12 +37,11 @@ namespace LuaSTGEditorSharpV2.Core.Model
             }
         }
 
-        public static NodeData CreateFromStream(StreamReader reader)
+        public static NodeData CreateFromStream(TextReader reader)
         {
             try
             {
-                return JsonConvert.DeserializeObject<NodeData>(reader.ReadToEnd())
-                    ?? throw new InvalidOperationException("File opened is empty.");
+                return DocumentFormatBase.Create().CreateFromStream(reader);
             }
             catch (System.Exception e)
             {
@@ -89,7 +84,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
             {
                 using FileStream fs = new(filePath, FileMode.Create, FileAccess.Write);
                 using StreamWriter sw = new(fs);
-                sw.Write(JsonConvert.SerializeObject(Root, _savingSerializer));
+                DocumentFormatBase.Create().SaveToStream(Root, sw);
             }
             catch (System.Exception e)
             {

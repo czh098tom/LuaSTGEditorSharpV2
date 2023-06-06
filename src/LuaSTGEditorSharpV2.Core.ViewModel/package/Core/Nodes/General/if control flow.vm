@@ -1,11 +1,10 @@
 {
-  "$type":"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID":"if control flow",
-  "Captures":[ "condition" ],
-  "Icon":"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/if.png",
-  "Text":"if ({0})",
-  "LocalizedText": 
-  {
+  "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "If",
+  "Captures": [ "condition" ],
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/if.png",
+  "Text": "if ({0})",
+  "LocalizedText": {
     "zh": "如果 ({0})"
   }
 }

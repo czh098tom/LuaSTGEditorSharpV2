@@ -1,10 +1,10 @@
-{
+﻿{
   "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "CodeBlock",
+  "TypeUID": "UseResourceGroup",
   "Captures": [ "name" ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
-  "Text": "Code Block: {0k",
+  "Text": "Resource group: {0}",
   "LocalizedText": {
-    "zh": "代码块：{0}"
+    "zh": "资源组：{0}"
   }
 }

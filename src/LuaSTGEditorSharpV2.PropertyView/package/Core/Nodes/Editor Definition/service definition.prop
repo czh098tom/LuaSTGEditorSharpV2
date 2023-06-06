@@ -1,0 +1,22 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "ServiceDefinition",
+  "Mapping": 
+  [
+    {
+      "Mapping": "serviceShortName",
+      "Caption": "Service Short Name",
+      "LocalizedCaption": {
+        "zh": "服务短名称"
+      }
+    },
+    {
+      "Mapping": "serviceDeclaration",
+      "Caption": "Service Declaration",
+      "LocalizedCaption": {
+        "zh": "服务定义"
+      },
+      "Type": "code"
+    }
+  ]
+}

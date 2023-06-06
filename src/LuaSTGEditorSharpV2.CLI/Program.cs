@@ -19,13 +19,11 @@ namespace LuaSTGEditorSharpV2.CLI
                 var resc = PackageManager.LoadPackage("Core");
                 var resln = PackageManager.LoadPackage("LegacyNode");
 
-                string testSrc;
-                using (FileStream fs = new(Path.Combine(testPath, "test.lstg"), FileMode.Open, FileAccess.Read))
-                {
-                    using StreamReader sr = new(fs);
-                    testSrc = sr.ReadToEnd();
-                }
-                NodeData? root = JsonConvert.DeserializeObject<NodeData>(testSrc) ?? throw new Exception();
+                var doc = DocumentModel.CreateFromFile(Path.Combine(testPath, "test.lstgxml"));
+                NodeData? root = doc.Root;
+
+                DocumentFormatBase.Create("xml").SaveToStream(root, Console.Out);
+                Console.WriteLine();
 
                 foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalSettings()))
                 {

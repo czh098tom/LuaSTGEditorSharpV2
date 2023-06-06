@@ -4,10 +4,10 @@
   },
   "Children": [
     {
-      "TypeUID": "definition root",
+      "TypeUID": "DefinitionRoot",
       "Children": [
         {
-          "TypeUID": "service definition",
+          "TypeUID": "ServiceDefinition",
           "Properties": {
             "serviceShortName": "vm",
             "serviceDeclaration": "{ \"$type\":\"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\", \"TypeUID\":\"test\", \"Captures\":[ \"name\" ], \"Icon\":\"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png\", \"Text\":\"test: {0}\", \"LocalizedText\": { \"zh\": \"测试：{0}\" } }"
@@ -16,42 +16,57 @@
       ]
     },
     {
-      "TypeUID": "build root"
+      "TypeUID": "BuildRoot"
     },
     {
-      "TypeUID": "compile root",
+      "TypeUID": "CompileRoot",
       "Children": [
         {
-          "TypeUID": "task",
+          "TypeUID": "UseResourceGroup",
+          "Properties": {
+            "name": "1"
+          },
           "Children": [
             {
-              "TypeUID": "task",
+              "TypeUID": "Include",
+              "Properties": {
+                "path": "test.lua"
+              },
+              "Children": []
+            }
+          ]
+        },
+        {
+          "TypeUID": "Task",
+          "Children": [
+            {
+              "TypeUID": "Task",
               "Children": [
                 {
-                  "TypeUID": "code block",
+                  "TypeUID": "CodeBlock",
                   "Properties": {
                     "name": "bb"
                   },
                   "Children": []
                 },
                 {
-                  "TypeUID": "code",
+                  "TypeUID": "Code",
                   "Properties": {
                     "code": "do\u000Aend\u000A"
                   },
                   "Children": []
                 },
                 {
-                  "TypeUID": "if control flow",
+                  "TypeUID": "If",
                   "Properties": {
                     "condition": "1 == 1"
                   },
                   "Children": [
                     {
-                      "TypeUID": "if control flow then",
+                      "TypeUID": "If.Then",
                       "Children": [
                         {
-                          "TypeUID": "test",
+                          "TypeUID": "Test",
                           "Properties": {
                             "code": "AAAAAAA"
                           },
@@ -60,13 +75,13 @@
                       ]
                     },
                     {
-                      "TypeUID": "if control flow elseif",
+                      "TypeUID": "If.ElseIf",
                       "Properties": {
                         "condition": "nmsl ~= nil"
                       },
                       "Children": [
                         {
-                          "TypeUID": "code",
+                          "TypeUID": "Code",
                           "Properties": {
                             "code": "do\u000Aend\u000A"
                           },
@@ -75,10 +90,10 @@
                       ]
                     },
                     {
-                      "TypeUID": "if control flow else",
+                      "TypeUID": "If.Else",
                       "Children": [
                         {
-                          "TypeUID": "code",
+                          "TypeUID": "Code",
                           "Properties": {
                             "code": "do\u000Aend\u000A"
                           },

@@ -39,12 +39,25 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         public bool HasProperty(string key) => Properties.ContainsKey(key);
 
+        public NodeData() { }
+
+        internal NodeData(string typeUID) 
+        {
+            TypeUID = typeUID;
+        }
+
         public IEnumerable<NodeData> GetLogicalChildren()
         {
             foreach(var child in PhysicalChildren)
             {
                 if(child.IsActive) yield return child;
             }
+        }
+
+        public void Add(NodeData node)
+        {
+            _physicalChildren.Add(node);
+            node.PhysicalParent = this;
         }
 
         public void Insert(int position, NodeData node)

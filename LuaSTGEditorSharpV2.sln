@@ -37,12 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Propert
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{87C21D0B-898C-47C8-8AE7-85EC51FA3460}"
 	ProjectSection(SolutionItems) = preProject
-		test\test.lstg = test\test.lstg
+		test\test.lstgjson = test\test.lstgjson
+		test\test.lstgxml = test\test.lstgxml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView\LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.csproj", "{F14006D8-D781-4B1D-A9DA-34416A293D97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation", "src\LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation\LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation.csproj", "{7067F337-DB7E-4678-AC1C-66509FD1C4D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation", "src\LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation\LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation.csproj", "{7067F337-DB7E-4678-AC1C-66509FD1C4D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

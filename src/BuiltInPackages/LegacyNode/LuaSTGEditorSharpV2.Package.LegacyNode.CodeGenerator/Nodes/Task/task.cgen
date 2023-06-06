@@ -1,6 +1,6 @@
 ﻿{
-  "$type":"LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID":"task",
-  "Head":"task.Do(self, function()\u000A",
-  "Tail":"end)\u000A"
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "Task",
+  "Head": "task.Do(self, function()\u000A",
+  "Tail": "end)\u000A"
 }

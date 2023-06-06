@@ -1,11 +1,10 @@
 {
-  "$type":"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID":"if control flow elseif",
-  "Captures":[ "condition" ],
-  "Icon":"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/elseif.png",
-  "Text":"elseif ({0}) then",
-  "LocalizedText": 
-  {
+  "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "If.ElseIf",
+  "Captures": [ "condition" ],
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/elseif.png",
+  "Text": "elseif ({0}) then",
+  "LocalizedText": {
     "zh": "否则如果 ({0}) 则"
   }
 }

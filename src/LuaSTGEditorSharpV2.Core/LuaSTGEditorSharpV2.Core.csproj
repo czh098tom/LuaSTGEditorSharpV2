@@ -18,15 +18,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
-  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory"
-          Condition="$(InReferenceParent)!='true'">
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory" Condition="$(InReferenceParent)!='true'">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\package\Core</YourSourceDirectory>
       <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\package\Core</YourDestinationDirectory>
     </PropertyGroup>
-    <Copy SourceFiles="$(YourSourceDirectory)\manifest"
-          DestinationFiles="$(YourDestinationDirectory)\manifest"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(YourSourceDirectory)\manifest" DestinationFiles="$(YourDestinationDirectory)\manifest" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

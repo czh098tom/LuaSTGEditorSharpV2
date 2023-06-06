@@ -12,10 +12,32 @@ namespace LuaSTGEditorSharpV2.Core.Building
     public class ResourceGatheringServiceBase : NodeService<ResourceGatheringServiceBase, ResourceGatheringContext>
     {
         private static readonly ResourceGatheringServiceBase _default = new();
+        private static readonly Dictionary<string, string> _empty = new Dictionary<string, string>();
 
         static ResourceGatheringServiceBase()
         {
             _defaultServiceGetter = () => _default;
+        }
+
+        public static IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalSettings settings)
+        {
+            var ctx = GetContextOfNode(nodeData, settings);
+            var service = GetServiceOfNode(nodeData);
+            return service.GetResourcesToPackWithContext(nodeData, ctx);
+        }
+
+        public static IEnumerable<GroupedResource> ProceedChildren(NodeData node
+            , ResourceGatheringContext context)
+        {
+            context.Push(node);
+            foreach (NodeData child in node.GetLogicalChildren())
+            {
+                foreach (GroupedResource s in GetServiceOfNode(child).GetResourcesToPackWithContext(child, context))
+                {
+                    yield return s;
+                }
+            }
+            context.Pop();
         }
 
         public override ResourceGatheringContext GetEmptyContext(LocalSettings localSettings)
@@ -23,9 +45,10 @@ namespace LuaSTGEditorSharpV2.Core.Building
             return base.GetEmptyContext(localSettings);
         }
 
-        protected virtual string[] GetResourcesToPackForNode(NodeData node, ResourceGatheringContext context)
+        public virtual IEnumerable<GroupedResource> GetResourcesToPackWithContext(NodeData node
+            , ResourceGatheringContext context)
         {
-            return Array.Empty<string>();
+            return ProceedChildren(node, context);
         }
     }
 }
