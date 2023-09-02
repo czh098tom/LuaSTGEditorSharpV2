@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.ViewModel
 {
-    public class ViewModelContext : NodeContext
+    public class ViewModelContext : NodeContext<ViewModelProviderServiceSettings>
     {
         public ViewModelContext(LocalSettings localSettings) : base(localSettings)
         {

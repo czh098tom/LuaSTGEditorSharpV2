@@ -12,9 +12,16 @@ using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class NodeService<TService, TContext>
-        where TService : NodeService<TService, TContext>
-        where TContext : NodeContext
+    /// <summary>
+    /// Base class for all services who observes nodes and do something according to data inside nodes.
+    /// </summary>
+    /// <typeparam name="TService"> The service itself. </typeparam>
+    /// <typeparam name="TContext"> The context that preserves frequently used data for this service. </typeparam>
+    /// <typeparam name="TSettings"> The singleton settings used by this service during the lifecycle of the application. </typeparam>
+    public abstract class NodeService<TService, TContext, TSettings>
+        where TService : NodeService<TService, TContext, TSettings>
+        where TContext : NodeContext<TSettings>
+        where TSettings : ServiceExtraSettings<TSettings>, new()
     {
         protected static Func<TService> _defaultServiceGetter = () => throw new NotImplementedException();
         private static readonly Dictionary<string, PriorityQueue<TService, PackageInfo>> _registered = new();
@@ -80,6 +87,8 @@ namespace LuaSTGEditorSharpV2.Core
             var service = GetServiceOfTypeID(node.TypeUID);
             return service.BuildContextForNode(node, localSettings);
         }
+
+        protected static TSettings Settings => ServiceExtraSettings<TSettings>.Instance;
 
         [JsonProperty]
         public string TypeUID { get; protected set; } = string.Empty;

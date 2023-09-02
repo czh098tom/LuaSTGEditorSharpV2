@@ -35,7 +35,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public static void UseService(Type serviceType)
         {
-            if (serviceType.BaseType?.GetGenericTypeDefinition() == typeof(NodeService<,>))
+            if (serviceType.BaseType?.GetGenericTypeDefinition() == typeof(NodeService<,,>))
             {
 #pragma warning disable CS8602
 #pragma warning disable CS8600

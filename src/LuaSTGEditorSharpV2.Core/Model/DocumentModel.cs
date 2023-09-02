@@ -99,9 +99,19 @@ namespace LuaSTGEditorSharpV2.Core.Model
                 , new Version(int.MaxValue, int.MaxValue, int.MaxValue), null);
         }
 
-        public NodeData FindDefinitionRoot()
+        public NodeData? FindDefinitionRoot()
         {
-            return _root.PhysicalChildren.First(n => n.TypeUID == definitionRootUID);
+            return _root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == definitionRootUID);
+        }
+
+        public NodeData? FindBuildRoot()
+        {
+            return _root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == buildRootUID);
+        }
+
+        public NodeData? FindCompileRoot()
+        {
+            return _root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == compileRootUID);
         }
     }
 }

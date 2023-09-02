@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.CLI
                 DocumentFormatBase.Create("xml").SaveToStream(root, Console.Out);
                 Console.WriteLine();
 
-                foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalSettings()))
+                foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalSettings(doc)))
                 {
                     Console.Write(codeData.Content);
                 }

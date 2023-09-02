@@ -39,6 +39,7 @@ namespace LuaSTGEditorSharpV2.Core
         {
             _packageInfo = doc.GetPackageInfoForLocalNodeService();
             var root = doc.FindDefinitionRoot();
+            if (root == null) return;
             Stack<NodeData> stack = new();
             stack.Push(root);
             while (stack.Count > 0)

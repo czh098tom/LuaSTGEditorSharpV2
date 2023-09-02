@@ -12,7 +12,8 @@ using LuaSTGEditorSharpV2.Core.ViewModel;
 namespace LuaSTGEditorSharpV2.PropertyView
 {
     [ServiceName("PropertyView"), ServiceShortName("prop")]
-    public class PropertyViewServiceBase : NodeService<PropertyViewServiceBase, PropertyViewContext>
+    public class PropertyViewServiceBase 
+        : NodeService<PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
     {
         private static readonly PropertyViewServiceBase _defaultService = new();
 

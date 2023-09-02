@@ -11,7 +11,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
     [Serializable]
-    public class ConfigurableStructualValidation : StructuralValidationServiceBase
+    public class ConfigurableStructuralValidation : StructuralValidationServiceBase
     {
         [JsonProperty] public HashSet<string> RequireParent { get; private set; } = new();
         [JsonProperty] public HashSet<string> RequireAncestor { get; private set; } = new();
@@ -23,7 +23,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         public override bool IsLeaf() => IsLeafNode;
         public override bool IsInvisible() => false;
 
-        protected override bool CanPlaceAsChildOf(NodeData node, StructralValidationContext context)
+        protected override bool CanPlaceAsChildOf(NodeData node, StructuralValidationContext context)
         {
             if (!base.CanPlaceAsChildOf(node, context)) return false;
             if (!ValidateParent(context)) return false;
@@ -38,7 +38,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return CanSetInactivate;
         }
 
-        private bool ValidateParent(StructralValidationContext context)
+        private bool ValidateParent(StructuralValidationContext context)
         {
             foreach (var ancestor in context.EnumerateFromNearest())
             {
@@ -58,7 +58,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return false;
         }
 
-        private bool ValidateAncestor(StructralValidationContext context)
+        private bool ValidateAncestor(StructuralValidationContext context)
         {
             foreach (var ancestor in context.EnumerateFromNearest())
             {
@@ -74,7 +74,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return false;
         }
 
-        private bool ValidateClass(StructralValidationContext context)
+        private bool ValidateClass(StructuralValidationContext context)
         {
             if (IsClassNode)
             {
@@ -88,7 +88,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return true;
         }
 
-        private bool ValidateUniquness(StructralValidationContext context, NodeData node)
+        private bool ValidateUniquness(StructuralValidationContext context, NodeData node)
         {
             if (ShouldUniqueAmongSiblings)
             {

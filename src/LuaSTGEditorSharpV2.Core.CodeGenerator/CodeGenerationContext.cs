@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
-    public class CodeGenerationContext : NodeContext
+    public class CodeGenerationContext : NodeContext<CodeGenerationServiceSettings>
     {
         public static string ApplyMacroWithString(string original, string toBeReplaced, string @new)
         {
@@ -44,7 +44,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             var sb = new StringBuilder();
             for (int i = 0; i < IndentionLevel; i++)
             {
-                sb.Append(LocalSettings.IndentionString);
+                sb.Append(ServiceSettings.IndentionString);
             }
             return sb;
         }

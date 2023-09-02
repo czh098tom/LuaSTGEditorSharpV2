@@ -10,7 +10,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
     [ServiceShortName("valid"), ServiceName("Analyzer.StructuralValidation")]
     public class StructuralValidationServiceBase
-        : NodeService<StructuralValidationServiceBase, StructralValidationContext>
+        : NodeService<StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
     {
         private static readonly StructuralValidationServiceBase _defaultService = new();
 
@@ -38,7 +38,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         }
 
         private static IEnumerable<NodeData> GetInvalidPositionsRecursive(NodeData root
-            , StructralValidationContext context)
+            , StructuralValidationContext context)
         {
             if (root.PhysicalParent != null && !GetServiceOfNode(root).CanPlaceAsChildOf(root.PhysicalParent, context))
                 yield return root;
@@ -53,9 +53,9 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             context.Pop();
         }
 
-        public override StructralValidationContext GetEmptyContext(LocalSettings localSettings)
+        public override StructuralValidationContext GetEmptyContext(LocalSettings localSettings)
         {
-            return new StructralValidationContext(localSettings);
+            return new StructuralValidationContext(localSettings);
         }
 
         protected bool CanPlaceAsChildOf(NodeData node, LocalSettings settings)
@@ -67,7 +67,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         public virtual bool IsInvisible() => true;
         public virtual bool IsLeaf() => false;
 
-        protected virtual bool CanPlaceAsChildOf(NodeData node, StructralValidationContext context)
+        protected virtual bool CanPlaceAsChildOf(NodeData node, StructuralValidationContext context)
         {
             return !GetServiceOfNode(node).IsLeaf();
         }

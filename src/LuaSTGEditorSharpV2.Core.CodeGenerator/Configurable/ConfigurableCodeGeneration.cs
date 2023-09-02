@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
-using System.Runtime.Serialization;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 {

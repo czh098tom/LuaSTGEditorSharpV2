@@ -8,9 +8,13 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class NodeContext
+    public abstract class NodeContext<TSettings> 
+        where TSettings : ServiceExtraSettings<TSettings>, new()
     {
         protected LocalSettings LocalSettings { get; private set; }
+
+        protected TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
+
         private readonly Dictionary<string, Stack<NodeData>> _contextData = new();
         private readonly Stack<NodeData> _top = new();
 
