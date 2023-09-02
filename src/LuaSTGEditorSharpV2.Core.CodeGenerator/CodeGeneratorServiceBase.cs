@@ -41,7 +41,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 
         public override sealed CodeGenerationContext GetEmptyContext(LocalSettings localSettings)
         {
-            return new CodeGenerationContext(localSettings);
+            return new CodeGenerationContext(localSettings, ServiceSettings);
         }
 
         public virtual IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)

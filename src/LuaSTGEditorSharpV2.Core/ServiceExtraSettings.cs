@@ -8,7 +8,7 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public class ServiceExtraSettings<T> where T : ServiceExtraSettings<T>, new()
     {
-        private static readonly Lazy<T> _instance = new(() => new());
+        private static Lazy<T> _instance = new(() => new());
 
         public static T Instance
         {
@@ -17,5 +17,12 @@ namespace LuaSTGEditorSharpV2.Core
                 return _instance.Value;
             }
         }
+
+        public static void Reassign(T source)
+        {
+            _instance = new(() => source);
+        }
     }
+
+    internal class DefaultServiceExtraSettings : ServiceExtraSettings<DefaultServiceExtraSettings> { }
 }

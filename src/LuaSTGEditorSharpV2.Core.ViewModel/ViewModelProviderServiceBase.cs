@@ -84,7 +84,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
 
         public override ViewModelContext GetEmptyContext(LocalSettings localSettings)
         {
-            return new ViewModelContext(localSettings);
+            return new ViewModelContext(localSettings, ServiceSettings);
         }
 
         protected virtual void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource) { }

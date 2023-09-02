@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    internal record ServiceInfo(string Name, string ShortName, Delegate RegisterFunction)
+    internal record ServiceInfo(string Name, string ShortName
+        , Type ContextType, Type SettingsType
+        , Delegate RegisterFunction, Delegate SettingsReplacementFunction)
     {
     }
 }

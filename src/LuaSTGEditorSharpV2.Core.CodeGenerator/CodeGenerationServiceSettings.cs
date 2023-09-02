@@ -10,6 +10,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
     public class CodeGenerationServiceSettings : ServiceExtraSettings<CodeGenerationServiceSettings>
     {
-        [JsonProperty] public string IndentionString { get; set; } = "\t";
+        [JsonProperty("indention_string")] 
+        public string IndentionString { get; set; } = "\t";
     }
 }

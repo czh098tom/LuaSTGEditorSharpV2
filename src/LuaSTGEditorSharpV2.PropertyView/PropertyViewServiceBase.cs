@@ -36,7 +36,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public override sealed PropertyViewContext GetEmptyContext(LocalSettings localSettings)
         {
-            return new PropertyViewContext(localSettings);
+            return new PropertyViewContext(localSettings, ServiceSettings);
         }
 
         protected virtual IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData

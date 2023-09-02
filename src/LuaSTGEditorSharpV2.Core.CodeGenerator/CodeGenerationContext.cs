@@ -24,7 +24,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public int IndentionLevel { get; private set; } = 0;
         public IReadOnlyDictionary<NodeData, Dictionary<string, string>> ContextVariables => _contextVariables;
 
-        public CodeGenerationContext(LocalSettings localSettings) : base(localSettings) { }
+        public CodeGenerationContext(LocalSettings localSettings, CodeGenerationServiceSettings serviceSettings) 
+            : base(localSettings, serviceSettings) { }
 
         public void Push(NodeData current, int indentionIncrement)
         {

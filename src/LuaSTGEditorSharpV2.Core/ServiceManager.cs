@@ -8,12 +8,13 @@ using System.Reflection;
 using System.Diagnostics;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public static class PackageManager
+    public static class ServiceManager
     {
         private static readonly string _packageBasePath = "package";
         private static readonly string _manifestName = "manifest";
@@ -37,22 +38,34 @@ namespace LuaSTGEditorSharpV2.Core
         {
             if (serviceType.BaseType?.GetGenericTypeDefinition() == typeof(NodeService<,,>))
             {
-#pragma warning disable CS8602
-#pragma warning disable CS8600
-                MethodInfo reg = serviceType.BaseType.GetMethod("Register"
-                    , BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-                Type delegateType = typeof(Action<,,>).MakeGenericType(typeof(string), typeof(PackageInfo)
-                    , reg.DeclaringType.GetGenericArguments()[0]);
-                Delegate register = reg.CreateDelegate(delegateType);
                 string serviceName = serviceType.GetCustomAttribute<ServiceNameAttribute>()?.Name ?? serviceType.Name;
                 string serviceShortName = serviceType.GetCustomAttribute<ServiceShortNameAttribute>()?.Name
                     ?? serviceType.Name;
-#pragma warning restore CS8600
-#pragma warning restore CS8602
                 if (_shortName2Services.ContainsKey(serviceShortName))
                     throw new InvalidOperationException($"Service Short Name {serviceShortName} Duplicated.");
+
+                Type[] genericArgs = serviceType.BaseType!.GetGenericArguments();
+                Type self = genericArgs[0];
+                Type context = genericArgs[1];
+                Type settings = genericArgs[2];
+
+                // find register func
+                MethodInfo reg = serviceType.BaseType!.GetMethod(nameof(DefaultNodeService.Register)
+                    , BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)!;
+                Type regDelegateType = typeof(Action<,,>).MakeGenericType(typeof(string), typeof(PackageInfo)
+                    , self);
+                Delegate register = reg!.CreateDelegate(regDelegateType);
+
+                // find reassign func
+                MethodInfo rea = settings.BaseType!.GetMethod(nameof(DefaultServiceExtraSettings.Reassign)
+                    , BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)!;
+                Type reaDelegateType = typeof(Action<>).MakeGenericType(settings);
+                Delegate reassign = rea!.CreateDelegate(reaDelegateType);
+
                 _shortName2Services.Add(serviceShortName, serviceType);
-                _services2Info.Add(serviceType, new ServiceInfo(serviceName, serviceShortName, register));
+                _services2Info.Add(serviceType, new ServiceInfo(serviceName, serviceShortName
+                    , genericArgs[1], genericArgs[2]
+                    , register, reassign));
             }
             else
             {
@@ -108,9 +121,7 @@ namespace LuaSTGEditorSharpV2.Core
                         ?? throw new PackageLoadingException($"Failed to deserialize service defined at {fileName} .");
                     if (obj.GetType().IsAnyDerivedTypeOf(serviceType))
                     {
-#pragma warning disable CS8602
-                        param[0] = serviceType.BaseType.GetProperty("TypeUID")?.GetValue(obj);
-#pragma warning restore CS8602
+                        param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
                         param[2] = obj;
                         registerFunc.DynamicInvoke(param);
                     }
@@ -149,13 +160,25 @@ namespace LuaSTGEditorSharpV2.Core
             foreach (var tup in services.Services)
             {
                 Type serviceType = _shortName2Services[tup.Item2];
-#pragma warning disable CS8602
-                param[0] = serviceType.BaseType.GetProperty("TypeUID")?.GetValue(tup.Item1);
-#pragma warning restore CS8602
+                param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(tup.Item1);
                 var info = _services2Info[serviceType];
                 param[2] = tup.Item1;
                 info.RegisterFunction.DynamicInvoke(param);
             }
+        }
+
+        public static void ReplaceSettingsForService(Type serviceType, JObject settings)
+        {
+            var serviceInfo = _services2Info[serviceType];
+            var settingsType = serviceInfo.SettingsType;
+            var assign = serviceInfo.SettingsReplacementFunction;
+            var settingsObj = JsonConvert.DeserializeObject(settings.ToString(), settingsType);
+            assign.DynamicInvoke(settingsObj);
+        }
+
+        public static void ReplaceSettingsForServiceShortName(string serviceShortName, JObject settings)
+        {
+            ReplaceSettingsForService(_shortName2Services[serviceShortName], settings);
         }
     }
 }

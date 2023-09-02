@@ -18,6 +18,10 @@ namespace LuaSTGEditorSharpV2.Core
     /// <typeparam name="TService"> The service itself. </typeparam>
     /// <typeparam name="TContext"> The context that preserves frequently used data for this service. </typeparam>
     /// <typeparam name="TSettings"> The singleton settings used by this service during the lifecycle of the application. </typeparam>
+    /// <remarks> 
+    /// TODO: add parameter <see cref="TSettings"/> for all subclass on recursive functions 
+    /// (ensure consistency of <see cref="TSettings"/> for all recursion call because it may be replaced) 
+    /// </remarks>
     public abstract class NodeService<TService, TContext, TSettings>
         where TService : NodeService<TService, TContext, TSettings>
         where TContext : NodeContext<TSettings>
@@ -88,16 +92,16 @@ namespace LuaSTGEditorSharpV2.Core
             return service.BuildContextForNode(node, localSettings);
         }
 
-        protected static TSettings Settings => ServiceExtraSettings<TSettings>.Instance;
+        protected static TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
 
         [JsonProperty]
         public string TypeUID { get; protected set; } = string.Empty;
 
         public virtual TContext GetEmptyContext(LocalSettings localSettings)
         {
-            return (TContext?)Activator.CreateInstance(typeof(TContext), new object[] { localSettings })
+            return (TContext?)Activator.CreateInstance(typeof(TContext), new object[] { localSettings, ServiceSettings })
                 ?? throw new NotImplementedException(
-                    $"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalSettings)}.");
+                    $"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalSettings)} and {typeof(TSettings)}.");
         }
 
         protected TContext BuildContextForNode(NodeData node, LocalSettings localSettings)
@@ -117,4 +121,6 @@ namespace LuaSTGEditorSharpV2.Core
             return context;
         }
     }
+
+    internal class DefaultNodeService : NodeService<DefaultNodeService, DefaultNodeContext, DefaultServiceExtraSettings> { }
 }

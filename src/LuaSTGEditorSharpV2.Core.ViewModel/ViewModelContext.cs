@@ -8,7 +8,8 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
 {
     public class ViewModelContext : NodeContext<ViewModelProviderServiceSettings>
     {
-        public ViewModelContext(LocalSettings localSettings) : base(localSettings)
+        public ViewModelContext(LocalSettings localSettings, ViewModelProviderServiceSettings serviceSettings) 
+            : base(localSettings, serviceSettings)
         {
         }
     }

@@ -55,7 +55,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 
         public override StructuralValidationContext GetEmptyContext(LocalSettings localSettings)
         {
-            return new StructuralValidationContext(localSettings);
+            return new StructuralValidationContext(localSettings, ServiceSettings);
         }
 
         protected bool CanPlaceAsChildOf(NodeData node, LocalSettings settings)

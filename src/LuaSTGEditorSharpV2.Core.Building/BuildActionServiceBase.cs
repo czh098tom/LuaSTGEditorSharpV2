@@ -46,7 +46,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
 
         public override BuildActionContext GetEmptyContext(LocalSettings localSettings)
         {
-            return new BuildActionContext(localSettings);
+            return new BuildActionContext(localSettings, ServiceSettings);
         }
 
         public virtual async Task BuildWithContextAsync(NodeData node, BuildActionContext context)

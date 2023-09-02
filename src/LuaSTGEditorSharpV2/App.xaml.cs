@@ -32,11 +32,11 @@ namespace LuaSTGEditorSharpV2
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
             try
             {
-                PackageManager.UseService(typeof(CodeGeneratorServiceBase));
-                PackageManager.UseService(typeof(ViewModelProviderServiceBase));
-                PackageManager.UseService(typeof(PropertyViewServiceBase));
-                var resc = PackageManager.LoadPackage("Core");
-                var resln = PackageManager.LoadPackage("LegacyNode");
+                ServiceManager.UseService(typeof(CodeGeneratorServiceBase));
+                ServiceManager.UseService(typeof(ViewModelProviderServiceBase));
+                ServiceManager.UseService(typeof(PropertyViewServiceBase));
+                var resc = ServiceManager.LoadPackage("Core");
+                var resln = ServiceManager.LoadPackage("LegacyNode");
                 ResourceManager.MergeResources();
             }
             catch (Exception ex)

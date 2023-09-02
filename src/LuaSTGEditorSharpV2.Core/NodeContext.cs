@@ -8,19 +8,20 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class NodeContext<TSettings> 
+    public abstract class NodeContext<TSettings>
         where TSettings : ServiceExtraSettings<TSettings>, new()
     {
         protected LocalSettings LocalSettings { get; private set; }
 
-        protected TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
+        protected TSettings ServiceSettings { get; private set; }
 
         private readonly Dictionary<string, Stack<NodeData>> _contextData = new();
         private readonly Stack<NodeData> _top = new();
 
-        public NodeContext(LocalSettings localSettings)
+        public NodeContext(LocalSettings localSettings, TSettings serviceSettings)
         {
             LocalSettings = localSettings;
+            ServiceSettings = serviceSettings;
         }
 
         public void Push(NodeData current)
@@ -100,5 +101,11 @@ namespace LuaSTGEditorSharpV2.Core
             }
             return Enumerable.Empty<NodeData>();
         }
+    }
+
+    internal class DefaultNodeContext : NodeContext<DefaultServiceExtraSettings>
+    {
+        internal DefaultNodeContext(LocalSettings settings, DefaultServiceExtraSettings serviceSettings)
+            : base(settings, serviceSettings) { }
     }
 }

@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
 
         public override ResourceGatheringContext GetEmptyContext(LocalSettings localSettings)
         {
-            return new ResourceGatheringContext(localSettings);
+            return new ResourceGatheringContext(localSettings, ServiceSettings);
         }
 
         public virtual IEnumerable<GroupedResource> GetResourcesToPackWithContext(NodeData node
