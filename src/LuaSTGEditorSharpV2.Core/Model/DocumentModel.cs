@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
             }
             catch (System.Exception e)
             {
-                throw new OpenFileException($"Could not open file at {filePath}", e);
+                throw new OpenFileException($"Could not open file by path {filePath}", e);
             }
         }
 

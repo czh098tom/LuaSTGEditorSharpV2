@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "LuaSTGEditorSharpV2.CLI": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "CLI compile test": {
+      "commandName": "Project",
+      "commandLineArgs": "compile \"../../test/test.lstgxml\" -o \"../../test/output/test.lua\" -pkg Core LegacyNode -cgen --indention_string \"????\""
+    },
+    "CLI formatxml test": {
+      "commandName": "Project",
+      "commandLineArgs": "formatxml \"../../test/test.lstgxml\" -o \"../../test/output/test.lstgxml\" -pkg Core LegacyNode"
+    }
+  }
+}

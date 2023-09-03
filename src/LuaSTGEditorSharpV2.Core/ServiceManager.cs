@@ -167,18 +167,23 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void ReplaceSettingsForService(Type serviceType, JObject settings)
+        public static void ReplaceSettingsForServiceIfValid(Type serviceType, JObject settings)
         {
-            var serviceInfo = _services2Info[serviceType];
-            var settingsType = serviceInfo.SettingsType;
-            var assign = serviceInfo.SettingsReplacementFunction;
-            var settingsObj = JsonConvert.DeserializeObject(settings.ToString(), settingsType);
-            assign.DynamicInvoke(settingsObj);
+            if (_services2Info.TryGetValue(serviceType, out var serviceInfo))
+            {
+                var settingsType = serviceInfo.SettingsType;
+                var assign = serviceInfo.SettingsReplacementFunction;
+                var settingsObj = JsonConvert.DeserializeObject(settings.ToString(), settingsType);
+                assign.DynamicInvoke(settingsObj);
+            }
         }
 
-        public static void ReplaceSettingsForServiceShortName(string serviceShortName, JObject settings)
+        public static void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
-            ReplaceSettingsForService(_shortName2Services[serviceShortName], settings);
+            if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType)) 
+            {
+                ReplaceSettingsForServiceIfValid(serviceType, settings);
+            }
         }
     }
 }
