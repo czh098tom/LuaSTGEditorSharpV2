@@ -8,7 +8,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
     public class StructuralValidationContext : NodeContext<StructuralValidationServiceSettings>
     {
-        public StructuralValidationContext(LocalSettings localSettings, StructuralValidationServiceSettings serviceSettings) 
+        public StructuralValidationContext(LocalParams localSettings, StructuralValidationServiceSettings serviceSettings) 
             : base(localSettings, serviceSettings) { }
     }
 }

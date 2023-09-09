@@ -8,6 +8,9 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
+    /// <summary>
+    /// Provide functionality of making parent or children legitimacy validation from <see cref="NodeData"/>.
+    /// </summary>
     [ServiceShortName("valid"), ServiceName("Analyzer.StructuralValidation")]
     public class StructuralValidationServiceBase
         : NodeService<StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
@@ -19,13 +22,13 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             _defaultServiceGetter = () => _defaultService;
         }
 
-        public static IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalSettings settings)
+        public static IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalParams settings)
         {
             var ctx = GetContextOfNode(root, settings);
             return GetInvalidPositionsRecursive(root, ctx);
         }
 
-        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalSettings settings)
+        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalParams settings)
         {
             var ctx = GetContextOfNode(parent, settings);
             ctx.Push(parent);
@@ -53,12 +56,12 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             context.Pop();
         }
 
-        public override StructuralValidationContext GetEmptyContext(LocalSettings localSettings)
+        public override sealed StructuralValidationContext GetEmptyContext(LocalParams localSettings)
         {
             return new StructuralValidationContext(localSettings, ServiceSettings);
         }
 
-        protected bool CanPlaceAsChildOf(NodeData node, LocalSettings settings)
+        protected bool CanPlaceAsChildOf(NodeData node, LocalParams settings)
         {
             var ctx = GetContextOfNode(node, settings);
             return CanPlaceAsChildOf(node, ctx);

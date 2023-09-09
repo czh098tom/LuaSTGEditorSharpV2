@@ -10,9 +10,9 @@ namespace LuaSTGEditorSharpV2.Core.Building
 {
     public class BuildActionContext : NodeContext<BuildActionServiceSettings>
     {
-        public new LocalSettings LocalSettings => base.LocalSettings;
+        public new LocalParams LocalSettings => base.LocalSettings;
 
-        public BuildActionContext(LocalSettings localSettings, BuildActionServiceSettings serviceSettings) 
+        public BuildActionContext(LocalParams localSettings, BuildActionServiceSettings serviceSettings) 
             : base(localSettings, serviceSettings)
         {
         }

@@ -50,7 +50,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 .AppendIndentedFormat(context.GetIndented(), Head, _captureResult).ToString(), node);
             if (!IgnoreChildren)
             {
-                foreach (var cd in ProceedWithIndention(node, context, IndentionIncrement))
+                foreach (var cd in GenerateForChildren(node, context, IndentionIncrement))
                 {
                     yield return cd;
                 }

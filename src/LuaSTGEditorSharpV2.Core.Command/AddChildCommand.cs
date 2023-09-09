@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute()
         {
-            ViewModelProviderServiceBase.AddNodeAt(Parent, Position, Child);
+            ViewModelProviderServiceBase.InsertNodeAt(Parent, Position, Child);
         }
 
         protected override void RevertExecution()

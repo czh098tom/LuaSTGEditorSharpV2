@@ -9,6 +9,9 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
+    /// <summary>
+    /// Provide functionality of creating build commands from <see cref="NodeData"/>.
+    /// </summary>
     [ServiceShortName("build"), ServiceName("BuildAction")]
     public class BuildActionServiceBase 
         : NodeService<BuildActionServiceBase, BuildActionContext, BuildActionServiceSettings>
@@ -20,14 +23,14 @@ namespace LuaSTGEditorSharpV2.Core.Building
             _defaultServiceGetter = () => _default;
         }
 
-        public static async Task BuildAsync(NodeData nodeData, LocalSettings settings)
+        public static async Task BuildAsync(NodeData nodeData, LocalParams settings)
         {
             var ctx = GetContextOfNode(nodeData, settings);
             var service = GetServiceOfNode(nodeData);
             await service.BuildWithContextAsync(nodeData, ctx);
         }
 
-        public static void Build(NodeData nodeData, LocalSettings settings) 
+        public static void Build(NodeData nodeData, LocalParams settings) 
             => BuildAsync(nodeData, settings).RunSynchronously();
 
         public static async Task ProceedChildrenAsync(NodeData node
@@ -44,7 +47,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
         public static void ProceedChildren(NodeData node, BuildActionContext context) 
             => ProceedChildrenAsync(node, context).RunSynchronously();
 
-        public override BuildActionContext GetEmptyContext(LocalSettings localSettings)
+        public override sealed BuildActionContext GetEmptyContext(LocalParams localSettings)
         {
             return new BuildActionContext(localSettings, ServiceSettings);
         }

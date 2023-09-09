@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +10,9 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
+    /// <summary>
+    /// Provide functionality of generating code from <see cref="NodeData"/>.
+    /// </summary>
     [ServiceName("CodeGenerator"), ServiceShortName("cgen")]
     public class CodeGeneratorServiceBase 
         : NodeService<CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
@@ -19,7 +24,15 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             _defaultServiceGetter = () => _defaultService;
         }
 
-        public static IEnumerable<CodeData> ProceedWithIndention(NodeData node, CodeGenerationContext context, int indentionIncrement)
+        /// <summary>
+        /// Generate <see cref="CodeData"/> for the child of given node with 
+        /// the context of the given node and indention increment.
+        /// </summary>
+        /// <param name="node"> The <see cref="NodeData"/>. </param>
+        /// <param name="context"> The <see cref="CodeGenerationContext"/> of the node. </param>
+        /// <param name="indentionIncrement"> The indention increment for its child. </param>
+        /// <returns> <see cref="IEnumerable{T}"/> for enumerating <see cref="CodeData"/> generated. </returns>
+        protected static IEnumerable<CodeData> GenerateForChildren(NodeData node, CodeGenerationContext context, int indentionIncrement)
         {
             context.Push(node, indentionIncrement);
             foreach (NodeData child in node.GetLogicalChildren())
@@ -32,21 +45,33 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             context.Pop(indentionIncrement);
         }
 
-        public static IEnumerable<CodeData> GenerateCode(NodeData nodeData, LocalSettings settings)
+        /// <summary>
+        /// Generate <see cref="CodeData"/> for the given node.
+        /// </summary>
+        /// <param name="nodeData"> The <see cref="NodeData"/>. </param>
+        /// <param name="settings"> The local params for executing the service. </param>
+        /// <returns> <see cref="IEnumerable{T}"/> for enumerating <see cref="CodeData"/> generated. </returns>
+        public static IEnumerable<CodeData> GenerateCode(NodeData nodeData, LocalParams settings)
         {
             var ctx = GetContextOfNode(nodeData, settings);
             var service = GetServiceOfNode(nodeData);
             return service.GenerateCodeWithContext(nodeData, ctx);
         }
 
-        public override sealed CodeGenerationContext GetEmptyContext(LocalSettings localSettings)
+        public override sealed CodeGenerationContext GetEmptyContext(LocalParams localSettings)
         {
             return new CodeGenerationContext(localSettings, ServiceSettings);
         }
 
-        public virtual IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
+        /// <summary>
+        /// Generate <see cref="CodeData"/> for the given node with the same TypeUID.
+        /// </summary>
+        /// <param name="node"> The <see cref="NodeData"/>. </param>
+        /// <param name="context"> The <see cref="CodeGenerationContext"/> of the node. </param>
+        /// <returns> <see cref="IEnumerable{T}"/> for enumerating <see cref="CodeData"/> generated. </returns>
+        protected virtual IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
-            return ProceedWithIndention(node, context, 0);
+            return GenerateForChildren(node, context, 0);
         }
     }
 }

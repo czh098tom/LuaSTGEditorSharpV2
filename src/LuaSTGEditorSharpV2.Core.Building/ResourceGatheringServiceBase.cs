@@ -8,6 +8,9 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
+    /// <summary>
+    /// Provide functionality of gathering resources from <see cref="NodeData"/>.
+    /// </summary>
     [ServiceShortName("resg"), ServiceName("ResourceGathering")]
     public class ResourceGatheringServiceBase 
         : NodeService<ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
@@ -20,7 +23,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
             _defaultServiceGetter = () => _default;
         }
 
-        public static IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalSettings settings)
+        public static IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalParams settings)
         {
             var ctx = GetContextOfNode(nodeData, settings);
             var service = GetServiceOfNode(nodeData);
@@ -41,7 +44,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
             context.Pop();
         }
 
-        public override ResourceGatheringContext GetEmptyContext(LocalSettings localSettings)
+        public override sealed ResourceGatheringContext GetEmptyContext(LocalParams localSettings)
         {
             return new ResourceGatheringContext(localSettings, ServiceSettings);
         }

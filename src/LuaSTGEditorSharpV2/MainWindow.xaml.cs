@@ -53,7 +53,7 @@ namespace LuaSTGEditorSharpV2
                 vm.Documents.Add(dvm);
                 DataContext = vm;
 
-                ViewModelProviderServiceBase.CreateRoot(dvm.Tree, doc.Root);
+                dvm.Tree.Add(ViewModelProviderServiceBase.CreateViewModelRecursive(doc.Root));
             }
             catch (Exception ex)
             {

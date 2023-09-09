@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public record LocalSettings(
+    public record LocalParams(
         DocumentModel Source
     );
 }

@@ -86,7 +86,7 @@ namespace LuaSTGEditorSharpV2.Core
             return GetServiceOfTypeID(node.TypeUID);
         }
 
-        protected static TContext GetContextOfNode(NodeData node, LocalSettings localSettings)
+        protected static TContext GetContextOfNode(NodeData node, LocalParams localSettings)
         {
             var service = GetServiceOfTypeID(node.TypeUID);
             return service.BuildContextForNode(node, localSettings);
@@ -97,14 +97,26 @@ namespace LuaSTGEditorSharpV2.Core
         [JsonProperty]
         public string TypeUID { get; protected set; } = string.Empty;
 
-        public virtual TContext GetEmptyContext(LocalSettings localSettings)
+        /// <summary>
+        /// When overridden in derived class, obtain an empty context object.
+        /// </summary>
+        /// <param name="localSettings"> The <see cref="LocalParams"/> inside the context. </param>
+        /// <returns> The context with the type <see cref="TContext"/>. </returns>
+        /// <exception cref="NotImplementedException"> 
+        /// Thrown when <see cref="Activator.CreateInstance"/> returns null. 
+        /// </exception>
+        /// <remarks>
+        /// It should be overridden in each derived class, if not, it will use reflection to create instance,
+        /// which will lead to bad performance.
+        /// </remarks>
+        public virtual TContext GetEmptyContext(LocalParams localSettings)
         {
             return (TContext?)Activator.CreateInstance(typeof(TContext), new object[] { localSettings, ServiceSettings })
                 ?? throw new NotImplementedException(
-                    $"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalSettings)} and {typeof(TSettings)}.");
+                    $"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalParams)} and {typeof(TSettings)}.");
         }
 
-        protected TContext BuildContextForNode(NodeData node, LocalSettings localSettings)
+        protected TContext BuildContextForNode(NodeData node, LocalParams localSettings)
         {
             TContext context = GetEmptyContext(localSettings);
             Stack<NodeData> stack = new();

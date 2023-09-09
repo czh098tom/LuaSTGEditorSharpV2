@@ -60,7 +60,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             }
             if (!IgnoreChildren)
             {
-                foreach (var cd in ProceedWithIndention(node, context, IndentionIncrement))
+                foreach (var cd in GenerateForChildren(node, context, IndentionIncrement))
                 {
                     yield return cd;
                 }

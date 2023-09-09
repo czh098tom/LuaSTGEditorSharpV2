@@ -11,9 +11,9 @@ namespace LuaSTGEditorSharpV2.Core.Building
         private Dictionary<string, string[]> _contextVariables = new();
 
         public string TemporaryFolderPath { get; set; } = Path.GetTempPath();
-        public LocalSettings LocalSettings { get; set; }
+        public LocalParams LocalSettings { get; set; }
 
-        public BuildingContext(LocalSettings settings) 
+        public BuildingContext(LocalParams settings) 
         {
             LocalSettings = settings;
         }

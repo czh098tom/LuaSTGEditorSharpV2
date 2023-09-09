@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.CLI
                     {
                         writer = Console.Out;
 
-                        foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalSettings(doc)))
+                        foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalParams(doc)))
                         {
                             await writer.WriteAsync(codeData.Content);
                         }
@@ -37,7 +37,7 @@ namespace LuaSTGEditorSharpV2.CLI
                         using StreamWriter sr = new(fs);
                         writer = sr;
 
-                        foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalSettings(doc)))
+                        foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalParams(doc)))
                         {
                             await writer.WriteAsync(codeData.Content);
                         }
