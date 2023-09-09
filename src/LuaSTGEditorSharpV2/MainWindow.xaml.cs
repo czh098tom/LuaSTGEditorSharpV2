@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 
 using Xceed.Wpf.AvalonDock.Controls;
 
+using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.ViewModel;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView;
@@ -53,7 +54,7 @@ namespace LuaSTGEditorSharpV2
                 vm.Documents.Add(dvm);
                 DataContext = vm;
 
-                dvm.Tree.Add(ViewModelProviderServiceBase.CreateViewModelRecursive(doc.Root));
+                dvm.Tree.Add(ViewModelProviderServiceBase.CreateViewModelRecursive(doc.Root, new LocalServiceParam(doc)));
             }
             catch (Exception ex)
             {
@@ -73,8 +74,10 @@ namespace LuaSTGEditorSharpV2
                     || _propertyView.DataContext is not PropertyPageViewModel propview
                     || (textBox?.Parent as FrameworkElement)?.DataContext is not PropertyViewModel prop
                     || propview.Source == null) return;
-                doc.CommandBuffer.Execute(PropertyViewServiceBase.GetCommandOfEditingNode(propview.Source, propview.Properties
-                    , propview.Properties.IndexOf(prop), textBox.Text));
+                var param = new LocalServiceParam(doc);
+                doc.CommandBuffer.Execute(PropertyViewServiceBase.GetCommandOfEditingNode(propview.Source
+                    , propview.Properties, param
+                    , propview.Properties.IndexOf(prop), textBox.Text), param);
             });
             ShowEditWindow = new ActionCommand(args => { });
         }

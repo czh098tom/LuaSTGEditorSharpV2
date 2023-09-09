@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return true;
         }
 
-        protected override bool CanInactivate(NodeData node)
+        protected override bool CanDeactivate(NodeData node)
         {
             return CanSetInactivate;
         }

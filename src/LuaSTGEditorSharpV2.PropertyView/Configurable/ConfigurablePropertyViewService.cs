@@ -34,7 +34,8 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         }
 
         protected override CommandBase ResolveCommandOfEditingNode(NodeData nodeData
-            , IReadOnlyList<PropertyViewModel> propertyList, int index, string edited, int subtype = 0)
+            , IReadOnlyList<PropertyViewModel> propertyList, PropertyViewContext context
+            , int index, string edited, int subtype = 0)
         {
             return new EditPropertyCommand(nodeData, Mapping[index].Mapping, edited);
         }

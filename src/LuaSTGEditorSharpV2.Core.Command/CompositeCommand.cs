@@ -18,19 +18,19 @@ namespace LuaSTGEditorSharpV2.Core.Command
             _innerCommands = new(innerCommands);
         }
 
-        protected override void DoExecute()
+        protected override void DoExecute(LocalServiceParam param)
         {
             for (int i = 0; i < _innerCommands.Count; i++)
             {
-                _innerCommands[i].Execute();
+                _innerCommands[i].Execute(param);
             }
         }
 
-        protected override void RevertExecution()
+        protected override void RevertExecution(LocalServiceParam param)
         {
             for (int i = _innerCommands.Count - 1; i >= 0; i--)
             {
-                _innerCommands[i].Revert();
+                _innerCommands[i].Revert(param);
             }
         }
     }

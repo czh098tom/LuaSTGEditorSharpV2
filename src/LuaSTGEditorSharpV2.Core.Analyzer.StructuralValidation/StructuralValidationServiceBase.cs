@@ -22,13 +22,13 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             _defaultServiceGetter = () => _defaultService;
         }
 
-        public static IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalParams settings)
+        public static IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalServiceParam settings)
         {
             var ctx = GetContextOfNode(root, settings);
             return GetInvalidPositionsRecursive(root, ctx);
         }
 
-        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalParams settings)
+        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalServiceParam settings)
         {
             var ctx = GetContextOfNode(parent, settings);
             ctx.Push(parent);
@@ -37,7 +37,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 
         public static bool CanInactivateFor(NodeData node)
         {
-            return GetServiceOfNode(node).CanInactivate(node);
+            return GetServiceOfNode(node).CanDeactivate(node);
         }
 
         private static IEnumerable<NodeData> GetInvalidPositionsRecursive(NodeData root
@@ -56,12 +56,12 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             context.Pop();
         }
 
-        public override sealed StructuralValidationContext GetEmptyContext(LocalParams localSettings)
+        public override sealed StructuralValidationContext GetEmptyContext(LocalServiceParam localSettings)
         {
             return new StructuralValidationContext(localSettings, ServiceSettings);
         }
 
-        protected bool CanPlaceAsChildOf(NodeData node, LocalParams settings)
+        protected bool CanPlaceAsChildOf(NodeData node, LocalServiceParam settings)
         {
             var ctx = GetContextOfNode(node, settings);
             return CanPlaceAsChildOf(node, ctx);
@@ -75,7 +75,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return !GetServiceOfNode(node).IsLeaf();
         }
 
-        protected virtual bool CanInactivate(NodeData node)
+        protected virtual bool CanDeactivate(NodeData node)
         {
             return true;
         }

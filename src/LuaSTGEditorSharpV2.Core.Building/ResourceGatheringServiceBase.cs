@@ -23,7 +23,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
             _defaultServiceGetter = () => _default;
         }
 
-        public static IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalParams settings)
+        public static IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalServiceParam settings)
         {
             var ctx = GetContextOfNode(nodeData, settings);
             var service = GetServiceOfNode(nodeData);
@@ -44,7 +44,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
             context.Pop();
         }
 
-        public override sealed ResourceGatheringContext GetEmptyContext(LocalParams localSettings)
+        public override sealed ResourceGatheringContext GetEmptyContext(LocalServiceParam localSettings)
         {
             return new ResourceGatheringContext(localSettings, ServiceSettings);
         }

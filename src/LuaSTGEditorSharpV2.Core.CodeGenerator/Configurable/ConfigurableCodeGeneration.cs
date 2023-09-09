@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 
         private string?[]? _captureResult;
 
-        public override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
+        protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
             _captureResult ??= new string[GetCaptureCacheLength()];
             int n;

@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
     /// </summary>
     [ServiceName("ViewModel"), ServiceShortName("vm")]
     public class ViewModelProviderServiceBase 
-        : NodeService<ViewModelProviderServiceBase, ViewModelContext, ViewModelProviderServiceSettings>
+        : NodeService<ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
     {
         private static readonly DefaultViewModelProviderService _defaultService = new();
 
@@ -44,33 +44,38 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
         }
 
         /// <summary>
-        /// Update the <see cref="NodeViewModel"/> attached to the given <see cref="NodeData"/>.
+        /// Update the <see cref="NodeViewModel"/> attached to the given <see cref="NodeData"/> and its physical child.
         /// </summary>
         /// <param name="dataSource"> the <see cref="NodeData"/> that contains data to update. </param>
+        /// <param name="param"> The local params for executing the service. </param>
         /// <remarks>
         /// Often be called by various commands that manipulates.
         /// TODO: decide update method by <see cref="NodeData"/>.
         /// </remarks>
-        public static void UpdateViewModelData(NodeData dataSource)
+        public static void UpdateViewModelDataRecursive(NodeData dataSource, LocalServiceParam param)
         {
-            GetServiceOfNode(dataSource).UpdateViewModelData(_mapping[dataSource], dataSource);
+            var ctx = GetContextOfNode(dataSource, param);
+            UpdateViewModelDataRecursive(dataSource, ctx);
         }
 
         /// <summary>
         /// Update the <see cref="NodeViewModel"/> attached to the given <see cref="NodeData"/> and its physical child.
         /// </summary>
         /// <param name="dataSource"> the <see cref="NodeData"/> that contains data to update. </param>
+        /// <param name="context"> The <see cref="NodeViewModelContext"/> of the node. </param>
         /// <remarks>
         /// Often be called by various commands that manipulates.
         /// TODO: decide update method by <see cref="NodeData"/>.
         /// </remarks>
-        public static void UpdateViewModelDataRecursive(NodeData dataSource)
+        private static void UpdateViewModelDataRecursive(NodeData dataSource, NodeViewModelContext context)
         {
-            UpdateViewModelData(dataSource);
+            GetServiceOfNode(dataSource).UpdateViewModelData(_mapping[dataSource], dataSource, context);
+            context.Push(dataSource);
             foreach (var child in dataSource.PhysicalChildren)
             {
-                UpdateViewModelDataRecursive(child);
+                UpdateViewModelDataRecursive(child, context);
             }
+            context.Pop();
         }
 
         /// <summary>
@@ -79,36 +84,53 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
         /// <param name="parent"> The parent <see cref="NodeData"/>. </param>
         /// <param name="position"> The position among children in parent <see cref="NodeData"/> after inserting. </param>
         /// <param name="child"> The child <see cref="NodeData"/>. </param>
-        public static void InsertNodeAt(NodeData parent, int position, NodeData child)
+        /// <param name="param"> The local params for executing the service. </param>
+        public static void InsertNodeAt(NodeData parent, int position, NodeData child, LocalServiceParam param)
         {
             parent.Insert(position, child);
-            _mapping[parent].Children.Insert(position, CreateViewModelRecursive(child));
+            var context = GetContextOfNode(child, param);
+            _mapping[parent].Children.Insert(position, CreateViewModelRecursive(child, context));
         }
 
         /// <summary>
         /// Create <see cref="NodeViewModel"/> recursively for the given <see cref="NodeData"/>.
         /// </summary>
         /// <param name="target"> The target <see cref="NodeData"/>. </param>
+        /// <param name="param"> The local params for executing the service. </param>
         /// <returns> <see cref="NodeViewModel"/> generated. </returns>
-        public static NodeViewModel CreateViewModelRecursive(NodeData target)
+        public static NodeViewModel CreateViewModelRecursive(NodeData target, LocalServiceParam param)
         {
-            NodeViewModel viewModel = CreateViewModel(target);
+            return CreateViewModelRecursive(target, GetContextOfNode(target, param));
+        }
+
+        /// <summary>
+        /// Create <see cref="NodeViewModel"/> recursively for the given <see cref="NodeData"/>.
+        /// </summary>
+        /// <param name="target"> The target <see cref="NodeData"/>. </param>
+        /// <param name="context"> The <see cref="NodeViewModelContext"/> of the node. </param>
+        /// <returns> <see cref="NodeViewModel"/> generated. </returns>
+        private static NodeViewModel CreateViewModelRecursive(NodeData target, NodeViewModelContext context)
+        {
+            NodeViewModel viewModel = CreateViewModel(target, context);
+            context.Push(target);
             for (int i = 0; i < target.PhysicalChildren.Count; i++)
             {
-                viewModel.Children.Add(CreateViewModelRecursive(target.PhysicalChildren[i]));
+                viewModel.Children.Add(CreateViewModelRecursive(target.PhysicalChildren[i], context));
             }
+            context.Pop();
             return viewModel;
         }
 
         /// <summary>
         /// Create <see cref="NodeViewModel"/> for the given <see cref="NodeData"/>.
         /// </summary>
-        /// <param name="target"> The target <see cref="NodeData"/>. </param>
+        /// <param name="node"> The target <see cref="NodeData"/>. </param>
+        /// <param name="context"> The <see cref="NodeViewModelContext"/> of the node. </param>
         /// <returns> <see cref="NodeViewModel"/> generated. </returns>
-        protected static NodeViewModel CreateViewModel(NodeData node)
+        private static NodeViewModel CreateViewModel(NodeData node, NodeViewModelContext context)
         {
             var viewModel = new NodeViewModel(node);
-            GetServiceOfNode(node).UpdateViewModelData(viewModel, node);
+            GetServiceOfNode(node).UpdateViewModelData(viewModel, node, context);
             _mapping.Add(node, viewModel);
             return viewModel;
         }
@@ -125,9 +147,9 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
             parent.Remove(position);
         }
 
-        public override sealed ViewModelContext GetEmptyContext(LocalParams localSettings)
+        public override sealed NodeViewModelContext GetEmptyContext(LocalServiceParam localSettings)
         {
-            return new ViewModelContext(localSettings, ServiceSettings);
+            return new NodeViewModelContext(localSettings, ServiceSettings);
         }
 
         /// <summary>
@@ -135,6 +157,8 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
         /// </summary>
         /// <param name="viewModel"> The <see cref="NodeViewModel"/> to be updated. </param>
         /// <param name="dataSource"> The data source with the same TypeUID. </param>
-        protected virtual void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource) { }
+        /// <param name="context"> The <see cref="NodeViewModelContext"/> of the node. </param>
+        protected virtual void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource
+            , NodeViewModelContext context) { }
     }
 }

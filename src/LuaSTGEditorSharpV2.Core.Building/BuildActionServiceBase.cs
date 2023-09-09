@@ -23,14 +23,14 @@ namespace LuaSTGEditorSharpV2.Core.Building
             _defaultServiceGetter = () => _default;
         }
 
-        public static async Task BuildAsync(NodeData nodeData, LocalParams settings)
+        public static async Task BuildAsync(NodeData nodeData, LocalServiceParam settings)
         {
             var ctx = GetContextOfNode(nodeData, settings);
             var service = GetServiceOfNode(nodeData);
             await service.BuildWithContextAsync(nodeData, ctx);
         }
 
-        public static void Build(NodeData nodeData, LocalParams settings) 
+        public static void Build(NodeData nodeData, LocalServiceParam settings) 
             => BuildAsync(nodeData, settings).RunSynchronously();
 
         public static async Task ProceedChildrenAsync(NodeData node
@@ -47,7 +47,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
         public static void ProceedChildren(NodeData node, BuildActionContext context) 
             => ProceedChildrenAsync(node, context).RunSynchronously();
 
-        public override sealed BuildActionContext GetEmptyContext(LocalParams localSettings)
+        public override sealed BuildActionContext GetEmptyContext(LocalServiceParam localSettings)
         {
             return new BuildActionContext(localSettings, ServiceSettings);
         }

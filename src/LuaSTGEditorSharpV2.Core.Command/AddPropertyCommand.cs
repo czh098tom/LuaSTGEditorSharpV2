@@ -22,16 +22,16 @@ namespace LuaSTGEditorSharpV2.Core.Command
             Value = value;
         }
 
-        protected override void DoExecute()
+        protected override void DoExecute(LocalServiceParam param)
         {
             Node.Properties.Add(PropertyName, Value);
-            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node);
+            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node, param);
         }
 
-        protected override void RevertExecution()
+        protected override void RevertExecution(LocalServiceParam param)
         {
             Node.Properties.Remove(PropertyName);
-            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node);
+            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node, param);
         }
     }
 }

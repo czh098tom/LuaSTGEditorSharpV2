@@ -49,16 +49,16 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         /// Generate <see cref="CodeData"/> for the given node.
         /// </summary>
         /// <param name="nodeData"> The <see cref="NodeData"/>. </param>
-        /// <param name="settings"> The local params for executing the service. </param>
+        /// <param name="param"> The local params for executing the service. </param>
         /// <returns> <see cref="IEnumerable{T}"/> for enumerating <see cref="CodeData"/> generated. </returns>
-        public static IEnumerable<CodeData> GenerateCode(NodeData nodeData, LocalParams settings)
+        public static IEnumerable<CodeData> GenerateCode(NodeData nodeData, LocalServiceParam param)
         {
-            var ctx = GetContextOfNode(nodeData, settings);
+            var ctx = GetContextOfNode(nodeData, param);
             var service = GetServiceOfNode(nodeData);
             return service.GenerateCodeWithContext(nodeData, ctx);
         }
 
-        public override sealed CodeGenerationContext GetEmptyContext(LocalParams localSettings)
+        public override sealed CodeGenerationContext GetEmptyContext(LocalServiceParam localSettings)
         {
             return new CodeGenerationContext(localSettings, ServiceSettings);
         }

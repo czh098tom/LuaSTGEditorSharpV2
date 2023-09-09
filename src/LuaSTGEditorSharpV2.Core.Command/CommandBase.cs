@@ -10,20 +10,20 @@ namespace LuaSTGEditorSharpV2.Core.Command
     {
         public bool Executed { get; private set; } = false;
 
-        protected abstract void DoExecute();
-        protected abstract void RevertExecution();
+        protected abstract void DoExecute(LocalServiceParam param);
+        protected abstract void RevertExecution(LocalServiceParam param);
 
-        public void Execute()
+        public void Execute(LocalServiceParam param)
         {
             if (Executed) throw new InvalidOperationException("Command has already been executed.");
-            DoExecute();
+            DoExecute(param);
             Executed = true;
         }
 
-        public void Revert()
+        public void Revert(LocalServiceParam param)
         {
             if (!Executed) throw new InvalidOperationException("Command has not been executed yet.");
-            RevertExecution();
+            RevertExecution(param);
             Executed = false;
         }
     }

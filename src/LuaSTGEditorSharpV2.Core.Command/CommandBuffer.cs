@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
         public bool CanUndo => _currentIdx != 0;
         public bool CanRedo => _currentIdx != _commands.Count;
 
-        public void Execute(CommandBase command)
+        public void Execute(CommandBase command, LocalServiceParam param)
         {
             while (_commands.Count > _currentIdx + 1)
             {
@@ -28,20 +28,20 @@ namespace LuaSTGEditorSharpV2.Core.Command
             {
                 _commands[_currentIdx] = command;
             }
-            command.Execute();
+            command.Execute(param);
             _currentIdx++;
         }
 
-        public void Undo()
+        public void Undo(LocalServiceParam param)
         {
             _currentIdx--;
-            _commands[_currentIdx].Revert();
+            _commands[_currentIdx].Revert(param);
         }
 
-        public void Redo()
+        public void Redo(LocalServiceParam param)
         {
             _currentIdx++;
-            _commands[_currentIdx].Execute();
+            _commands[_currentIdx].Execute(param);
         }
     }
 }

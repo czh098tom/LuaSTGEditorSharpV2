@@ -10,7 +10,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyViewContext : NodeContext<PropertyViewServiceSettings>
     {
-        public PropertyViewContext(LocalParams localSettings, PropertyViewServiceSettings serviceSettings) 
+        public PropertyViewContext(LocalServiceParam localSettings, PropertyViewServiceSettings serviceSettings) 
             : base(localSettings, serviceSettings)
         {
         }

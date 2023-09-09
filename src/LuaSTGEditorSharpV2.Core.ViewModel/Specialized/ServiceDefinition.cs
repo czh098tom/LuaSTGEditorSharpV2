@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Specialized
         [JsonProperty] public string ErrorText { get; private set; } = "";
         [JsonProperty] public Dictionary<string, string> LocalizedErrorText { get; private set; } = new();
 
-        protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource)
+        protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
             var shortName = dataSource.GetProperty(ShortNameCaputure);
             var jsonDecl = dataSource.GetProperty(DeclarationCaputure);
