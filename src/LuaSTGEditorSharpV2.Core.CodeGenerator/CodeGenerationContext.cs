@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public int IndentionLevel { get; private set; } = 0;
         public IReadOnlyDictionary<NodeData, Dictionary<string, string>> ContextVariables => _contextVariables;
 
-        public CodeGenerationContext(LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings) 
+        public CodeGenerationContext(LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings)
             : base(localSettings, serviceSettings) { }
 
         public void Push(NodeData current, int indentionIncrement)
@@ -60,6 +60,57 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
                 }
             }
             return original;
+        }
+
+        public StringBuilder ApplyIndented(StringBuilder indention, string toAppend)
+        {
+            var builder = new StringBuilder();
+            string[] seg = toAppend.Split('\n');
+            for (int i = 0; i < seg.Length; i++)
+            {
+                if (seg[i] != null)
+                {
+                    if (string.IsNullOrWhiteSpace(seg[i]))
+                    {
+                        if (!ServiceSettings.SkipBlankLine)
+                        {
+                            if (ServiceSettings.IndentOnBlankLine)
+                            {
+                                builder.Append(indention);
+                                builder.Append(seg[i]);
+                            }
+                            if (!ServiceSettings.LineObfuscated)
+                            {
+                                builder.Append('\n');
+                            }
+                            else
+                            {
+                                builder.Append(' ');
+                            }
+                        }
+                    }
+                    else
+                    {
+                        builder.Append(indention);
+                        builder.Append(seg[i]);
+                        if (!ServiceSettings.LineObfuscated)
+                        {
+                            builder.Append('\n');
+                        }
+                        else
+                        {
+                            builder.Append(' ');
+                        }
+                    }
+                }
+            }
+            return builder;
+        }
+
+        public StringBuilder ApplyIndentedFormat(StringBuilder indention
+            , string toAppend, params object?[] source)
+        {
+            return ApplyIndented(indention, string.Format(toAppend, source));
         }
     }
 }

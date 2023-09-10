@@ -4,5 +4,5 @@
   "Captures": [
     { "Capture": "condition" }
   ],
-  "Head": "elseif ({0}) then\u000A"
+  "Head": "elseif ({0}) then"
 }

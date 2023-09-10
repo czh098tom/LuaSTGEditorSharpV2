@@ -53,7 +53,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 {
                     if (Head[i].ShouldAppend(node))
                     {
-                        sb.AppendIndentedFormat(context.GetIndented(), Head[i].Code, _captureResult);
+                        sb.Append(context.ApplyIndentedFormat(context.GetIndented(), Head[i].Code, _captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);
@@ -72,7 +72,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 {
                     if (Tail[i].ShouldAppend(node))
                     {
-                        sb.AppendIndentedFormat(context.GetIndented(), Tail[i].Code, _captureResult);
+                        sb.Append(context.ApplyIndentedFormat(context.GetIndented(), Tail[i].Code, _captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);

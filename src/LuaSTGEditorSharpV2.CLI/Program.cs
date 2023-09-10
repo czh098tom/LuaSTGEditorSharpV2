@@ -14,9 +14,9 @@ namespace LuaSTGEditorSharpV2.CLI
         static void Main(string[] args)
         {
             APIFunctionRegistration.Register();
+            var param = APIFunctionParameter.ParseFromCommandLineArgs(args);
             try
             {
-                var param = APIFunctionParameter.ParseFromCommandLineArgs(args);
                 APIFunction.FindAndExecute(args[0], param);
             }
             catch (Exception e)

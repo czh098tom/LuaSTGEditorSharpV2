@@ -46,8 +46,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                     n++;
                 }
             }
-            if (Head != null) yield return new CodeData(new StringBuilder()
-                .AppendIndentedFormat(context.GetIndented(), Head, _captureResult).ToString(), node);
+            if (Head != null) yield return new CodeData(context
+                .ApplyIndentedFormat(context.GetIndented(), Head, _captureResult).ToString(), node);
             if (!IgnoreChildren)
             {
                 foreach (var cd in GenerateForChildren(node, context, IndentionIncrement))
@@ -55,8 +55,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                     yield return cd;
                 }
             }
-            if (Tail != null) yield return new CodeData(new StringBuilder()
-                .AppendIndentedFormat(context.GetIndented(), Tail, _captureResult).ToString(), node);
+            if (Tail != null) yield return new CodeData(context
+                .ApplyIndentedFormat(context.GetIndented(), Tail, _captureResult).ToString(), node);
         }
 
         private int GetCaptureCacheLength()

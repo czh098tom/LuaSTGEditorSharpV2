@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.CLI
                     }
                     else
                     {
-                        using FileStream fs = new(param.OutputPath, FileMode.OpenOrCreate);
+                        using FileStream fs = new(param.OutputPath, FileMode.Create, FileAccess.Write);
                         using StreamWriter sr = new(fs);
                         writer = sr;
 

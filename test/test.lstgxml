@@ -3,16 +3,14 @@
   <DefinitionRoot>
     <ServiceDefinition serviceShortName="vm">
       <_.serviceDeclaration>
-        <![CDATA[
-{
+        <![CDATA[{
   "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "test",
   "Captures": [ "name" ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
   "Text": "test: {0}",
   "LocalizedText": { "zh": "测试：{0}" }
-}
-        ]]>
+}]]>
       </_.serviceDeclaration>
     </ServiceDefinition>
   </DefinitionRoot>
@@ -25,10 +23,8 @@
           <CodeBlock name="bb"/>
           <Code>
             <_.code>
-              <![CDATA[
-do
-end
-              ]]>
+              <![CDATA[do
+end]]>
             </_.code>
           </Code>
           <If condition="1 == 1">
@@ -38,10 +34,8 @@ end
             <If.ElseIf condition="nmsl ~= nil">
               <Code>
                 <_.code>
-                  <![CDATA[
-do
-end
-                  ]]>
+                  <![CDATA[do
+end]]>
                 </_.code>
               </Code>
             </If.ElseIf>
