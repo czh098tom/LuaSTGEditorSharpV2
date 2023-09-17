@@ -4,7 +4,7 @@
   "Captures": [
     { "Capture": "condition" }
   ],
-  "Head": "if ({0}) then",
+  "Head": "if ({1}) then",
   "Tail": "end",
   "IndentionIncrement": 0
 }

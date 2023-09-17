@@ -110,7 +110,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public StringBuilder ApplyIndentedFormat(StringBuilder indention
             , string toAppend, params object?[] source)
         {
-            return ApplyIndented(indention, string.Format(toAppend, source));
+            object?[] fullParams = new object[source.Length + 1];
+            fullParams[0] = indention.ToString();
+            Array.Copy(source, 0, fullParams, 1, source.Length);
+            return ApplyIndented(indention, string.Format(toAppend, fullParams));
         }
     }
 }
