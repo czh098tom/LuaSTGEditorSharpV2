@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <BuildProjectReferences>false</BuildProjectReferences>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\</OutputPath>
+
+    <InReferenceParent>true</InReferenceParent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <ExcludeAssets>manifest</ExcludeAssets>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LuaSTGEditorSharpV2.Core">
+      <Private>false</Private>
+      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua</YourDestinationDirectory>
+    </PropertyGroup>
+    <Copy SourceFiles="$(YourSourceDirectory)\manifest"
+          DestinationFiles="$(YourDestinationDirectory)\manifest"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

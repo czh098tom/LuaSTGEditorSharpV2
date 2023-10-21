@@ -8,7 +8,7 @@
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\</OutputPath>
 
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
@@ -38,7 +38,7 @@
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode\Nodes</YourDestinationDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua\Nodes</YourDestinationDirectory>
     </PropertyGroup>
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />

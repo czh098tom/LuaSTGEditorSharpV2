@@ -1,0 +1,5 @@
+﻿{
+  "Name": "Lua",
+  "Version": "1.0",
+  "LibraryPath": "LuaSTGEditorSharpV2.Package.Lua.dll"
+}
