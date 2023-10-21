@@ -5,18 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using LuaSTGEditorSharpV2.PropertyView;
+
 namespace LuaSTGEditorSharpV2
 {
     public class ResourceManager
     {
-        private static readonly string[] builtInUris = new string[]
-        {
-            "pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/PropertyView.xaml"
-        };
-
         public static void MergeResources()
         {
-            foreach (string uri in builtInUris)
+            foreach (string uri in PropertyViewServiceBase.ResourceDictUris)
             {
                 ResourceDictionary dictionary = new()
                 {

@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             string original = node.GetProperty(Capture);
             if (!DisableMacro)
             {
-                return context.ApplyMacro(original);
+                return context.ApplyMacro(node, original);
             }
             else
             {

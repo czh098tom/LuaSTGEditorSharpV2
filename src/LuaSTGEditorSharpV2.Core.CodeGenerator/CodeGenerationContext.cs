@@ -11,15 +11,9 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
     public class CodeGenerationContext : NodeContext<CodeGenerationServiceSettings>
     {
-        public static string ApplyMacroWithString(string original, string toBeReplaced, string @new)
-        {
-            Regex regex = new($"\\b{toBeReplaced}\\b"
-                + @"(?<=^([^""]*((?<!(^|[^\\])(\\\\)*\\)""([^""]|((?<=(^|[^\\])(\\\\)*\\)""))*(?<!(^|[^\\])(\\\\)*\\)"")+)*[^""]*.)"
-                + @"(?<=^([^']*((?<!(^|[^\\])(\\\\)*\\)'([^']|((?<=(^|[^\\])(\\\\)*\\)'))*(?<!(^|[^\\])(\\\\)*\\)')+)*[^']*.)");
-            return regex.Replace(original, @new);
-        }
-
         private readonly Dictionary<NodeData, Dictionary<string, string>> _contextVariables = new();
+        private readonly Stack<LanguageBase?> _languageEnvironment = new();
+        private LanguageBase? _nearestLanguage = null;
 
         public int IndentionLevel { get; private set; } = 0;
         public IReadOnlyDictionary<NodeData, Dictionary<string, string>> ContextVariables => _contextVariables;
@@ -30,14 +24,37 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public void Push(NodeData current, int indentionIncrement)
         {
             IndentionLevel += indentionIncrement;
-            _contextVariables.Add(current, new Dictionary<string, string>());
             Push(current);
         }
 
-        public void Pop(int indentionIncrement)
+        public NodeData Pop(int indentionIncrement)
         {
             IndentionLevel -= indentionIncrement;
-            _contextVariables.Remove(Pop());
+            return Pop();
+        }
+
+        public override void Push(NodeData current)
+        {
+            _contextVariables.Add(current, new Dictionary<string, string>());
+            var lang = CodeGeneratorServiceBase.GetLanguageOfNode(current);
+            _languageEnvironment.Push(lang);
+            if (lang != null)
+            {
+                _nearestLanguage = lang;
+            }
+            base.Push(current);
+        }
+
+        public override NodeData Pop()
+        {
+            var node = base.Pop();
+            _contextVariables.Remove(node);
+            _languageEnvironment.Pop();
+            if (_languageEnvironment.Peek() != null)
+            {
+                _nearestLanguage = _languageEnvironment.Peek();
+            }
+            return node;
         }
 
         public StringBuilder GetIndented()
@@ -50,13 +67,15 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             return sb;
         }
 
-        public string ApplyMacro(string original)
+        public string ApplyMacro(NodeData curr, string original)
         {
             foreach (var node in EnumerateTypeFromFarest("macro"))
             {
                 if (node.HasProperty("replace") && node.HasProperty("by"))
                 {
-                    original = ApplyMacroWithString(original, node.GetProperty("replace"), node.GetProperty("by"));
+                    original = (CodeGeneratorServiceBase.GetLanguageOfNode(curr) ?? _nearestLanguage)
+                        ?.ApplyMacroWithString(original, node.GetProperty("replace"), node.GetProperty("by"))
+                        ?? original;
                 }
             }
             return original;

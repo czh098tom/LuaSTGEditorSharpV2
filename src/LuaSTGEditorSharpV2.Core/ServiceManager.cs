@@ -134,6 +134,16 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                 }
             }
+            foreach (var asm in assembly)
+            {
+                var entryClasses = asm.GetTypes()
+                    .Where(t => t.GetInterfaces().Contains(typeof(IPackageEntry)))
+                    .Select(t => Activator.CreateInstance(t) as IPackageEntry);
+                foreach (var c in entryClasses)
+                {
+                    c?.InitializePackage();
+                }
+            }
             return assembly;
         }
 
@@ -183,7 +193,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public static void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
-            if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType)) 
+            if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType))
             {
                 ReplaceSettingsForServiceIfValid(serviceType, settings);
             }

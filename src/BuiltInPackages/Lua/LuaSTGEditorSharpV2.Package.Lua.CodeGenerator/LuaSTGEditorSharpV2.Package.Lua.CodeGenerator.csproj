@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -21,6 +21,10 @@
       <ExcludeAssets>**\*.cgen</ExcludeAssets>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="LuaSTGEditorSharpV2.Package.Lua.csproj">
+      <ExcludeAssets>manifest</ExcludeAssets>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +36,10 @@
       <Private>false</Private>
       <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.CodeGenerator.dll</HintPath>
     </Reference>
+    <Reference Include="LuaSTGEditorSharpV2.Package.Lua">
+      <Private>false</Private>
+      <HintPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\LuaSTGEditorSharpV2.Package.Lua.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
@@ -42,9 +50,7 @@
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(ExtraFiles)"
-          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

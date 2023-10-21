@@ -1,4 +1,5 @@
 ﻿{
   "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Specialized.Code, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "Code"
+  "TypeUID": "Code",
+  "Language": "Lua"
 }

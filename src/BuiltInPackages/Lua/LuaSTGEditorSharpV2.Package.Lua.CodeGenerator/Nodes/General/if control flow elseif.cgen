@@ -1,6 +1,7 @@
 {
   "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "If.ElseIf",
+  "Language": "Lua",
   "Captures": [
     { "Capture": "condition" }
   ],
