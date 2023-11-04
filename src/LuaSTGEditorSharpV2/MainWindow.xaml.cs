@@ -90,9 +90,10 @@ namespace LuaSTGEditorSharpV2
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var tree = sender as TreeView;
+            var param = new LocalServiceParam(doc);
             if (tree?.SelectedItem is NodeViewModel selectedVM)
             {
-                var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(selectedVM.Source);
+                var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(selectedVM.Source, param);
                 vm.PropertyPage.LoadProperties(list, selectedVM.Source);
             }
         }

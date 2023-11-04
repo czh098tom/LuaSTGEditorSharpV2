@@ -11,16 +11,16 @@ namespace LuaSTGEditorSharpV2.Core
     public abstract class NodeContext<TSettings>
         where TSettings : ServiceExtraSettings<TSettings>, new()
     {
-        protected LocalServiceParam LocalSettings { get; private set; }
+        protected LocalServiceParam LocalParam { get; private set; }
 
         protected TSettings ServiceSettings { get; private set; }
 
         private readonly Dictionary<string, Stack<NodeData>> _contextData = new();
         private readonly Stack<NodeData> _top = new();
 
-        public NodeContext(LocalServiceParam localSettings, TSettings serviceSettings)
+        public NodeContext(LocalServiceParam localParam, TSettings serviceSettings)
         {
-            LocalSettings = localSettings;
+            LocalParam = localParam;
             ServiceSettings = serviceSettings;
         }
 
@@ -105,7 +105,7 @@ namespace LuaSTGEditorSharpV2.Core
 
     internal class DefaultNodeContext : NodeContext<DefaultServiceExtraSettings>
     {
-        internal DefaultNodeContext(LocalServiceParam settings, DefaultServiceExtraSettings serviceSettings)
-            : base(settings, serviceSettings) { }
+        internal DefaultNodeContext(LocalServiceParam localParam, DefaultServiceExtraSettings serviceSettings)
+            : base(localParam, serviceSettings) { }
     }
 }

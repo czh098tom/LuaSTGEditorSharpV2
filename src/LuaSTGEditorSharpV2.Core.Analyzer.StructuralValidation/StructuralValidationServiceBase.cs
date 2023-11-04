@@ -22,15 +22,23 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             _defaultServiceGetter = () => _defaultService;
         }
 
-        public static IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalServiceParam settings)
+        public static IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalServiceParam param)
+            => GetInvalidPositions(root, param, ServiceSettings);
+
+        public static IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalServiceParam param
+            , StructuralValidationServiceSettings serviceSettings)
         {
-            var ctx = GetContextOfNode(root, settings);
+            var ctx = GetContextOfNode(root, param, serviceSettings);
             return GetInvalidPositionsRecursive(root, ctx);
         }
 
-        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalServiceParam settings)
+        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalServiceParam param)
+            => CanInsert(parent, toInsert, param, ServiceSettings);
+
+        public static bool CanInsert(NodeData parent, NodeData toInsert, LocalServiceParam param
+            , StructuralValidationServiceSettings serviceSettings)
         {
-            var ctx = GetContextOfNode(parent, settings);
+            var ctx = GetContextOfNode(parent, param, serviceSettings);
             ctx.Push(parent);
             return GetInvalidPositionsRecursive(toInsert, ctx).Any();
         }
@@ -43,7 +51,8 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         private static IEnumerable<NodeData> GetInvalidPositionsRecursive(NodeData root
             , StructuralValidationContext context)
         {
-            if (root.PhysicalParent != null && !GetServiceOfNode(root).CanPlaceAsChildOf(root.PhysicalParent, context))
+            if (root.PhysicalParent != null 
+                && !GetServiceOfNode(root).CanPlaceAsChildOf(root.PhysicalParent, context))
                 yield return root;
             context.Push(root);
             foreach (var child in root.PhysicalChildren)
@@ -56,19 +65,26 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             context.Pop();
         }
 
-        public override sealed StructuralValidationContext GetEmptyContext(LocalServiceParam localSettings)
-        {
-            return new StructuralValidationContext(localSettings, ServiceSettings);
-        }
-
-        protected bool CanPlaceAsChildOf(NodeData node, LocalServiceParam settings)
-        {
-            var ctx = GetContextOfNode(node, settings);
-            return CanPlaceAsChildOf(node, ctx);
-        }
-
         public virtual bool IsInvisible() => true;
         public virtual bool IsLeaf() => false;
+
+        public override sealed StructuralValidationContext GetEmptyContext(LocalServiceParam localParam
+            , StructuralValidationServiceSettings settings)
+        {
+            return new StructuralValidationContext(localParam, settings);
+        }
+
+        protected bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam)
+        {
+            return CanPlaceAsChildOf(node, localParam, ServiceSettings);
+        }
+
+        protected bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam
+            , StructuralValidationServiceSettings serviceSettings)
+        {
+            var ctx = GetContextOfNode(node, localParam, serviceSettings);
+            return CanPlaceAsChildOf(node, ctx);
+        }
 
         protected virtual bool CanPlaceAsChildOf(NodeData node, StructuralValidationContext context)
         {

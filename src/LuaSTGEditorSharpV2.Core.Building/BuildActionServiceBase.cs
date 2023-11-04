@@ -23,15 +23,23 @@ namespace LuaSTGEditorSharpV2.Core.Building
             _defaultServiceGetter = () => _default;
         }
 
-        public static async Task BuildAsync(NodeData nodeData, LocalServiceParam settings)
+        public static Task BuildAsync(NodeData nodeData, LocalServiceParam settings)
+            => BuildAsync(nodeData, settings, ServiceSettings);
+
+        public static async Task BuildAsync(NodeData nodeData, LocalServiceParam settings
+            , BuildActionServiceSettings serviceSettings)
         {
-            var ctx = GetContextOfNode(nodeData, settings);
+            var ctx = GetContextOfNode(nodeData, settings, serviceSettings);
             var service = GetServiceOfNode(nodeData);
             await service.BuildWithContextAsync(nodeData, ctx);
         }
 
-        public static void Build(NodeData nodeData, LocalServiceParam settings) 
+        public static void Build(NodeData nodeData, LocalServiceParam settings)
             => BuildAsync(nodeData, settings).RunSynchronously();
+
+        public static void Build(NodeData nodeData, LocalServiceParam settings
+            , BuildActionServiceSettings serviceSettings) 
+            => BuildAsync(nodeData, settings, serviceSettings).RunSynchronously();
 
         public static async Task ProceedChildrenAsync(NodeData node
             , BuildActionContext context)
@@ -47,9 +55,10 @@ namespace LuaSTGEditorSharpV2.Core.Building
         public static void ProceedChildren(NodeData node, BuildActionContext context) 
             => ProceedChildrenAsync(node, context).RunSynchronously();
 
-        public override sealed BuildActionContext GetEmptyContext(LocalServiceParam localSettings)
+        public override sealed BuildActionContext GetEmptyContext(LocalServiceParam localSettings
+            , BuildActionServiceSettings serviceSettings)
         {
-            return new BuildActionContext(localSettings, ServiceSettings);
+            return new BuildActionContext(localSettings, serviceSettings);
         }
 
         public virtual async Task BuildWithContextAsync(NodeData node, BuildActionContext context)

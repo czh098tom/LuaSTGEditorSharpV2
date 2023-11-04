@@ -30,6 +30,8 @@ namespace LuaSTGEditorSharpV2.Core
         protected static Func<TService> _defaultServiceGetter = () => throw new NotImplementedException();
         private static readonly Dictionary<string, PriorityQueue<TService, PackageInfo>> _registered = new();
 
+        protected static TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
+
         public static void Register(string typeID, PackageInfo packageInfo, TService service)
         {
             try
@@ -86,21 +88,28 @@ namespace LuaSTGEditorSharpV2.Core
             return GetServiceOfTypeID(node.TypeUID);
         }
 
-        protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localSettings)
+        protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam)
+            => GetContextOfNode(node, localParam, ServiceSettings);
+
+        protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
         {
             var service = GetServiceOfTypeID(node.TypeUID);
-            return service.BuildContextForNode(node, localSettings);
+            return service.BuildContextForNode(node, localParam, serviceSettings);
         }
-
-        protected static TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
 
         [JsonProperty]
         public string TypeUID { get; protected set; } = string.Empty;
 
+        public TContext GetEmptyContext(LocalServiceParam localParam)
+        {
+            return GetEmptyContext(localParam, ServiceSettings);
+        }
+
         /// <summary>
         /// When overridden in derived class, obtain an empty context object.
         /// </summary>
-        /// <param name="localSettings"> The <see cref="LocalServiceParam"/> inside the context. </param>
+        /// <param name="localParam"> The <see cref="LocalServiceParam"/> inside the context. </param>
+        /// <param name="serviceSettings"> The <see cref="TSettings"> need to pass to the context. </param>
         /// <returns> The context with the type <see cref="TContext"/>. </returns>
         /// <exception cref="NotImplementedException"> 
         /// Thrown when <see cref="Activator.CreateInstance"/> returns null. 
@@ -109,16 +118,19 @@ namespace LuaSTGEditorSharpV2.Core
         /// It should be overridden in each derived class, if not, it will use reflection to create instance,
         /// which will lead to bad performance.
         /// </remarks>
-        public virtual TContext GetEmptyContext(LocalServiceParam localSettings)
+        public virtual TContext GetEmptyContext(LocalServiceParam localParam, TSettings serviceSettings)
         {
-            return (TContext?)Activator.CreateInstance(typeof(TContext), new object[] { localSettings, ServiceSettings })
+            return (TContext?)Activator.CreateInstance(typeof(TContext), new object[] { localParam, serviceSettings })
                 ?? throw new NotImplementedException(
                     $"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalServiceParam)} and {typeof(TSettings)}.");
         }
 
         protected TContext BuildContextForNode(NodeData node, LocalServiceParam localSettings)
+            => BuildContextForNode(node, localSettings, ServiceSettings);
+
+        protected TContext BuildContextForNode(NodeData node, LocalServiceParam localSettings, TSettings serviceSettings)
         {
-            TContext context = GetEmptyContext(localSettings);
+            TContext context = GetEmptyContext(localSettings, serviceSettings);
             Stack<NodeData> stack = new();
             NodeData? curr = node.PhysicalParent;
             while (curr != null)

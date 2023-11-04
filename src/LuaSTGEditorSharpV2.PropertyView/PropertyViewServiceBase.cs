@@ -30,16 +30,30 @@ namespace LuaSTGEditorSharpV2.PropertyView
             _defaultServiceGetter = () => _defaultService;
         }
 
+        public static IReadOnlyList<PropertyViewModel> GetPropertyViewModelOfNode(NodeData nodeData
+            , LocalServiceParam localParam, int subtype = 0)
+            => GetPropertyViewModelOfNode(nodeData, localParam, ServiceSettings, subtype);
+
         /// <summary>
         /// Obtain a list of <see cref="PropertyViewModel"/> according to data source for providing properties to edit. 
         /// </summary>
         /// <param name="nodeData"> The data source. </param>
+        /// <param name="localParam"> Th local param for this action. </param>
+        /// <param name="serviceSettings"> The <see cref="PropertyViewServiceSettings"/> for this action. </param>
         /// <param name="subtype"></param>
         /// <returns></returns>
-        public static IReadOnlyList<PropertyViewModel> GetPropertyViewModelOfNode(NodeData nodeData, int subtype = 0)
+        public static IReadOnlyList<PropertyViewModel> GetPropertyViewModelOfNode(NodeData nodeData
+            , LocalServiceParam localParam, PropertyViewServiceSettings serviceSettings, int subtype = 0)
         {
-            return GetServiceOfNode(nodeData).ResolvePropertyViewModelOfNode(nodeData, subtype);
+            var ctx = GetContextOfNode(nodeData, localParam, serviceSettings);
+            return GetServiceOfNode(nodeData).ResolvePropertyViewModelOfNode(nodeData, ctx, subtype);
         }
+
+        public static CommandBase GetCommandOfEditingNode(NodeData nodeData
+            , IReadOnlyList<PropertyViewModel> propertyList, LocalServiceParam localParams
+            , int index, string edited, int subtype = 0)
+            => GetCommandOfEditingNode(nodeData, propertyList, localParams, ServiceSettings
+                , index, edited, subtype);
 
         /// <summary>
         /// Obtain a command which manipulate target <see cref="NodeData"/> by infomation from UI.
@@ -55,10 +69,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <returns></returns>
         public static CommandBase GetCommandOfEditingNode(NodeData nodeData
             , IReadOnlyList<PropertyViewModel> propertyList, LocalServiceParam localParams
-            , int index, string edited, int subtype = 0)
+            , PropertyViewServiceSettings serviceSettings, int index, string edited, int subtype = 0)
         {
             return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData, propertyList
-                , GetContextOfNode(nodeData, localParams), index, edited, subtype);
+                , GetContextOfNode(nodeData, localParams, serviceSettings), index, edited, subtype);
         }
 
         public static void AddResourceDictUri(string uri)
@@ -66,9 +80,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
             _resourceDictUris.Add(uri);
         }
 
-        public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings)
+        public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings
+            , PropertyViewServiceSettings serviceSettings)
         {
-            return new PropertyViewContext(localSettings, ServiceSettings);
+            return new PropertyViewContext(localSettings, serviceSettings);
         }
 
         /// <summary>
@@ -79,7 +94,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <param name="subtype"></param>
         /// <returns></returns>
         protected virtual IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
-            , int subtype = 0)
+            , PropertyViewContext context, int subtype = 0)
         {
             List<PropertyViewModel> result = new(nodeData.Properties.Count);
             foreach (var prop in nodeData.Properties)

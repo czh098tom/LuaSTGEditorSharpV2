@@ -19,7 +19,8 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         [JsonProperty]
         public PropertyViewTerm[] Mapping { get; private set; } = Array.Empty<PropertyViewTerm>();
 
-        protected override IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData, int subtype = 0)
+        protected override IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
+            , PropertyViewContext context, int subtype = 0)
         {
             List<PropertyViewModel> propertyViewModels = new(Mapping.Length);
 
