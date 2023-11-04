@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core.Model;
 
-namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
+namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 {
     [Serializable]
     public record class ViewModelTextSelection(string Text, string ConditionOn, bool Inversed)
@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
         public bool ShouldAppend(NodeData source)
         {
             bool isTrue = source.GetProperty(ConditionOn, "true").ToLower().Trim() == "true";
-            return (isTrue && !Inversed) || (!isTrue && Inversed);
+            return isTrue && !Inversed || !isTrue && Inversed;
         }
     }
 }

@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Core.ViewModel.Configurable;
 
-namespace LuaSTGEditorSharpV2.Core.ViewModel
+namespace LuaSTGEditorSharpV2.ViewModel
 {
     // TODO: Let configuables to decide which update method should be used.
     /// <summary>
     /// Provide functionality of presenting and preserving tree structure on GUI according to <see cref="NodeData"/>.
     /// </summary>
     [ServiceName("ViewModel"), ServiceShortName("vm")]
-    public class ViewModelProviderServiceBase 
+    public class ViewModelProviderServiceBase
         : NodeService<ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
     {
         private static readonly DefaultViewModelProviderService _defaultService = new();
@@ -175,6 +174,7 @@ namespace LuaSTGEditorSharpV2.Core.ViewModel
         /// <param name="dataSource"> The data source with the same TypeUID. </param>
         /// <param name="context"> The <see cref="NodeViewModelContext"/> of the node. </param>
         protected virtual void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource
-            , NodeViewModelContext context) { }
+            , NodeViewModelContext context)
+        { }
     }
 }

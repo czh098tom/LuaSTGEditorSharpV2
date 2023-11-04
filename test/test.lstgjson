@@ -10,7 +10,7 @@
           "TypeUID": "ServiceDefinition",
           "Properties": {
             "serviceShortName": "vm",
-            "serviceDeclaration": "{ \"$type\":\"LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\", \"TypeUID\":\"test\", \"Captures\":[ \"name\" ], \"Icon\":\"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png\", \"Text\":\"test: {0}\", \"LocalizedText\": { \"zh\": \"测试：{0}\" } }"
+            "serviceDeclaration": "{ \"$type\":\"LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\", \"TypeUID\":\"test\", \"Captures\":[ \"name\" ], \"Icon\":\"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png\", \"Text\":\"test: {0}\", \"LocalizedText\": { \"zh\": \"测试：{0}\" } }"
           }
         }
       ]

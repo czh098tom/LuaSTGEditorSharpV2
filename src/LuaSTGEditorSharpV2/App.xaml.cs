@@ -12,9 +12,9 @@ using Newtonsoft.Json;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
-using LuaSTGEditorSharpV2.Core.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView;
 using System.Reflection;
+using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2
 {

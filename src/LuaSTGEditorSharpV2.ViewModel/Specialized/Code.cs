@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.ViewModel;
 
-namespace LuaSTGEditorSharpV2.Core.ViewModel.Specialized
+namespace LuaSTGEditorSharpV2.ViewModel.Specialized
 {
     [Serializable]
     public class Code : ViewModelProviderServiceBase

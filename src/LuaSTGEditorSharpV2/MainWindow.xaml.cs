@@ -22,9 +22,9 @@ using Newtonsoft.Json;
 using Xceed.Wpf.AvalonDock.Controls;
 
 using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.ViewModel;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView;
+using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2
 {

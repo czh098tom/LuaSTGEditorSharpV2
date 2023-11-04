@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
 
-namespace LuaSTGEditorSharpV2.Core.ViewModel.Configurable
+namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 {
     [Serializable]
     public class SelectiveViewModelProvider

@@ -1,5 +1,5 @@
 ﻿{
-  "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "DefinitionRoot",
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/setting.png",
   "Text": "Editor Definitions",

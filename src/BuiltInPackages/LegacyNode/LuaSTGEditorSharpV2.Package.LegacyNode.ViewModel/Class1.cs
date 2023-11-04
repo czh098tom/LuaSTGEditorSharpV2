@@ -1,4 +1,4 @@
-﻿using LuaSTGEditorSharpV2.Core.ViewModel;
+﻿using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.ViewModel
 {

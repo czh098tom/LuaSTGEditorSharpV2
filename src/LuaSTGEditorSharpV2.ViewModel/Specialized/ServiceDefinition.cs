@@ -8,8 +8,9 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using System.Globalization;
+using LuaSTGEditorSharpV2.Core;
 
-namespace LuaSTGEditorSharpV2.Core.ViewModel.Specialized
+namespace LuaSTGEditorSharpV2.ViewModel.Specialized
 {
     [Serializable]
     internal class ServiceDefinition : ViewModelProviderServiceBase
