@@ -69,15 +69,21 @@ namespace LuaSTGEditorSharpV2
         {
             CommitEdit = new ActionCommand(args =>
             {
+                // TODO[*] This is not always called if textbox is destoryed
                 if (args is not RoutedEventArgs rea
                     || rea.Source is not TextBox textBox
-                    || _propertyView.DataContext is not PropertyPageViewModel propview
-                    || (textBox?.Parent as FrameworkElement)?.DataContext is not PropertyViewModel prop
-                    || propview.Source == null) return;
+                    || _propertyTab.DataContext is not PropertyPageViewModel propview
+                    || (textBox?.Parent as FrameworkElement)?.DataContext is not PropertyItemViewModel prop
+                    || propview.Source == null
+                    || _propertyTab.SelectedIndex < 0) return;
                 var param = new LocalServiceParam(doc);
-                doc.CommandBuffer.Execute(PropertyViewServiceBase.GetCommandOfEditingNode(propview.Source
-                    , propview.Properties, param
-                    , propview.Properties.IndexOf(prop), textBox.Text), param);
+                var command = PropertyViewServiceBase.GetCommandOfEditingNode(propview.Source, 
+                    param, propview.Tabs, _propertyTab.SelectedIndex, 
+                    propview.Tabs[_propertyTab.SelectedIndex].Properties.IndexOf(prop), 
+                    textBox?.Text ?? string.Empty);
+                doc.CommandBuffer.Execute(command, param);
+                var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(propview.Source, param);
+                vm.PropertyPage.LoadProperties(list, propview.Source);
             });
             ShowEditWindow = new ActionCommand(args => { });
         }
@@ -95,6 +101,7 @@ namespace LuaSTGEditorSharpV2
             {
                 var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(selectedVM.Source, param);
                 vm.PropertyPage.LoadProperties(list, selectedVM.Source);
+                _propertyTab.SelectedIndex = 0;
             }
         }
     }

@@ -13,15 +13,36 @@ namespace LuaSTGEditorSharpV2.ViewModel
     {
         public NodeData? Source { get; private set; }
 
-        public ObservableCollection<PropertyViewModel> Properties { get; set; } = new();
+        public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = new();
 
-        public void LoadProperties(IReadOnlyList<PropertyViewModel> viewModels, NodeData source)
+        private int _selectedIndex = 0;
+
+        public int SelectedIndex
         {
+            get => _selectedIndex;
+            set
+            {
+                _selectedIndex = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels, NodeData source)
+        {
+            var index = SelectedIndex;
             Source = source;
-            Properties.Clear();
+            Tabs.Clear();
             for (int i = 0; i < viewModels.Count; i++)
             {
-                Properties.Add(viewModels[i]);
+                Tabs.Add(viewModels[i]);
+            }
+            if (index >= viewModels.Count)
+            {
+                SelectedIndex = viewModels.Count - 1;
+            }
+            else
+            {
+                SelectedIndex = index;
             }
         }
     }

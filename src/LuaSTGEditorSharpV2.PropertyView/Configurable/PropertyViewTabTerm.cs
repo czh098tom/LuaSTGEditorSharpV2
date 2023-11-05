@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public record class PropertyViewTerm(string Mapping, string Caption
-        , Dictionary<string, string> LocalizedCaption, string Type = "")
+    public record class PropertyViewTabTerm(Dictionary<string, string>? LocalizedCaption,
+        string? Caption,
+        PropertyViewTerm[] Mapping)
     {
     }
 }

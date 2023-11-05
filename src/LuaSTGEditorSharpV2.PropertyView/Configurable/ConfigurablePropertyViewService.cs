@@ -11,34 +11,46 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
+using System.Reflection;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     public class ConfigurablePropertyViewService : PropertyViewServiceBase
     {
         [JsonProperty]
-        public PropertyViewTerm[] Mapping { get; private set; } = Array.Empty<PropertyViewTerm>();
+        public PropertyViewTabTerm[] Tabs { get; private set; } = Array.Empty<PropertyViewTabTerm>();
 
-        protected override IReadOnlyList<PropertyViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
-            , PropertyViewContext context, int subtype = 0)
+        protected override IReadOnlyList<PropertyTabViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
+            , PropertyViewContext context)
         {
-            List<PropertyViewModel> propertyViewModels = new(Mapping.Length);
-
-            for (int i = 0; i < Mapping.Length; i++)
+            List<PropertyTabViewModel> propertyTabViewModels = new();
+            for (int i = 0; i < Tabs.Length; i++)
             {
-                propertyViewModels.Add(new PropertyViewModel(
-                    Mapping[i].LocalizedCaption.GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
-                        , Mapping[i].Caption)
-                    , nodeData.GetProperty(Mapping[i].Mapping), Mapping[i].Type));
+                var mapping = Tabs[i].Mapping;
+                List<PropertyItemViewModel> propertyViewModels = new(mapping.Length);
+
+                for (int j = 0; j < mapping.Length; j++)
+                {
+                    propertyViewModels.Add(new PropertyItemViewModel(
+                        mapping[j].LocalizedCaption.GetI18NValueOrDefault(mapping[j].Caption)
+                        , nodeData.GetProperty(mapping[j].Mapping), mapping[j].Type));
+                }
+                var tab = new PropertyTabViewModel()
+                {
+                    Caption = Tabs[i].LocalizedCaption?.GetI18NValueOrDefault(Tabs[i].Caption
+                        ?? DefaultViewI18NCaption) ?? DefaultViewI18NCaption
+                };
+                propertyViewModels.ForEach(pvm => tab.Properties.Add(pvm));
+                propertyTabViewModels.Add(tab);
             }
-            return propertyViewModels;
+            return propertyTabViewModels;
         }
 
-        protected override CommandBase ResolveCommandOfEditingNode(NodeData nodeData
-            , IReadOnlyList<PropertyViewModel> propertyList, PropertyViewContext context
-            , int index, string edited, int subtype = 0)
+        protected override CommandBase ResolveCommandOfEditingNode(NodeData nodeData, 
+            PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
+            int tabIndex, int itemIndex, string edited)
         {
-            return new EditPropertyCommand(nodeData, Mapping[index].Mapping, edited);
+            return new EditPropertyCommand(nodeData, Tabs[tabIndex].Mapping[itemIndex].Mapping, edited);
         }
     }
 }
