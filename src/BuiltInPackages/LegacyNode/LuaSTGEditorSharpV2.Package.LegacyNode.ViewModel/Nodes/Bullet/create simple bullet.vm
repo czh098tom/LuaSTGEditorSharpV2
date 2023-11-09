@@ -1,5 +1,5 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "CreateSimpleBullet",
 	"Captures": [
 		"style",
@@ -63,42 +63,42 @@
 	"LocalizedText" :{
 		"zh": [
 			{
-				"Text": "ÔÚ{2}ÒÔÑùÊ½{1},ÑÕÉ«{2}Éú³É¼òµ¥×Óµ¯,ËÙ¶È{3},·½Ïò{4}",
+				"Text": "åœ¨{2}ä»¥æ ·å¼{1},é¢œè‰²{2}ç”Ÿæˆç®€å•å­å¼¹,é€Ÿåº¦{3},æ–¹å‘{4}",
 				"ConditionOn": "true",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",Ãé×¼×Ô»ú",
+				"Text": ",ç„å‡†è‡ªæœº",
 				"ConditionOn": "{5}",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",Éú³ÉÊ±Í£ÖÍ",
+				"Text": ",ç”Ÿæˆæ—¶åœæ»",
 				"ConditionOn": "{7}",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",²»¿ÉÏû³ı",
+				"Text": ",ä¸å¯æ¶ˆé™¤",
 				"ConditionOn": "{8}",
 				"Inversed": "true"
 			},
 			{
-				"Text": ",ÑÓ³ÙÉú³É{9}Ö¡",
+				"Text": ",å»¶è¿Ÿç”Ÿæˆ{9}å¸§",
 				"ConditionOn": "true",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",¼ÓËÙ¶È{11},¼ÓËÙ¶È·½Ïò{12}",
+				"Text": ",åŠ é€Ÿåº¦{11},åŠ é€Ÿåº¦æ–¹å‘{12}",
 				"ConditionOn": "true",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",·´µ¯",
+				"Text": ",åå¼¹",
 				"ConditionOn": "{10}",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",´©ÆÁ",
+				"Text": ",ç©¿å±",
 				"ConditionOn": "{14}",
 				"Inversed": "false"
 			}
