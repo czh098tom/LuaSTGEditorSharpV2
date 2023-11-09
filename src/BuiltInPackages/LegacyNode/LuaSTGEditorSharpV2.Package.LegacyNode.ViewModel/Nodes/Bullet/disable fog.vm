@@ -1,0 +1,11 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "DisableFog",
+  "Captures": [
+    "target"
+  ],
+  "Text": "disable fog when generating {0}",
+  "LocalizedText": {
+    "zh": "取消 {0} 的弹雾"
+  }
+}

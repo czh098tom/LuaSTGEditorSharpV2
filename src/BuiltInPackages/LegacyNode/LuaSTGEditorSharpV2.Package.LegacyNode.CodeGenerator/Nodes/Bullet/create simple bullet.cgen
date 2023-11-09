@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateSimpleBullet",
+	"Captures": [
+		{ "Capture": "style" },
+		{ "Capture": "color" },
+		{ "Capture": "position" },
+		{ "Capture": "velocity" },
+		{ "Capture": "rotation" },
+		{ "Capture": "aim to player" },
+		{ "Capture": "rotation speed" },
+		{ "Capture": "stay on create" },
+		{ "Capture": "destroyable" },
+		{ "Capture": "delay" },
+		{ "Capture": "rebound" },
+		{ "Capture": "acceleration" },
+		{ "Capture": "acceleration angle" },
+		{ "Capture": "max velocity" },
+		{ "Capture": "shuttle" }
+	],
+	"Head": "local last = New(_straight, {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14})"
+}

@@ -40,9 +40,7 @@
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(ExtraFiles)"
-          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

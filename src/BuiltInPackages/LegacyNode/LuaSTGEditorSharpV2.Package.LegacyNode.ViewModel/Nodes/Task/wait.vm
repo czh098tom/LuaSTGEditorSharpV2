@@ -1,0 +1,11 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Wait",
+	"Captures": [
+	  "time"
+	],
+	"Text": "Wait {0} frames",
+	"LocalizedText": {
+	  "zh": "等待 {0} 帧"
+	}
+}

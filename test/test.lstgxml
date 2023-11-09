@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Root>
-  <DefinitionRoot>
-    <ServiceDefinition serviceShortName="vm">
-      <_.serviceDeclaration>
-        <![CDATA[{
-  "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "test",
-  "Captures": [ "name" ],
-  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
-  "Text": "test: {0}",
-  "LocalizedText": { "zh": "测试：{0}" }
+	<DefinitionRoot>
+		<ServiceDefinition serviceShortName="vm">
+			<_.serviceDeclaration>
+				<![CDATA[{
+	"$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "test",
+	"Captures": [ "name" ],
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
+	"Text": "test: {0}",
+	"LocalizedText": { "zh": "测试：{0}" }
 }]]>
-      </_.serviceDeclaration>
-    </ServiceDefinition>
-  </DefinitionRoot>
-  <BuildRoot/>
-  <CompileRoot>
-    <UseResourceGroup name="1">
-      <Include path="test.lua"/>
-      <Task>
-        <Task>
-          <CodeBlock name="bb"/>
-          <Code>
-            <_.code>
-              <![CDATA[do
+			</_.serviceDeclaration>
+		</ServiceDefinition>
+	</DefinitionRoot>
+	<BuildRoot/>
+	<CompileRoot>
+		<UseResourceGroup name="1">
+			<Include path="test.lua"/>
+			<Task>
+				<Task>
+					<CodeBlock name="bb"/>
+					<Code>
+						<_.code>
+							<![CDATA[do
 end]]>
-            </_.code>
-          </Code>
-          <If condition="1 == 1">
-            <If.Then>
-              <Test code="AAAAAAA"/>
-            </If.Then>
-            <If.ElseIf condition="nmsl ~= nil">
-              <Code>
-                <_.code>
-                  <![CDATA[do
+						</_.code>
+					</Code>
+					<If condition="1 == 1">
+						<If.Then>
+							<Test code="AAAAAAA"/>
+						</If.Then>
+						<If.ElseIf condition="nmsl ~= nil">
+							<Code>
+								<_.code>
+									<![CDATA[do
 end]]>
-                </_.code>
-              </Code>
-            </If.ElseIf>
-          </If>
-        </Task>
-      </Task>
-    </UseResourceGroup>
-  </CompileRoot>
+								</_.code>
+							</Code>
+						</If.ElseIf>
+					</If>
+				</Task>
+			</Task>
+		</UseResourceGroup>
+	</CompileRoot>
 </Root>
