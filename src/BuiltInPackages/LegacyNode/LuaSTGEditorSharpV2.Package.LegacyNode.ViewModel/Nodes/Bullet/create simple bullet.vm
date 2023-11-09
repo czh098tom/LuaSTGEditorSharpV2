@@ -1,0 +1,107 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateSimpleBullet",
+	"Captures": [
+		"style",
+		"color",
+		"position",
+		"velocity",
+		"rotation",
+		"aim to player",
+		"rotation speed",
+		"stay on create",
+		"destroyable",
+		"delay",
+		"rebound",
+		"acceleration",
+		"acceleration angle",
+		"max velocity",
+		"shuttle"
+	],
+	"Text": [
+		{
+			"Text": "create simple bullet in {0} with {1} at {2},velocity={3},rotation={4}",
+			"ConditionOn": "true",
+			"Inversed": "false"
+		},
+		{
+			"Text": ",aim to player",
+			"ConditionOn": "{5}",
+			"Inversed": "false"
+		},
+		{
+			"Text": ",stay on create",
+			"ConditionOn": "{7}",
+			"Inversed": "false"
+		},
+		{
+			"Text": ",unable to be destroy",
+			"ConditionOn": "{8}",
+			"Inversed": "true"
+		},
+		{
+			"Text": ",delay {9} frames before creation",
+			"ConditionOn": "true",
+			"Inversed": "false"
+		},
+		{
+			"Text": ",accel speed={11},accel angle={12}",
+			"ConditionOn": "true",
+			"Inversed": "false"
+		},
+		{
+			"Text": ",rebound",
+			"ConditionOn": "{10}",
+			"Inversed": "false"
+		},
+		{
+			"Text": ",shuttle",
+			"ConditionOn": "{14}",
+			"Inversed": "false"
+		}
+	],
+	"LocalizedText" :{
+		"zh": [
+			{
+				"Text": "在{2}以样式{1},颜色{2}生成简单子弹,速度{3},方向{4}",
+				"ConditionOn": "true",
+				"Inversed": "false"
+			},
+			{
+				"Text": ",瞄准自机",
+				"ConditionOn": "{5}",
+				"Inversed": "false"
+			},
+			{
+				"Text": ",生成时停滞",
+				"ConditionOn": "{7}",
+				"Inversed": "false"
+			},
+			{
+				"Text": ",不可消除",
+				"ConditionOn": "{8}",
+				"Inversed": "true"
+			},
+			{
+				"Text": ",延迟生成{9}帧",
+				"ConditionOn": "true",
+				"Inversed": "false"
+			},
+			{
+				"Text": ",加速度{11},加速度方向{12}",
+				"ConditionOn": "true",
+				"Inversed": "false"
+			},
+			{
+				"Text": ",反弹",
+				"ConditionOn": "{10}",
+				"Inversed": "false"
+			},
+			{
+				"Text": ",穿屏",
+				"ConditionOn": "{14}",
+				"Inversed": "false"
+			}
+		]
+	}
+}

@@ -1,0 +1,11 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.Core.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.Core.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "AttachedTask",
+  "Captures": [
+    "target"
+  ],
+  "Text": "Create task for {0}",
+  "LocalizedText": {
+    "zh": "为 {0} 创建任务"
+  }
+}
