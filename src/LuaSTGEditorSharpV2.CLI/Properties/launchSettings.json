@@ -9,7 +9,7 @@
     },
     "CLI compile test": {
       "commandName": "Project",
-      "commandLineArgs": "compile \"../../test/test.lstgxml\" -o \"../../test/output/test.lua\" -pkg Core LegacyNode -cgen --line_obfuscated --indention_string \"\""
+      "commandLineArgs": "compile \"../../test/test.lstgxml\" -o \"../../test/output/test.lua\" -pkg Core Lua LegacyNode -cgen --line_obfuscated --indention_string \"\""
     },
     "CLI formatxml test": {
       "commandName": "Project",

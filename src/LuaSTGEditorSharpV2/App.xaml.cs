@@ -36,6 +36,7 @@ namespace LuaSTGEditorSharpV2
                 ServiceManager.UseService(typeof(ViewModelProviderServiceBase));
                 ServiceManager.UseService(typeof(PropertyViewServiceBase));
                 var resc = ServiceManager.LoadPackage("Core");
+                var lua = ServiceManager.LoadPackage("Lua");
                 var resln = ServiceManager.LoadPackage("LegacyNode");
                 ResourceManager.MergeResources();
             }

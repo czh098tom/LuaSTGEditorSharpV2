@@ -1,6 +1,9 @@
 {
   "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "CodeBlock",
-  "Head": "do",
-  "Tail": "end"
+  "TypeUID": "If.ElseIf",
+  "Language": "Lua",
+  "Captures": [
+    { "Capture": "condition" }
+  ],
+  "Head": "elseif ({1}) then"
 }

@@ -1,14 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\</OutputPath>
 
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
@@ -18,8 +17,8 @@
       <ExcludeAssets>manifest</ExcludeAssets>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj">
-      <ExcludeAssets>**\*.prop</ExcludeAssets>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core.ViewModel\LuaSTGEditorSharpV2.Core.ViewModel.csproj">
+      <ExcludeAssets>**\*.vm</ExcludeAssets>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
@@ -29,16 +28,16 @@
       <Private>false</Private>
       <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.dll</HintPath>
     </Reference>
-    <Reference Include="LuaSTGEditorSharpV2.PropertyView">
+    <Reference Include="LuaSTGEditorSharpV2.Core.ViewModel">
       <Private>false</Private>
-      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.PropertyView.dll</HintPath>
+      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.ViewModel.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode\Nodes</YourDestinationDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua\Nodes</YourDestinationDirectory>
     </PropertyGroup>
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />

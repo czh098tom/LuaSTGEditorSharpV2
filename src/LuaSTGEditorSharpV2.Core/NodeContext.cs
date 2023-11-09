@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Core
             ServiceSettings = serviceSettings;
         }
 
-        public void Push(NodeData current)
+        public virtual void Push(NodeData current)
         {
             if (!_contextData.ContainsKey(current.TypeUID))
             {
@@ -34,7 +34,7 @@ namespace LuaSTGEditorSharpV2.Core
             _top.Push(current);
         }
 
-        public NodeData Pop()
+        public virtual NodeData Pop()
         {
             if (_top.Count != 0)
             {

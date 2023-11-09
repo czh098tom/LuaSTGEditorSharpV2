@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
@@ -57,6 +59,14 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             var service = GetServiceOfNode(nodeData);
             return service.GenerateCodeWithContext(nodeData, ctx);
         }
+
+        public static LanguageBase? GetLanguageOfNode(NodeData nodeData)
+        {
+            return LanguageBase.GetLanguage(GetServiceOfNode(nodeData).Language);
+        }
+
+        [JsonProperty("Language")]
+        public string Language { get; private set; } = string.Empty;
 
         public override sealed CodeGenerationContext GetEmptyContext(LocalServiceParam localSettings)
         {

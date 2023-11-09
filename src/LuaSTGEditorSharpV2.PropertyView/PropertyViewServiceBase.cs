@@ -21,6 +21,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
     {
         private static readonly PropertyViewServiceBase _defaultService = new();
 
+        private static readonly List<string> _resourceDictUris = new();
+
+        public static IReadOnlyList<string> ResourceDictUris => _resourceDictUris;
+
         static PropertyViewServiceBase()
         {
             _defaultServiceGetter = () => _defaultService;
@@ -55,6 +59,11 @@ namespace LuaSTGEditorSharpV2.PropertyView
         {
             return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData, propertyList
                 , GetContextOfNode(nodeData, localParams), index, edited, subtype);
+        }
+
+        public static void AddResourceDictUri(string uri)
+        {
+            _resourceDictUris.Add(uri);
         }
 
         public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings)

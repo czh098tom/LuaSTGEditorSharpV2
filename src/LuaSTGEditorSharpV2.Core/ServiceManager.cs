@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Diagnostics;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 using LuaSTGEditorSharpV2.Core.Exception;
@@ -19,6 +20,8 @@ namespace LuaSTGEditorSharpV2.Core
         private static readonly string _packageBasePath = "package";
         private static readonly string _manifestName = "manifest";
         private static readonly string _nodeDataBasePath = "Nodes";
+
+        private static readonly JsonConverter _versionConverter = new VersionConverter();
 
         private static readonly JsonSerializerSettings _serviceDeserializationSettings = new()
         {
@@ -131,6 +134,16 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                 }
             }
+            foreach (var asm in assembly)
+            {
+                var entryClasses = asm.GetTypes()
+                    .Where(t => t.GetInterfaces().Contains(typeof(IPackageEntry)))
+                    .Select(t => Activator.CreateInstance(t) as IPackageEntry);
+                foreach (var c in entryClasses)
+                {
+                    c?.InitializePackage();
+                }
+            }
             return assembly;
         }
 
@@ -144,7 +157,7 @@ namespace LuaSTGEditorSharpV2.Core
                     using StreamReader sr = new(fs);
                     manifestString = sr.ReadToEnd();
                 }
-                return JsonConvert.DeserializeObject<PackageInfo>(manifestString)
+                return JsonConvert.DeserializeObject<PackageInfo>(manifestString, _versionConverter)
                     ?? throw new PackageLoadingException($"Failed to deserialize package manifest at {path} .");
             }
             catch (System.Exception e)
@@ -180,7 +193,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public static void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
-            if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType)) 
+            if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType))
             {
                 ReplaceSettingsForServiceIfValid(serviceType, settings);
             }

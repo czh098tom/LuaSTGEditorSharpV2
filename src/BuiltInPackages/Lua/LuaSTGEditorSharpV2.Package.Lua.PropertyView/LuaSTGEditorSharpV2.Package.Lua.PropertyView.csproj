@@ -8,10 +8,14 @@
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\</OutputPath>
 
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
@@ -38,7 +42,7 @@
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode\Nodes</YourDestinationDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua\Nodes</YourDestinationDirectory>
     </PropertyGroup>
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />

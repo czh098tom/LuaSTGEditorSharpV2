@@ -13,7 +13,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Specialized
     {
         protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
-            StringBuilder sb = context.ApplyIndented(context.GetIndented(), context.ApplyMacro(node.GetProperty("code")));
+            StringBuilder sb = context.ApplyIndented(context.GetIndented()
+                , context.ApplyMacro(node, node.GetProperty("code")));
             yield return new CodeData(sb.ToString(), node);
         }
     }
