@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class PropertyViewModel : BaseViewModel
+    public class PropertyItemViewModel : BaseViewModel
     {
         private string _name;
         private string _value;
@@ -42,7 +42,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
-        public PropertyViewModel(string name, string value, string type = "")
+        public PropertyItemViewModel(string name, string value, string type = "")
         {
             _name = name;
             _value = value;

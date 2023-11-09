@@ -17,6 +17,21 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\Text.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Text.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Text.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Text.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory" Condition="$(InReferenceParent)!='true'">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\package\Core\Nodes</YourSourceDirectory>

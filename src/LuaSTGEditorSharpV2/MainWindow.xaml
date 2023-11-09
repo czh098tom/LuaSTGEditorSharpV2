@@ -93,14 +93,27 @@
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">
                         <xcad:LayoutAnchorable Title="Property">
-                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible"
-                                          DataContext="{Binding PropertyPage}">
-                                <ItemsControl x:Name="_propertyView" ItemsSource="{Binding Properties}" Background="FloralWhite">
-                                    <ItemsControl.ItemTemplateSelector>
-                                        <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
-                                    </ItemsControl.ItemTemplateSelector>
-                                </ItemsControl>
-                            </ScrollViewer>
+                            <Grid DataContext="{Binding PropertyPage}">
+                                <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
+                                            SelectedIndex="{Binding SelectedIndex}">
+                                    <TabControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Caption}"/>
+                                        </DataTemplate>
+                                    </TabControl.ItemTemplate>
+                                    <TabControl.ContentTemplate>
+                                        <DataTemplate>
+                                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+                                                <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite">
+                                                    <ItemsControl.ItemTemplateSelector>
+                                                        <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
+                                                    </ItemsControl.ItemTemplateSelector>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </DataTemplate>
+                                    </TabControl.ContentTemplate>
+                                </TabControl>
+                            </Grid>
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                     <xcad:LayoutPanel Orientation="Vertical">

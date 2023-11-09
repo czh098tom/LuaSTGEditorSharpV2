@@ -1,16 +1,18 @@
 ﻿{
   "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "Code",
-  "Mapping": 
-  [
+  "Tabs": [
     {
-      "Mapping": "code",
-      "Caption": "Code",
-      "LocalizedCaption": 
-      {
-        "zh": "代码"
-      },
-      "Type": "code"
+      "Mapping": [
+        {
+          "Mapping": "code",
+          "Caption": "Code",
+          "LocalizedCaption": {
+            "zh": "代码"
+          },
+          "Type": "code"
+        }
+      ]
     }
   ]
 }

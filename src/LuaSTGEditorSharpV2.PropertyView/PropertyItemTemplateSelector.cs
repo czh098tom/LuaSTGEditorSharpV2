@@ -18,7 +18,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         {
             ResourceDictionary dataTemplates = Application.Current.Resources;
             if (Default == null) throw new InvalidOperationException($"{nameof(dataTemplates)} has not been assigned");
-            if (item is not PropertyViewModel vm) throw new ArgumentException($"{nameof(item)} is not a {nameof(PropertyViewModel)}");
+            if (item is not PropertyItemViewModel vm) throw new ArgumentException($"{nameof(item)} is not a {nameof(PropertyItemViewModel)}");
             if (dataTemplates != null && vm.Type != null)
             {
                 string key = $"property:{vm.Type}";
