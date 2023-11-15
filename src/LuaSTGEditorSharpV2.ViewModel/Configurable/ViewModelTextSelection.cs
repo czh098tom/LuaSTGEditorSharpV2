@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             }
             else
             {
-                isTrue = string.IsNullOrWhiteSpace(source.GetProperty(ConditionOn, "true"));
+                isTrue = !string.IsNullOrWhiteSpace(source.GetProperty(ConditionOn, "true"));
             }
             return isTrue ^ Inversed;
         }

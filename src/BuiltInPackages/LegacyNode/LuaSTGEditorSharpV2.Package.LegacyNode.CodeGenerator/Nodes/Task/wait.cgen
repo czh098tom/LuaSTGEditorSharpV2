@@ -1,8 +1,21 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "Wait",
 	"Captures": [
 		{ "Capture":"time" }
 	],
-	"Head": "task._Wait({1})"
+	"Head": [
+		{
+			"Code":"task._Wait({1})",
+			"ConditionOn":"time",
+			"UseExistance":"true",
+			"Inversed":"false"
+		},
+		{
+			"Code":"task._Wait({1})",
+			"ConditionOn":"time",
+			"UseExistance":"true",
+			"Inversed":"true"
+		}
+	]
 }

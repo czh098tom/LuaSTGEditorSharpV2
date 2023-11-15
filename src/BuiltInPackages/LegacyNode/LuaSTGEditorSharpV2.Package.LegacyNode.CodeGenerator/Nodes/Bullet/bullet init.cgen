@@ -1,0 +1,21 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BulletInit",
+	"Captures": [
+		{ "Capture":"parameters" },
+		{ "Capture":"style" },
+		{ "Capture":"color" },
+		{ "Capture":"stay" },
+		{ "Capture":"destroyable" }
+	],
+	"ContextCaptures": [
+		{
+			"TypeUID":"DefineBullet",
+			"Property":[
+				{"Capture":"identifier"}
+			]
+		}
+	],
+	"Head": "function _editor_class[\"{6}\"]:init(_x, _y, {1})\n\tself.x, self.y = _x, _y",
+	"Tail": "end"
+}

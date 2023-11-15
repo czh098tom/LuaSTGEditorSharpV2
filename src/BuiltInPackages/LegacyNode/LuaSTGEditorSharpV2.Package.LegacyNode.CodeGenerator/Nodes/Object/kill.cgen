@@ -1,8 +1,9 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "DisableFog",
-	"Captures": [
-		{ "Capture":"target" }
+	"TypeUID": "Kill",
+	"Captures":[
+		{"Capture":"target"},
+		{"Capture":"trigger_event"}
 	],
-	"Head": "{1}.class = {1}.logclass"
-}
+	"Head": "_kill({1}, {2})"
+  }

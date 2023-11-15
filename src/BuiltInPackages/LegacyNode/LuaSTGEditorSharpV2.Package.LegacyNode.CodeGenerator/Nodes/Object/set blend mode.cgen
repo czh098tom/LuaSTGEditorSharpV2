@@ -1,8 +1,10 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "DisableFog",
-	"Captures": [
-		{ "Capture":"target" }
+	"TypeUID": "SetBlendMode",
+	"Captures":[
+		{"Capture":"target"},
+		{"Capture":"blend_mode"},
+		{"Capture":"argb"}
 	],
-	"Head": "{1}.class = {1}.logclass"
-}
+	"Head": "_object.set_color({1}, {2}, {3})"
+  }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Root>
-  <DefinitionRoot>
-    <ServiceDefinition serviceShortName="vm">
-      <_.serviceDeclaration>
+	<DefinitionRoot>
+		<ServiceDefinition serviceShortName="vm">
+			<_.serviceDeclaration>
         <![CDATA[{
   "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "test",
@@ -13,6 +13,15 @@
 }]]>
 			</_.serviceDeclaration>
 		</ServiceDefinition>
+		<DefineBullet identifier="test_bullet">
+			<BulletInit
+				parameters="what did genshin do with you!?"
+				style="grain_a"
+				color="COLOR_RED"
+				stay="true"
+				destroyable="false"
+			/>
+		</DefineBullet>
 	</DefinitionRoot>
 	<BuildRoot/>
 	<CompileRoot>
@@ -21,6 +30,46 @@
 			<Task>
 				<Task>
 					<CodeBlock name="bb"/>
+					<Repeat times="5">
+						<CreateSimpleBullet
+							style="ball_mid"
+							color="COLOR_BLUE"
+							position="0,120"
+							velocity="3"
+							rotation="-90"
+							aim="false"
+							omega="3"
+							stay="false"
+							destroyable="true"
+							delay="0"
+							rebound="false"
+							acceleration="0.03"
+							accel_angle="-90"
+							max_velocity="0"
+							shuttle="false"
+						/>
+					</Repeat>
+					<CreateBullet identifier="test_bullet" position="0,120" parameters="you can skip playing!" />
+					<SetVelocity target="last" velocity="1" angle="0" aim="true" set_rotation="true"/>
+					<SetBlendMode target="last" blend_mode="mul+add" argb="255,255,192,255"/>
+					<AttachedTask target="last">
+						<RedirectSelf/>
+						<Code>
+							<_.code>
+								<![CDATA[local v = 1]]>
+							</_.code>
+						</Code>
+						<Repeat times="60">
+							<SetVelocity target="self" velocity="v" angle="0" aim="true" set_rotation="true"/>
+							<Code>
+								<_.code>
+									<![CDATA[v = v + 0.01]]>
+								</_.code>
+							</Code>
+							<Wait/>
+						</Repeat>
+						<SetAcceleration target="self" acceleration="0.01" accel_angle="0" aim="true"/>
+					</AttachedTask>
 					<Code>
 						<_.code>
 							<![CDATA[do

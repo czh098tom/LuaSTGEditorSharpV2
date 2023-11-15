@@ -21,7 +21,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             }
             else
             {
-                bool isTrue = string.IsNullOrWhiteSpace(source.GetProperty(ConditionOn, ""));
+                bool isTrue = !string.IsNullOrWhiteSpace(source.GetProperty(ConditionOn, ""));
                 return (isTrue && !Inversed) || (!isTrue && Inversed);
             }
         }
