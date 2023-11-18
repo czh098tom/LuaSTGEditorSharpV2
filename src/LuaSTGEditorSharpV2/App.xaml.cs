@@ -7,14 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Core.CodeGenerator;
-using LuaSTGEditorSharpV2.PropertyView;
-using System.Reflection;
-using LuaSTGEditorSharpV2.ViewModel;
+using NLog;
+using NLog.Extensions.Logging;
+
+using LuaSTGEditorSharpV2.Core.Hosting;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -27,23 +26,22 @@ namespace LuaSTGEditorSharpV2
         {
             base.OnStartup(e);
 
-            var dt = Resources["PropertyDataTemplates"];
+            var args = e.Args;
 
-            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
-            try
+            HostedApplication.SetUpHost(() =>
             {
-                ServiceManager.UseService(typeof(CodeGeneratorServiceBase));
-                ServiceManager.UseService(typeof(ViewModelProviderServiceBase));
-                ServiceManager.UseService(typeof(PropertyViewServiceBase));
-                var resc = ServiceManager.LoadPackage("Core");
-                var lua = ServiceManager.LoadPackage("Lua");
-                var resln = ServiceManager.LoadPackage("LegacyNode");
-                ResourceManager.MergeResources();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
+
+                applicationBuilder.Services.AddLogging(builder => builder.AddNLog());
+                applicationBuilder.Services.AddSingleton<LoggingService>();
+                applicationBuilder.Services.AddHostedService<MainWorker>();
+                return applicationBuilder;
+            }, args);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
         }
     }
 }

@@ -1,11 +1,8 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-using Newtonsoft.Json;
-
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Core.CodeGenerator;
-using Newtonsoft.Json.Linq;
+using LuaSTGEditorSharpV2.Core.Hosting;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -13,16 +10,15 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         static void Main(string[] args)
         {
-            APIFunctionRegistration.Register();
-            var param = APIFunctionParameter.ParseFromCommandLineArgs(args);
-            try
+            HostedApplication.SetUpHost(() =>
             {
-                APIFunction.FindAndExecute(args[0], param);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+                HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
+
+                applicationBuilder.Services.AddLogging(builder => builder.AddConsole());
+                applicationBuilder.Services.AddSingleton<LoggingService>();
+                applicationBuilder.Services.AddHostedService<MainWorker>();
+                return applicationBuilder;
+            }, args);
         }
     }
 }

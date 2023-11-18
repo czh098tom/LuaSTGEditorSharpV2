@@ -12,6 +12,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 using LuaSTGEditorSharpV2.Core.Exception;
+using Microsoft.Extensions.Logging;
 
 namespace LuaSTGEditorSharpV2.Core
 {
@@ -120,17 +121,24 @@ namespace LuaSTGEditorSharpV2.Core
                         using StreamReader sr = new(fs);
                         def = sr.ReadToEnd();
                     }
-                    object obj = JsonConvert.DeserializeObject(def, _serviceDeserializationSettings)
-                        ?? throw new PackageLoadingException($"Failed to deserialize service defined at {fileName} .");
-                    if (obj.GetType().IsAnyDerivedTypeOf(serviceType))
+                    object? obj;
+                    try
                     {
-                        param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
-                        param[2] = obj;
-                        registerFunc.DynamicInvoke(param);
+                        obj = JsonConvert.DeserializeObject(def, _serviceDeserializationSettings);
+                        if (obj != null && obj.GetType().IsAnyDerivedTypeOf(serviceType))
+                        {
+                            param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
+                            param[2] = obj;
+                            registerFunc.DynamicInvoke(param);
+                        }
+                        else
+                        {
+                            throw new PackageLoadingException($"Deserialized object is not a service defined at {fileName} .");
+                        }
                     }
-                    else
+                    catch (JsonException e)
                     {
-                        throw new PackageLoadingException($"Deserialized object is not a service defined at {fileName} .");
+                        Hosting.LoggingService.Logger.LogError("Parsing JSON from \"{fileName}\" failed.", fileName);
                     }
                 }
             }
