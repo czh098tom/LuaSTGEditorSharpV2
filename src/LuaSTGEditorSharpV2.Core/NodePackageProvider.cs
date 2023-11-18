@@ -11,11 +11,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
+using Microsoft.Extensions.Logging;
+
 using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public static class ServiceManager
+    public class NodePackageProvider(ILogger<NodePackageProvider> logger)
     {
         private static readonly string _packageBasePath = "package";
         private static readonly string _manifestName = "manifest";
@@ -29,15 +31,17 @@ namespace LuaSTGEditorSharpV2.Core
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
         };
 
-        private static readonly Dictionary<Type, ServiceInfo> _services2Info = new();
-        private static readonly Dictionary<string, Type> _shortName2Services = new();
+        private readonly ILogger<NodePackageProvider> _logger = logger;
 
-        public static Type GetServiceTypeOfShortName(string shortName)
+        private readonly Dictionary<Type, ServiceInfo> _services2Info = [];
+        private readonly Dictionary<string, Type> _shortName2Services = [];
+
+        public Type GetServiceTypeOfShortName(string shortName)
         {
             return _shortName2Services[shortName];
         }
 
-        public static void UseService(Type serviceType)
+        public void UseService(Type serviceType)
         {
             if (serviceType.BaseType?.GetGenericTypeDefinition() == typeof(NodeService<,,>))
             {
@@ -76,21 +80,28 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static IReadOnlyList<Assembly> LoadPackage(string packageName)
+        public IReadOnlyList<Assembly> LoadPackage(string packageName)
         {
+            _logger.LogInformation("Begin loading package \"{package_name}\"", packageName);
             var path = Process.GetCurrentProcess().MainModule?.FileName;
-            return LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
+            var assemblies = LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
                 ?? throw new InvalidOperationException(), _packageBasePath, packageName));
+            _logger.LogInformation("Loaded package \"{package_name}\"", packageName);
+            return assemblies;
         }
 
-        public static IReadOnlyList<Assembly> LoadPackageFromDirectory(string basePath)
+        public IReadOnlyList<Assembly> LoadPackageFromDirectory(string basePath)
         {
-            List<Assembly> assembly = new();
-            PackageInfo packageInfo = LoadManifest(Path.Combine(basePath, _manifestName));
+            List<Assembly> assembly = [];
+            var manifestPath = Path.Combine(basePath, _manifestName);
+            PackageInfo packageInfo = GetManifest(manifestPath);
+            _logger.LogInformation("Loaded manifest from \"{path}\"", manifestPath);
             if (!string.IsNullOrWhiteSpace(packageInfo.LibraryPath))
             {
-                Assembly asm = Assembly.LoadFrom(Path.Combine(basePath, packageInfo.LibraryPath));
+                var assemblyPath = Path.Combine(basePath, packageInfo.LibraryPath);
+                Assembly asm = Assembly.LoadFrom(assemblyPath);
                 assembly.Add(asm);
+                _logger.LogInformation("Loaded main assembly from \"{path}\"", manifestPath);
                 foreach (var kvp in _services2Info)
                 {
                     var serviceType = kvp.Key;
@@ -101,6 +112,7 @@ namespace LuaSTGEditorSharpV2.Core
                     {
                         asm = Assembly.LoadFrom(serviceAssembly);
                         assembly.Add(asm);
+                        _logger.LogInformation("Loaded service assembly from \"{path}\"", manifestPath);
                     }
                 }
             }
@@ -120,17 +132,27 @@ namespace LuaSTGEditorSharpV2.Core
                         using StreamReader sr = new(fs);
                         def = sr.ReadToEnd();
                     }
-                    object obj = JsonConvert.DeserializeObject(def, _serviceDeserializationSettings)
-                        ?? throw new PackageLoadingException($"Failed to deserialize service defined at {fileName} .");
-                    if (obj.GetType().IsAnyDerivedTypeOf(serviceType))
+                    object? obj;
+                    try
                     {
-                        param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
-                        param[2] = obj;
-                        registerFunc.DynamicInvoke(param);
+                        obj = JsonConvert.DeserializeObject(def, _serviceDeserializationSettings);
+                        if (obj != null && obj.GetType().IsAnyDerivedTypeOf(serviceType))
+                        {
+                            param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
+                            param[2] = obj;
+                            registerFunc.DynamicInvoke(param);
+                            _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{path}\"", 
+                                param[0], manifestPath);
+                        }
+                        else
+                        {
+                            throw new PackageLoadingException($"Deserialized object is not a service defined at {fileName} .");
+                        }
                     }
-                    else
+                    catch (JsonException e)
                     {
-                        throw new PackageLoadingException($"Deserialized object is not a service defined at {fileName} .");
+                        _logger.LogException(e);
+                        _logger.LogError("Parsing JSON from \"{file_name}\" failed.", fileName);
                     }
                 }
             }
@@ -141,13 +163,18 @@ namespace LuaSTGEditorSharpV2.Core
                     .Select(t => Activator.CreateInstance(t) as IPackageEntry);
                 foreach (var c in entryClasses)
                 {
-                    c?.InitializePackage();
+                    if (c != null)
+                    {
+                        c.InitializePackage();
+                        _logger.LogInformation("Initialized package with entry class \"{entry_class}\"", 
+                            c.GetType());
+                    }
                 }
             }
             return assembly;
         }
 
-        private static PackageInfo LoadManifest(string path)
+        private PackageInfo GetManifest(string path)
         {
             string manifestString;
             try
@@ -162,11 +189,12 @@ namespace LuaSTGEditorSharpV2.Core
             }
             catch (System.Exception e)
             {
+                _logger.LogException(e);
                 throw new PackageLoadingException($"Failed to load package manifest at {path} .", e);
             }
         }
 
-        public static void LoadLocalNodeService(LocalNodeServices services)
+        public void LoadLocalNodeService(LocalNodeServices services)
         {
             object?[] param = new object?[3];
             param[1] = services.PackageInfo;
@@ -180,7 +208,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void ReplaceSettingsForServiceIfValid(Type serviceType, JObject settings)
+        public void ReplaceSettingsForServiceIfValid(Type serviceType, JObject settings)
         {
             if (_services2Info.TryGetValue(serviceType, out var serviceInfo))
             {
@@ -191,7 +219,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
+        public void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
             if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType))
             {

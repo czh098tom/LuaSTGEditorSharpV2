@@ -29,7 +29,8 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
             var jsonDecl = dataSource.GetProperty(DeclarationCaputure);
             try
             {
-                var type = ServiceManager.GetServiceTypeOfShortName(shortName);
+                var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
+                var type = nodePackageProvider.GetServiceTypeOfShortName(shortName);
                 var obj = JsonConvert.DeserializeObject(jsonDecl, type);
                 string? uid = type.BaseType?.GetProperty("TypeUID")?.GetValue(obj) as string;
                 viewModel.Text = string.Format(LocalizedText

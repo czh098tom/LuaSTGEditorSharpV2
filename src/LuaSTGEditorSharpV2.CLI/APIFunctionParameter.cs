@@ -35,18 +35,20 @@ namespace LuaSTGEditorSharpV2.CLI
         public void UsePackages()
         {
             if (Packages == null) return;
+            var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
             foreach (var p in Packages)
             {
-                ServiceManager.LoadPackage(p);
+                nodePackageProvider.LoadPackage(p);
             }
         }
 
         public void ReassignSettings()
         {
             if (ServiceSettings == null) return;
+            var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
             foreach (var kvp in ServiceSettings)
             {
-                ServiceManager.ReplaceSettingsForServiceShortNameIfValid(kvp.Key, kvp.Value);
+                nodePackageProvider.ReplaceSettingsForServiceShortNameIfValid(kvp.Key, kvp.Value);
             }
         }
     }

@@ -39,9 +39,10 @@ namespace LuaSTGEditorSharpV2.CLI
 
         public void Execute(APIFunctionParameter param)
         {
+            var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
             foreach (Type type in Services)
             {
-                ServiceManager.UseService(type);
+                nodePackageProvider.UseService(type);
             }
             param.UsePackages();
             param.ReassignSettings();
