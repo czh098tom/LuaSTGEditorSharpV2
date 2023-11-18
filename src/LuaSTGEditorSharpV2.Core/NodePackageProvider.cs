@@ -33,8 +33,8 @@ namespace LuaSTGEditorSharpV2.Core
 
         private readonly ILogger<NodePackageProvider> _logger = logger;
 
-        private readonly Dictionary<Type, ServiceInfo> _services2Info = new();
-        private readonly Dictionary<string, Type> _shortName2Services = new();
+        private readonly Dictionary<Type, ServiceInfo> _services2Info = [];
+        private readonly Dictionary<string, Type> _shortName2Services = [];
 
         public Type GetServiceTypeOfShortName(string shortName)
         {
@@ -82,19 +82,26 @@ namespace LuaSTGEditorSharpV2.Core
 
         public IReadOnlyList<Assembly> LoadPackage(string packageName)
         {
+            _logger.LogInformation("Begin loading package \"{package_name}\"", packageName);
             var path = Process.GetCurrentProcess().MainModule?.FileName;
-            return LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
+            var assemblies = LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
                 ?? throw new InvalidOperationException(), _packageBasePath, packageName));
+            _logger.LogInformation("Loaded package \"{package_name}\"", packageName);
+            return assemblies;
         }
 
         public IReadOnlyList<Assembly> LoadPackageFromDirectory(string basePath)
         {
-            List<Assembly> assembly = new();
-            PackageInfo packageInfo = GetManifest(Path.Combine(basePath, _manifestName));
+            List<Assembly> assembly = [];
+            var manifestPath = Path.Combine(basePath, _manifestName);
+            PackageInfo packageInfo = GetManifest(manifestPath);
+            _logger.LogInformation("Loaded manifest from \"{path}\"", manifestPath);
             if (!string.IsNullOrWhiteSpace(packageInfo.LibraryPath))
             {
-                Assembly asm = Assembly.LoadFrom(Path.Combine(basePath, packageInfo.LibraryPath));
+                var assemblyPath = Path.Combine(basePath, packageInfo.LibraryPath);
+                Assembly asm = Assembly.LoadFrom(assemblyPath);
                 assembly.Add(asm);
+                _logger.LogInformation("Loaded main assembly from \"{path}\"", manifestPath);
                 foreach (var kvp in _services2Info)
                 {
                     var serviceType = kvp.Key;
@@ -105,6 +112,7 @@ namespace LuaSTGEditorSharpV2.Core
                     {
                         asm = Assembly.LoadFrom(serviceAssembly);
                         assembly.Add(asm);
+                        _logger.LogInformation("Loaded service assembly from \"{path}\"", manifestPath);
                     }
                 }
             }
@@ -133,6 +141,8 @@ namespace LuaSTGEditorSharpV2.Core
                             param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
                             param[2] = obj;
                             registerFunc.DynamicInvoke(param);
+                            _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{path}\"", 
+                                param[0], manifestPath);
                         }
                         else
                         {
@@ -141,7 +151,8 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                     catch (JsonException e)
                     {
-                        _logger.LogError("Parsing JSON from \"{fileName}\" failed.", fileName);
+                        _logger.LogException(e);
+                        _logger.LogError("Parsing JSON from \"{file_name}\" failed.", fileName);
                     }
                 }
             }
@@ -152,7 +163,12 @@ namespace LuaSTGEditorSharpV2.Core
                     .Select(t => Activator.CreateInstance(t) as IPackageEntry);
                 foreach (var c in entryClasses)
                 {
-                    c?.InitializePackage();
+                    if (c != null)
+                    {
+                        c.InitializePackage();
+                        _logger.LogInformation("Initialized package with entry class \"{entry_class}\"", 
+                            c.GetType());
+                    }
                 }
             }
             return assembly;
@@ -173,6 +189,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
             catch (System.Exception e)
             {
+                _logger.LogException(e);
                 throw new PackageLoadingException($"Failed to load package manifest at {path} .", e);
             }
         }
