@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LuaSTGEditorSharpV2.Core.Hosting;
+using LuaSTGEditorSharpV2.Core;
 using Microsoft.Extensions.Hosting;
 
 namespace LuaSTGEditorSharpV2.CLI

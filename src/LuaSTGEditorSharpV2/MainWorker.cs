@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
@@ -20,12 +21,13 @@ namespace LuaSTGEditorSharpV2
         {
             try
             {
-                ServiceManager.UseService(typeof(CodeGeneratorServiceBase));
-                ServiceManager.UseService(typeof(ViewModelProviderServiceBase));
-                ServiceManager.UseService(typeof(PropertyViewServiceBase));
-                var resc = ServiceManager.LoadPackage("Core");
-                var lua = ServiceManager.LoadPackage("Lua");
-                var resln = ServiceManager.LoadPackage("LegacyNode");
+                var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
+                nodePackageProvider.UseService(typeof(CodeGeneratorServiceBase));
+                nodePackageProvider.UseService(typeof(ViewModelProviderServiceBase));
+                nodePackageProvider.UseService(typeof(PropertyViewServiceBase));
+                var resc = nodePackageProvider.LoadPackage("Core");
+                var lua = nodePackageProvider.LoadPackage("Lua");
+                var resln = nodePackageProvider.LoadPackage("LegacyNode");
                 ResourceManager.MergeResources();
             }
             catch (Exception ex)

@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using NLog.Extensions.Logging;
 
-using LuaSTGEditorSharpV2.Core.Hosting;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -33,7 +33,6 @@ namespace LuaSTGEditorSharpV2
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
 
                 applicationBuilder.Services.AddLogging(builder => builder.AddNLog());
-                applicationBuilder.Services.AddSingleton<LoggingService>();
                 applicationBuilder.Services.AddHostedService<MainWorker>();
                 return applicationBuilder;
             }, args);

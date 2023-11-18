@@ -11,12 +11,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
-using LuaSTGEditorSharpV2.Core.Exception;
 using Microsoft.Extensions.Logging;
+
+using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public static class ServiceManager
+    public class NodePackageProvider(ILogger<NodePackageProvider> logger)
     {
         private static readonly string _packageBasePath = "package";
         private static readonly string _manifestName = "manifest";
@@ -30,15 +31,17 @@ namespace LuaSTGEditorSharpV2.Core
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
         };
 
-        private static readonly Dictionary<Type, ServiceInfo> _services2Info = new();
-        private static readonly Dictionary<string, Type> _shortName2Services = new();
+        private readonly ILogger<NodePackageProvider> _logger = logger;
 
-        public static Type GetServiceTypeOfShortName(string shortName)
+        private readonly Dictionary<Type, ServiceInfo> _services2Info = new();
+        private readonly Dictionary<string, Type> _shortName2Services = new();
+
+        public Type GetServiceTypeOfShortName(string shortName)
         {
             return _shortName2Services[shortName];
         }
 
-        public static void UseService(Type serviceType)
+        public void UseService(Type serviceType)
         {
             if (serviceType.BaseType?.GetGenericTypeDefinition() == typeof(NodeService<,,>))
             {
@@ -77,17 +80,17 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static IReadOnlyList<Assembly> LoadPackage(string packageName)
+        public IReadOnlyList<Assembly> LoadPackage(string packageName)
         {
             var path = Process.GetCurrentProcess().MainModule?.FileName;
             return LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
                 ?? throw new InvalidOperationException(), _packageBasePath, packageName));
         }
 
-        public static IReadOnlyList<Assembly> LoadPackageFromDirectory(string basePath)
+        public IReadOnlyList<Assembly> LoadPackageFromDirectory(string basePath)
         {
             List<Assembly> assembly = new();
-            PackageInfo packageInfo = LoadManifest(Path.Combine(basePath, _manifestName));
+            PackageInfo packageInfo = GetManifest(Path.Combine(basePath, _manifestName));
             if (!string.IsNullOrWhiteSpace(packageInfo.LibraryPath))
             {
                 Assembly asm = Assembly.LoadFrom(Path.Combine(basePath, packageInfo.LibraryPath));
@@ -138,7 +141,7 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                     catch (JsonException e)
                     {
-                        Hosting.LoggingService.Logger.LogError("Parsing JSON from \"{fileName}\" failed.", fileName);
+                        _logger.LogError("Parsing JSON from \"{fileName}\" failed.", fileName);
                     }
                 }
             }
@@ -155,7 +158,7 @@ namespace LuaSTGEditorSharpV2.Core
             return assembly;
         }
 
-        private static PackageInfo LoadManifest(string path)
+        private PackageInfo GetManifest(string path)
         {
             string manifestString;
             try
@@ -174,7 +177,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void LoadLocalNodeService(LocalNodeServices services)
+        public void LoadLocalNodeService(LocalNodeServices services)
         {
             object?[] param = new object?[3];
             param[1] = services.PackageInfo;
@@ -188,7 +191,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void ReplaceSettingsForServiceIfValid(Type serviceType, JObject settings)
+        public void ReplaceSettingsForServiceIfValid(Type serviceType, JObject settings)
         {
             if (_services2Info.TryGetValue(serviceType, out var serviceInfo))
             {
@@ -199,7 +202,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
+        public void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
             if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType))
             {

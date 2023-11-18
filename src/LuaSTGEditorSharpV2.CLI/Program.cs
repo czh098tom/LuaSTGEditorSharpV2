@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using LuaSTGEditorSharpV2.Core.Hosting;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -15,7 +15,6 @@ namespace LuaSTGEditorSharpV2.CLI
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
 
                 applicationBuilder.Services.AddLogging(builder => builder.AddConsole());
-                applicationBuilder.Services.AddSingleton<LoggingService>();
                 applicationBuilder.Services.AddHostedService<MainWorker>();
                 return applicationBuilder;
             }, args);

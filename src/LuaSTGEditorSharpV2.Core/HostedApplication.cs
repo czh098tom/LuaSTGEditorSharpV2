@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace LuaSTGEditorSharpV2.Core.Hosting
+namespace LuaSTGEditorSharpV2.Core
 {
     public static class HostedApplication
     {
         private static string[]? _args;
 
         private static IHost? _applicationHost;
-        public static IHost ApplicationHost => _applicationHost ?? throw new InvalidOperationException();
 
         public static string[] Args => _args ?? throw new InvalidOperationException();
 
@@ -23,6 +21,7 @@ namespace LuaSTGEditorSharpV2.Core.Hosting
         {
             _args = args;
             var builder = builderFactory();
+            builder.Services.AddSingleton<NodePackageProvider>();
             _applicationHost = builder.Build();
             _applicationHost.RunAsync();
         }
@@ -30,6 +29,13 @@ namespace LuaSTGEditorSharpV2.Core.Hosting
         public static void ShutdownApplication()
         {
             _applicationHost?.StopAsync();
+        }
+
+        public static T GetService<T>() where T : class
+        {
+            if (_applicationHost == null) throw new InvalidOperationException();
+            return _applicationHost.Services.GetService<T>() 
+                ?? throw new InvalidOperationException();
         }
     }
 }
