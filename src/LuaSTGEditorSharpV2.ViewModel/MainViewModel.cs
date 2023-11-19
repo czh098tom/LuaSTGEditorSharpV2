@@ -22,5 +22,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         }
 
         public ObservableCollection<DocumentViewModel> Documents { get; private set; } = new();
+
+        public int ActiveDocumentIndex { get; set; } = 0;
     }
 }

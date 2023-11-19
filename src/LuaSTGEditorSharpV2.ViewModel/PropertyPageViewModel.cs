@@ -6,11 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using static LuaSTGEditorSharpV2.ViewModel.PropertyTabViewModel;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class PropertyPageViewModel : BaseViewModel
     {
+        public class TabItemValueUpdatedEventArgs(PropertyTabViewModel tab,
+            ItemValueUpdatedEventArgs args) : EventArgs
+        {
+            public PropertyTabViewModel Tab { get; private set; } = tab;
+            public ItemValueUpdatedEventArgs Args { get; private set; } = args;
+        }
+
         public NodeData? Source { get; private set; }
 
         public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = new();
@@ -25,6 +33,20 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 _selectedIndex = value;
                 RaisePropertyChanged();
             }
+        }
+
+        public event EventHandler<TabItemValueUpdatedEventArgs>? OnTabItemValueUpdated;
+
+        public PropertyPageViewModel()
+        {
+            Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
+                (vm=> vm.OnItemValueUpdated += Tab_OnItemValueUpdated);
+        }
+
+        private void Tab_OnItemValueUpdated(object? sender, ItemValueUpdatedEventArgs e)
+        {
+            if (sender is not PropertyTabViewModel vm) return;
+            OnTabItemValueUpdated?.Invoke(this, new TabItemValueUpdatedEventArgs(vm, e));
         }
 
         public void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels, NodeData source)
