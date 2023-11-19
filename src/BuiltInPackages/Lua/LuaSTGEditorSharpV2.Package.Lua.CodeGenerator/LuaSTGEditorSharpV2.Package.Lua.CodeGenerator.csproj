@@ -15,31 +15,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
       <ExcludeAssets>manifest</ExcludeAssets>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>false</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj">
       <ExcludeAssets>**\*.cgen</ExcludeAssets>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>false</Private>
     </ProjectReference>
-    <ProjectReference Include="LuaSTGEditorSharpV2.Package.Lua.csproj">
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Package.Lua\LuaSTGEditorSharpV2.Package.Lua.csproj">
       <ExcludeAssets>manifest</ExcludeAssets>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>false</Private>
     </ProjectReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="LuaSTGEditorSharpV2.Core">
-      <Private>false</Private>
-      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="LuaSTGEditorSharpV2.Core.CodeGenerator">
-      <Private>false</Private>
-      <HintPath>..\..\..\..\bin\$(Configuration)\LuaSTGEditorSharpV2.Core.CodeGenerator.dll</HintPath>
-    </Reference>
-    <Reference Include="LuaSTGEditorSharpV2.Package.Lua">
-      <Private>false</Private>
-      <HintPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\LuaSTGEditorSharpV2.Package.Lua.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
