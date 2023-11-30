@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Function",
+	"Language": "Lua",
+	"Captures":[
+		{"Capture":"name"},
+		{"Capture":"parameters"},
+		{"Capture":"localized"}
+	],
+	"Head": [
+		{
+			"Code":"local function {1}({2})",
+			"ConditionOn":"localized"
+		},
+		{
+			"Code":"function {1}({2})",
+			"ConditionOn":"localized",
+			"Inversed":"true"
+		}
+	],
+	"Tail": [{"Code":"end"}]
+  }

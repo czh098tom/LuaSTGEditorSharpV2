@@ -1,12 +1,16 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "BulletInit",
+	"TypeUID": "LaserInit",
 	"Captures": [
-		{ "Capture":"parameters" },
-		{ "Capture":"style" },
-		{ "Capture":"color" },
-		{ "Capture":"stay" },
-		{ "Capture":"destroyable" }
+		{ "Capture": "parameters" },
+		{ "Capture": "color" },
+		{ "Capture": "style" },
+		{ "Capture": "head_length" },
+		{ "Capture": "body_length" },
+		{ "Capture": "tail_length" },
+		{ "Capture": "width" },
+		{ "Capture": "node_size" },
+		{ "Capture": "head_size" }
 	],
 	"Head": [
 		{
@@ -20,9 +24,10 @@
 			"UseExistance": "true",
 			"Inversed": "true"
 		},
-		{ "Code": "{0}self.x, self.y = _x, _y" }
+		{ "Code": "{0}laser.init(self, {2}, _x, _y, 0, {4}, {5}, {6}, {7}, {8}, {9})" },
+		{ "Code": "{0}laser.ChangeImage(self, {3})" }
 	],
 	"Tail": [
-		{ "Code" : "end"}
+		{ "Code" : "end" }
 	]
 }

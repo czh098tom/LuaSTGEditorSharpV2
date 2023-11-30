@@ -12,7 +12,7 @@
 			"Inversed":"false"
 		},
 		{
-			"Code":"task._Wait({1})",
+			"Code":"task._Wait()",
 			"ConditionOn":"time",
 			"UseExistance":"true",
 			"Inversed":"true"

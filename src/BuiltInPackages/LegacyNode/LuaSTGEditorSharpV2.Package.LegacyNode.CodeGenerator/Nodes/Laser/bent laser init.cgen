@@ -1,12 +1,13 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "BulletInit",
+	"TypeUID": "BentLaserInit",
 	"Captures": [
-		{ "Capture":"parameters" },
-		{ "Capture":"style" },
-		{ "Capture":"color" },
-		{ "Capture":"stay" },
-		{ "Capture":"destroyable" }
+		{ "Capture": "parameters" },
+		{ "Capture": "color" },
+		{ "Capture": "length" },
+		{ "Capture": "width" },
+		{ "Capture": "sampling" },
+		{ "Capture": "node_size" }
 	],
 	"Head": [
 		{
@@ -20,9 +21,9 @@
 			"UseExistance": "true",
 			"Inversed": "true"
 		},
-		{ "Code": "{0}self.x, self.y = _x, _y" }
+		{ "Code": "{0}laser_bent.init(self, {2}, _x, _y, 0, {4}, {5}, {6}, {7}, {8}, {9})" }
 	],
 	"Tail": [
-		{ "Code" : "end"}
+		{ "Code" : "end" }
 	]
 }

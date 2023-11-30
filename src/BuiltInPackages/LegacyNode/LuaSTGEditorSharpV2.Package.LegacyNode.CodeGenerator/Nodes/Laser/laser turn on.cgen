@@ -1,0 +1,11 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LaserTurnOn",
+	"Captures":[
+		{"Capture":"target"}, 
+		{"Capture":"time"},
+		{"capture":"play_sound_effect"},
+		{"capture":"wait"}
+	],
+	"Head": "laser._TurnOn({1}, {2}, {3}, {4})"
+  }

@@ -1,0 +1,43 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ObjectInit",
+	"Captures": [
+		{ "Capture": "parameters" },
+		{ "Capture": "image" },
+		{ "Capture": "layer" },
+		{ "Capture": "group" },
+		{ "Capture": "hide" },
+		{ "Capture": "bound" },
+		{ "Capture": "navigate" },
+		{ "Capture": "hp" },
+		{ "Capture": "collision" }
+	],
+	"Head": [
+		{
+			"Code": "function _temporary_class:init(self, _x, _y, {1})",
+			"ConditionOn": "parameter",
+			"UseExistance": "true"
+		},
+		{
+			"Code": "function _temporary_class:init(self, _x, _y)",
+			"ConditionOn": "parameter",
+			"UseExistance": "true",
+			"Inversed": "true"
+		},
+		{ "Code": "{0}self.x, self.y = _x, _y" },
+		{ "Code": "{0}self.img = {2}" },
+		{ "Code": "{0}self.layer = {3}" },
+		{ "Code": "{0}self.group = {4}" },
+		{ "Code": "{0}self.hide = {5}" },
+		{ "Code": "{0}self.bound = {6}" },
+		{ "Code": "{0}self.navi = {7}" },
+		{ "Code": "{0}self.hp = {8}" },
+		{ "Code": "{0}self.maxhp = {8}" },
+		{ "Code": "{0}self.colli = {9}" },
+		{ "Code": "{0}self.servants = {}" },
+		{ "Code": "{0}self._blend, self._a, self._r, self._g, self._b = '', 255, 255, 255, 255" }
+	],
+	"Tail": [
+		{ "Code" : "end" }
+	]
+}
