@@ -165,9 +165,17 @@ namespace LuaSTGEditorSharpV2.Core
                 {
                     if (c != null)
                     {
-                        c.InitializePackage();
-                        _logger.LogInformation("Initialized package with entry class \"{entry_class}\"", 
-                            c.GetType());
+                        try
+                        {
+                            c.InitializePackage();
+                            _logger.LogInformation("Initialized package with entry class \"{entry_class}\"",
+                                c.GetType());
+                        }
+                        catch (System.Exception e)
+                        {
+                            _logger.LogException(e);
+                            _logger.LogError("Initialization of package from entry class \"{entry_class}\" failed", c.GetType());
+                        }
                     }
                 }
             }

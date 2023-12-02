@@ -12,27 +12,24 @@
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
         xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel;assembly=LuaSTGEditorSharpV2.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         x:Class="LuaSTGEditorSharpV2.MainWindow"
         mc:Ignorable="d"
         Title="LuaSTG Editor Sharp V2" Height="450" Width="800">
     <Window.Resources>
         <DataTemplate x:Key="defaultPropertyView">
-            <Grid Margin="0,0,0,5">
+            <!-- 
+            Bind datacontext to itself once to prevent parent regenerate datacontext for its children
+            before children's lostfocus event fired.
+            -->
+            <Grid Margin="0,0,0,5" DataContext="{Binding .,Mode=OneTime}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="16" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding Name}" />
-                <TextBox Grid.Column="1" Text="{Binding Value, Mode=OneWay}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="LostFocus">
-                            <i:InvokeCommandAction PassEventArgsToCommand="True"
-                                Command="{Binding CommitEdit, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBox>
+                <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                 <Button Grid.Column="2" Height="16" Content="...">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
@@ -74,14 +71,14 @@
             <xcad:DockingManager.Resources>
                 <DataTemplate DataType="{x:Type lvm:DocumentViewModel}"> 
                     <TreeView FontFamily="Terminal"
-                                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
-                                              ItemsSource="{Binding Tree}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
+                              ItemsSource="{Binding Tree}" SelectedItemChanged="TreeView_SelectedItemChanged">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{Binding Icon}"
-                                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" 
-                                                           VerticalAlignment="Top"/>
+                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" 
+                                           VerticalAlignment="Top"/>
                                     <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
                                 </StackPanel>
                             </HierarchicalDataTemplate>
@@ -95,7 +92,7 @@
                         <xcad:LayoutAnchorable Title="Property">
                             <Grid DataContext="{Binding PropertyPage}">
                                 <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
-                                            SelectedIndex="{Binding SelectedIndex}">
+                                            SelectedIndex="{Binding SelectedIndex}" >
                                     <TabControl.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Caption}"/>

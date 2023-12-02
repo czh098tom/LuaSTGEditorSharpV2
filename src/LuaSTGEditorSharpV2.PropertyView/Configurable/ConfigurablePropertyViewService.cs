@@ -18,12 +18,12 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     public class ConfigurablePropertyViewService : PropertyViewServiceBase
     {
         [JsonProperty]
-        public PropertyViewTabTerm[] Tabs { get; private set; } = Array.Empty<PropertyViewTabTerm>();
+        public PropertyViewTabTerm[] Tabs { get; private set; } = [];
 
         protected override IReadOnlyList<PropertyTabViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
             , PropertyViewContext context)
         {
-            List<PropertyTabViewModel> propertyTabViewModels = new();
+            List<PropertyTabViewModel> propertyTabViewModels = [];
             for (int i = 0; i < Tabs.Length; i++)
             {
                 var mapping = Tabs[i].Mapping;
@@ -33,14 +33,14 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                 {
                     propertyViewModels.Add(new PropertyItemViewModel(
                         mapping[j].LocalizedCaption.GetI18NValueOrDefault(mapping[j].Caption)
-                        , nodeData.GetProperty(mapping[j].Mapping), mapping[j].Type));
+                        , nodeData.GetProperty(mapping[j].Mapping), mapping[j].Editor));
                 }
                 var tab = new PropertyTabViewModel()
                 {
                     Caption = Tabs[i].LocalizedCaption?.GetI18NValueOrDefault(Tabs[i].Caption
                         ?? DefaultViewI18NCaption) ?? DefaultViewI18NCaption
                 };
-                propertyViewModels.ForEach(pvm => tab.Properties.Add(pvm));
+                propertyViewModels.ForEach(tab.Properties.Add);
                 propertyTabViewModels.Add(tab);
             }
             return propertyTabViewModels;
@@ -50,7 +50,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
             int tabIndex, int itemIndex, string edited)
         {
-            return new EditPropertyCommand(nodeData, Tabs[tabIndex].Mapping[itemIndex].Mapping, edited);
+            return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Tabs[tabIndex].Mapping[itemIndex].Mapping, edited);
         }
     }
 }

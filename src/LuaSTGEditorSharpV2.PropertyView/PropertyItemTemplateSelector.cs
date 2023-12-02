@@ -21,7 +21,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
             if (item is not PropertyItemViewModel vm) throw new ArgumentException($"{nameof(item)} is not a {nameof(PropertyItemViewModel)}");
             if (dataTemplates != null && vm.Type != null)
             {
-                string key = $"property:{vm.Type}";
+                string type = vm.Type.Name;
+                string key = $"property:{type}";
                 if (dataTemplates.Contains(key))
                 {
                     return (DataTemplate)dataTemplates[key];

@@ -8,9 +8,15 @@ namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class PropertyItemViewModel : BaseViewModel
     {
+        public class ValueUpdatedEventArgs(string old, string @new) : EventArgs
+        {
+            public string OldValue { get; private set; } = old;
+            public string NewValue { get; private set; } = @new;
+        }
+
         private string _name;
         private string _value;
-        private string _type;
+        private PropertyViewEditorType? _type;
 
         public string Name
         {
@@ -27,12 +33,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
             get => _value;
             set
             {
+                var oldValue = _value;
                 _value = value;
                 RaisePropertyChanged();
+                OnValueUpdated?.Invoke(this, new ValueUpdatedEventArgs(oldValue, value));
             }
         }
 
-        public string Type
+        public PropertyViewEditorType? Type
         {
             get => _type;
             set
@@ -42,7 +50,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
-        public PropertyItemViewModel(string name, string value, string type = "")
+        public event EventHandler<ValueUpdatedEventArgs>? OnValueUpdated;
+
+        public PropertyItemViewModel(string name, string value, PropertyViewEditorType? type = null)
         {
             _name = name;
             _value = value;

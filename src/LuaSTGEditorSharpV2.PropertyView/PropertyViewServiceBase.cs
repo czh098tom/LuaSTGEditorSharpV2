@@ -23,7 +23,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         private static readonly PropertyViewServiceBase _defaultService = new();
 
-        private static readonly List<string> _resourceDictUris = new();
+        private static readonly List<string> _resourceDictUris = 
+            [ "pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/PropertyView.xaml" ];
 
         private static readonly string _nativeViewI18NKey = "native_view";
         private static readonly string _defaultViewI18NKey = "default_view";
@@ -102,7 +103,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 Caption = NativeViewI18NCaption
             };
-            result.ForEach(ivm => tab.Properties.Add(ivm));
+            result.ForEach(tab.Properties.Add);
             return tab;
         }
 

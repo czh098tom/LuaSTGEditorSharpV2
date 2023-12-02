@@ -12,12 +12,14 @@ namespace LuaSTGEditorSharpV2.Core.Model
     [Serializable]
     public class NodeData
     {
+        public static readonly NodeData Empty = new();
+
         [JsonProperty]
         public string TypeUID { get; private set; } = string.Empty;
         [JsonProperty]
         public bool IsActive { get; set; } = true;
         [JsonProperty]
-        public Dictionary<string, string> Properties { get; private set; } = new();
+        public Dictionary<string, string> Properties { get; private set; } = [];
 
         [JsonIgnore]
         public IReadOnlyList<NodeData> PhysicalChildren => _physicalChildren;
