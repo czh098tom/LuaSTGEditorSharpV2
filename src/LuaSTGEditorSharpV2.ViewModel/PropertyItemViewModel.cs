@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private string _name;
         private string _value;
-        private string _type;
+        private PropertyViewEditorType? _type;
 
         public string Name
         {
@@ -40,7 +40,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
-        public string Type
+        public PropertyViewEditorType? Type
         {
             get => _type;
             set
@@ -52,7 +52,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public event EventHandler<ValueUpdatedEventArgs>? OnValueUpdated;
 
-        public PropertyItemViewModel(string name, string value, string type = "")
+        public PropertyItemViewModel(string name, string value, PropertyViewEditorType? type = null)
         {
             _name = name;
             _value = value;

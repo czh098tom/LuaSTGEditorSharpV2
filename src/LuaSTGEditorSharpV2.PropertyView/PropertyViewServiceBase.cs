@@ -103,7 +103,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 Caption = NativeViewI18NCaption
             };
-            result.ForEach(ivm => tab.Properties.Add(ivm));
+            result.ForEach(tab.Properties.Add);
             return tab;
         }
 

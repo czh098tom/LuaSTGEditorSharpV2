@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                 {
                     propertyViewModels.Add(new PropertyItemViewModel(
                         mapping[j].LocalizedCaption.GetI18NValueOrDefault(mapping[j].Caption)
-                        , nodeData.GetProperty(mapping[j].Mapping), mapping[j].Type));
+                        , nodeData.GetProperty(mapping[j].Mapping), mapping[j].Editor));
                 }
                 var tab = new PropertyTabViewModel()
                 {
