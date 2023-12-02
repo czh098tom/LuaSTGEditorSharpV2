@@ -24,12 +24,16 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute(LocalServiceParam param)
         {
-            ViewModelProviderServiceBase.InsertNodeAt(Parent, Position, Child, param);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .InsertNodeAt(Parent, Position, Child, param);
         }
 
         protected override void RevertExecution(LocalServiceParam param)
         {
-            ViewModelProviderServiceBase.RemoveNodeAt(Parent, Position);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .RemoveNodeAt(Parent, Position);
         }
     }
 }

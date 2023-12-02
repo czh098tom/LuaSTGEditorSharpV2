@@ -21,7 +21,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 
         private string?[]? _captureResult;
 
-        protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
+        internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
             _captureResult ??= new string[GetCaptureCacheLength()];
             int n;

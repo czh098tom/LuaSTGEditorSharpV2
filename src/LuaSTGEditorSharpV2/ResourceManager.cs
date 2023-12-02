@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2
@@ -13,7 +14,7 @@ namespace LuaSTGEditorSharpV2
     {
         public static void MergeResources()
         {
-            foreach (string uri in PropertyViewServiceBase.ResourceDictUris)
+            foreach (string uri in HostedApplicationHelper.GetService<PropertyViewServiceProvider>().ResourceDictUris)
             {
                 ResourceDictionary dictionary = new()
                 {

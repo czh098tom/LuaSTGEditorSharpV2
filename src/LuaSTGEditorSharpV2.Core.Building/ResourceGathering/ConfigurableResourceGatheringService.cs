@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
                     yield return new GroupedResource(path, s);
                 }
             }
-            foreach (var rs in ProceedChildren(node, context))
+            foreach (var rs in GetServiceProvider().ProceedChildren(node, context))
             {
                 yield return rs;
             }

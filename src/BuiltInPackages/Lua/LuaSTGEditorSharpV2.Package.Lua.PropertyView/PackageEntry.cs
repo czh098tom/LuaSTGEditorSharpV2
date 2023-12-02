@@ -9,7 +9,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView
     {
         public void InitializePackage()
         {
-            PropertyViewServiceBase.AddResourceDictUri(
+            HostedApplicationHelper.GetService<PropertyViewServiceProvider>().AddResourceDictUri(
                 "pack://application:,,,/LuaSTGEditorSharpV2.Package.Lua.PropertyView;component/PropertyView.xaml");
         }
     }

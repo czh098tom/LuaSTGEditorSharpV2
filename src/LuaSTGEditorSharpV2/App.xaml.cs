@@ -14,6 +14,9 @@ using NLog;
 using NLog.Extensions.Logging;
 
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.CodeGenerator;
+using LuaSTGEditorSharpV2.PropertyView;
+using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -28,7 +31,10 @@ namespace LuaSTGEditorSharpV2
 
             var args = e.Args;
 
-            HostedApplication.SetUpHost(() =>
+            HostedApplicationHelper.AddNodeServiceProvider(typeof(CodeGeneratorServiceProvider));
+            HostedApplicationHelper.AddNodeServiceProvider(typeof(ViewModelProviderServiceProvider));
+            HostedApplicationHelper.AddNodeServiceProvider(typeof(PropertyViewServiceProvider));
+            HostedApplicationHelper.SetUpHost(() =>
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
 

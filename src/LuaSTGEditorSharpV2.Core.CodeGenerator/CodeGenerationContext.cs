@@ -11,6 +11,9 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
     public class CodeGenerationContext : NodeContext<CodeGenerationServiceSettings>
     {
+        private static CodeGeneratorServiceProvider CodeGeneratorServiceProvider =>
+            HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>();
+
         private readonly Dictionary<NodeData, Dictionary<string, string>> _contextVariables = new();
         private readonly Stack<LanguageBase?> _languageEnvironment = new();
         private LanguageBase? _nearestLanguage = null;
@@ -35,8 +38,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 
         public override void Push(NodeData current)
         {
-            _contextVariables.Add(current, new Dictionary<string, string>());
-            var lang = CodeGeneratorServiceBase.GetLanguageOfNode(current);
+            _contextVariables.Add(current, []);
+            var lang = CodeGeneratorServiceProvider.GetLanguageOfNode(current);
             _languageEnvironment.Push(lang);
             if (lang != null)
             {
@@ -73,7 +76,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             {
                 if (node.HasProperty("replace") && node.HasProperty("by"))
                 {
-                    original = (CodeGeneratorServiceBase.GetLanguageOfNode(curr) ?? _nearestLanguage)
+                    original = (CodeGeneratorServiceProvider.GetLanguageOfNode(curr) ?? _nearestLanguage)
                         ?.ApplyMacroWithString(original, node.GetProperty("replace"), node.GetProperty("by"))
                         ?? original;
                 }

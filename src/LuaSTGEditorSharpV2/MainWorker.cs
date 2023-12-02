@@ -21,10 +21,8 @@ namespace LuaSTGEditorSharpV2
         {
             try
             {
-                var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
-                nodePackageProvider.UseService(typeof(CodeGeneratorServiceBase));
-                nodePackageProvider.UseService(typeof(ViewModelProviderServiceBase));
-                nodePackageProvider.UseService(typeof(PropertyViewServiceBase));
+                HostedApplicationHelper.InitNodeService();
+                var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
                 var resc = nodePackageProvider.LoadPackage("Core");
                 var lua = nodePackageProvider.LoadPackage("Lua");
                 var resln = nodePackageProvider.LoadPackage("LegacyNode");

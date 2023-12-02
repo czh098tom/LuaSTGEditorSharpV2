@@ -17,7 +17,9 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildAction
             var compileRoot = context.LocalSettings.Source.FindCompileRoot();
             if (compileRoot != null)
             {
-                CodeGeneratorServiceBase.GenerateCode(compileRoot, context.LocalSettings);
+                HostedApplicationHelper
+                    .GetService<CodeGeneratorServiceProvider>()
+                    .GenerateCode(compileRoot, context.LocalSettings);
             }
             await base.BuildWithContextAsync(node, context);
         }

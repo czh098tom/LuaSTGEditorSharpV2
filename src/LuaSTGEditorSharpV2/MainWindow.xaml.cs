@@ -54,18 +54,18 @@ namespace LuaSTGEditorSharpV2
                 vm.Documents.Add(dvm);
                 DataContext = vm;
 
-                dvm.Tree.Add(ViewModelProviderServiceBase.CreateViewModelRecursive(doc.Root, new LocalServiceParam(doc)));
+                dvm.Tree.Add(HostedApplicationHelper.GetService<ViewModelProviderServiceProvider>().CreateViewModelRecursive(doc.Root, new LocalServiceParam(doc)));
 
                 vm.PropertyPage.OnTabItemValueUpdated += (o, e) =>
                 {
                     var param = new LocalServiceParam(doc);
-                    var command = PropertyViewServiceBase.GetCommandOfEditingNode(
+                    var command = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetCommandOfEditingNode(
                         vm.PropertyPage.Source ?? NodeData.Empty,
                         param, vm.PropertyPage.Tabs, vm.PropertyPage.Tabs.IndexOf(e.Tab),
                         e.Tab.Properties.IndexOf(e.Args.Item),
                         e.Args.Args.NewValue);
                     doc.CommandBuffer.Execute(command, param);
-                    var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(vm.PropertyPage.Source ?? NodeData.Empty, param);
+                    var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(vm.PropertyPage.Source ?? NodeData.Empty, param);
                     vm.PropertyPage.LoadProperties(list, vm.PropertyPage.Source ?? NodeData.Empty);
                 };
             }
@@ -98,7 +98,7 @@ namespace LuaSTGEditorSharpV2
             var param = new LocalServiceParam(doc);
             if (tree?.SelectedItem is NodeViewModel selectedVM)
             {
-                var list = PropertyViewServiceBase.GetPropertyViewModelOfNode(selectedVM.Source, param);
+                var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(selectedVM.Source, param);
                 vm.PropertyPage.LoadProperties(list, selectedVM.Source);
                 _propertyTab.SelectedIndex = 0;
             }
