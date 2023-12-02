@@ -45,7 +45,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
                 using (FileStream fs = new(targetName, FileMode.Create, FileAccess.Write))
                 {
                     using StreamWriter sw = new(fs, Encoding.UTF8);
-                    foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, context.LocalSettings))
+                    foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>().GenerateCode(root, context.LocalSettings))
                     {
                         sw.Write(codeData.Content);
                     }

@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
     {
         [JsonProperty] public string Icon { get; private set; } = "";
 
-        protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
+        internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
             var array = dataSource.GetProperty("code").Split('\n');
             if (array.Length > 1)

@@ -9,11 +9,13 @@ using Microsoft.Extensions.Hosting;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public static class HostedApplication
+    public static class HostedApplicationHelper
     {
         private static string[]? _args;
 
         private static IHost? _applicationHost;
+
+        private static List<Type> nodeServiceProviderTypes = [];
 
         public static string[] Args => _args ?? throw new InvalidOperationException();
 
@@ -21,9 +23,26 @@ namespace LuaSTGEditorSharpV2.Core
         {
             _args = args;
             var builder = builderFactory();
+            foreach (var type in nodeServiceProviderTypes)
+            {
+                builder.Services.AddSingleton(type);
+            }
             builder.Services.AddSingleton<NodePackageProvider>();
             _applicationHost = builder.Build();
             _applicationHost.RunAsync();
+        }
+
+        public static void InitNodeService()
+        {
+            foreach (var type in nodeServiceProviderTypes)
+            {
+                GetService<NodePackageProvider>().UseServiceProvider(type);
+            }
+        }
+
+        public static void AddNodeServiceProvider(Type nodeServiceProvider)
+        {
+            nodeServiceProviderTypes.Add(nodeServiceProvider);
         }
 
         public static void ShutdownApplication()
@@ -34,7 +53,14 @@ namespace LuaSTGEditorSharpV2.Core
         public static T GetService<T>() where T : class
         {
             if (_applicationHost == null) throw new InvalidOperationException();
-            return _applicationHost.Services.GetService<T>() 
+            return _applicationHost.Services.GetService<T>()
+                ?? throw new InvalidOperationException();
+        }
+
+        internal static object GetService(Type type)
+        {
+            if (_applicationHost == null) throw new InvalidOperationException();
+            return _applicationHost.Services.GetService(type)
                 ?? throw new InvalidOperationException();
         }
     }

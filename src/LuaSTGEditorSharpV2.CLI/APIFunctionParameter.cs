@@ -35,7 +35,7 @@ namespace LuaSTGEditorSharpV2.CLI
         public void UsePackages()
         {
             if (Packages == null) return;
-            var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
+            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
             foreach (var p in Packages)
             {
                 nodePackageProvider.LoadPackage(p);
@@ -45,7 +45,7 @@ namespace LuaSTGEditorSharpV2.CLI
         public void ReassignSettings()
         {
             if (ServiceSettings == null) return;
-            var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
+            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
             foreach (var kvp in ServiceSettings)
             {
                 nodePackageProvider.ReplaceSettingsForServiceShortNameIfValid(kvp.Key, kvp.Value);

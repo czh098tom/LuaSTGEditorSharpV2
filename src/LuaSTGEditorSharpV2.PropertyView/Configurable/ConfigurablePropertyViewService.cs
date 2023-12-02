@@ -11,7 +11,6 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
-using System.Reflection;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -20,7 +19,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         [JsonProperty]
         public PropertyViewTabTerm[] Tabs { get; private set; } = [];
 
-        protected override IReadOnlyList<PropertyTabViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
+        internal protected override IReadOnlyList<PropertyTabViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
             , PropertyViewContext context)
         {
             List<PropertyTabViewModel> propertyTabViewModels = [];
@@ -38,7 +37,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                 var tab = new PropertyTabViewModel()
                 {
                     Caption = Tabs[i].LocalizedCaption?.GetI18NValueOrDefault(Tabs[i].Caption
-                        ?? DefaultViewI18NCaption) ?? DefaultViewI18NCaption
+                        ?? PropertyViewServiceProvider.DefaultViewI18NCaption) ?? PropertyViewServiceProvider.DefaultViewI18NCaption
                 };
                 propertyViewModels.ForEach(tab.Properties.Add);
                 propertyTabViewModels.Add(tab);
@@ -46,7 +45,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return propertyTabViewModels;
         }
 
-        protected override CommandBase ResolveCommandOfEditingNode(NodeData nodeData, 
+        internal protected override CommandBase ResolveCommandOfEditingNode(NodeData nodeData, 
             PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
             int tabIndex, int itemIndex, string edited)
         {

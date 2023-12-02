@@ -12,18 +12,19 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var args = HostedApplication.Args;
+            var args = HostedApplicationHelper.Args;
             APIFunctionRegistration.Register();
             var param = APIFunctionParameter.ParseFromCommandLineArgs(args);
             try
             {
+                HostedApplicationHelper.InitNodeService();
                 APIFunction.FindAndExecute(args[0], param);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            HostedApplication.ShutdownApplication();
+            HostedApplicationHelper.ShutdownApplication();
             return Task.CompletedTask;
         }
     }

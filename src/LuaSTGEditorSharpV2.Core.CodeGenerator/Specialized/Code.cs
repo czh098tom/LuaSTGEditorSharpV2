@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Specialized
     [Serializable]
     public class Code : CodeGeneratorServiceBase
     {
-        protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
+        internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
             StringBuilder sb = context.ApplyIndented(context.GetIndented()
                 , context.ApplyMacro(node, node.GetProperty("code")));

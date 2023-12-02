@@ -18,91 +18,40 @@ namespace LuaSTGEditorSharpV2.Core
     /// <typeparam name="TService"> The service itself. </typeparam>
     /// <typeparam name="TContext"> The context that preserves frequently used data for this service. </typeparam>
     /// <typeparam name="TSettings"> The singleton settings used by this service during the lifecycle of the application. </typeparam>
-    /// <remarks> 
-    /// TODO: add parameter <see cref="TSettings"/> for all subclass on recursive functions 
-    /// (ensure consistency of <see cref="TSettings"/> for all recursion call because it may be replaced) 
-    /// </remarks>
-    public abstract class NodeService<TService, TContext, TSettings>
-        where TService : NodeService<TService, TContext, TSettings>
+    public abstract class NodeService<TServiceProvider, TService, TContext, TSettings>
+        where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
+        where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContext<TSettings>
         where TSettings : ServiceExtraSettings<TSettings>, new()
     {
-        protected static Func<TService> _defaultServiceGetter = () => throw new NotImplementedException();
-        private static readonly Dictionary<string, PriorityQueue<TService, PackageInfo>> _registered = new();
-
         protected static TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
 
-        public static void Register(string typeID, PackageInfo packageInfo, TService service)
+        protected static TServiceProvider GetServiceProvider()
         {
-            try
-            {
-                if (!_registered.ContainsKey(typeID))
-                {
-                    _registered.Add(typeID, new PriorityQueue<TService, PackageInfo>());
-                }
-                _registered[typeID].Enqueue(service, packageInfo);
-            }
-            catch (ArgumentException e)
-            {
-                throw new DuplicatedTypeIDException(typeID, e);
-            }
-        }
-
-        public static void UnloadPackage(PackageInfo packageInfo)
-        {
-            List<TService> services = new();
-            List<PackageInfo> packageInfos = new();
-            foreach (var kvp in _registered)
-            {
-                var pq = kvp.Value;
-                services.Clear();
-                packageInfos.Clear();
-                services.Capacity = services.Capacity < pq.Count ? pq.Count : services.Capacity;
-                packageInfos.Capacity = packageInfos.Capacity < pq.Count ? pq.Count : packageInfos.Capacity;
-                while (pq.TryDequeue(out TService? s, out PackageInfo? pi))
-                {
-                    if (pi != packageInfo)
-                    {
-                        services.Add(s);
-                        packageInfos.Add(pi);
-                    }
-                }
-                for (int i = 0; i < services.Count; i++)
-                {
-                    pq.Enqueue(services[i], packageInfos[i]);
-                }
-            }
-        }
-
-        protected static TService GetServiceOfTypeID(string typeUID)
-        {
-            if (_registered.ContainsKey(typeUID) && _registered[typeUID].Count > 0)
-            {
-                return _registered[typeUID].Peek();
-            }
-            return _defaultServiceGetter();
-        }
-
-        protected static TService GetServiceOfNode(NodeData node)
-        {
-            return GetServiceOfTypeID(node.TypeUID);
+            return HostedApplicationHelper.GetService<TServiceProvider>();
         }
 
         protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam)
-            => GetContextOfNode(node, localParam, ServiceSettings);
+            => GetServiceProvider().GetContextOfNode(node, localParam, ServiceSettings);
 
         protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
         {
-            var service = GetServiceOfTypeID(node.TypeUID);
+            var service = GetServiceProvider().GetServiceOfTypeID(node.TypeUID);
             return service.BuildContextForNode(node, localParam, serviceSettings);
         }
+
+        protected static TService GetServiceOfTypeID(string typeUID)
+            => GetServiceProvider().GetServiceOfTypeID(typeUID);
+
+        protected static TService GetServiceOfNode(NodeData node)
+            => GetServiceProvider().GetServiceOfNode(node);
 
         [JsonProperty]
         public string TypeUID { get; protected set; } = string.Empty;
 
         public TContext GetEmptyContext(LocalServiceParam localParam)
         {
-            return GetEmptyContext(localParam, ServiceSettings);
+            return GetEmptyContext(localParam, ServiceExtraSettings<TSettings>.Instance);
         }
 
         /// <summary>
@@ -128,7 +77,7 @@ namespace LuaSTGEditorSharpV2.Core
         protected TContext BuildContextForNode(NodeData node, LocalServiceParam localSettings)
             => BuildContextForNode(node, localSettings, ServiceSettings);
 
-        protected TContext BuildContextForNode(NodeData node, LocalServiceParam localSettings, TSettings serviceSettings)
+        internal TContext BuildContextForNode(NodeData node, LocalServiceParam localSettings, TSettings serviceSettings)
         {
             TContext context = GetEmptyContext(localSettings, serviceSettings);
             Stack<NodeData> stack = new();
@@ -146,5 +95,5 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeService : NodeService<DefaultNodeService, DefaultNodeContext, DefaultServiceExtraSettings> { }
+    internal class DefaultNodeService : NodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, DefaultServiceExtraSettings> { }
 }

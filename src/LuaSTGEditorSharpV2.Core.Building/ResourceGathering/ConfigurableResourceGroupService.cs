@@ -18,7 +18,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
             , ResourceGatheringContext context)
         {
             context.PushResourceGroup(node.GetProperty(GroupCapture));
-            foreach(var gs in ProceedChildren(node, context))
+            foreach(var gs in GetServiceProvider().ProceedChildren(node, context))
             {
                 yield return gs;
             }
