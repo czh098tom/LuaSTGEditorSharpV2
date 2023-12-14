@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class PropertyItemViewModel : BaseViewModel
+    public class PropertyItemViewModelBase : BaseViewModel
     {
         public class ValueUpdatedEventArgs(string old, string @new) : EventArgs
         {
@@ -14,19 +14,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
             public string NewValue { get; private set; } = @new;
         }
 
-        private string _name;
-        private string _value;
+        private string _value = string.Empty;
         private PropertyViewEditorType? _type;
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                RaisePropertyChanged();
-            }
-        }
 
         public string Value
         {
@@ -51,12 +40,5 @@ namespace LuaSTGEditorSharpV2.ViewModel
         }
 
         public event EventHandler<ValueUpdatedEventArgs>? OnValueUpdated;
-
-        public PropertyItemViewModel(string name, string value, PropertyViewEditorType? type = null)
-        {
-            _name = name;
-            _value = value;
-            _type = type;
-        }
     }
 }

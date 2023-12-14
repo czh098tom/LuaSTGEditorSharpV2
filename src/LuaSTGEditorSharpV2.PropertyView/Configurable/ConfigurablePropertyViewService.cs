@@ -26,13 +26,16 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             for (int i = 0; i < Tabs.Length; i++)
             {
                 var mapping = Tabs[i].Mapping;
-                List<PropertyItemViewModel> propertyViewModels = new(mapping.Length);
+                List<PropertyItemViewModelBase> propertyViewModels = new(mapping.Length);
 
                 for (int j = 0; j < mapping.Length; j++)
                 {
-                    propertyViewModels.Add(new PropertyItemViewModel(
-                        mapping[j].LocalizedCaption.GetI18NValueOrDefault(mapping[j].Caption)
-                        , nodeData.GetProperty(mapping[j].Mapping), mapping[j].Editor));
+                    propertyViewModels.Add(new BasicPropertyItemViewModel()
+                    {
+                        Name = mapping[j].LocalizedCaption.GetI18NValueOrDefault(mapping[j].Caption),
+                        Value = nodeData.GetProperty(mapping[j].Mapping),
+                        Type = mapping[j].Editor
+                    });
                 }
                 var tab = new PropertyTabViewModel()
                 {
@@ -45,7 +48,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return propertyTabViewModels;
         }
 
-        internal protected override CommandBase ResolveCommandOfEditingNode(NodeData nodeData, 
+        internal protected override CommandBase? ResolveCommandOfEditingNode(NodeData nodeData, 
             PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
             int tabIndex, int itemIndex, string edited)
         {

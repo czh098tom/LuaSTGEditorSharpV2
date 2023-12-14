@@ -12,15 +12,22 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class EditPropertyCommand : CommandBase
     {
-        public static CommandBase CreateEditCommandOnDemand(NodeData node, string propertyName, string afterEdit)
+        public static CommandBase? CreateEditCommandOnDemand(NodeData node, string? propertyName, string afterEdit)
         {
-            if (node.HasProperty(propertyName))
+            if (string.IsNullOrEmpty(propertyName))
             {
-                return new EditPropertyCommand(node, propertyName, afterEdit);
+                return null;
             }
             else
             {
-                return new AddPropertyCommand(node, propertyName, afterEdit);
+                if (node.HasProperty(propertyName))
+                {
+                    return new EditPropertyCommand(node, propertyName, afterEdit);
+                }
+                else
+                {
+                    return new AddPropertyCommand(node, propertyName, afterEdit);
+                }
             }
         }
 

@@ -7,22 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static LuaSTGEditorSharpV2.ViewModel.PropertyItemViewModel;
+using static LuaSTGEditorSharpV2.ViewModel.PropertyItemViewModelBase;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class PropertyTabViewModel : BaseViewModel
     {
-        public class ItemValueUpdatedEventArgs(PropertyItemViewModel item, 
+        public class ItemValueUpdatedEventArgs(PropertyItemViewModelBase item, 
             ValueUpdatedEventArgs args) : EventArgs
         {
-            public PropertyItemViewModel Item { get; private set; } = item;
+            public PropertyItemViewModelBase Item { get; private set; } = item;
             public ValueUpdatedEventArgs Args { get; private set; } = args;
         }
 
         private string caption = string.Empty;
 
-        public ObservableCollection<PropertyItemViewModel> Properties { get; private set; } = new();
+        public ObservableCollection<PropertyItemViewModelBase> Properties { get; private set; } = new();
 
         public string Caption
         {
@@ -38,13 +38,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public PropertyTabViewModel()
         {
-            Properties.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyItemViewModel>
+            Properties.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyItemViewModelBase>
                 (vm => vm.OnValueUpdated += Item_OnValueUpdated);
         }
 
         private void Item_OnValueUpdated(object? sender, ValueUpdatedEventArgs e)
         {
-            if (sender is not PropertyItemViewModel vm) return;
+            if (sender is not PropertyItemViewModelBase vm) return;
             OnItemValueUpdated?.Invoke(this, new ItemValueUpdatedEventArgs(vm, e));
         }
     }
