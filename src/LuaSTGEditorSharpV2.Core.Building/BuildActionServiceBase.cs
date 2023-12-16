@@ -14,47 +14,8 @@ namespace LuaSTGEditorSharpV2.Core.Building
     /// </summary>
     [ServiceShortName("build"), ServiceName("BuildAction")]
     public class BuildActionServiceBase 
-        : NodeService<BuildActionServiceBase, BuildActionContext, BuildActionServiceSettings>
+        : NodeService<BuildActionServiceProvider, BuildActionServiceBase, BuildActionContext, BuildActionServiceSettings>
     {
-        private static readonly BuildActionServiceBase _default = new();
-
-        static BuildActionServiceBase()
-        {
-            _defaultServiceGetter = () => _default;
-        }
-
-        public static Task BuildAsync(NodeData nodeData, LocalServiceParam settings)
-            => BuildAsync(nodeData, settings, ServiceSettings);
-
-        public static async Task BuildAsync(NodeData nodeData, LocalServiceParam settings
-            , BuildActionServiceSettings serviceSettings)
-        {
-            var ctx = GetContextOfNode(nodeData, settings, serviceSettings);
-            var service = GetServiceOfNode(nodeData);
-            await service.BuildWithContextAsync(nodeData, ctx);
-        }
-
-        public static void Build(NodeData nodeData, LocalServiceParam settings)
-            => BuildAsync(nodeData, settings).RunSynchronously();
-
-        public static void Build(NodeData nodeData, LocalServiceParam settings
-            , BuildActionServiceSettings serviceSettings) 
-            => BuildAsync(nodeData, settings, serviceSettings).RunSynchronously();
-
-        public static async Task ProceedChildrenAsync(NodeData node
-            , BuildActionContext context)
-        {
-            context.Push(node);
-            foreach (NodeData child in node.GetLogicalChildren())
-            {
-                await GetServiceOfNode(child).BuildWithContextAsync(child, context);
-            }
-            context.Pop();
-        }
-
-        public static void ProceedChildren(NodeData node, BuildActionContext context) 
-            => ProceedChildrenAsync(node, context).RunSynchronously();
-
         public override sealed BuildActionContext GetEmptyContext(LocalServiceParam localSettings
             , BuildActionServiceSettings serviceSettings)
         {
@@ -63,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
 
         public virtual async Task BuildWithContextAsync(NodeData node, BuildActionContext context)
         {
-            await ProceedChildrenAsync(node, context);
+            await GetServiceProvider().ProceedChildrenAsync(node, context);
         }
 
         public void BuildWithContext(NodeData node, BuildActionContext context)

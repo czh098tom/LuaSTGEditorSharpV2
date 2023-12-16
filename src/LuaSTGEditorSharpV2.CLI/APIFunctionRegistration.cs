@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.CLI
                     {
                         writer = Console.Out;
 
-                        foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalServiceParam(doc)))
+                        foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>().GenerateCode(root, new LocalServiceParam(doc)))
                         {
                             await writer.WriteAsync(codeData.Content);
                         }
@@ -37,7 +37,7 @@ namespace LuaSTGEditorSharpV2.CLI
                         using StreamWriter sr = new(fs);
                         writer = sr;
 
-                        foreach (CodeData codeData in CodeGeneratorServiceBase.GenerateCode(root, new LocalServiceParam(doc)))
+                        foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>().GenerateCode(root, new LocalServiceParam(doc)))
                         {
                             await writer.WriteAsync(codeData.Content);
                         }
@@ -47,7 +47,7 @@ namespace LuaSTGEditorSharpV2.CLI
                     //Console.WriteLine();
                 }
 
-            }, typeof(CodeGeneratorServiceBase));
+            });
             APIFunction.Register("formatxml", (param) =>
             {
                 if (param.InputPath != null)

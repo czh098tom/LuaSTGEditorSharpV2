@@ -33,34 +33,40 @@ namespace LuaSTGEditorSharpV2.Core
 
         private readonly ILogger<NodePackageProvider> _logger = logger;
 
-        private readonly Dictionary<Type, ServiceInfo> _services2Info = [];
-        private readonly Dictionary<string, Type> _shortName2Services = [];
+        private readonly Dictionary<Type, ServiceInfo> _servicesProvider2Info = [];
+        private readonly Dictionary<string, Type> _shortName2ServiceProviders = [];
+
+        public Type GetServiceProviderTypeOfShortName(string shortName)
+        {
+            return _shortName2ServiceProviders[shortName];
+        }
 
         public Type GetServiceTypeOfShortName(string shortName)
         {
-            return _shortName2Services[shortName];
+            return _servicesProvider2Info[GetServiceProviderTypeOfShortName(shortName)].ServiceType;
         }
 
-        public void UseService(Type serviceType)
+        public void UseServiceProvider(Type serviceProviderType)
         {
-            if (serviceType.BaseType?.GetGenericTypeDefinition() == typeof(NodeService<,,>))
+            if (serviceProviderType.BaseType?.GetGenericTypeDefinition() == typeof(NodeServiceProvider<,,,>))
             {
-                string serviceName = serviceType.GetCustomAttribute<ServiceNameAttribute>()?.Name ?? serviceType.Name;
-                string serviceShortName = serviceType.GetCustomAttribute<ServiceShortNameAttribute>()?.Name
-                    ?? serviceType.Name;
-                if (_shortName2Services.ContainsKey(serviceShortName))
+                string serviceName = serviceProviderType.GetCustomAttribute<ServiceNameAttribute>()?.Name ?? serviceProviderType.Name;
+                string serviceShortName = serviceProviderType.GetCustomAttribute<ServiceShortNameAttribute>()?.Name
+                    ?? serviceProviderType.Name;
+                if (_shortName2ServiceProviders.ContainsKey(serviceShortName))
                     throw new InvalidOperationException($"Service Short Name {serviceShortName} Duplicated.");
 
-                Type[] genericArgs = serviceType.BaseType!.GetGenericArguments();
-                Type self = genericArgs[0];
-                Type context = genericArgs[1];
-                Type settings = genericArgs[2];
+                Type[] genericArgs = serviceProviderType.BaseType!.GetGenericArguments();
+                Type provider = genericArgs[0];
+                Type service = genericArgs[1];
+                Type context = genericArgs[2];
+                Type settings = genericArgs[3];
 
                 // find register func
-                MethodInfo reg = serviceType.BaseType!.GetMethod(nameof(DefaultNodeService.Register)
-                    , BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)!;
-                Type regDelegateType = typeof(Action<,,>).MakeGenericType(typeof(string), typeof(PackageInfo)
-                    , self);
+                MethodInfo reg = serviceProviderType.BaseType!.GetMethod(nameof(DefaultNodeServiceProvider.Register)
+                    , BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!;
+                Type regDelegateType = typeof(Action<,,,>).MakeGenericType(provider, typeof(string), typeof(PackageInfo)
+                    , service);
                 Delegate register = reg!.CreateDelegate(regDelegateType);
 
                 // find reassign func
@@ -69,14 +75,14 @@ namespace LuaSTGEditorSharpV2.Core
                 Type reaDelegateType = typeof(Action<>).MakeGenericType(settings);
                 Delegate reassign = rea!.CreateDelegate(reaDelegateType);
 
-                _shortName2Services.Add(serviceShortName, serviceType);
-                _services2Info.Add(serviceType, new ServiceInfo(serviceName, serviceShortName
-                    , genericArgs[1], genericArgs[2]
+                _shortName2ServiceProviders.Add(serviceShortName, serviceProviderType);
+                _servicesProvider2Info.Add(serviceProviderType, new ServiceInfo(serviceName, serviceShortName
+                    , provider, service, genericArgs[1], genericArgs[2]
                     , register, reassign));
             }
             else
             {
-                throw new ArgumentException($"Argument {nameof(serviceType)} is not a NodeService.", nameof(serviceType));
+                throw new ArgumentException($"Argument {nameof(serviceProviderType)} is not a NodeServiceProvider.", nameof(serviceProviderType));
             }
         }
 
@@ -102,9 +108,8 @@ namespace LuaSTGEditorSharpV2.Core
                 Assembly asm = Assembly.LoadFrom(assemblyPath);
                 assembly.Add(asm);
                 _logger.LogInformation("Loaded main assembly from \"{path}\"", manifestPath);
-                foreach (var kvp in _services2Info)
+                foreach (var kvp in _servicesProvider2Info)
                 {
-                    var serviceType = kvp.Key;
                     string serviceName = kvp.Value.Name;
                     string serviceAssembly = Path.Combine(basePath,
                         $"{Path.GetFileNameWithoutExtension(packageInfo.LibraryPath)}.{serviceName}.dll");
@@ -116,11 +121,13 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                 }
             }
-            object?[] param = new object?[3];
-            param[1] = packageInfo;
-            foreach (var kvp in _services2Info)
+            object?[] param = new object?[4];
+            param[2] = packageInfo;
+            foreach (var kvp in _servicesProvider2Info)
             {
-                Type serviceType = kvp.Key;
+                Type serviceProviderType = kvp.Value.ServiceProviderType;
+                Type serviceType = kvp.Value.ServiceType;
+                param[0] = HostedApplicationHelper.GetService(serviceProviderType);
                 Delegate registerFunc = kvp.Value.RegisterFunction;
                 string serviceShortName = kvp.Value.ShortName;
                 foreach (var fileName in Directory.EnumerateFiles(Path.Combine(basePath, _nodeDataBasePath)
@@ -138,11 +145,11 @@ namespace LuaSTGEditorSharpV2.Core
                         obj = JsonConvert.DeserializeObject(def, _serviceDeserializationSettings);
                         if (obj != null && obj.GetType().IsAnyDerivedTypeOf(serviceType))
                         {
-                            param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
-                            param[2] = obj;
+                            param[1] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(obj);
+                            param[3] = obj;
                             registerFunc.DynamicInvoke(param);
-                            _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{path}\"", 
-                                param[0], manifestPath);
+                            _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{path}\"",
+                                param[1], manifestPath);
                         }
                         else
                         {
@@ -165,9 +172,17 @@ namespace LuaSTGEditorSharpV2.Core
                 {
                     if (c != null)
                     {
-                        c.InitializePackage();
-                        _logger.LogInformation("Initialized package with entry class \"{entry_class}\"", 
-                            c.GetType());
+                        try
+                        {
+                            c.InitializePackage();
+                            _logger.LogInformation("Initialized package with entry class \"{entry_class}\"",
+                                c.GetType());
+                        }
+                        catch (System.Exception e)
+                        {
+                            _logger.LogException(e);
+                            _logger.LogError("Initialization of package from entry class \"{entry_class}\" failed", c.GetType());
+                        }
                     }
                 }
             }
@@ -196,21 +211,22 @@ namespace LuaSTGEditorSharpV2.Core
 
         public void LoadLocalNodeService(LocalNodeServices services)
         {
-            object?[] param = new object?[3];
-            param[1] = services.PackageInfo;
+            object?[] param = new object?[4];
+            param[2] = services.PackageInfo;
             foreach (var tup in services.Services)
             {
-                Type serviceType = _shortName2Services[tup.Item2];
-                param[0] = serviceType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(tup.Item1);
-                var info = _services2Info[serviceType];
-                param[2] = tup.Item1;
+                Type serviceProviderType = _shortName2ServiceProviders[tup.Item2];
+                param[0] = HostedApplicationHelper.GetService(serviceProviderType);
+                param[1] = serviceProviderType.BaseType!.GetProperty(nameof(DefaultNodeService.TypeUID))!.GetValue(tup.Item1);
+                var info = _servicesProvider2Info[serviceProviderType];
+                param[3] = tup.Item1;
                 info.RegisterFunction.DynamicInvoke(param);
             }
         }
 
         public void ReplaceSettingsForServiceIfValid(Type serviceType, JObject settings)
         {
-            if (_services2Info.TryGetValue(serviceType, out var serviceInfo))
+            if (_servicesProvider2Info.TryGetValue(serviceType, out var serviceInfo))
             {
                 var settingsType = serviceInfo.SettingsType;
                 var assign = serviceInfo.SettingsReplacementFunction;
@@ -221,9 +237,12 @@ namespace LuaSTGEditorSharpV2.Core
 
         public void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
-            if (_shortName2Services.TryGetValue(serviceShortName, out var serviceType))
+            if (_shortName2ServiceProviders.TryGetValue(serviceShortName, out var serviceProviderType))
             {
-                ReplaceSettingsForServiceIfValid(serviceType, settings);
+                if (_servicesProvider2Info.TryGetValue(serviceProviderType, out var info))
+                {
+                    ReplaceSettingsForServiceIfValid(info.ServiceType, settings);
+                }
             }
         }
     }

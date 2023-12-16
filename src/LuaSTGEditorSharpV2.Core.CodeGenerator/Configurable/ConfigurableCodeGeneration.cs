@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 
         private string?[]? _captureResult;
 
-        protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
+        internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
             _captureResult ??= new string[GetCaptureCacheLength()];
             int n;
@@ -50,7 +50,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 .ApplyIndentedFormat(context.GetIndented(), Head, _captureResult).ToString(), node);
             if (!IgnoreChildren)
             {
-                foreach (var cd in GenerateForChildren(node, context, IndentionIncrement))
+                foreach (var cd in GetServiceProvider().GenerateForChildren(node, context, IndentionIncrement))
                 {
                     yield return cd;
                 }

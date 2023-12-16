@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Core
     {
         private static readonly string _resourceName = "Resources.Text";
 
-        private static readonly Dictionary<Assembly, ResourceManager> _resourceManagers = new();
+        private static readonly Dictionary<Assembly, ResourceManager> _resourceManagers = [];
 
         public static string? GetString(string key, Assembly assembly)
         {

@@ -41,14 +41,18 @@ namespace LuaSTGEditorSharpV2.Core.Command
         {
             _beforeEdit = Node.Properties[PropertyName];
             Node.Properties[PropertyName] = AfterEdit;
-            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node, param);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .UpdateViewModelDataRecursive(Node, param);
         }
 
         protected override void RevertExecution(LocalServiceParam param)
         {
             if (_beforeEdit == null) throw new InvalidOperationException("Command has not been executed yet.");
             Node.Properties[PropertyName] = _beforeEdit;
-            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node, param);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .UpdateViewModelDataRecursive(Node, param);
         }
     }
 }

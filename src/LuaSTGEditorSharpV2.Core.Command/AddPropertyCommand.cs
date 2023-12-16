@@ -25,13 +25,17 @@ namespace LuaSTGEditorSharpV2.Core.Command
         protected override void DoExecute(LocalServiceParam param)
         {
             Node.Properties.Add(PropertyName, Value);
-            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node, param);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .UpdateViewModelDataRecursive(Node, param);
         }
 
         protected override void RevertExecution(LocalServiceParam param)
         {
             Node.Properties.Remove(PropertyName);
-            ViewModelProviderServiceBase.UpdateViewModelDataRecursive(Node, param);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .UpdateViewModelDataRecursive(Node, param);
         }
     }
 }

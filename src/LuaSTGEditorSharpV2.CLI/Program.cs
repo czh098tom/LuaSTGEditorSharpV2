@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.CodeGenerator;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -10,7 +11,8 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         static void Main(string[] args)
         {
-            HostedApplication.SetUpHost(() =>
+            HostedApplicationHelper.AddNodeServiceProvider(typeof(CodeGeneratorServiceProvider));
+            HostedApplicationHelper.SetUpHost(() =>
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
 

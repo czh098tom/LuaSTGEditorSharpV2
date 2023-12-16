@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class DefaultViewModelProviderService : ViewModelProviderServiceBase
     {
-        protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
+        internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
             viewModel.Text = $"[{dataSource.TypeUID}] (Unknown)";
         }

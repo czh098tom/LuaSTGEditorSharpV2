@@ -23,7 +23,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         public override bool IsLeaf() => IsLeafNode;
         public override bool IsInvisible() => false;
 
-        protected override bool CanPlaceAsChildOf(NodeData node, StructuralValidationContext context)
+        public override bool CanPlaceAsChildOf(NodeData node, StructuralValidationContext context)
         {
             if (!base.CanPlaceAsChildOf(node, context)) return false;
             if (!ValidateParent(context)) return false;
@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return true;
         }
 
-        protected override bool CanDeactivate(NodeData node)
+        public override bool CanDeactivate(NodeData node)
         {
             return CanSetInactivate;
         }

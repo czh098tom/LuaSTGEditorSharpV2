@@ -23,13 +23,13 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
         [JsonProperty] public string ErrorText { get; private set; } = "";
         [JsonProperty] public Dictionary<string, string> LocalizedErrorText { get; private set; } = new();
 
-        protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
+        internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
             var shortName = dataSource.GetProperty(ShortNameCaputure);
             var jsonDecl = dataSource.GetProperty(DeclarationCaputure);
             try
             {
-                var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
+                var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
                 var type = nodePackageProvider.GetServiceTypeOfShortName(shortName);
                 var obj = JsonConvert.DeserializeObject(jsonDecl, type);
                 string? uid = type.BaseType?.GetProperty("TypeUID")?.GetValue(obj) as string;

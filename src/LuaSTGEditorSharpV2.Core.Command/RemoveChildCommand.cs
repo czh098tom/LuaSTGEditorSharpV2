@@ -25,13 +25,17 @@ namespace LuaSTGEditorSharpV2.Core.Command
         protected override void DoExecute(LocalServiceParam param)
         {
             child = Parent.PhysicalChildren[Position];
-            ViewModelProviderServiceBase.RemoveNodeAt(Parent, Position);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .RemoveNodeAt(Parent, Position);
         }
 
         protected override void RevertExecution(LocalServiceParam param)
         {
             if (child == null) throw new InvalidOperationException("Command has not been executed yet.");
-            ViewModelProviderServiceBase.InsertNodeAt(Parent, Position, child, param);
+            HostedApplicationHelper
+                .GetService<ViewModelProviderServiceProvider>()
+                .InsertNodeAt(Parent, Position, child, param);
         }
     }
 }

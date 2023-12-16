@@ -10,7 +10,9 @@
           "LocalizedCaption": {
             "zh": "代码"
           },
-          "Type": "code"
+          "Editor": {
+            "Name": "code"
+          }
         }
       ]
     }

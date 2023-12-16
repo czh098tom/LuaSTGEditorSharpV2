@@ -10,11 +10,11 @@ namespace LuaSTGEditorSharpV2.CLI
 {
     public class APIFunction
     {
-        private static readonly Dictionary<string, APIFunction> _apis = new();
+        private static readonly Dictionary<string, APIFunction> _apis = [];
 
-        public static void Register(string name, Action<APIFunctionParameter> execution, params Type[] services)
+        public static void Register(string name, Action<APIFunctionParameter> execution)
         {
-            _apis.Add(name, new APIFunction(name, execution, services));
+            _apis.Add(name, new APIFunction(name, execution));
         }
 
         public static void FindAndExecute(string name, APIFunctionParameter param)
@@ -26,24 +26,18 @@ namespace LuaSTGEditorSharpV2.CLI
         }
 
         public string Name { get; private set; }
-        public IReadOnlyList<Type> Services { get; private set; }
 
         private Action<APIFunctionParameter> _execution;
 
-        private APIFunction(string name, Action<APIFunctionParameter> execution, Type[] services)
+        private APIFunction(string name, Action<APIFunctionParameter> execution)
         {
             Name = name;
-            Services = services;
             _execution = execution;
         }
 
         public void Execute(APIFunctionParameter param)
         {
-            var nodePackageProvider = HostedApplication.GetService<NodePackageProvider>();
-            foreach (Type type in Services)
-            {
-                nodePackageProvider.UseService(type);
-            }
+            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
             param.UsePackages();
             param.ReassignSettings();
             _execution(param);

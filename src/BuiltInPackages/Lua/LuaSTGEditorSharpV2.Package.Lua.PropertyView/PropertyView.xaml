@@ -2,23 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <DataTemplate x:Key="property:code">
-        <Grid Margin="0,0,0,5">
+        <!-- 
+        Bind datacontext to itself once to prevent parent regenerate datacontext for its children
+        before children's lostfocus event fired.
+        -->
+        <Grid Margin="0,0,0,5" DataContext="{Binding .,Mode=OneTime}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="16" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Name}"  />
-            <TextBox Grid.Column="1" Text="{Binding Value, Mode=OneWay}"
-                     AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="LostFocus">
-                        <i:InvokeCommandAction PassEventArgsToCommand="True"
-                                Command="{Binding CommitEdit, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </TextBox>
+            <TextBlock Text="{Binding Name}"/>
+            <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                     AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
             <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
