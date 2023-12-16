@@ -6,17 +6,11 @@ using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.PropertyView;
 
-namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized
+namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
-    public class VariableDefinitionPropertyItemViewModel 
-        : JsonProxiedPropertyItemViewModel<VariableDefinitionPropertyItemViewModel.VariableDefinition>
+    public class VariableDefinitionPropertyItemViewModel
+        : JsonProxiedPropertyItemViewModel<VariableDefinition>
     {
-        public record class VariableDefinition(
-            string Name,
-            string Value
-            )
-        { }
-
         private string _propName = string.Empty;
         private string _propValue = string.Empty;
 
