@@ -16,8 +16,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
     {
         [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
         [JsonProperty] public string Icon { get; private set; } = "";
-        [JsonProperty] public string Text { get; private set; } = "";
-        [JsonProperty] public Dictionary<string, string> LocalizedText { get; private set; } = new();
+        [JsonProperty] public LocalizableString? Text { get; private set; }
 
         private string?[]? _captureResult;
 
@@ -36,7 +35,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 
         private string GetLocalizedTextIfExists()
         {
-            return LocalizedText.GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, Text);
+            return Text?.GetLocalized() ?? string.Empty;
         }
 
         private int GetCaptureCacheLength()

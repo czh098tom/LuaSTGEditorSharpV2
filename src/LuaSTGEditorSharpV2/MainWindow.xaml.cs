@@ -64,7 +64,10 @@ namespace LuaSTGEditorSharpV2
                         param, vm.PropertyPage.Tabs, vm.PropertyPage.Tabs.IndexOf(e.Tab),
                         e.Tab.Properties.IndexOf(e.Args.Item),
                         e.Args.Args.NewValue);
-                    doc.CommandBuffer.Execute(command, param);
+                    if (command != null)
+                    {
+                        doc.CommandBuffer.Execute(command, param);
+                    }
                     var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(vm.PropertyPage.Source ?? NodeData.Empty, param);
                     vm.PropertyPage.LoadProperties(list, vm.PropertyPage.Source ?? NodeData.Empty);
                 };

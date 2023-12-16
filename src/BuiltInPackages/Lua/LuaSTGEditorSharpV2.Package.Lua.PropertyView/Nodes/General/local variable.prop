@@ -1,0 +1,28 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "LocalVariable",
+  "Tabs": [
+    {
+      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.SingleListTabTerm`2[[LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable.LocalVariablePropertyViewItemTerm, LuaSTGEditorSharpV2.Package.Lua.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable.VariableDefinition, LuaSTGEditorSharpV2.Package.Lua.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Count": {
+        "Mapping": "count",
+        "Caption": {
+          "Neutral": "Count",
+          "Localized": {
+            "zh": "数量"
+          }
+        },
+        "Editor": {
+          "Name": "code"
+        }
+      },
+      "VariableProperty": {
+        "NamePrefix": "name",
+        "ValuePrefix": "value",
+        "NameValueEditor": {
+          "Name": "name_value"
+        }
+      }
+    }
+  ]
+}

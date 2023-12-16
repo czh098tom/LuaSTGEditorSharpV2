@@ -3,19 +3,24 @@
   "TypeUID": "ServiceDefinition",
   "Tabs": [
     {
+      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyViewTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
       "Mapping": [
         {
           "Mapping": "serviceShortName",
-          "Caption": "Service Short Name",
-          "LocalizedCaption": {
-            "zh": "服务短名称"
+          "Caption": {
+            "Neutral": "Service Short Name",
+            "Localized": {
+              "zh": "服务短名称"
+            }
           }
         },
         {
           "Mapping": "serviceDeclaration",
-          "Caption": "Service Declaration",
-          "LocalizedCaption": {
-            "zh": "服务定义"
+          "Caption": {
+            "Neutral": "Service Declaration",
+            "Localized": {
+              "zh": "服务定义"
+            }
           },
           "Editor": {
             "Name": "code"

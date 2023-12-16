@@ -2,8 +2,10 @@
   "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "BuildRoot",
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/setting.png",
-  "Text": "Build Configuration",
-  "LocalizedText": {
-    "zh": "构建配置"
+  "Text": {
+    "Neutral": "Build Configuration",
+    "Localized": {
+      "zh": "构建配置"
+    }
   }
 }

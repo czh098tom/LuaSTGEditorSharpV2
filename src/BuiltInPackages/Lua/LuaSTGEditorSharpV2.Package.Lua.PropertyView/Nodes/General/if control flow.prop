@@ -3,12 +3,15 @@
   "TypeUID": "If",
   "Tabs": [
     {
+      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyViewTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
       "Mapping": [
         {
           "Mapping": "condition",
-          "Caption": "Condition",
-          "LocalizedCaption": {
-            "zh": "条件"
+          "Caption": {
+            "Neutral": "Condition",
+            "Localized": {
+              "zh": "条件"
+            }
           }
         }
       ]

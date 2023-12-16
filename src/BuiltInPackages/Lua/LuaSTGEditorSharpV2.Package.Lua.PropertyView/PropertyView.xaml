@@ -26,4 +26,30 @@
             </Button>
         </Grid>
     </DataTemplate>
+    <DataTemplate x:Key="property:name_value">
+        <!-- 
+        Bind datacontext to itself once to prevent parent regenerate datacontext for its children
+        before children's lostfocus event fired.
+        -->
+        <Grid Margin="0,0,0,5" DataContext="{Binding .,Mode=OneTime}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="16" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Text="{Binding PropName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <TextBlock Grid.Column="1" Text="="/>
+            <TextBox Grid.Column="2" Text="{Binding PropValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <Button Grid.Column="3" Height="16" Content="..." VerticalAlignment="Top">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                Command="{Binding ShowEditWindow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

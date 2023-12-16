@@ -3,12 +3,15 @@
   "TypeUID": "CodeBlock",
   "Tabs": [
     {
+      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyViewTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
       "Mapping": [
         {
           "Mapping": "name",
-          "Caption": "Name",
-          "LocalizedCaption": {
-            "zh": "名称"
+          "Caption": {
+            "Neutral": "Name",
+            "Localized": {
+              "zh": "名称"
+            }
           }
         }
       ]

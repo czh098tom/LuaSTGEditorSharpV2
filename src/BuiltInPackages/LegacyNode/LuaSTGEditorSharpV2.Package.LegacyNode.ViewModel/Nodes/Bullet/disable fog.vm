@@ -4,8 +4,10 @@
   "Captures": [
     "target"
   ],
-  "Text": "disable fog when generating {0}",
-  "LocalizedText": {
-    "zh": "取消 {0} 的弹雾"
+  "Text": {
+    "Neutral": "disable fog when generating {0}",
+    "Localized": {
+      "zh": "取消 {0} 的弹雾"
+    }
   }
 }

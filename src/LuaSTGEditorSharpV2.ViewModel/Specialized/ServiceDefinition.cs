@@ -18,10 +18,8 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
         [JsonProperty] public string Icon { get; private set; } = "";
         [JsonProperty] public string DeclarationCaputure { get; private set; } = "";
         [JsonProperty] public string ShortNameCaputure { get; private set; } = "";
-        [JsonProperty] public string Text { get; private set; } = "";
-        [JsonProperty] public Dictionary<string, string> LocalizedText { get; private set; } = new();
-        [JsonProperty] public string ErrorText { get; private set; } = "";
-        [JsonProperty] public Dictionary<string, string> LocalizedErrorText { get; private set; } = new();
+        [JsonProperty] public LocalizableString? Text { get; private set; }
+        [JsonProperty] public LocalizableString? ErrorText { get; private set; }
 
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
@@ -33,14 +31,12 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
                 var type = nodePackageProvider.GetServiceTypeOfShortName(shortName);
                 var obj = JsonConvert.DeserializeObject(jsonDecl, type);
                 string? uid = type.BaseType?.GetProperty("TypeUID")?.GetValue(obj) as string;
-                viewModel.Text = string.Format(LocalizedText
-                    .GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, Text)
+                viewModel.Text = string.Format(Text?.GetLocalized() ?? string.Empty
                     , shortName, uid ?? throw new NullReferenceException());
             }
             catch
             {
-                viewModel.Text = string.Format(LocalizedErrorText
-                    .GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, ErrorText)
+                viewModel.Text = string.Format(ErrorText?.GetLocalized() ?? string.Empty
                     , shortName);
             }
             viewModel.Icon = Icon;

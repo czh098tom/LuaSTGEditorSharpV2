@@ -3,12 +3,15 @@
   "TypeUID": "Code",
   "Tabs": [
     {
+      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyViewTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
       "Mapping": [
         {
           "Mapping": "code",
-          "Caption": "Code",
-          "LocalizedCaption": {
-            "zh": "代码"
+          "Caption": {
+            "Neutral": "Code",
+            "Localized": {
+              "zh": "代码"
+            }
           },
           "Editor": {
             "Name": "code"

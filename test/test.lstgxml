@@ -25,6 +25,7 @@
 	</DefinitionRoot>
 	<BuildRoot/>
 	<CompileRoot>
+    <LocalVariable count="2" name_0="a" value_0="1" name_1="b" name_2="c"/>
 		<UseResourceGroup name="1">
 			<Include path="test.lua"/>
 			<Task>

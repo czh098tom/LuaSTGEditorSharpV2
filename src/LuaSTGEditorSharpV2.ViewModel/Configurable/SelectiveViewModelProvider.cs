@@ -16,8 +16,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
     {
         [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
         [JsonProperty] public string Icon { get; private set; } = "";
-        [JsonProperty] public ViewModelTextSelection[] Text { get; private set; } = Array.Empty<ViewModelTextSelection>();
-        [JsonProperty] public Dictionary<string, ViewModelTextSelection[]> LocalizedText { get; private set; } = new();
+        [JsonProperty] public LocalizableArray<ViewModelTextSelection>? Text { get; private set; }
 
         private string?[]? _captureResult;
 
@@ -29,8 +28,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             {
                 _captureResult[n] = dataSource.GetProperty(Captures[n]);
             }
-            ViewModelTextSelection[] text = LocalizedText
-                .GetValueOrDefault(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, Text);
+            ViewModelTextSelection[] text = Text?.GetLocalized() ?? [];
             StringBuilder sb = new();
             for (int i = 0; i < text.Length; i++)
             {

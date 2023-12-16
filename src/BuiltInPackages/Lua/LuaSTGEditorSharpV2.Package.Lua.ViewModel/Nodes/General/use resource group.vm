@@ -3,8 +3,10 @@
   "TypeUID": "UseResourceGroup",
   "Captures": [ "name" ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
-  "Text": "Resource group: {0}",
-  "LocalizedText": {
-    "zh": "资源组：{0}"
+  "Text": {
+    "Neutral": "Resource group: {0}",
+    "Localized": {
+      "zh": "资源组：{0}"
+    }
   }
 }

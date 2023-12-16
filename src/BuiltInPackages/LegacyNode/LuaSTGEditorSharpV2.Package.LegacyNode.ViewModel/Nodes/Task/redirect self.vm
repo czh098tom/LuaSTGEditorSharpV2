@@ -1,8 +1,10 @@
 {
 	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "RedirectSelf",
-	"Text": "Redirect self as task owner",
-	"LocalizedText": {
-	  "zh": "将self重定向至任务宿主"
+	"Text": {
+		"Neutral": "Redirect self as task owner",
+		"Localized": {
+			"zh": "将self重定向至任务宿主"
+		}
 	}
 }
