@@ -18,84 +18,86 @@
 		"max_velocity" ,
 		"shuttle"
 	],
-	"Text": [
-		{
-			"Text": "create simple bullet in {0} with {1} at {2},velocity={3},rotation={4}"
-		},
-		{
-			"Text": ",aim to player",
-			"ConditionOn": "aim"
-		},
-		{
-			"Text": ",stay on create",
-			"ConditionOn": "stay"
-		},
-		{
-			"Text": ",indestructible",
-			"ConditionOn": "destroyable",
-			"Inversed": "true"
-		},
-		{
-			"Text": ",delay {9} frames before creation",
-			"ConditionOn": "delay",
-			"UseExistanceInsteadOfBoolValue":"true"
-		},
-		{
-			"Text": ",accel speed={11},accel angle={12}"
-		},
-		{
-			"Text": ",rebound",
-			"ConditionOn": "rebound"
-		},
-		{
-			"Text": ",shuttle",
-			"ConditionOn": "shuttle"
-		},
-		{
-			"Text": ",maximum speed of {13}",
-			"ConditionOn":"max_speed",
-			"UseExistanceInsteadOfBoolValue":"true"
-		}
-	],
-	"LocalizedText" :{
-		"zh": [
+	"Text": {
+		"Neutral": [
 			{
-				"Text": "在{2}以样式{1}, 颜色{2}生成简单子弹, 其速度{3}, 方向{4}"
+				"Text": "create simple bullet in {0} with {1} at {2},velocity={3},rotation={4}"
 			},
 			{
-				"Text": ", 瞄准自机",
+				"Text": ",aim to player",
 				"ConditionOn": "aim"
 			},
 			{
-				"Text": ", 生成时停滞",
+				"Text": ",stay on create",
 				"ConditionOn": "stay"
 			},
 			{
-				"Text": ", 不可消除",
+				"Text": ",indestructible",
 				"ConditionOn": "destroyable",
 				"Inversed": "true"
 			},
 			{
-				"Text": ", 延迟生成{9}帧",
+				"Text": ",delay {9} frames before creation",
 				"ConditionOn": "delay",
-				"UseExistanceInsteadOfBoolValue":"true"
+				"UseExistanceInsteadOfBoolValue": "true"
 			},
 			{
-				"Text": ", 加速度{11}, 加速度方向{12}"
+				"Text": ",accel speed={11},accel angle={12}"
 			},
 			{
-				"Text": ", 反弹",
+				"Text": ",rebound",
 				"ConditionOn": "rebound"
 			},
 			{
-				"Text": ", 穿屏",
+				"Text": ",shuttle",
 				"ConditionOn": "shuttle"
 			},
 			{
-				"Text": ", 最大速度{13}",
-				"ConditionOn":"max_speed",
-				"UseExistanceInsteadOfBoolValue":"true"
+				"Text": ",maximum speed of {13}",
+				"ConditionOn": "max_speed",
+				"UseExistanceInsteadOfBoolValue": "true"
 			}
-		]
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "在{2}以样式{1}, 颜色{2}生成简单子弹, 其速度{3}, 方向{4}"
+				},
+				{
+					"Text": ", 瞄准自机",
+					"ConditionOn": "aim"
+				},
+				{
+					"Text": ", 生成时停滞",
+					"ConditionOn": "stay"
+				},
+				{
+					"Text": ", 不可消除",
+					"ConditionOn": "destroyable",
+					"Inversed": "true"
+				},
+				{
+					"Text": ", 延迟生成{9}帧",
+					"ConditionOn": "delay",
+					"UseExistanceInsteadOfBoolValue": "true"
+				},
+				{
+					"Text": ", 加速度{11}, 加速度方向{12}"
+				},
+				{
+					"Text": ", 反弹",
+					"ConditionOn": "rebound"
+				},
+				{
+					"Text": ", 穿屏",
+					"ConditionOn": "shuttle"
+				},
+				{
+					"Text": ", 最大速度{13}",
+					"ConditionOn": "max_speed",
+					"UseExistanceInsteadOfBoolValue": "true"
+				}
+			]
+		}
 	}
 }

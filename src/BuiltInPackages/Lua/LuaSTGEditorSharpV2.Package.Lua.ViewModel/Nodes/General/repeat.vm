@@ -3,8 +3,10 @@
 	"TypeUID": "If",
 	"Captures": [ "times" ],
 	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/repeat.png",
-	"Text": "repeat {0} times",
-	"LocalizedText": {
-	  "zh": "循环{0}次"
+	"Text": {
+		"Neutral": "repeat {0} times",
+		"Localized": {
+			"zh": "循环{0}次"
+		}
 	}
-  }
+}
