@@ -1,0 +1,25 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BossInit",
+	"Captures": [
+		{ "Capture": "position" },
+		{ "Capture": "scbg" }
+	],
+	"Head": [
+		{ "Code": "function _temporary_class:init(self, cards)" },
+		{
+			"Code": "{0}boss.init(self, {1}, _temporary_class.name, cards, New({2}), _temporary_class.difficulty",
+			"ConditionOn": "scbg",
+			"UseExistance": "true"
+		},
+		{
+			"Code": "{0}boss.init(self, {1}, _temporary_class.name, cards, New(spellcard), _temporary_class.difficulty",
+			"ConditionOn": "scbg",
+			"UseExistance": "true",
+			"Inversed": "true"
+		},
+	],
+	"Tail": [
+		{ "Code": "end" }
+	]
+}
