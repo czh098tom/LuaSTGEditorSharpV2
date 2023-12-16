@@ -1,0 +1,14 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable, LuaSTGEditorSharpV2.Package.Lua.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "LocalVariable",
+  "CountPropertyName": "count",
+  "CountText": "Count",
+  "LocalizedCountText": {
+	"zh": "数量"
+  },
+  "NamePrefix": "name",
+  "ValuePrefix": "value",
+  "NameValueEditor": {
+	"Name": "name_value"
+  }
+}
