@@ -13,18 +13,18 @@
 }]]>
 			</_.serviceDeclaration>
 		</ServiceDefinition>
-		<DefineBullet identifier="test_bullet">
-			<BulletInit
+	</DefinitionRoot>
+	<BuildRoot/>
+	<CompileRoot>
+    <DefineBullet identifier="test_bullet">
+      <BulletInit
 				parameters="what did genshin do with you!?"
 				style="grain_a"
 				color="COLOR_RED"
 				stay="true"
 				destroyable="false"
 			/>
-		</DefineBullet>
-	</DefinitionRoot>
-	<BuildRoot/>
-	<CompileRoot>
+    </DefineBullet>
     <LocalVariable count="2" name_0="a" value_0="1" name_1="b" name_2="c"/>
 		<UseResourceGroup name="1">
 			<Include path="test.lua"/>
