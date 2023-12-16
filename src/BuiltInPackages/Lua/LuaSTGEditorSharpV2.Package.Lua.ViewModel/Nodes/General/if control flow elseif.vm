@@ -3,8 +3,10 @@
   "TypeUID": "If.ElseIf",
   "Captures": [ "condition" ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/elseif.png",
-  "Text": "elseif ({0}) then",
-  "LocalizedText": {
-    "zh": "否则如果 ({0}) 则"
+  "Text": {
+    "Neutral": "elseif ({0}) then",
+    "Localized": {
+      "zh": "否则如果 ({0}) 则"
+    }
   }
 }

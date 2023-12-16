@@ -4,8 +4,10 @@
 	"Captures": [
 	  "time"
 	],
-	"Text": "Wait {0} frames",
-	"LocalizedText": {
-	  "zh": "等待 {0} 帧"
+	"Text": {
+		"Neutral": "Wait {0} frames",
+		"Localized": {
+			"zh": "等待 {0} 帧"
+		}
 	}
 }

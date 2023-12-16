@@ -3,8 +3,10 @@
   "TypeUID": "Include",
   "Captures": [ "path" ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/patch.png",
-  "Text": "Include lua script: {0}",
-  "LocalizedText": {
-    "zh": "载入Lua脚本：{0}"
+  "Text": {
+    "Neutral": "Include lua script: {0}",
+    "Localized": {
+      "zh": "载入Lua脚本：{0}"
+    }
   }
 }

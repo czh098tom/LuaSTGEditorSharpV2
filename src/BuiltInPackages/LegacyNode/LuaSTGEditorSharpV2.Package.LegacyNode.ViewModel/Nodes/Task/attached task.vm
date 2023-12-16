@@ -4,8 +4,10 @@
   "Captures": [
     "target"
   ],
-  "Text": "Create task for {0}",
-  "LocalizedText": {
-    "zh": "为 {0} 创建任务"
+  "Text": {
+    "Neutral": "Create task for {0}",
+    "Localized": {
+      "zh": "为 {0} 创建任务"
+    }
   }
 }

@@ -18,90 +18,92 @@
 		"max velocity",
 		"shuttle"
 	],
-	"Text": [
-		{
-			"Text": "create simple bullet in {0} with {1} at {2},velocity={3},rotation={4}",
-			"ConditionOn": "true",
-			"Inversed": "false"
-		},
-		{
-			"Text": ",aim to player",
-			"ConditionOn": "{5}",
-			"Inversed": "false"
-		},
-		{
-			"Text": ",stay on create",
-			"ConditionOn": "{7}",
-			"Inversed": "false"
-		},
-		{
-			"Text": ",unable to be destroy",
-			"ConditionOn": "{8}",
-			"Inversed": "true"
-		},
-		{
-			"Text": ",delay {9} frames before creation",
-			"ConditionOn": "true",
-			"Inversed": "false"
-		},
-		{
-			"Text": ",accel speed={11},accel angle={12}",
-			"ConditionOn": "true",
-			"Inversed": "false"
-		},
-		{
-			"Text": ",rebound",
-			"ConditionOn": "{10}",
-			"Inversed": "false"
-		},
-		{
-			"Text": ",shuttle",
-			"ConditionOn": "{14}",
-			"Inversed": "false"
-		}
-	],
-	"LocalizedText" :{
-		"zh": [
+	"Text": {
+		"Neutral": [
 			{
-				"Text": "在{2}以样式{1},颜色{2}生成简单子弹,速度{3},方向{4}",
+				"Text": "create simple bullet in {0} with {1} at {2},velocity={3},rotation={4}",
 				"ConditionOn": "true",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",瞄准自机",
+				"Text": ",aim to player",
 				"ConditionOn": "{5}",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",生成时停滞",
+				"Text": ",stay on create",
 				"ConditionOn": "{7}",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",不可消除",
+				"Text": ",unable to be destroy",
 				"ConditionOn": "{8}",
 				"Inversed": "true"
 			},
 			{
-				"Text": ",延迟生成{9}帧",
+				"Text": ",delay {9} frames before creation",
 				"ConditionOn": "true",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",加速度{11},加速度方向{12}",
+				"Text": ",accel speed={11},accel angle={12}",
 				"ConditionOn": "true",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",反弹",
+				"Text": ",rebound",
 				"ConditionOn": "{10}",
 				"Inversed": "false"
 			},
 			{
-				"Text": ",穿屏",
+				"Text": ",shuttle",
 				"ConditionOn": "{14}",
 				"Inversed": "false"
 			}
-		]
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "在{2}以样式{1},颜色{2}生成简单子弹,速度{3},方向{4}",
+					"ConditionOn": "true",
+					"Inversed": "false"
+				},
+				{
+					"Text": ",瞄准自机",
+					"ConditionOn": "{5}",
+					"Inversed": "false"
+				},
+				{
+					"Text": ",生成时停滞",
+					"ConditionOn": "{7}",
+					"Inversed": "false"
+				},
+				{
+					"Text": ",不可消除",
+					"ConditionOn": "{8}",
+					"Inversed": "true"
+				},
+				{
+					"Text": ",延迟生成{9}帧",
+					"ConditionOn": "true",
+					"Inversed": "false"
+				},
+				{
+					"Text": ",加速度{11},加速度方向{12}",
+					"ConditionOn": "true",
+					"Inversed": "false"
+				},
+				{
+					"Text": ",反弹",
+					"ConditionOn": "{10}",
+					"Inversed": "false"
+				},
+				{
+					"Text": ",穿屏",
+					"ConditionOn": "{14}",
+					"Inversed": "false"
+				}
+			]
+		}
 	}
 }

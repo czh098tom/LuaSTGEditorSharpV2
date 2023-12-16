@@ -1,8 +1,10 @@
 ﻿{
   "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "Task",
-  "Text": "Create task",
-  "LocalizedText": {
-    "zh": "创建任务"
+  "Text": {
+    "Neutral": "Create task",
+    "Localized": {
+      "zh": "创建任务"
+    }
   }
 }
