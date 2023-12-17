@@ -17,8 +17,8 @@
         }
       },
       "VariableProperty": {
-        "NamePrefix": "name",
-        "ValuePrefix": "value",
+        "NameRule": "name_{0}",
+        "ValueRule": "value_{0}",
         "NameValueEditor": {
           "Name": "name_value"
         }
