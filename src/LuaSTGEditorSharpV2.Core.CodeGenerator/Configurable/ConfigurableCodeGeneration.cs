@@ -13,39 +13,19 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
     [Serializable]
     public class ConfigurableCodeGeneration : CodeGeneratorServiceBase
     {
-        [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = Array.Empty<CaptureWithMacroOption>();
-        [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = Array.Empty<ContextCapture>();
+        [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = [];
+        [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = [];
         [JsonProperty] public string? Head { get; private set; }
         [JsonProperty] public string? Tail { get; private set; }
         [JsonProperty] public bool IgnoreChildren { get; private set; } = false;
         [JsonProperty] public int IndentionIncrement { get; private set; } = 1;
 
-        private string?[]? _captureResult;
+        protected string?[]? _captureResult;
 
         internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
             _captureResult ??= new string[GetCaptureCacheLength()];
-            int n;
-            for (n = 0; n < Captures.Length; n++)
-            {
-                _captureResult[n] = Captures[n].ApplyMacro(node, context);
-            }
-            for (int i = 0; i < ContextCaptures.Length; i++)
-            {
-                for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
-                {
-                    var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
-                    if (contextNode != null)
-                    {
-                        _captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNode, context);
-                    }
-                    else
-                    {
-                        _captureResult[n] = string.Empty;
-                    }
-                    n++;
-                }
-            }
+            WriteCaptureResult(_captureResult, node, context);
             if (Head != null) yield return new CodeData(context
                 .ApplyIndentedFormat(context.GetIndented(), Head, _captureResult).ToString(), node);
             if (!IgnoreChildren)
@@ -59,7 +39,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 .ApplyIndentedFormat(context.GetIndented(), Tail, _captureResult).ToString(), node);
         }
 
-        private int GetCaptureCacheLength()
+        protected virtual int GetCaptureCacheLength()
         {
             int l = Captures.Length;
             for (int i = 0; i < ContextCaptures.Length; i++)
@@ -67,6 +47,34 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 l += ContextCaptures[i].Property.Length;
             }
             return l;
+        }
+
+        protected virtual int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
+        {
+            int n;
+            for (n = 0; n < Captures.Length; n++)
+            {
+                captureResult[n] = Captures[n].ApplyMacro(node, context);
+            }
+
+            for (int i = 0; i < ContextCaptures.Length; i++)
+            {
+                for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
+                {
+                    var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
+                    if (contextNode != null)
+                    {
+                        captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNode, context);
+                    }
+                    else
+                    {
+                        captureResult[n] = string.Empty;
+                    }
+                    n++;
+                }
+            }
+
+            return n;
         }
     }
 }

@@ -1,10 +1,21 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SingleListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LocalVariable",
 	"Language": "Lua",
-	"Captures":[
-		{"Capture":"name"},
-		{"Capture":"value"}
-	],
-	"Head": "local {1} = {2}"
-  }
+	"Head": "{0}{1}",
+	"CountCapture": "count",
+	"SubCaptureRule": [ "name_{0}", "value_{0}" ],
+	"SubCaptureFormat": [
+		{
+			"Code": "local {1} = {2}",
+			"ConditionOn": 1,
+			"UseExistance": true
+		},
+		{
+			"Code": "local {1}",
+			"ConditionOn": 1,
+			"UseExistance": true,
+			"Inversed": true
+		}
+	]
+}
