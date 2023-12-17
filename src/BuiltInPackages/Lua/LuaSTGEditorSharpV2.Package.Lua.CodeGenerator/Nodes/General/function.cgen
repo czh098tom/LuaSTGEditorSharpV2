@@ -10,11 +10,11 @@
 	"Head": [
 		{
 			"Code":"local function {1}({2})",
-			"ConditionOn":"localized"
+			"ConditionOn": 3
 		},
 		{
 			"Code":"function {1}({2})",
-			"ConditionOn":"localized",
+			"ConditionOn": 3,
 			"Inversed":"true"
 		}
 	],

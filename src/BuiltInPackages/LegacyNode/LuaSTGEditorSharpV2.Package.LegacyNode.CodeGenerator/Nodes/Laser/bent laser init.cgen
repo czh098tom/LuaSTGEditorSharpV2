@@ -12,12 +12,12 @@
 	"Head": [
 		{
 			"Code": "function _temporary_class:init(self, _x, _y, {1})",
-			"ConditionOn": "parameter",
+			"ConditionOn": 1,
 			"UseExistance": "true"
 		},
 		{
 			"Code": "function _temporary_class:init(self, _x, _y)",
-			"ConditionOn": "parameter",
+			"ConditionOn": 1,
 			"UseExistance": "true",
 			"Inversed": "true"
 		},

@@ -7,13 +7,13 @@
 	"Head": [
 		{
 			"Code":"task._Wait({1})",
-			"ConditionOn":"time",
+			"ConditionOn": 1,
 			"UseExistance":"true",
 			"Inversed":"false"
 		},
 		{
 			"Code":"task._Wait()",
-			"ConditionOn":"time",
+			"ConditionOn": 1,
 			"UseExistance":"true",
 			"Inversed":"true"
 		}

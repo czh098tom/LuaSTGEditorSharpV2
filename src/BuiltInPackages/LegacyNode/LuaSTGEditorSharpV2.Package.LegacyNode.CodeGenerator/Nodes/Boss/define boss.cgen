@@ -19,5 +19,5 @@
 	"Tail": [
 		{ "Code": "_editor_class['{1}'] = _temporary_class" }
 	],
-	"IndentionIncrement": "0"
+	"IndentionIncrement": 0
 }

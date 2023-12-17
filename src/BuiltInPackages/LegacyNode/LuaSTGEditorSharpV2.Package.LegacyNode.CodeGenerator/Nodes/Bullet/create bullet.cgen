@@ -9,12 +9,12 @@
 	"Head": [
 		{
 			"Code": "last = New(_editor_class[\"{1}\"], {2}, {3})",
-			"ConditionOn": "parameters",
+			"ConditionOn": 3,
 			"UseExistance": "true"
 		},
 		{
 			"Code": "last = New(_editor_class[\"{1}\"], {2})",
-			"ConditionOn": "parameters",
+			"ConditionOn": 3,
 			"UseExistance": "true",
 			"Inversed": "true"
 		}
