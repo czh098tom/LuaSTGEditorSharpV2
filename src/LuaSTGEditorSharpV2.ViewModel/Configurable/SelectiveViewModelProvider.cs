@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Configurable;
 
 namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 {
@@ -16,7 +17,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
     {
         [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
         [JsonProperty] public string Icon { get; private set; } = "";
-        [JsonProperty] public LocalizableArray<ViewModelTextSelection>? Text { get; private set; }
+        [JsonProperty] public LocalizableArray<Selection>? Text { get; private set; }
 
         private string?[]? _captureResult;
 
@@ -28,13 +29,13 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             {
                 _captureResult[n] = dataSource.GetProperty(Captures[n]);
             }
-            ViewModelTextSelection[] text = Text?.GetLocalized() ?? [];
+            Selection[] text = Text?.GetLocalized() ?? [];
             StringBuilder sb = new();
             for (int i = 0; i < text.Length; i++)
             {
-                if (text[i].ShouldAppend(dataSource))
+                if (text[i].ShouldAppend(_captureResult))
                 {
-                    sb.AppendFormat(text[i].Text, _captureResult);
+                    sb.AppendFormat(text[i].Text ?? string.Empty, _captureResult);
                 }
             }
             viewModel.Text = sb.ToString();

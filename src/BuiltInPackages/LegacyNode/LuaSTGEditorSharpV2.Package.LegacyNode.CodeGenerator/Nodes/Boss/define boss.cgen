@@ -9,15 +9,15 @@
 		{ "Capture": "bgm" }
 	],
 	"Head": [
-		{ "Code": "local _temporary_class = Class(boss)" },
-		{ "Code": "_temporary_class.cards = {{}}" },
-		{ "Code": "_temporary_class.name = '{3}'" },
-		{ "Code": "_temporary_class.bgm = {5}" },
-		{ "Code": "_temporary_class._bg = {4}" },
-		{ "Code": "_temporary_class.difficulty = {2}" }
+		{ "Text": "local _temporary_class = Class(boss)" },
+		{ "Text": "_temporary_class.cards = {{}}" },
+		{ "Text": "_temporary_class.name = '{3}'" },
+		{ "Text": "_temporary_class.bgm = {5}" },
+		{ "Text": "_temporary_class._bg = {4}" },
+		{ "Text": "_temporary_class.difficulty = {2}" }
 	],
 	"Tail": [
-		{ "Code": "_editor_class['{1}'] = _temporary_class" }
+		{ "Text": "_editor_class['{1}'] = _temporary_class" }
 	],
 	"IndentionIncrement": 0
 }

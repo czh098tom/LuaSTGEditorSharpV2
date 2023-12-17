@@ -10,19 +10,19 @@
 	],
 	"Head": [
 		{
-			"Code": "function _temporary_class:init(self, _x, _y, {1})",
+			"Text": "function _temporary_class:init(self, _x, _y, {1})",
 			"ConditionOn": 1,
-			"UseExistance": "true"
+			"UseExistanceInsteadOfBoolValue": "true"
 		},
 		{
-			"Code": "function _temporary_class:init(self, _x, _y)",
+			"Text": "function _temporary_class:init(self, _x, _y)",
 			"ConditionOn": 1,
-			"UseExistance": "true",
+			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
 		},
-		{ "Code": "{0}self.x, self.y = _x, _y" }
+		{ "Text": "{0}self.x, self.y = _x, _y" }
 	],
 	"Tail": [
-		{ "Code" : "end"}
+		{ "Text": "end" }
 	]
 }

@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Configurable;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 {
     [Serializable]
     public class SelectiveCodeGeneration : CodeGeneratorServiceBase
     {
-        [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = Array.Empty<CaptureWithMacroOption>();
-        [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = Array.Empty<ContextCapture>();
-        [JsonProperty] public CodeSelection[]? Head { get; private set; } = Array.Empty<CodeSelection>();
-        [JsonProperty] public CodeSelection[]? Tail { get; private set; } = Array.Empty<CodeSelection>();
+        [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = [];
+        [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = [];
+        [JsonProperty] public Selection[]? Head { get; private set; } = [];
+        [JsonProperty] public Selection[]? Tail { get; private set; } = [];
         [JsonProperty] public bool IgnoreChildren { get; private set; } = false;
         [JsonProperty] public int IndentionIncrement { get; private set; } = 1;
 
@@ -53,7 +54,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 {
                     if (Head[i].ShouldAppend(_captureResult))
                     {
-                        sb.Append(context.ApplyIndentedFormat(context.GetIndented(), Head[i].Code, _captureResult));
+                        sb.Append(context.ApplyIndentedFormat(context.GetIndented(), Head[i].Text, _captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);
@@ -72,7 +73,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 {
                     if (Tail[i].ShouldAppend(_captureResult))
                     {
-                        sb.Append(context.ApplyIndentedFormat(context.GetIndented(), Tail[i].Code, _captureResult));
+                        sb.Append(context.ApplyIndentedFormat(context.GetIndented(), Tail[i].Text, _captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);

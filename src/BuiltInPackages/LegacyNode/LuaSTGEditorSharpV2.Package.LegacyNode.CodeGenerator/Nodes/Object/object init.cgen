@@ -14,28 +14,28 @@
 	],
 	"Head": [
 		{
-			"Code": "function _temporary_class:init(self, _x, _y, {1})",
+			"Text": "function _temporary_class:init(self, _x, _y, {1})",
 			"ConditionOn": 1,
-			"UseExistance": "true"
+			"UseExistanceInsteadOfBoolValue": "true"
 		},
 		{
-			"Code": "function _temporary_class:init(self, _x, _y)",
+			"Text": "function _temporary_class:init(self, _x, _y)",
 			"ConditionOn": 1,
-			"UseExistance": "true",
+			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
 		},
-		{ "Code": "{0}self.x, self.y = _x, _y" },
-		{ "Code": "{0}self.img = {2}" },
-		{ "Code": "{0}self.layer = {3}" },
-		{ "Code": "{0}self.group = {4}" },
-		{ "Code": "{0}self.hide = {5}" },
-		{ "Code": "{0}self.bound = {6}" },
-		{ "Code": "{0}self.navi = {7}" },
-		{ "Code": "{0}self.hp = {8}" },
-		{ "Code": "{0}self.maxhp = {8}" },
-		{ "Code": "{0}self.colli = {9}" },
-		{ "Code": "{0}self.servants = {}" },
-		{ "Code": "{0}self._blend, self._a, self._r, self._g, self._b = '', 255, 255, 255, 255" }
+		{ "Text": "{0}self.x, self.y = _x, _y" },
+		{ "Text": "{0}self.img = {2}" },
+		{ "Text": "{0}self.layer = {3}" },
+		{ "Text": "{0}self.group = {4}" },
+		{ "Text": "{0}self.hide = {5}" },
+		{ "Text": "{0}self.bound = {6}" },
+		{ "Text": "{0}self.navi = {7}" },
+		{ "Text": "{0}self.hp = {8}" },
+		{ "Text": "{0}self.maxhp = {8}" },
+		{ "Text": "{0}self.colli = {9}" },
+		{ "Text": "{0}self.servants = {}" },
+		{ "Text": "{0}self._blend, self._a, self._r, self._g, self._b = '', 255, 255, 255, 255" }
 	],
 	"Tail": [
 		{ "Code" : "end" }

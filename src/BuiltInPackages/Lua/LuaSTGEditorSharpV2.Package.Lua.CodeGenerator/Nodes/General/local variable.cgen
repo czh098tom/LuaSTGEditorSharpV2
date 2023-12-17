@@ -7,14 +7,14 @@
 	"SubCaptureRule": [ "name_{0}", "value_{0}" ],
 	"SubCaptureFormat": [
 		{
-			"Code": "local {1} = {2}",
+			"Text": "local {1} = {2}",
 			"ConditionOn": 1,
-			"UseExistance": true
+			"UseExistanceInsteadOfBoolValue": true
 		},
 		{
-			"Code": "local {1}",
+			"Text": "local {1}",
 			"ConditionOn": 1,
-			"UseExistance": true,
+			"UseExistanceInsteadOfBoolValue": true,
 			"Inversed": true
 		}
 	]

@@ -22,20 +22,20 @@
 		}
 	],
 	"Head": [
-		{ "Code": "local _temporary_spellcard = boss.card.New('{1}', {2}, {3}, {4}, {5}, {{{6}, {7}, {8}}}, {9})" },
-		{ "Code": "_temporary_class.cards = {{}}" },
-		{ "Code": "_temporary_class.name = '{3}'" },
-		{ "Code": "_temporary_class.bgm = {5}" },
-		{ "Code": "_temporary_class._bg = {4}" },
-		{ "Code": "_temporary_class.difficulty = {2}" }
+		{ "Text": "local _temporary_spellcard = boss.card.New('{1}', {2}, {3}, {4}, {5}, {{{6}, {7}, {8}}}, {9})" },
+		{ "Text": "_temporary_class.cards = {{}}" },
+		{ "Text": "_temporary_class.name = '{3}'" },
+		{ "Text": "_temporary_class.bgm = {5}" },
+		{ "Text": "_temporary_class._bg = {4}" },
+		{ "Text": "_temporary_class.difficulty = {2}" }
 	],
 	"Tail": [
-		{ "Code": "_temporary_spellcard.perform = {10}" },
-		{ "Code": "table.insert(_temporary_class.cards, _temporary_spellcard" },
+		{ "Text": "_temporary_spellcard.perform = {10}" },
+		{ "Text": "table.insert(_temporary_class.cards, _temporary_spellcard" },
 		{
-			"Code": "table.insert(_sc_table, {{{11}, {1}, _temporary_spellcard, #_temporary_class.cards, {10}}})",
+			"Text": "table.insert(_sc_table, {{{11}, {1}, _temporary_spellcard, #_temporary_class.cards, {10}}})",
 			"ConditionOn": 1,
-			"UseExistance": "true"
+			"UseExistanceInsteadOfBoolValue": "true"
 		}
 	],
 	"IndentionIncrement": 0

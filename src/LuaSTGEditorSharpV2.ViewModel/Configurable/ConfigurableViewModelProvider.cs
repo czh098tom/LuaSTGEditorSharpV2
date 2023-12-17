@@ -23,11 +23,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
             _captureResult ??= new string[GetCaptureCacheLength()];
-            int n;
-            for (n = 0; n < Captures.Length; n++)
-            {
-                _captureResult[n] = dataSource.GetProperty(Captures[n]);
-            }
+            WriteCaptureResult(dataSource, _captureResult);
             string text = GetLocalizedTextIfExists();
             viewModel.Text = string.Format(text, _captureResult);
             viewModel.Icon = Icon;
@@ -38,10 +34,20 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             return Text?.GetLocalized() ?? string.Empty;
         }
 
-        private int GetCaptureCacheLength()
+        protected virtual int GetCaptureCacheLength()
         {
             int l = Captures.Length;
             return l;
+        }
+
+        protected virtual int WriteCaptureResult(NodeData dataSource, string?[] captureResult)
+        {
+            int n;
+            for (n = 0; n < Captures.Length; n++)
+            {
+                captureResult[n] = dataSource.GetProperty(Captures[n]);
+            }
+            return n;
         }
     }
 }

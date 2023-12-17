@@ -6,16 +6,16 @@
 	],
 	"Head": [
 		{
-			"Code":"task._Wait({1})",
+			"Text": "task._Wait({1})",
 			"ConditionOn": 1,
-			"UseExistance":"true",
-			"Inversed":"false"
+			"UseExistanceInsteadOfBoolValue": "true",
+			"Inversed": "false"
 		},
 		{
-			"Code":"task._Wait()",
+			"Text": "task._Wait()",
 			"ConditionOn": 1,
-			"UseExistance":"true",
-			"Inversed":"true"
+			"UseExistanceInsteadOfBoolValue": "true",
+			"Inversed": "true"
 		}
 	]
 }

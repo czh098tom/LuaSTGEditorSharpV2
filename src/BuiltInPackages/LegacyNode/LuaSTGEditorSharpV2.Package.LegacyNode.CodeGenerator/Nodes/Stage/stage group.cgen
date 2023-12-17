@@ -11,11 +11,11 @@
 		{ "Capture": "difficulty_value" }
 	],
 	"Head": [
-		{ "Code": "stage.group.New('menu', {{}}, '{1}', {{" },
-		{ "Code": "{0}lifeleft = {2}," },
-		{ "Code": "{0}power = {3}," },
-		{ "Code": "{0}faith = {4}," },
-		{ "Code": "{0}bomb = {5}" },
-		{ "Code": "}}, {6}, {7})" }
+		{ "Text": "stage.group.New('menu', {{}}, '{1}', {{" },
+		{ "Text": "{0}lifeleft = {2}," },
+		{ "Text": "{0}power = {3}," },
+		{ "Text": "{0}faith = {4}," },
+		{ "Text": "{0}bomb = {5}" },
+		{ "Text": "}}, {6}, {7})" }
 	]
   }

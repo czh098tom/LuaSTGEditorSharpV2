@@ -9,13 +9,13 @@
 	],
 	"Head": [
 		{
-			"Code":"local function {1}({2})",
+			"Text":"local function {1}({2})",
 			"ConditionOn": 3
 		},
 		{
-			"Code":"function {1}({2})",
+			"Text": "function {1}({2})",
 			"ConditionOn": 3,
-			"Inversed":"true"
+			"Inversed": "true"
 		}
 	],
 	"Tail": [{"Code":"end"}]

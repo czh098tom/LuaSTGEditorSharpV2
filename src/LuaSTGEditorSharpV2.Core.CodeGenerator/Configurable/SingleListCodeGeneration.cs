@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
+using LuaSTGEditorSharpV2.Core.Configurable;
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
@@ -14,7 +15,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
     {
         [JsonProperty] public string? CountCapture { get; set; }
         [JsonProperty] public string[]? SubCaptureRule { get; set; }
-        [JsonProperty] public CodeSelection[]? SubCaptureFormat { get; set; }
+        [JsonProperty] public Selection[]? SubCaptureFormat { get; set; }
 
         protected override int GetCaptureCacheLength()
         {
@@ -47,7 +48,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                             var sel = SubCaptureFormat[j];
                             if (sel.ShouldAppend(subCaptureResult))
                             {
-                                sb.Append(context.ApplyIndentedFormat(context.GetIndented(), sel.Code, subCaptureResult));
+                                sb.Append(context.ApplyIndentedFormat(context.GetIndented(), sel.Text, subCaptureResult));
                             }
                         }
                     }

@@ -14,20 +14,20 @@
 	],
 	"Head": [
 		{
-			"Code": "function _temporary_class:init(self, _x, _y, {1})",
+			"Text": "function _temporary_class:init(self, _x, _y, {1})",
 			"ConditionOn": 1,
-			"UseExistance": "true"
+			"UseExistanceInsteadOfBoolValue": "true"
 		},
 		{
-			"Code": "function _temporary_class:init(self, _x, _y)",
+			"Text": "function _temporary_class:init(self, _x, _y)",
 			"ConditionOn": 1,
-			"UseExistance": "true",
+			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
 		},
-		{ "Code": "{0}laser.init(self, {2}, _x, _y, 0, {4}, {5}, {6}, {7}, {8}, {9})" },
-		{ "Code": "{0}laser.ChangeImage(self, {3})" }
+		{ "Text": "{0}laser.init(self, {2}, _x, _y, 0, {4}, {5}, {6}, {7}, {8}, {9})" },
+		{ "Text": "{0}laser.ChangeImage(self, {3})" }
 	],
 	"Tail": [
-		{ "Code" : "end" }
+		{ "Text": "end" }
 	]
 }

@@ -6,20 +6,20 @@
 		{ "Capture": "scbg" }
 	],
 	"Head": [
-		{ "Code": "function _temporary_class:init(self, cards)" },
+		{ "Text": "function _temporary_class:init(self, cards)" },
 		{
-			"Code": "{0}boss.init(self, {1}, _temporary_class.name, cards, New({2}), _temporary_class.difficulty",
+			"Text": "{0}boss.init(self, {1}, _temporary_class.name, cards, New({2}), _temporary_class.difficulty",
 			"ConditionOn": 2,
-			"UseExistance": "true"
+			"UseExistanceInsteadOfBoolValue": "true"
 		},
 		{
-			"Code": "{0}boss.init(self, {1}, _temporary_class.name, cards, New(spellcard), _temporary_class.difficulty",
+			"Text": "{0}boss.init(self, {1}, _temporary_class.name, cards, New(spellcard), _temporary_class.difficulty",
 			"ConditionOn": 2,
-			"UseExistance": "true",
+			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
 		},
 	],
 	"Tail": [
-		{ "Code": "end" }
+		{ "Text": "end" }
 	]
 }
