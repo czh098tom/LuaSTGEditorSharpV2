@@ -40,9 +40,10 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
                     var sb = new StringBuilder();
                     for (int i = 0; i < count; i++)
                     {
+                        object idx = i;
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = SubCaptureRule[j]?.Capture(dataSource) ?? string.Empty;
+                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(dataSource, idx) ?? string.Empty;
                         }
                         var subCaptureFormat = SubCaptureFormat.GetLocalized();
                         for (int j = 0; j < subCaptureFormat.Length; j++)
