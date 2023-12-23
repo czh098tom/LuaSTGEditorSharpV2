@@ -25,9 +25,10 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {
+                object idx = i;
                 properties.Add(new VariableDefinitionPropertyItemViewModel(
-                    NameRule?.CaptureByFormat(nodeData, i) ?? string.Empty,
-                    ValueRule?.CaptureByFormat(nodeData, i) ?? string.Empty)
+                    NameRule?.CaptureByFormat(nodeData, idx) ?? string.Empty,
+                    ValueRule?.CaptureByFormat(nodeData, idx) ?? string.Empty)
                 {
                     Type = NameValueEditor
                 });

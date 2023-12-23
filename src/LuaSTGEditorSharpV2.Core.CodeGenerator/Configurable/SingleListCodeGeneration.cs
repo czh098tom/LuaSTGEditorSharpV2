@@ -39,9 +39,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                     var sb = new StringBuilder();
                     for (int i = 0; i < count; i++)
                     {
+                        object idx = i;
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(node, i) ?? string.Empty;
+                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(node, idx) ?? string.Empty;
                         }
                         for (int j = 0; j < SubCaptureFormat.Length; j++)
                         {
