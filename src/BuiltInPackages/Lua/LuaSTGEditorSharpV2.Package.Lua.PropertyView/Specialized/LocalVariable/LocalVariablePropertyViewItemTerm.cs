@@ -38,8 +38,10 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
         public CommandBase? GetCommand(NodeData nodeData, VariableDefinition intermediateModel, int index)
         {
             var commands = new List<CommandBase>();
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, $"{NameRule}_{index}", intermediateModel.Name);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, $"{ValueRule}_{index}", intermediateModel.Value);
+            if (NameRule == null || ValueRule == null) return null;
+            object idx = index;
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             return new CompositeCommand(commands);
