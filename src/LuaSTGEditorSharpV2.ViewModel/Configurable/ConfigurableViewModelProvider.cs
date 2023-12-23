@@ -8,17 +8,18 @@ using System.Globalization;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 {
     [Serializable]
     public class ConfigurableViewModelProvider : ViewModelProviderServiceBase
     {
-        [JsonProperty] public string[] Captures { get; private set; } = Array.Empty<string>();
+        [JsonProperty] public NodePropertyCapture?[] Captures { get; private set; } = [];
         [JsonProperty] public string Icon { get; private set; } = "";
         [JsonProperty] public LocalizableString? Text { get; private set; }
 
-        private string?[]? _captureResult;
+        private string[]? _captureResult;
 
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
@@ -45,7 +46,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             int n;
             for (n = 0; n < Captures.Length; n++)
             {
-                captureResult[n] = dataSource.GetProperty(Captures[n]);
+                captureResult[n] = Captures[n]?.Capture(dataSource) ?? string.Empty;
             }
             return n;
         }

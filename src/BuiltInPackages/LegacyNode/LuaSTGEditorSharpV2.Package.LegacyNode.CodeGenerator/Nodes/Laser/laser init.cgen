@@ -2,15 +2,15 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LaserInit",
 	"Captures": [
-		{ "Capture": "parameters" },
-		{ "Capture": "color" },
-		{ "Capture": "style" },
-		{ "Capture": "head_length" },
-		{ "Capture": "body_length" },
-		{ "Capture": "tail_length" },
-		{ "Capture": "width" },
-		{ "Capture": "node_size" },
-		{ "Capture": "head_size" }
+		{ "Key": "parameters" },
+		{ "Key": "color" },
+		{ "Key": "style" },
+		{ "Key": "head_length" },
+		{ "Key": "body_length" },
+		{ "Key": "tail_length" },
+		{ "Key": "width" },
+		{ "Key": "node_size" },
+		{ "Key": "head_size" }
 	],
 	"Head": [
 		{

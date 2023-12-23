@@ -20,9 +20,5 @@ namespace LuaSTGEditorSharpV2.Core.Exception
         public OpenFileException(string? message, System.Exception? innerException) : base(message, innerException)
         {
         }
-
-        protected OpenFileException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

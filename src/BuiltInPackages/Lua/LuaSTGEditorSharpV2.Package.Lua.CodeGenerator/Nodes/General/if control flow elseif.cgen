@@ -3,7 +3,7 @@
   "TypeUID": "If.ElseIf",
   "Language": "Lua",
   "Captures": [
-    { "Capture": "condition" }
+    { "Key": "condition" }
   ],
   "Head": "elseif ({1}) then"
 }

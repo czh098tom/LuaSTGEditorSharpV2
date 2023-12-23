@@ -2,8 +2,8 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "ClearBullet",
 	"Captures":[
-		{"Capture":"convert_to_faith"},
-		{"Capture":"include_indestructible"}
+		{"Key":"convert_to_faith"},
+		{"Key":"include_indestructible"}
 	],
 	"Head": "_clear_bullet({1}, {2})"
   }

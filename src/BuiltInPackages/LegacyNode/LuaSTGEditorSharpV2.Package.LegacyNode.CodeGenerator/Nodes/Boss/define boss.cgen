@@ -2,11 +2,11 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineBoss",
 	"Captures": [
-		{ "Capture": "identifier" },
-		{ "Capture": "difficulty" },
-		{ "Capture": "name" },
-		{ "Capture": "background" },
-		{ "Capture": "bgm" }
+		{ "Key": "identifier" },
+		{ "Key": "difficulty" },
+		{ "Key": "name" },
+		{ "Key": "background" },
+		{ "Key": "bgm" }
 	],
 	"Head": [
 		{ "Text": "local _temporary_class = Class(boss)" },

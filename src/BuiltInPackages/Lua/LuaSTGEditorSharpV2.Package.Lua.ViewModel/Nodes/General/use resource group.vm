@@ -1,7 +1,7 @@
 ﻿{
   "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "UseResourceGroup",
-  "Captures": [ "name" ],
+  "Captures": [ { "Key": "name" } ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
   "Text": {
     "Neutral": "Resource group: {0}",

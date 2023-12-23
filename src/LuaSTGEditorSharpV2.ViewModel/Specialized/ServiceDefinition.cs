@@ -16,15 +16,15 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
     internal class ServiceDefinition : ViewModelProviderServiceBase
     {
         [JsonProperty] public string Icon { get; private set; } = "";
-        [JsonProperty] public string DeclarationCaputure { get; private set; } = "";
-        [JsonProperty] public string ShortNameCaputure { get; private set; } = "";
+        [JsonProperty] public NodePropertyCapture? DeclarationCaputure { get; private set; }
+        [JsonProperty] public NodePropertyCapture? ShortNameCaputure { get; private set; }
         [JsonProperty] public LocalizableString? Text { get; private set; }
         [JsonProperty] public LocalizableString? ErrorText { get; private set; }
 
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
-            var shortName = dataSource.GetProperty(ShortNameCaputure);
-            var jsonDecl = dataSource.GetProperty(DeclarationCaputure);
+            var shortName = ShortNameCaputure?.Capture(dataSource) ?? string.Empty;
+            var jsonDecl = DeclarationCaputure?.Capture(dataSource) ?? string.Empty;
             try
             {
                 var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();

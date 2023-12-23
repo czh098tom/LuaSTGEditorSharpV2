@@ -2,12 +2,12 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "BentLaserInit",
 	"Captures": [
-		{ "Capture": "parameters" },
-		{ "Capture": "color" },
-		{ "Capture": "length" },
-		{ "Capture": "width" },
-		{ "Capture": "sampling" },
-		{ "Capture": "node_size" }
+		{ "Key": "parameters" },
+		{ "Key": "color" },
+		{ "Key": "length" },
+		{ "Key": "width" },
+		{ "Key": "sampling" },
+		{ "Key": "node_size" }
 	],
 	"Head": [
 		{

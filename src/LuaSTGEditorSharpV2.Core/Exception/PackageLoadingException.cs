@@ -20,9 +20,5 @@ namespace LuaSTGEditorSharpV2.Core.Exception
         public PackageLoadingException(string? message, System.Exception? innerException) : base(message, innerException)
         {
         }
-
-        protected PackageLoadingException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

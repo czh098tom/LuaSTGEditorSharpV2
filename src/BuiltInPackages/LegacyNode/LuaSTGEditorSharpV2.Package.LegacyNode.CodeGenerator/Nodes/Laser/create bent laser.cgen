@@ -2,9 +2,9 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "CreateBentLaser",
 	"Captures":[
-		{"Capture":"identifier"},
-		{"Capture":"position"},
-		{"Capture":"parameters"}
+		{"Key":"identifier"},
+		{"Key":"position"},
+		{"Key":"parameters"}
 	],
 	"Head": [
 		{

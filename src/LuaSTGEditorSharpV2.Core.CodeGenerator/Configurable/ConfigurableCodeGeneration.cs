@@ -20,7 +20,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
         [JsonProperty] public bool IgnoreChildren { get; private set; } = false;
         [JsonProperty] public int IndentionIncrement { get; private set; } = 1;
 
-        protected string?[]? _captureResult;
+        protected string[]? _captureResult;
 
         internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {

@@ -2,8 +2,8 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "BossInit",
 	"Captures": [
-		{ "Capture": "position" },
-		{ "Capture": "scbg" }
+		{ "Key": "position" },
+		{ "Key": "scbg" }
 	],
 	"Head": [
 		{ "Text": "function _temporary_class:init(self, cards)" },
