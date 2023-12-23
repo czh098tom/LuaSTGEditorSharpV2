@@ -13,8 +13,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 {
     public class SingleListCodeGeneration : ConfigurableCodeGeneration
     {
-        [JsonProperty] public string? CountCapture { get; set; }
-        [JsonProperty] public string[]? SubCaptureRule { get; set; }
+        [JsonProperty] public NodePropertyCapture? CountCapture { get; set; }
+        [JsonProperty] public CaptureWithMacroOption?[]? SubCaptureRule { get; set; }
         [JsonProperty] public Selection[]? SubCaptureFormat { get; set; }
 
         protected override int GetCaptureCacheLength()
@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             int n = base.WriteCaptureResult(captureResult, node, context);
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
-                var countStr = node.GetProperty(CountCapture);
+                var countStr = CountCapture.Capture(node) ?? string.Empty;
                 captureResult[n] = string.Empty;
                 var subCaptureResult = new string[SubCaptureRule.Length];
                 if (int.TryParse(countStr, out var count))
@@ -41,7 +41,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                     {
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = node.GetProperty(string.Format(SubCaptureRule[j], i));
+                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(node, i) ?? string.Empty;
                         }
                         for (int j = 0; j < SubCaptureFormat.Length; j++)
                         {

@@ -10,13 +10,14 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core.Command;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     public class LocalVariablePropertyViewItemTerm : IMultipleFieldPropertyViewItemTerm<VariableDefinition>
     {
-        [JsonProperty] public string NameRule { get; set; } = string.Empty;
-        [JsonProperty] public string ValueRule { get; set; } = string.Empty;
+        [JsonProperty] public NodePropertyCapture? NameRule { get; set; }
+        [JsonProperty] public NodePropertyCapture? ValueRule { get; set; }
         [JsonProperty] public PropertyViewEditorType? NameValueEditor { get; set; }
 
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, int count)
@@ -25,8 +26,8 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             for (int i = 0; i < count; i++)
             {
                 properties.Add(new VariableDefinitionPropertyItemViewModel(
-                    nodeData.GetProperty(string.Format(NameRule, i)),
-                    nodeData.GetProperty(string.Format(ValueRule, i)))
+                    NameRule?.CaptureByFormat(nodeData, i) ?? string.Empty,
+                    ValueRule?.CaptureByFormat(nodeData, i) ?? string.Empty)
                 {
                     Type = NameValueEditor
                 });

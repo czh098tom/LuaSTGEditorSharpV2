@@ -13,10 +13,9 @@ namespace LuaSTGEditorSharpV2.Core.Configurable
         [JsonProperty] public string Text { get; private set; } = string.Empty;
         [JsonProperty] public int? ConditionOn { get; private set; }
         [JsonProperty] public bool Inversed { get; private set; } = false;
-        [JsonProperty] public bool DefaultValue { get; private set; } = true;
         [JsonProperty] public bool UseExistanceInsteadOfBoolValue { get; private set; } = false;
 
-        public bool ShouldAppend(string?[] captureResult)
+        public bool ShouldAppend(string[] captureResult)
         {
             if (ConditionOn == null)
             {
@@ -25,10 +24,10 @@ namespace LuaSTGEditorSharpV2.Core.Configurable
             bool isTrue;
             if (!UseExistanceInsteadOfBoolValue)
             {
-                string captured = DefaultValue.ToString();
+                string captured = string.Empty;
                 if (ConditionOn.Value < captureResult.Length && ConditionOn.Value > 0)
                 {
-                    captured = captureResult[ConditionOn.Value] ?? captured;
+                    captured = captureResult[ConditionOn.Value];
                 }
                 isTrue = captured.ToLower().Trim() == "true";
             }

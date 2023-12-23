@@ -10,6 +10,7 @@ using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -26,7 +27,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             List<PropertyItemViewModelBase> properties = [];
             if (Count != null && VariableProperty != null)
             {
-                string countStr = nodeData.GetProperty(Count.Mapping, "0");
+                string countStr = Count.Mapping?.Capture(nodeData) ?? string.Empty;
                 int count = 0;
                 if (int.TryParse(countStr, out var c))
                 {
@@ -72,13 +73,13 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             {
                 if (Count != null && VariableProperty != null)
                 {
-                    return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Count.Mapping, edited);
+                    return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Count.Mapping?.Key, edited);
                 }
                 return null;
             }
             else if (itemIndex < idxCount && itemIndex > 0)
             {
-                return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, ImmutableProperty[itemIndex].Mapping, edited);
+                return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, ImmutableProperty[itemIndex].Mapping?.Key, edited);
             }
             return null;
         }

@@ -8,13 +8,14 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Configurable;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 {
     public class SingleListViewModelProvider : ConfigurableViewModelProvider
     {
-        [JsonProperty] public string? CountCapture { get; set; }
-        [JsonProperty] public string[]? SubCaptureRule { get; set; }
+        [JsonProperty] public NodePropertyCapture? CountCapture { get; set; }
+        [JsonProperty] public NodePropertyCapture?[]? SubCaptureRule { get; set; }
         [JsonProperty] public LocalizableArray<Selection>? SubCaptureFormat { get; set; }
 
         protected override int GetCaptureCacheLength()
@@ -31,7 +32,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             int n = base.WriteCaptureResult(dataSource, captureResult);
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
-                var countStr = dataSource.GetProperty(CountCapture);
+                var countStr = CountCapture.Capture(dataSource) ?? string.Empty;
                 captureResult[n] = string.Empty;
                 var subCaptureResult = new string[SubCaptureRule.Length];
                 if (int.TryParse(countStr, out var count))
@@ -41,7 +42,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
                     {
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = dataSource.GetProperty(string.Format(SubCaptureRule[j], i));
+                            subCaptureResult[j] = SubCaptureRule[j]?.Capture(dataSource) ?? string.Empty;
                         }
                         var subCaptureFormat = SubCaptureFormat.GetLocalized();
                         for (int j = 0; j < subCaptureFormat.Length; j++)

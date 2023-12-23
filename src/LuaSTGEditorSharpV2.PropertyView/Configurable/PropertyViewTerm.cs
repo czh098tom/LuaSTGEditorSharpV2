@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     public record class PropertyViewTerm(
-        string Mapping,
+        NodePropertyCapture? Mapping,
         LocalizableString Caption,
         PropertyViewEditorType? Editor = null)
     {
@@ -19,7 +20,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return new BasicPropertyItemViewModel()
             {
                 Name = Caption.GetLocalized(),
-                Value = nodeData.GetProperty(Mapping),
+                Value = Mapping?.Capture(nodeData) ?? string.Empty,
                 Type = Editor
             };
         }
