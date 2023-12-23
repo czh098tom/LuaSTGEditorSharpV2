@@ -2,9 +2,9 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "SetBlendMode",
 	"Captures":[
-		{"Capture":"target"},
-		{"Capture":"blend_mode"},
-		{"Capture":"argb"}
+		{"Key":"target"},
+		{"Key":"blend_mode"},
+		{"Key":"argb"}
 	],
 	"Head": "_object.set_color({1}, {2}, {3})"
   }

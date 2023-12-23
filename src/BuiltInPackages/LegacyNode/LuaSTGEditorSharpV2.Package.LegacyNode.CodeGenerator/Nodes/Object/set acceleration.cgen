@@ -2,10 +2,10 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "SetAcceleration",
 	"Captures":[
-		{"Capture":"target"},
-		{"Capture":"acceleration"},
-		{"Capture":"accel_angle"},
-		{"Capture":"aim"}
+		{"Key":"target"},
+		{"Key":"acceleration"},
+		{"Key":"accel_angle"},
+		{"Key":"aim"}
 	],
 	"Head": "_set_a({1}, {2}, {3}, {4})"
   }

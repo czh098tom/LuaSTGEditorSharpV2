@@ -3,8 +3,11 @@
 	"TypeUID": "LocalVariable",
 	"Language": "Lua",
 	"Head": "{0}{1}",
-	"CountCapture": "count",
-	"SubCaptureRule": [ "name_{0}", "value_{0}" ],
+	"CountCapture": { "Key": "count" },
+	"SubCaptureRule": [
+		{ "Key": "name_{0}" },
+		{ "Key": "value_{0}" }
+	],
 	"SubCaptureFormat": [
 		{
 			"Text": "local {1} = {2}",

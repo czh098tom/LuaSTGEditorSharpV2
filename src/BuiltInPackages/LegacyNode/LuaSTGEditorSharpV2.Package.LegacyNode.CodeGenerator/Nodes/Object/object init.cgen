@@ -2,15 +2,15 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "ObjectInit",
 	"Captures": [
-		{ "Capture": "parameters" },
-		{ "Capture": "image" },
-		{ "Capture": "layer" },
-		{ "Capture": "group" },
-		{ "Capture": "hide" },
-		{ "Capture": "bound" },
-		{ "Capture": "navigate" },
-		{ "Capture": "hp" },
-		{ "Capture": "collision" }
+		{ "Key": "parameters" },
+		{ "Key": "image" },
+		{ "Key": "layer" },
+		{ "Key": "group" },
+		{ "Key": "hide" },
+		{ "Key": "bound" },
+		{ "Key": "navigate" },
+		{ "Key": "hp" },
+		{ "Key": "collision" }
 	],
 	"Head": [
 		{

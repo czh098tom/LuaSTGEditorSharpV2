@@ -6,7 +6,7 @@
       "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyViewTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
       "Mapping": [
         {
-          "Mapping": "condition",
+          "Mapping": { "Key": "condition" },
           "Caption": {
             "Neutral": "Condition",
             "Localized": {

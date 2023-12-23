@@ -1,7 +1,7 @@
 {
   "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "If.ElseIf",
-  "Captures": [ "condition" ],
+  "Captures": [ { "Key": "condition" } ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/elseif.png",
   "Text": {
     "Neutral": "elseif ({0}) then",

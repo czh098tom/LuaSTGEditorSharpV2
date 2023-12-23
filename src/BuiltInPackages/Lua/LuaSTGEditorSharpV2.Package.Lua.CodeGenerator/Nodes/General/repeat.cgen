@@ -3,7 +3,7 @@
 	"TypeUID": "Repeat",
 	"Language": "Lua",
 	"Captures":[
-		{"Capture":"times"}
+		{ "Key": "times" }
 	],
 	"Head": "for _ = 1, {1} do",
 	"Tail": "end"

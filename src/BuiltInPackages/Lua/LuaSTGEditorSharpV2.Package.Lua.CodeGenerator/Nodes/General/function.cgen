@@ -3,9 +3,9 @@
 	"TypeUID": "Function",
 	"Language": "Lua",
 	"Captures":[
-		{"Capture":"name"},
-		{"Capture":"parameters"},
-		{"Capture":"localized"}
+		{ "Key": "name" },
+		{ "Key": "parameters" },
+		{ "Key": "localized" }
 	],
 	"Head": [
 		{

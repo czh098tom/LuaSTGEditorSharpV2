@@ -2,7 +2,7 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineObject",
 	"Captures": [
-		{ "Capture": "identifier" }
+		{ "Key": "identifier" }
 	],
 	"Head": "local _temporary_class = Class(_object)",
 	"Tail": "_editor_class[\"{1}\"] = _temporary_class",

@@ -2,22 +2,22 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineSpellCard",
 	"Captures": [
-		{ "Capture": "spellcard_name" },
-		{ "Capture": "protect_time" },
-		{ "Capture": "resist_time" },
-		{ "Capture": "total_time" },
-		{ "Capture": "hp" },
-		{ "Capture": "power_amount" },
-		{ "Capture": "faith_amount" },
-		{ "Capture": "point_amount" },
-		{ "Capture": "bomb_immunity" },
-		{ "Capture": "opening_uperformance" }
+		{ "Key": "spellcard_name" },
+		{ "Key": "protect_time" },
+		{ "Key": "resist_time" },
+		{ "Key": "total_time" },
+		{ "Key": "hp" },
+		{ "Key": "power_amount" },
+		{ "Key": "faith_amount" },
+		{ "Key": "point_amount" },
+		{ "Key": "bomb_immunity" },
+		{ "Key": "opening_uperformance" }
 	],
 	"ContextCaptures": [
 		{
 			"TypeUID": "DefineBoss",
 			"Property": [
-				{ "Capture": "identifier"}
+				{ "Key": "identifier"}
 			]
 		}
 	],
