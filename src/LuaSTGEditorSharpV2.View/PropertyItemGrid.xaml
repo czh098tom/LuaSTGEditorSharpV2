@@ -8,7 +8,7 @@
       d:DesignHeight="450" 
       d:DesignWidth="800" 
       DataContext="{Binding ., Mode=OneTime}"
-      Margin="5">
+      Margin="0">
     <!-- 
     Bind datacontext to itself once to prevent parent regenerate datacontext for its children
     before children's lostfocus event fired.
