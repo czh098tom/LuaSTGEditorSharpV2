@@ -22,12 +22,7 @@
             Bind datacontext to itself once to prevent parent regenerate datacontext for its children
             before children's lostfocus event fired.
             -->
-            <Grid Margin="0,0,0,5" DataContext="{Binding .,Mode=OneTime}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="16" />
-                </Grid.ColumnDefinitions>
+            <lsv:PropertyItemGrid>
                 <TextBlock Text="{Binding Name}" />
                 <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                 <Button Grid.Column="2" Height="16" Content="...">
@@ -39,7 +34,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
-            </Grid>
+            </lsv:PropertyItemGrid>
         </DataTemplate>
     </Window.Resources>
     <DockPanel>
@@ -69,50 +64,12 @@
                 <xcad:VS2010Theme/>
             </xcad:DockingManager.Theme>
             <xcad:DockingManager.Resources>
-                <DataTemplate DataType="{x:Type lvm:DocumentViewModel}"> 
-                    <TreeView FontFamily="Terminal"
-                              Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
-                              ItemsSource="{Binding Tree}" SelectedItemChanged="TreeView_SelectedItemChanged">
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Icon}"
-                                           Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" 
-                                           VerticalAlignment="Top"/>
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Text}"/>
-                                </StackPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
+                <DataTemplate DataType="{x:Type lvm:DocumentViewModel}">
+                    <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
                 </DataTemplate>
             </xcad:DockingManager.Resources>
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel Orientation="Horizontal">
-                    <xcad:LayoutAnchorablePane DockWidth="200">
-                        <xcad:LayoutAnchorable Title="Property">
-                            <Grid DataContext="{Binding PropertyPage}">
-                                <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
-                                            SelectedIndex="{Binding SelectedIndex}" >
-                                    <TabControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Caption}"/>
-                                        </DataTemplate>
-                                    </TabControl.ItemTemplate>
-                                    <TabControl.ContentTemplate>
-                                        <DataTemplate>
-                                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
-                                                <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite">
-                                                    <ItemsControl.ItemTemplateSelector>
-                                                        <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
-                                                    </ItemsControl.ItemTemplateSelector>
-                                                </ItemsControl>
-                                            </ScrollViewer>
-                                        </DataTemplate>
-                                    </TabControl.ContentTemplate>
-                                </TabControl>
-                            </Grid>
-                        </xcad:LayoutAnchorable>
-                    </xcad:LayoutAnchorablePane>
                     <xcad:LayoutPanel Orientation="Vertical">
                         <xcad:LayoutDocumentPaneGroup>
                             <xcad:LayoutDocumentPane>
@@ -133,6 +90,32 @@
                             </xcad:LayoutAnchorablePane>
                         </xcad:LayoutAnchorablePaneGroup>
                     </xcad:LayoutPanel>
+                    <xcad:LayoutAnchorablePane DockWidth="300" DockMinWidth="300">
+                        <xcad:LayoutAnchorable Title="Property">
+                            <Grid DataContext="{Binding PropertyPage}">
+                                <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
+                                            SelectedIndex="{Binding SelectedIndex}" >
+                                    <TabControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Caption}"/>
+                                        </DataTemplate>
+                                    </TabControl.ItemTemplate>
+                                    <TabControl.ContentTemplate>
+                                        <DataTemplate>
+                                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+                                                <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
+                                                              Grid.IsSharedSizeScope="True">
+                                                    <ItemsControl.ItemTemplateSelector>
+                                                        <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
+                                                    </ItemsControl.ItemTemplateSelector>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </DataTemplate>
+                                    </TabControl.ContentTemplate>
+                                </TabControl>
+                            </Grid>
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>
         </xcad:DockingManager>

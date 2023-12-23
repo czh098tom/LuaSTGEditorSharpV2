@@ -1,34 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:e="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor">
+                    xmlns:e="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
+                    xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View">
     <DataTemplate x:Key="property:editorBoolean">
-        <!-- 
-        Bind datacontext to itself once to prevent parent regenerate datacontext for its children
-        before children's lostfocus event fired.
-        -->
-        <Grid Margin="0,0,0,5" DataContext="{Binding .,Mode=OneTime}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="16" />
-            </Grid.ColumnDefinitions>
+        <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}"/>
             <CheckBox Grid.Column="1" IsChecked="{Binding Value, Mode=TwoWay}"/>
-        </Grid>
+        </lsv:PropertyItemGrid>
     </DataTemplate>
     <e:ComboBoxItemConverter x:Key="comboBoxConverter"/>
     <DataTemplate x:Key="property:comboBox">
-        <!-- 
-        Bind datacontext to itself once to prevent parent regenerate datacontext for its children
-        before children's lostfocus event fired.
-        -->
-        <Grid Margin="0,0,0,5" DataContext="{Binding .,Mode=OneTime}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="16" />
-            </Grid.ColumnDefinitions>
+        <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}"/>
             <ComboBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay}" IsEditable="True"
                       ItemsSource="{Binding Type.Parameters[Key], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
@@ -41,6 +24,22 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
-        </Grid>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <DataTemplate x:Key="property:code">
+        <lsv:PropertyItemGrid>
+            <TextBlock Text="{Binding Name}"/>
+            <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                     AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
+            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                Command="{Binding ShowEditWindow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </lsv:PropertyItemGrid>
     </DataTemplate>
 </ResourceDictionary>

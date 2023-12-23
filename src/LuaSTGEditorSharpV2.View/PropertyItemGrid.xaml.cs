@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace LuaSTGEditorSharpV2.View
 {
     /// <summary>
-    /// DocumentTreeView.xaml 的交互逻辑
+    /// PropertyItemGrid.xaml 的交互逻辑
     /// </summary>
-    public partial class DocumentTreeView : TreeView
+    public partial class PropertyItemGrid : Grid
     {
-        public DocumentTreeView()
+        public PropertyItemGrid()
         {
             InitializeComponent();
         }

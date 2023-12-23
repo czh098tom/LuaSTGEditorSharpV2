@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.Command\LuaSTGEditorSharpV2.Core.Command.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.WPF\LuaSTGEditorSharpV2.WPF.csproj" />
   </ItemGroup>
 
