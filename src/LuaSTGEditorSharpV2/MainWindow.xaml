@@ -76,6 +76,11 @@
             </xcad:DockingManager.Resources>
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutAnchorablePane DockWidth="200">
+                        <xcad:LayoutAnchorable Title="Toolbox">
+                            <TreeView></TreeView>
+                        </xcad:LayoutAnchorable>
+                    </xcad:LayoutAnchorablePane>
                     <xcad:LayoutPanel Orientation="Vertical">
                         <xcad:LayoutDocumentPaneGroup>
                             <xcad:LayoutDocumentPane>
