@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <BaseOutputPath>$(MSBuildProjectDirectory)..\..\..\bin\</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +24,10 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Resources.Shared\LuaSTGEditorSharpV2.Resources.Shared.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
