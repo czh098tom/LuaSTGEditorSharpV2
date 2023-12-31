@@ -17,6 +17,7 @@
         x:Class="LuaSTGEditorSharpV2.MainWindow"
         mc:Ignorable="d"
         Title="LuaSTG Editor Sharp V2" Height="450" Width="800"
+        WindowState="Maximized"
         Icon="pack://application:,,,/icon.ico">
     <Window.Resources>
         <DataTemplate x:Key="defaultPropertyView">
