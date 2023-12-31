@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.Core.Model.DocumentFormat
             Formatting = Formatting.Indented
         };
 
-        public override NodeData CreateFromStream(TextReader streamReader)
+        public override NodeData? CreateFromStream(TextReader streamReader)
         {
             string text = streamReader.ReadToEnd();
             streamReader.Close();
