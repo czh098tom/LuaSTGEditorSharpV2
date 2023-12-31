@@ -8,12 +8,12 @@
         xmlns:rc="clr-namespace:LuaSTGEditorSharpV2.RoutedCommands"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:xcadc="clr-namespace:Xceed.Wpf.AvalonDock.Controls;assembly=Xceed.Wpf.AvalonDock.NET5"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:rb="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon"
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
         xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel;assembly=LuaSTGEditorSharpV2.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
-        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         x:Class="LuaSTGEditorSharpV2.MainWindow"
         mc:Ignorable="d"
         Title="LuaSTG Editor Sharp V2" Height="450" Width="800"
@@ -110,6 +110,17 @@
                 </RibbonTab>
             </Ribbon>
         </Border>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <ProgressBar/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="Test mode"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="Test mode"/>
+            </StatusBarItem>
+        </StatusBar>
         <xcad:DockingManager DocumentsSource="{Binding Documents}">
             <xcad:DockingManager.Theme>
                 <xcad:VS2010Theme/>
@@ -119,6 +130,13 @@
                     <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
                 </DataTemplate>
             </xcad:DockingManager.Resources>
+            <xcad:DockingManager.LayoutItemContainerStyle>
+                <Style TargetType="{x:Type xcadc:LayoutItem}" >
+                    <Setter Property="Title" Value="{Binding Model.Title}" />
+                    <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                    <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+                </Style>
+            </xcad:DockingManager.LayoutItemContainerStyle>
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">

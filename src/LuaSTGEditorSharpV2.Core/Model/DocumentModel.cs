@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Exception;
-using System.Reflection.PortableExecutable;
 
 namespace LuaSTGEditorSharpV2.Core.Model
 {
@@ -22,13 +21,14 @@ namespace LuaSTGEditorSharpV2.Core.Model
             Formatting = Formatting.Indented
         };
 
-        public static DocumentModel CreateFromFile(string filePath)
+        public static DocumentModel? CreateFromFile(string filePath)
         {
             try
             {
                 using FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
                 using StreamReader sr = new(fs);
                 var node = DocumentFormatBase.CreateByExtension(Path.GetExtension(filePath)).CreateFromStream(sr);
+                if (node == null) return null;
                 return new DocumentModel(filePath, node);
             }
             catch (System.Exception e)
@@ -37,7 +37,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
             }
         }
 
-        public static NodeData CreateFromStream(TextReader reader)
+        public static NodeData? CreateFromStream(TextReader reader)
         {
             try
             {

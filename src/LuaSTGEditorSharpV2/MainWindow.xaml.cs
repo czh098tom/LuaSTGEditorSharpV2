@@ -35,7 +35,6 @@ namespace LuaSTGEditorSharpV2
     public partial class MainWindow : RibbonWindow
     {
         private readonly MainViewModel vm = new();
-        private readonly EditingDocumentModel doc;
 
         public ICommand CommitEdit { get; private set; }
         public ICommand ShowEditWindow { get; private set; }
@@ -46,38 +45,11 @@ namespace LuaSTGEditorSharpV2
 
             InitializeCommand();
 
-            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test");
+            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test", "test.lstgxml");
 
-            try
-            {
-                doc = new EditingDocumentModel(DocumentModel.CreateFromFile(Path.Combine(testPath, "test.lstgxml")));
-                var dvm = new DocumentViewModel();
-                vm.Documents.Add(dvm);
-                DataContext = vm;
+            vm.OpenFile(testPath);
 
-                dvm.Tree.Add(HostedApplicationHelper.GetService<ViewModelProviderServiceProvider>().CreateViewModelRecursive(doc.Root, new LocalServiceParam(doc)));
-
-                vm.PropertyPage.OnTabItemValueUpdated += (o, e) =>
-                {
-                    var param = new LocalServiceParam(doc);
-                    var command = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetCommandOfEditingNode(
-                        vm.PropertyPage.Source ?? NodeData.Empty,
-                        param, vm.PropertyPage.Tabs, vm.PropertyPage.Tabs.IndexOf(e.Tab),
-                        e.Tab.Properties.IndexOf(e.Args.Item),
-                        e.Args.Args.NewValue);
-                    if (command != null)
-                    {
-                        doc.CommandBuffer.Execute(command, param);
-                    }
-                    var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(vm.PropertyPage.Source ?? NodeData.Empty, param);
-                    vm.PropertyPage.LoadProperties(list, vm.PropertyPage.Source ?? NodeData.Empty);
-                };
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            if (doc == null) throw new FileNotFoundException();
+            DataContext = vm;
         }
 
         [MemberNotNull(nameof(CommitEdit))]
@@ -99,11 +71,9 @@ namespace LuaSTGEditorSharpV2
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var tree = sender as TreeView;
-            var param = new LocalServiceParam(doc);
             if (tree?.SelectedItem is NodeViewModel selectedVM)
             {
-                var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(selectedVM.Source, param);
-                vm.PropertyPage.LoadProperties(list, selectedVM.Source);
+                vm.LoadProperties(selectedVM.Source);
                 _propertyTab.SelectedIndex = 0;
             }
         }

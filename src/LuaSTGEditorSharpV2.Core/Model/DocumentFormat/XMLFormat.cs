@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.Core.Model.DocumentFormat
             return elementName.StartsWith("_.");
         }
 
-        public override NodeData CreateFromStream(TextReader streamReader)
+        public override NodeData? CreateFromStream(TextReader streamReader)
         {
             using XmlReader xmlReader = XmlReader.Create(streamReader, _readerSettings);
             NodeData curr = new NodeData();

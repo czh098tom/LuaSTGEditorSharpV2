@@ -40,6 +40,7 @@ namespace LuaSTGEditorSharpV2
 
                 applicationBuilder.Services.AddLogging(builder => builder.AddNLog());
                 applicationBuilder.Services.AddHostedService<MainWorker>();
+                applicationBuilder.Services.AddSingleton<ActiveDocumentService>();
                 return applicationBuilder;
             }, args);
         }

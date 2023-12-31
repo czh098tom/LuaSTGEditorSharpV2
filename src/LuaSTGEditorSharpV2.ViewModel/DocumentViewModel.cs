@@ -10,5 +10,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
     public class DocumentViewModel : BaseViewModel
     {
         public ObservableCollection<NodeViewModel> Tree { get; private set; } = new();
+
+        public string Title { get; private set; } = string.Empty;
+
+        public DocumentViewModel(string title)
+        {
+            Title = title;
+        }
     }
 }

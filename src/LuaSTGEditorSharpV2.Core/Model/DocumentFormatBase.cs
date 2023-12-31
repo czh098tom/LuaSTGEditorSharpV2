@@ -27,7 +27,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
                 _ => throw new FormatException("Unknown format.")
             };
 
-        public abstract NodeData CreateFromStream(TextReader streamReader);
+        public abstract NodeData? CreateFromStream(TextReader streamReader);
         public abstract void SaveToStream(NodeData root, TextWriter streamWriter);
     }
 }
