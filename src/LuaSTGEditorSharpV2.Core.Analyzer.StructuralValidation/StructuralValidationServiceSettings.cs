@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
-    public class StructuralValidationServiceSettings : ServiceExtraSettings<StructuralValidationServiceSettings>
+    public class StructuralValidationServiceSettings : ServiceExtraSettingsBase
     {
     }
 }

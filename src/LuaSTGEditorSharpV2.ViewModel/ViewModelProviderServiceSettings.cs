@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class ViewModelProviderServiceSettings : ServiceExtraSettings<ViewModelProviderServiceSettings>
+    public class ViewModelProviderServiceSettings : ServiceExtraSettingsBase
     {
     }
 }

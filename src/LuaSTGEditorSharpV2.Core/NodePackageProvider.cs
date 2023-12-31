@@ -70,9 +70,9 @@ namespace LuaSTGEditorSharpV2.Core
                 Delegate register = reg!.CreateDelegate(regDelegateType);
 
                 // find reassign func
-                MethodInfo rea = settings.BaseType!.GetMethod(nameof(DefaultServiceExtraSettings.Reassign)
-                    , BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)!;
-                Type reaDelegateType = typeof(Action<>).MakeGenericType(settings);
+                MethodInfo rea = serviceProviderType.BaseType!.GetMethod(nameof(DefaultNodeServiceProvider.LoadSettings)
+                    , BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!;
+                Type reaDelegateType = typeof(Action<,>).MakeGenericType(provider, settings);
                 Delegate reassign = rea!.CreateDelegate(reaDelegateType);
 
                 _shortName2ServiceProviders.Add(serviceShortName, serviceProviderType);
@@ -224,14 +224,14 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public void ReplaceSettingsForServiceIfValid(Type serviceType, JObject settings)
+        public void ReplaceSettingsForServiceIfValid(Type serviceProviderType, JObject settings)
         {
-            if (_servicesProvider2Info.TryGetValue(serviceType, out var serviceInfo))
+            if (_servicesProvider2Info.TryGetValue(serviceProviderType, out var serviceInfo))
             {
                 var settingsType = serviceInfo.SettingsType;
                 var assign = serviceInfo.SettingsReplacementFunction;
                 var settingsObj = JsonConvert.DeserializeObject(settings.ToString(), settingsType);
-                assign.DynamicInvoke(settingsObj);
+                assign.DynamicInvoke(HostedApplicationHelper.GetService(serviceProviderType), settingsObj);
             }
         }
 

@@ -14,11 +14,13 @@ namespace LuaSTGEditorSharpV2.Core
         where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContext<TSettings>
-        where TSettings : ServiceExtraSettings<TSettings>, new ()
+        where TSettings : new ()
     {
         private readonly Dictionary<string, PriorityQueue<TService, PackageInfo>> _registered = [];
 
-        protected static TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
+        protected abstract TService DefaultService { get; }
+
+        public TSettings ServiceSettings { get; private set; } = new();
 
         public void Register(string typeID, PackageInfo packageInfo, TService service)
         {
@@ -62,7 +64,10 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        protected abstract TService DefaultService { get; }
+        public void LoadSettings(TSettings settings)
+        {
+            ServiceSettings = settings;
+        }
 
         internal protected TService GetServiceOfTypeID(string typeUID)
         {
@@ -88,7 +93,7 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeServiceProvider : NodeServiceProvider<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, DefaultServiceExtraSettings> 
+    internal class DefaultNodeServiceProvider : NodeServiceProvider<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase> 
     {
         private static readonly DefaultNodeService _default = new();
 

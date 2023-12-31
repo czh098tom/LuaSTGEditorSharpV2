@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public class PropertyViewServiceSettings : ServiceExtraSettings<PropertyViewServiceSettings>
+    public class PropertyViewServiceSettings : ServiceExtraSettingsBase
     {
     }
 }

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
-    public class CodeGenerationServiceSettings : ServiceExtraSettings<CodeGenerationServiceSettings>
+    public class CodeGenerationServiceSettings : ServiceExtraSettingsBase
     {
         [JsonProperty("indention_string")] 
         public string IndentionString { get; set; } = "\t";

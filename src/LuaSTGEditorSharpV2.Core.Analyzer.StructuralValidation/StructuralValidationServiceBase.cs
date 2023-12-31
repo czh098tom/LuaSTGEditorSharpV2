@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 
         public bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam)
         {
-            return CanPlaceAsChildOf(node, localParam, ServiceSettings);
+            return CanPlaceAsChildOf(node, localParam, GetServiceProvider().ServiceSettings);
         }
 
         public bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam

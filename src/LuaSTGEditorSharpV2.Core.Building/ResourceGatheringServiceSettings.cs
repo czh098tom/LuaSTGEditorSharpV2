@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public class ResourceGatheringServiceSettings : ServiceExtraSettings<ResourceGatheringServiceSettings>
+    public class ResourceGatheringServiceSettings : ServiceExtraSettingsBase
     {
     }
 }

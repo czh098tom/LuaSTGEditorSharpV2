@@ -22,17 +22,12 @@ namespace LuaSTGEditorSharpV2.Core
         where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContext<TSettings>
-        where TSettings : ServiceExtraSettings<TSettings>, new()
+        where TSettings : new()
     {
-        protected static TSettings ServiceSettings => ServiceExtraSettings<TSettings>.Instance;
-
         protected static TServiceProvider GetServiceProvider()
         {
             return HostedApplicationHelper.GetService<TServiceProvider>();
         }
-
-        protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam)
-            => GetServiceProvider().GetContextOfNode(node, localParam, ServiceSettings);
 
         protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
         {
@@ -49,11 +44,6 @@ namespace LuaSTGEditorSharpV2.Core
         [JsonProperty]
         public string TypeUID { get; protected set; } = string.Empty;
 
-        public TContext GetEmptyContext(LocalServiceParam localParam)
-        {
-            return GetEmptyContext(localParam, ServiceExtraSettings<TSettings>.Instance);
-        }
-
         /// <summary>
         /// When overridden in derived class, obtain an empty context object.
         /// </summary>
@@ -69,13 +59,10 @@ namespace LuaSTGEditorSharpV2.Core
         /// </remarks>
         public virtual TContext GetEmptyContext(LocalServiceParam localParam, TSettings serviceSettings)
         {
-            return (TContext?)Activator.CreateInstance(typeof(TContext), new object[] { localParam, serviceSettings })
+            return (TContext?)Activator.CreateInstance(typeof(TContext), [localParam, serviceSettings])
                 ?? throw new NotImplementedException(
                     $"{typeof(TContext)} have no constructor with parameter of type {typeof(LocalServiceParam)} and {typeof(TSettings)}.");
         }
-
-        protected TContext BuildContextForNode(NodeData node, LocalServiceParam localSettings)
-            => BuildContextForNode(node, localSettings, ServiceSettings);
 
         internal TContext BuildContextForNode(NodeData node, LocalServiceParam localSettings, TSettings serviceSettings)
         {
@@ -95,5 +82,5 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeService : NodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, DefaultServiceExtraSettings> { }
+    internal class DefaultNodeService : NodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase> { }
 }

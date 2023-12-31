@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.Core.Building
+namespace LuaSTGEditorSharpV2.Core
 {
-    public class BuildActionServiceSettings : ServiceExtraSettingsBase
+    public class ServiceExtraSettingsBase
     {
     }
 }

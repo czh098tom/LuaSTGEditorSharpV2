@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core
 {
     public abstract class NodeContext<TSettings>
-        where TSettings : ServiceExtraSettings<TSettings>, new()
+        where TSettings : new()
     {
         protected LocalServiceParam LocalParam { get; private set; }
 
@@ -103,9 +103,9 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeContext : NodeContext<DefaultServiceExtraSettings>
+    internal class DefaultNodeContext : NodeContext<ServiceExtraSettingsBase>
     {
-        internal DefaultNodeContext(LocalServiceParam localParam, DefaultServiceExtraSettings serviceSettings)
+        internal DefaultNodeContext(LocalServiceParam localParam, ServiceExtraSettingsBase serviceSettings)
             : base(localParam, serviceSettings) { }
     }
 }
