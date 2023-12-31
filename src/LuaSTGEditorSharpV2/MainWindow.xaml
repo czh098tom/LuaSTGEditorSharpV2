@@ -1,4 +1,4 @@
-﻿<RibbonWindow
+﻿<fluent:RibbonWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:xcadc="clr-namespace:Xceed.Wpf.AvalonDock.Controls;assembly=Xceed.Wpf.AvalonDock.NET5"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
-        xmlns:rb="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon"
+        xmlns:fluent="urn:fluent-ribbon"
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
         xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel;assembly=LuaSTGEditorSharpV2.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
@@ -48,67 +48,52 @@
     </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Top">
-            <Ribbon x:Name="RibbonWin"  SelectedIndex="0">
+            <fluent:Ribbon x:Name="RibbonWin">
                 <!-- Help Pane, located at the right-hand side -->
-                <Ribbon.HelpPaneContent>
-                    <RibbonButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/info.png" />
-                </Ribbon.HelpPaneContent>
                 <!-- Quick Access Toolbar - located at the upper-left corner -->
-                <Ribbon.QuickAccessToolBar>
-                    <RibbonQuickAccessToolBar>
-                        <RibbonButton x:Name ="Save" SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/save.png" />
-                        <RibbonSplitButton x:Name ="Undo" SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png">
-                            <RibbonSplitMenuItem Header="Undo 1" />
-                            <RibbonSplitMenuItem Header="Undo 2" />
-                            <RibbonSplitMenuItem Header="Undo 3" />
-                        </RibbonSplitButton>
-                        <RibbonSplitButton x:Name="Redo" SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/redo.png" >
-                            <RibbonSplitMenuItem Header="Redo 1" />
-                            <RibbonSplitMenuItem Header="Redo 2" />
-                        </RibbonSplitButton>
-                    </RibbonQuickAccessToolBar>
-                </Ribbon.QuickAccessToolBar>
                 <!-- Application Menu, located at the left-hand side (down arrow) -->
-                <Ribbon.ApplicationMenu>
-                    <RibbonApplicationMenu KeyTip="F">
-                        <RibbonApplicationMenuItem Header="Options" ImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/setting.png" />
-                        <RibbonApplicationMenuItem Header="Exit" ImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/new.png" />
-                    </RibbonApplicationMenu>
-                </Ribbon.ApplicationMenu>
                 <!-- Ribbon Tab #1: Home -->
-                <RibbonTab Header="Home" KeyTip="H" >
-                    <RibbonGroup x:Name="ClipboardGroup" Header="Home">
-                        <RibbonMenuButton LargeImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" Label="Paste" KeyTip="V">
-                            <RibbonMenuItem ImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" Header="Keep Text Only" KeyTip="T"/>
-                            <RibbonMenuItem ImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" Header="Paste Special..." KeyTip="S"/>
-                        </RibbonMenuButton>
-                        <RibbonButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/cut.png" Label="Cut" KeyTip="X" />
-                        <RibbonButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png" Label="Copy" KeyTip="C" />
-                    </RibbonGroup>
-                    <RibbonGroup x:Name="Insert" Header="Insert">
-                        <RibbonRadioButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/up.png" KeyTip="X" />
-                        <RibbonRadioButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/down.png" KeyTip="X" IsChecked="True"/>
-                        <RibbonRadioButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/child.png" KeyTip="X" />
-                        <RibbonRadioButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/parent.png" KeyTip="X" />
-                    </RibbonGroup>
-                    <RibbonGroup x:Name="Code" Header="Code">
-                        <RibbonMenuButton LargeImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png" Label="Code" KeyTip="V">
-                            <RibbonMenuItem ImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png" Header="View Code" KeyTip="T"/>
-                            <RibbonMenuItem ImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png" Header="Save Code" KeyTip="S"/>
-                        </RibbonMenuButton>
-                    </RibbonGroup>
-                    <RibbonGroup x:Name="Navigation" Header="Navigation">
-                        <RibbonButton SmallImageSource="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/search.png" Label="Jump To" KeyTip="X" />
-                        <RibbonTextBox/>
-                    </RibbonGroup>
-                </RibbonTab>
+                <fluent:RibbonTabItem Header="Home" KeyTip="H" >
+                    <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="Home">
+                        <fluent:Button Header="Paste" KeyTip="V" Size="Large"
+                                               Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" />
+                        <fluent:Button Header="Cut" KeyTip="X" Size="Large"
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/cut.png"/>
+                        <fluent:Button Header="Copy" KeyTip="C" Size="Large"
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
+                    </fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox x:Name="Insert" Header="Insert Direction">
+                        <fluent:ToggleButton Header="Up" Size="Large" GroupName="direction" KeyTip="X"
+                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/up.png" />
+                        <fluent:ToggleButton Header="Down" Size="Large" GroupName="direction" KeyTip="X" IsChecked="True"
+                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/down.png"/>
+                        <fluent:ToggleButton Header="Child" Size="Large" GroupName="direction" KeyTip="X" 
+                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/child.png"/>
+                        <fluent:ToggleButton Header="Parent" Size="Large" GroupName="direction" KeyTip="X" 
+                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/parent.png"/>
+                    </fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox x:Name="Code" Header="Code">
+                        <fluent:DropDownButton Header="Code" KeyTip="V"
+                                               Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png">
+                            <fluent:Gallery Orientation="Vertical">
+                                <fluent:MenuItem Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png" Header="View Code" KeyTip="T"/>
+                                <fluent:MenuItem Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png" Header="Save Code" KeyTip="S"/>
+                            </fluent:Gallery>
+                        </fluent:DropDownButton>
+                    </fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox x:Name="Navigation" Header="Navigation">
+                        <fluent:Button Header="Jump To" KeyTip="X" 
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/search.png" />
+                        <fluent:TextBox/>
+                    </fluent:RibbonGroupBox>
+                </fluent:RibbonTabItem>
                 <!-- Ribbon Tab #2: -->
-                <RibbonTab Header="Insert" KeyTip="I">
-                </RibbonTab>
+                <fluent:RibbonTabItem Header="Insert" KeyTip="I">
+                </fluent:RibbonTabItem>
                 <!-- Ribbon Tab #3: -->
-                <RibbonTab Header="Run" KeyTip="L">
-                </RibbonTab>
-            </Ribbon>
+                <fluent:RibbonTabItem Header="Run" KeyTip="L">
+                </fluent:RibbonTabItem>
+            </fluent:Ribbon>
         </Border>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
@@ -197,4 +182,4 @@
             </xcad:LayoutRoot>
         </xcad:DockingManager>
     </DockPanel>
-</RibbonWindow>
+</fluent:RibbonWindow>

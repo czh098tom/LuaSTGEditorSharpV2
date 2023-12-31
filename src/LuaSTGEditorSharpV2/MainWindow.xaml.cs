@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -21,6 +20,8 @@ using Microsoft.Xaml.Behaviors.Core;
 using Newtonsoft.Json;
 
 using Xceed.Wpf.AvalonDock.Controls;
+
+using Fluent;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
