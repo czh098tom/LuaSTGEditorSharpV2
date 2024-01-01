@@ -86,7 +86,7 @@ namespace LuaSTGEditorSharpV2
         private void InsertButton_Click(object sender, RoutedEventArgs e)
         {
             if (selected == null) return;
-            InputDialog inputDialog = new();
+            InputDialog inputDialog = new() { Owner = this };
             if (inputDialog.ShowDialog() == true)
             {
                 var type = inputDialog.ViewModel.Text;
