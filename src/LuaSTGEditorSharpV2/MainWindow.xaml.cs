@@ -27,6 +27,7 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Dialog.ViewModel;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -36,6 +37,8 @@ namespace LuaSTGEditorSharpV2
     public partial class MainWindow : RibbonWindow
     {
         private readonly MainViewModel vm = new();
+
+        private NodeViewModel? selected = null;
 
         public ICommand CommitEdit { get; private set; }
         public ICommand ShowEditWindow { get; private set; }
@@ -74,8 +77,20 @@ namespace LuaSTGEditorSharpV2
             var tree = sender as TreeView;
             if (tree?.SelectedItem is NodeViewModel selectedVM)
             {
+                selected = selectedVM;
                 vm.LoadProperties(selectedVM.Source);
                 _propertyTab.SelectedIndex = 0;
+            }
+        }
+
+        private void InsertButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (selected == null) return;
+            InputDialog inputDialog = new();
+            if (inputDialog.ShowDialog() == true)
+            {
+                var type = inputDialog.ViewModel.Text;
+                vm.InsertNodeOfCustomType(selected.Source, type);
             }
         }
     }

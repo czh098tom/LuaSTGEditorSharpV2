@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.ViewModel\LuaSTGEditorSharpV2.ViewModel.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.WPF\LuaSTGEditorSharpV2.WPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="InputDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

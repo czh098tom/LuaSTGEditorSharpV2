@@ -9,6 +9,7 @@ using System.IO;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
+using LuaSTGEditorSharpV2.Core.Command;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -65,6 +66,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var param = new LocalServiceParam(activeDocService.ActiveDocuments[ActiveDocumentIndex]);
             var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(nodeData, param);
             PropertyPage.LoadProperties(list, nodeData);
+        }
+
+        public void InsertNodeOfCustomType(NodeData nodeData, string typeUID)
+        {
+            var activeDocService = HostedApplicationHelper.GetService<ActiveDocumentService>();
+            EditingDocumentModel doc = activeDocService.ActiveDocuments[ActiveDocumentIndex];
+            var param = new LocalServiceParam(doc);
+            doc.CommandBuffer.Execute(new AddChildCommand(nodeData, nodeData.PhysicalChildren.Count, new NodeData(typeUID)), param);
         }
     }
 }

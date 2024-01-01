@@ -106,7 +106,7 @@
                 <TextBlock Text="Test mode"/>
             </StatusBarItem>
         </StatusBar>
-        <xcad:DockingManager DocumentsSource="{Binding Documents}">
+        <xcad:DockingManager Name="dockingManager" DocumentsSource="{Binding Documents}">
             <xcad:DockingManager.Theme>
                 <xcad:VS2010Theme/>
             </xcad:DockingManager.Theme>
@@ -126,7 +126,15 @@
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">
                         <xcad:LayoutAnchorable Title="Toolbox">
-                            <TreeView></TreeView>
+                            <TreeView VirtualizingPanel.IsVirtualizing="True">
+                                <Button Click="InsertButton_Click">
+                                    <StackPanel Orientation="Horizontal" >
+                                        <Image Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"
+                                           Source="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="Add Node with Custom Type" />
+                                    </StackPanel>
+                                </Button>
+                            </TreeView>
                         </xcad:LayoutAnchorable>
                     </xcad:LayoutAnchorablePane>
                     <xcad:LayoutPanel Orientation="Vertical">

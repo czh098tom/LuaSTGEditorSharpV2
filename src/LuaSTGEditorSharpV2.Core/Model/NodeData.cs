@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         public NodeData() { }
 
-        internal NodeData(string typeUID) 
+        public NodeData(string typeUID) 
         {
             TypeUID = typeUID;
         }
