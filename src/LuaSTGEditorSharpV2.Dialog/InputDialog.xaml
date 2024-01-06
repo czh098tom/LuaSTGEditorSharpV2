@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LuaSTGEditorSharpV2"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
         mc:Ignorable="d"
-        Title="Input" 
+        Title="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_title}" 
         MinWidth="350" 
         MinHeight="110"
         Width="350"
@@ -34,13 +35,15 @@
         </Grid.RowDefinitions>
 
         <!--Find Controls-->
-        <Label Grid.Column="1" Grid.Row="1">_Content:</Label>
+        <Label Grid.Column="1" Grid.Row="1" Content="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_label_content}"/>
         <TextBox Name="contentTextBox" Text="{Binding Text}" Grid.Column="2" Grid.Row="1" />
 
         <!--Action Controls-->
         <StackPanel Grid.Column="4" Grid.Row="1" Grid.RowSpan="6">
-            <Button Name="okButton" Click="OKButton_Click" Height="25" Width="70" IsDefault="True" Margin="0,0,0,5">OK</Button>
-            <Button Name="closeButton" Click="CloseButton_Click" Height="25" Width="70" IsCancel="True">Close</Button>
+            <Button Name="okButton" Content="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_button_ok_title }"
+                    Click="OKButton_Click" Height="25" Width="70" IsDefault="True" Margin="0,0,0,5"/>
+            <Button Name="closeButton" Content="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_button_cancel_title}"
+                    Click="CloseButton_Click" Height="25" Width="70" IsCancel="True"/>
         </StackPanel>
 
     </Grid>
