@@ -53,8 +53,38 @@
         <Border DockPanel.Dock="Top">
             <fluent:Ribbon x:Name="RibbonWin">
                 <!-- Help Pane, located at the right-hand side -->
+                <fluent:Ribbon.ToolBarItems>
+                </fluent:Ribbon.ToolBarItems>
                 <!-- Quick Access Toolbar - located at the upper-left corner -->
+                <fluent:Ribbon.QuickAccessItems>
+                    <fluent:QuickAccessMenuItem IsChecked="true">
+                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_save_title}" 
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/save.png" />
+                    </fluent:QuickAccessMenuItem>
+                    <fluent:QuickAccessMenuItem IsChecked="true">
+                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_undo_title}" 
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" />
+                    </fluent:QuickAccessMenuItem>
+                    <fluent:QuickAccessMenuItem IsChecked="False" >
+                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_redo_title}" 
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" />
+                    </fluent:QuickAccessMenuItem>
+                </fluent:Ribbon.QuickAccessItems>
                 <!-- Application Menu, located at the left-hand side (down arrow) -->
+                <fluent:Ribbon.Menu>
+                    <fluent:Backstage Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_backStageMenu_document_title}">
+                        <fluent:BackstageTabControl>
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_save_title}" 
+                                           KeyTip="S"/>
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_saveAs_title}" 
+                                           KeyTip="A" CanAddToQuickAccessToolBar="False"/>
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_settings_title}" 
+                                           KeyTip="X"/>
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exit_title}" 
+                                           KeyTip="X"/>
+                        </fluent:BackstageTabControl>
+                    </fluent:Backstage>
+                </fluent:Ribbon.Menu>
                 <!-- Ribbon Tab #1: Home -->
                 <fluent:RibbonTabItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_home_title}" KeyTip="H" >
                     <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="{lex:Loc ribbon_group_edit_title}">

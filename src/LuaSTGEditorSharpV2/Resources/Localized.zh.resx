@@ -129,6 +129,9 @@
   <data name="panel_toolBox_title" xml:space="preserve">
     <value>工具箱</value>
   </data>
+  <data name="ribbon_backStageMenu_document_title" xml:space="preserve">
+    <value>文档</value>
+  </data>
   <data name="ribbon_button_childDirection_title" xml:space="preserve">
     <value>子节点</value>
   </data>
@@ -168,11 +171,32 @@
   <data name="ribbon_group_navigation_title" xml:space="preserve">
     <value>导航</value>
   </data>
+  <data name="ribbon_menuItem_exit_title" xml:space="preserve">
+    <value>退出</value>
+  </data>
   <data name="ribbon_menuItem_exportCode_title" xml:space="preserve">
     <value>导出代码...</value>
   </data>
+  <data name="ribbon_menuItem_saveAs_title" xml:space="preserve">
+    <value>另存为...</value>
+  </data>
+  <data name="ribbon_menuItem_save_title" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ribbon_menuItem_settings_title" xml:space="preserve">
+    <value>设置</value>
+  </data>
   <data name="ribbon_menuItem_viewCode_title" xml:space="preserve">
     <value>查看代码...</value>
+  </data>
+  <data name="ribbon_quickAccess_redo_title" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="ribbon_quickAccess_save_title" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="ribbon_quickAccess_undo_title" xml:space="preserve">
+    <value>撤销</value>
   </data>
   <data name="ribbon_tab_home_title" xml:space="preserve">
     <value>开始</value>

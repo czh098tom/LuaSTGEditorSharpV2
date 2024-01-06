@@ -97,6 +97,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Document 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_backStageMenu_document_title {
+            get {
+                return ResourceManager.GetString("ribbon_backStageMenu_document_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Child 的本地化字符串。
         /// </summary>
         internal static string ribbon_button_childDirection_title {
@@ -214,6 +223,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Exit 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_menuItem_exit_title {
+            get {
+                return ResourceManager.GetString("ribbon_menuItem_exit_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export code... 的本地化字符串。
         /// </summary>
         internal static string ribbon_menuItem_exportCode_title {
@@ -223,11 +241,65 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Save 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_menuItem_save_title {
+            get {
+                return ResourceManager.GetString("ribbon_menuItem_save_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save As... 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_menuItem_saveAs_title {
+            get {
+                return ResourceManager.GetString("ribbon_menuItem_saveAs_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Settings 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_menuItem_settings_title {
+            get {
+                return ResourceManager.GetString("ribbon_menuItem_settings_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 View code... 的本地化字符串。
         /// </summary>
         internal static string ribbon_menuItem_viewCode_title {
             get {
                 return ResourceManager.GetString("ribbon_menuItem_viewCode_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Redo 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_quickAccess_redo_title {
+            get {
+                return ResourceManager.GetString("ribbon_quickAccess_redo_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_quickAccess_save_title {
+            get {
+                return ResourceManager.GetString("ribbon_quickAccess_save_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Undo 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_quickAccess_undo_title {
+            get {
+                return ResourceManager.GetString("ribbon_quickAccess_undo_title", resourceCulture);
             }
         }
         

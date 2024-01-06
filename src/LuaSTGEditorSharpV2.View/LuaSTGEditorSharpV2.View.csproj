@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.WPF\LuaSTGEditorSharpV2.WPF.csproj" />
   </ItemGroup>
 
 </Project>

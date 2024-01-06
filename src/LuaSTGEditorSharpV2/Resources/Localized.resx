@@ -129,6 +129,9 @@
   <data name="panel_toolBox_title" xml:space="preserve">
     <value>Toolbox</value>
   </data>
+  <data name="ribbon_backStageMenu_document_title" xml:space="preserve">
+    <value>Document</value>
+  </data>
   <data name="ribbon_button_childDirection_title" xml:space="preserve">
     <value>Child</value>
   </data>
@@ -168,11 +171,32 @@
   <data name="ribbon_group_navigation_title" xml:space="preserve">
     <value>Navigation</value>
   </data>
+  <data name="ribbon_menuItem_exit_title" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="ribbon_menuItem_exportCode_title" xml:space="preserve">
     <value>Export code...</value>
   </data>
+  <data name="ribbon_menuItem_saveAs_title" xml:space="preserve">
+    <value>Save As...</value>
+  </data>
+  <data name="ribbon_menuItem_save_title" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ribbon_menuItem_settings_title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="ribbon_menuItem_viewCode_title" xml:space="preserve">
     <value>View code...</value>
+  </data>
+  <data name="ribbon_quickAccess_redo_title" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="ribbon_quickAccess_save_title" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ribbon_quickAccess_undo_title" xml:space="preserve">
+    <value>Undo</value>
   </data>
   <data name="ribbon_tab_home_title" xml:space="preserve">
     <value>Home</value>
