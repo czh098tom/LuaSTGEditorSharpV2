@@ -27,6 +27,9 @@ namespace LuaSTGEditorSharpV2
                 var lua = nodePackageProvider.LoadPackage("Lua");
                 var resln = nodePackageProvider.LoadPackage("LegacyNode");
                 ResourceManager.MergeResources();
+
+                HostedApplicationHelper.GetService<LocalizationService>().OnCultureChanged += (o, e) =>
+                    WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = e.CultureInfo;
             }
             catch (Exception ex)
             {

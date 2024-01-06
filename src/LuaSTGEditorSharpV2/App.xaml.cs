@@ -29,8 +29,6 @@ namespace LuaSTGEditorSharpV2
         {
             base.OnStartup(e);
 
-            WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = System.Globalization.CultureInfo.CurrentCulture;
-
             var args = e.Args;
 
             HostedApplicationHelper.AddNodeServiceProvider(typeof(CodeGeneratorServiceProvider));
@@ -43,6 +41,7 @@ namespace LuaSTGEditorSharpV2
                 applicationBuilder.Services.AddLogging(builder => builder.AddNLog());
                 applicationBuilder.Services.AddHostedService<MainWorker>();
                 applicationBuilder.Services.AddSingleton<ActiveDocumentService>();
+                applicationBuilder.Services.AddSingleton<LocalizationService>();
                 return applicationBuilder;
             }, args);
         }

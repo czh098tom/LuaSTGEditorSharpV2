@@ -22,14 +22,14 @@ namespace LuaSTGEditorSharpV2.PropertyView.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Text {
+    internal class Localized {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Text() {
+        internal Localized() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.PropertyView.Resources.Text", typeof(Text).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.PropertyView.Resources.Localized", typeof(Localized).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

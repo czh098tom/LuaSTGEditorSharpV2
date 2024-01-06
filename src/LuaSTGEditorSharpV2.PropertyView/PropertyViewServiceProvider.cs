@@ -20,10 +20,12 @@ namespace LuaSTGEditorSharpV2.PropertyView
         private static readonly string _nativeViewI18NKey = "native_view";
         private static readonly string _defaultViewI18NKey = "default_view";
 
-        public static string NativeViewI18NCaption => LocalizedResourceHost.GetString(_nativeViewI18NKey
-            , typeof(PropertyViewServiceBase).Assembly) ?? "Native_View";
-        public static string DefaultViewI18NCaption => LocalizedResourceHost.GetString(_defaultViewI18NKey
-            , typeof(PropertyViewServiceBase).Assembly) ?? "Default_View";
+        public static string NativeViewI18NCaption => HostedApplicationHelper
+            .GetService<LocalizationService>()
+            .GetString(_nativeViewI18NKey, typeof(PropertyViewServiceBase).Assembly);
+        public static string DefaultViewI18NCaption => HostedApplicationHelper
+            .GetService<LocalizationService>()
+            .GetString(_defaultViewI18NKey, typeof(PropertyViewServiceBase).Assembly);
 
         protected override PropertyViewServiceBase DefaultService => _defaultService;
 
