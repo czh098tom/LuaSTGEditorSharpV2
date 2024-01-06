@@ -14,6 +14,10 @@
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
         xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel;assembly=LuaSTGEditorSharpV2.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:LocalizeDictionary.DesignCulture="zh"
+        lex:ResxLocalizationProvider.DefaultAssembly="LuaSTGEditorSharpV2"
+        lex:ResxLocalizationProvider.DefaultDictionary="Localized"
         x:Class="LuaSTGEditorSharpV2.MainWindow"
         mc:Ignorable="d"
         Title="LuaSTG Editor Sharp V2" Height="450" Width="800"
@@ -53,45 +57,41 @@
                 <!-- Quick Access Toolbar - located at the upper-left corner -->
                 <!-- Application Menu, located at the left-hand side (down arrow) -->
                 <!-- Ribbon Tab #1: Home -->
-                <fluent:RibbonTabItem Header="Home" KeyTip="H" >
-                    <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="Home">
-                        <fluent:Button Header="Paste" KeyTip="V" Size="Large"
+                <fluent:RibbonTabItem Header="{lex:Loc ribbon_tab_home_title}" KeyTip="H" >
+                    <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="{lex:Loc ribbon_group_edit_title}">
+                        <fluent:Button Header="{lex:Loc ribbon_button_paste_title}" KeyTip="V" Size="Large"
                                                Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" />
-                        <fluent:Button Header="Cut" KeyTip="X" Size="Large"
+                        <fluent:Button Header="{lex:Loc ribbon_button_cut_title}" KeyTip="X" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/cut.png"/>
-                        <fluent:Button Header="Copy" KeyTip="C" Size="Large"
+                        <fluent:Button Header="{lex:Loc ribbon_button_copy_title}" KeyTip="C" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
                     </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox x:Name="Insert" Header="Insert Direction">
-                        <fluent:ToggleButton Header="Up" Size="Large" GroupName="direction" KeyTip="X"
+                    <fluent:RibbonGroupBox x:Name="Insert" Header="{lex:Loc ribbon_group_insertDirection_title}">
+                        <fluent:ToggleButton Header="{lex:Loc ribbon_button_upDirection_title}" Size="Large" GroupName="direction" KeyTip="X"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/up.png" />
-                        <fluent:ToggleButton Header="Down" Size="Large" GroupName="direction" KeyTip="X" IsChecked="True"
+                        <fluent:ToggleButton Header="{lex:Loc ribbon_button_downDirection_title}" Size="Large" GroupName="direction" KeyTip="X" IsChecked="True"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/down.png"/>
-                        <fluent:ToggleButton Header="Child" Size="Large" GroupName="direction" KeyTip="X" 
+                        <fluent:ToggleButton Header="{lex:Loc ribbon_button_childDirection_title}" Size="Large" GroupName="direction" KeyTip="X" 
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/child.png"/>
-                        <fluent:ToggleButton Header="Parent" Size="Large" GroupName="direction" KeyTip="X" 
+                        <fluent:ToggleButton Header="{lex:Loc ribbon_button_parentDirection_title}" Size="Large" GroupName="direction" KeyTip="X" 
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/parent.png"/>
                     </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox x:Name="Code" Header="Code">
-                        <fluent:DropDownButton Header="Code" KeyTip="V"
+                    <fluent:RibbonGroupBox x:Name="Code" Header="{lex:Loc ribbon_group_code_title}">
+                        <fluent:DropDownButton Header="{lex:Loc ribbon_button_code_title}" KeyTip="V"
                                                Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png">
                             <fluent:Gallery Orientation="Vertical">
-                                <fluent:MenuItem Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png" Header="View Code" KeyTip="T"/>
-                                <fluent:MenuItem Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png" Header="Save Code" KeyTip="S"/>
+                                <fluent:MenuItem Header="{lex:Loc ribbon_menuItem_viewCode_title}" KeyTip="T"
+                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png"/>
+                                <fluent:MenuItem Header="{lex:Loc ribbon_menuItem_exportCode_title}" KeyTip="S"
+                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png"/>
                             </fluent:Gallery>
                         </fluent:DropDownButton>
                     </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox x:Name="Navigation" Header="Navigation">
-                        <fluent:Button Header="Jump To" KeyTip="X" 
+                    <fluent:RibbonGroupBox x:Name="Navigation" Header="{lex:Loc ribbon_group_navigation_title}">
+                        <fluent:Button Header="{lex:Loc ribbon_button_jumpTo_title}" KeyTip="X" 
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/search.png" />
                         <fluent:TextBox/>
                     </fluent:RibbonGroupBox>
-                </fluent:RibbonTabItem>
-                <!-- Ribbon Tab #2: -->
-                <fluent:RibbonTabItem Header="Insert" KeyTip="I">
-                </fluent:RibbonTabItem>
-                <!-- Ribbon Tab #3: -->
-                <fluent:RibbonTabItem Header="Run" KeyTip="L">
                 </fluent:RibbonTabItem>
             </fluent:Ribbon>
         </Border>
@@ -125,7 +125,7 @@
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePane DockWidth="200">
-                        <xcad:LayoutAnchorable Title="Toolbox">
+                        <xcad:LayoutAnchorable Title="{lex:Loc panel_toolBox_title}">
                             <TreeView VirtualizingPanel.IsVirtualizing="True">
                                 <Button Click="InsertButton_Click">
                                     <StackPanel Orientation="Horizontal" >
@@ -144,12 +144,12 @@
                         </xcad:LayoutDocumentPaneGroup>
                         <xcad:LayoutAnchorablePaneGroup DockHeight="150">
                             <xcad:LayoutAnchorablePane>
-                                <xcad:LayoutAnchorable Title="Error">
+                                <xcad:LayoutAnchorable Title="{lex:Loc panel_error_title}">
                                     <DataGrid>
                                         
                                     </DataGrid>
                                 </xcad:LayoutAnchorable>
-                                <xcad:LayoutAnchorable Title="Output">
+                                <xcad:LayoutAnchorable Title="{lex:Loc panel_output_title}">
                                     <TextBox>
 
                                     </TextBox>
@@ -158,7 +158,7 @@
                         </xcad:LayoutAnchorablePaneGroup>
                     </xcad:LayoutPanel>
                     <xcad:LayoutAnchorablePane DockWidth="300" DockMinWidth="300">
-                        <xcad:LayoutAnchorable Title="Property">
+                        <xcad:LayoutAnchorable Title="{lex:Loc panel_property_title}">
                             <Grid DataContext="{Binding PropertyPage}">
                                 <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
                                             SelectedIndex="{Binding SelectedIndex}" >
