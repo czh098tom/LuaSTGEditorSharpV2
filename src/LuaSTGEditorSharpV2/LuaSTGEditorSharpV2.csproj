@@ -24,6 +24,7 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.Command\LuaSTGEditorSharpV2.Core.Command.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Dialog\LuaSTGEditorSharpV2.Dialog.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.ViewModel\LuaSTGEditorSharpV2.ViewModel.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj" />

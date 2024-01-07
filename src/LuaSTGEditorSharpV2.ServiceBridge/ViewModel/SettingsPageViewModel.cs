@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.ViewModel
+using LuaSTGEditorSharpV2.ViewModel;
+
+namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
 {
     public class SettingsPageViewModel : BaseViewModel
     {

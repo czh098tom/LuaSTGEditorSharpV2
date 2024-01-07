@@ -12,8 +12,9 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.Core.Settings;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.ServiceBridge.ViewModel;
 
-namespace LuaSTGEditorSharpV2.Services
+namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 {
     public class SettingsDisplayService(ILogger<SettingsDisplayService> logger)
     {
@@ -27,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Services
 
         public void RegisterViewModel<TProvider, TViewModel>()
             where TProvider : IServiceProvider
-            where TViewModel :  BaseViewModel
+            where TViewModel : BaseViewModel
         {
             RegisterViewModel(typeof(TProvider), typeof(TViewModel));
         }
@@ -45,8 +46,8 @@ namespace LuaSTGEditorSharpV2.Services
                     try
                     {
                         var viewModel = JsonConvert.DeserializeObject(
-                                JsonConvert.SerializeObject(desc.SettingsProvider.Settings), 
-                                viewModelType) 
+                                JsonConvert.SerializeObject(desc.SettingsProvider.Settings),
+                                viewModelType)
                             ?? new object();
                         viewModels.Add(new SettingsPageViewModel()
                         {
