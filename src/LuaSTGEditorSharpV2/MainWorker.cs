@@ -33,17 +33,10 @@ namespace LuaSTGEditorSharpV2
                 }
                 while (splash == null);
 
-                HostedApplicationHelper.InitNodeService();
-                var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
-                var resc = nodePackageProvider.LoadPackage("Core");
-                var lua = nodePackageProvider.LoadPackage("Lua");
-                var resln = nodePackageProvider.LoadPackage("LegacyNode");
-                ResourceManager.MergeResources();
-
                 HostedApplicationHelper.GetService<LocalizationService>().OnCultureChanged += (o, e) =>
                     WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = e.CultureInfo;
 
-                await InitializationAsync(stoppingToken);
+                await Task.Run(Initialization, stoppingToken);
 
                 MainWindow mw = new();
                 mw.Show();
@@ -57,9 +50,17 @@ namespace LuaSTGEditorSharpV2
             }
         }
 
-        private Task InitializationAsync(CancellationToken cancellationToken = default)
+        private void Initialization()
         {
-            return Task.Run(() => HostedApplicationHelper.GetService<SettingsService>().LoadSettings(), cancellationToken);
+            HostedApplicationHelper.GetService<SettingsService>().LoadSettings();
+
+            HostedApplicationHelper.InitNodeService();
+            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
+            var resc = nodePackageProvider.LoadPackage("Core");
+            var lua = nodePackageProvider.LoadPackage("Lua");
+            var resln = nodePackageProvider.LoadPackage("LegacyNode");
+
+            ResourceManager.MergeResources();
         }
     }
 }
