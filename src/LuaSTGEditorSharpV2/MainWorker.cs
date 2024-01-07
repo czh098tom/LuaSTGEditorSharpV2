@@ -13,15 +13,26 @@ using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core.Services;
+using System.Windows;
 
 namespace LuaSTGEditorSharpV2
 {
     public class MainWorker : BackgroundService
     {
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
             {
+                SplashWindow? splash = null;
+                do
+                {
+                    var windowsCollection = Application.Current.Windows;
+                    splash = windowsCollection.OfType<SplashWindow>().FirstOrDefault();
+
+                    await Task.Yield();
+                }
+                while (splash == null);
+
                 HostedApplicationHelper.InitNodeService();
                 var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
                 var resc = nodePackageProvider.LoadPackage("Core");
@@ -31,12 +42,24 @@ namespace LuaSTGEditorSharpV2
 
                 HostedApplicationHelper.GetService<LocalizationService>().OnCultureChanged += (o, e) =>
                     WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = e.CultureInfo;
+
+                await InitializationAsync(stoppingToken);
+
+                MainWindow mw = new();
+                mw.Show();
+
+                splash.Close();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Application.Current.Shutdown();
             }
-            return Task.CompletedTask;
+        }
+
+        private Task InitializationAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.Run(() => HostedApplicationHelper.GetService<SettingsService>().LoadSettings(), cancellationToken);
         }
     }
 }

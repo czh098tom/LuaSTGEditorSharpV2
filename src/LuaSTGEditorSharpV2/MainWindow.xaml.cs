@@ -93,5 +93,11 @@ namespace LuaSTGEditorSharpV2
                 vm.InsertNodeOfCustomType(selected.Source, type);
             }
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Application.Current.Shutdown();
+        }
     }
 }

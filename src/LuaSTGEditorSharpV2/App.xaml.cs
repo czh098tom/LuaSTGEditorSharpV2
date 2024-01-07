@@ -44,13 +44,9 @@ namespace LuaSTGEditorSharpV2
                 applicationBuilder.Services.AddHostedService<MainWorker>();
                 applicationBuilder.Services.AddSingleton<ActiveDocumentService>();
                 applicationBuilder.Services.AddSingleton<LocalizationService>();
+                applicationBuilder.Services.AddSingleton<SettingsService>();
                 return applicationBuilder;
             }, args);
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            base.OnExit(e);
         }
     }
 }

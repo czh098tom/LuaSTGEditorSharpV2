@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icon_huge.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.5" />
   </ItemGroup>
@@ -29,6 +33,7 @@
 
   <ItemGroup>
     <Resource Include="icon.ico" />
+    <Resource Include="icon_huge.png" />
   </ItemGroup>
 
   <ItemGroup>
