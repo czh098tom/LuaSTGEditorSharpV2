@@ -19,6 +19,7 @@ namespace LuaSTGEditorSharpV2.CLI
                 if (param.InputPath != null)
                 {
                     var doc = DocumentModel.CreateFromFile(param.InputPath);
+                    if (doc == null) return;
                     NodeData? root = doc.Root;
 
                     TextWriter writer;
@@ -53,6 +54,7 @@ namespace LuaSTGEditorSharpV2.CLI
                 if (param.InputPath != null)
                 {
                     var doc = DocumentModel.CreateFromFile(param.InputPath);
+                    if (doc == null) return;
                     NodeData? root = doc.Root;
 
                     TextWriter writer;

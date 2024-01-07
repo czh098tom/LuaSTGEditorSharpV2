@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Services;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {

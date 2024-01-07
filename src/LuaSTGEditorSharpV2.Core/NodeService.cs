@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.Core
         where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContext<TSettings>
-        where TSettings : new()
+        where TSettings : class, new()
     {
         protected static TServiceProvider GetServiceProvider()
         {

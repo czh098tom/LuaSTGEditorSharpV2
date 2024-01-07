@@ -17,6 +17,8 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Services;
+using LuaSTGEditorSharpV2.Core.Services;
 
 namespace LuaSTGEditorSharpV2
 {

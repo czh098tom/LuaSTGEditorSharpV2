@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 using Microsoft.Extensions.Logging;
 using LuaSTGEditorSharpV2.Core;
 
-namespace LuaSTGEditorSharpV2
+namespace LuaSTGEditorSharpV2.Services
 {
     public class ActiveDocumentService(ILogger<ActiveDocumentService> logger)
     {

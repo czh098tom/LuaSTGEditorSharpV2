@@ -10,6 +10,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.Core.Command;
+using LuaSTGEditorSharpV2.Services;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Resources;
 using System.Globalization;
 
-namespace LuaSTGEditorSharpV2.Core
+namespace LuaSTGEditorSharpV2.Core.Services
 {
     public class LocalizationService
     {
@@ -41,7 +41,7 @@ namespace LuaSTGEditorSharpV2.Core
         {
             if (!_resourceManagers.ContainsKey(assembly))
             {
-                _resourceManagers.Add(assembly, 
+                _resourceManagers.Add(assembly,
                     new ResourceManager($"{assembly.GetName().Name}.{_resourceName}", assembly));
             }
             return _resourceManagers[assembly].GetString(key) ?? $"key: {key}";

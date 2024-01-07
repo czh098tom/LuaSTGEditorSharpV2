@@ -23,11 +23,6 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             return new StructuralValidationContext(localParam, settings);
         }
 
-        public bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam)
-        {
-            return CanPlaceAsChildOf(node, localParam, GetServiceProvider().ServiceSettings);
-        }
-
         public bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam
             , StructuralValidationServiceSettings serviceSettings)
         {

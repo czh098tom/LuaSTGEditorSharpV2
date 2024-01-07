@@ -7,20 +7,30 @@ using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core.Exception;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
+    public abstract class NodeServiceProvider<TServiceProvider, TService, TContext, TSettings> : ISettingsProvider
         where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContext<TSettings>
-        where TSettings : new ()
+        where TSettings : class, new()
     {
         private readonly Dictionary<string, PriorityQueue<TService, PackageInfo>> _registered = [];
 
         protected abstract TService DefaultService { get; }
 
-        public TSettings ServiceSettings { get; private set; } = new();
+        protected TSettings ServiceSettings { get; set; } = new();
+
+        public object Settings
+        {
+            get => ServiceSettings ?? new();
+            set
+            {
+                ServiceSettings = (value as TSettings) ?? ServiceSettings;
+            }
+        }
 
         public void Register(string typeID, PackageInfo packageInfo, TService service)
         {

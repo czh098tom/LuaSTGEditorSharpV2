@@ -57,7 +57,14 @@ namespace LuaSTGEditorSharpV2.Core
                 ?? throw new InvalidOperationException();
         }
 
-        internal static object GetService(Type type)
+        public static IEnumerable<T> GetServices<T>() where T : class
+        {
+            if (_applicationHost == null) throw new InvalidOperationException();
+            return _applicationHost.Services.GetServices<T>()
+                ?? throw new InvalidOperationException();
+        }
+
+        public static object GetService(Type type)
         {
             if (_applicationHost == null) throw new InvalidOperationException();
             return _applicationHost.Services.GetService(type)
