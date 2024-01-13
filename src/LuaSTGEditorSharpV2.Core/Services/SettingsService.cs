@@ -17,7 +17,12 @@ namespace LuaSTGEditorSharpV2.Core.Services
     {
         private static readonly List<SettingsDescriptor> _empty = [];
 
-        private static readonly string appendDir = "LuaSTGEditorSharpV2\\Settings";
+        private static readonly string _appendDir = "LuaSTGEditorSharpV2\\Settings";
+
+        private static readonly JsonSerializerSettings _serializerSettings = new()
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        };
 
         private readonly ILogger<SettingsService> _logger = logger;
 
@@ -26,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Core.Services
 
         public void LoadSettings()
         {
-            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), appendDir);
+            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), _appendDir);
             var settingsProviders = HostedApplicationHelper.GetServices<ISettingsProvider>();
             List<SettingsDescriptor> settings = [];
             foreach (var provider in settingsProviders)
@@ -41,7 +46,7 @@ namespace LuaSTGEditorSharpV2.Core.Services
                     using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
                     using var sr = new StreamReader(fs);
                     var str = sr.ReadToEnd();
-                    object? s = JsonConvert.DeserializeObject(str, settingsType)
+                    object? s = JsonConvert.DeserializeObject(str, settingsType, _serializerSettings)
                         ?? throw new InvalidOperationException("Json serialized is null");
                     provider.Settings = s;
                 }
@@ -50,6 +55,7 @@ namespace LuaSTGEditorSharpV2.Core.Services
                     _logger.LogException(e);
                     _logger.LogError("Parsing JSON from \"{file_name}\" failed.", fileName);
                 }
+                provider.RefreshSettings();
             }
             settings = [.. settings.OrderBy(x => x.SortingOrder)];
             _settingsDescriptors = settings;
@@ -57,22 +63,23 @@ namespace LuaSTGEditorSharpV2.Core.Services
 
         public void SaveSettings()
         {
-            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), appendDir);
+            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), _appendDir);
             Directory.CreateDirectory(baseDir);
             foreach (var desc in SettingsDescriptors)
             {
                 var fileName = Path.Combine(baseDir, $"{desc.ServiceProviderType.Name}.json");
                 try
                 {
-                    using var fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
+                    using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
                     using var sw = new StreamWriter(fs);
-                    sw.Write(JsonConvert.SerializeObject(desc.SettingsProvider.Settings));
+                    sw.Write(JsonConvert.SerializeObject(desc.SettingsProvider.Settings, _serializerSettings));
                 }
                 catch (System.Exception e)
                 {
                     _logger.LogException(e);
                     _logger.LogError("Writing JSON to \"{file_name}\" failed.", fileName);
                 }
+                desc.SettingsProvider.RefreshSettings();
             }
         }
     }

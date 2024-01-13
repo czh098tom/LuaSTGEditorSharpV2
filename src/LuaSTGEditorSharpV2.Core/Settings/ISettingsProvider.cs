@@ -9,5 +9,7 @@ namespace LuaSTGEditorSharpV2.Core.Settings
     public interface ISettingsProvider
     {
         object Settings { get; set; }
+
+        void RefreshSettings();
     }
 }

@@ -38,16 +38,6 @@
                 </Button>
             </lsv:PropertyItemGrid>
         </DataTemplate>
-        <Style x:Key="inspector:style">
-            <Style.Resources>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="FontSize" Value="15"/>
-                </Style>
-                <Style TargetType="{x:Type TextBox}">
-                    <Setter Property="FontSize" Value="15"/>
-                </Style>
-            </Style.Resources>
-        </Style>
     </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Top">
@@ -215,7 +205,7 @@
                                                           Margin="5">
                                                 <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
                                                               Grid.IsSharedSizeScope="True"
-                                                              ItemContainerStyle="{StaticResource ResourceKey=inspector:style}">
+                                                              ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
                                                     <ItemsControl.ItemTemplateSelector>
                                                         <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
                                                     </ItemsControl.ItemTemplateSelector>

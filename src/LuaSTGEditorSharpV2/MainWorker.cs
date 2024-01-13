@@ -16,6 +16,9 @@ using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.ViewModel;
+using LuaSTGEditorSharpV2.ResourceDictionaryService;
+using LuaSTGEditorSharpV2.UICustomization;
+using LuaSTGEditorSharpV2.ServiceBridge.UICustomization.ViewModel;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -62,10 +65,11 @@ namespace LuaSTGEditorSharpV2
             var lua = nodePackageProvider.LoadPackage("Lua");
             var resln = nodePackageProvider.LoadPackage("LegacyNode");
 
-            ResourceManager.MergeResources();
-
             var settingsDisplay = HostedApplicationHelper.GetService<SettingsDisplayService>();
             settingsDisplay.RegisterViewModel<CodeGeneratorServiceProvider, CodeGenerationServiceSettingsViewModel>();
+            settingsDisplay.RegisterViewModel<UICustomizationService, UICustomizationServiceSettingsViewModel>();
+
+            HostedApplicationHelper.GetService<ResourceDictionaryRegistrationService>().Init();
         }
     }
 }

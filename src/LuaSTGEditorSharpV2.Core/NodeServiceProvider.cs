@@ -33,6 +33,8 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
+        public virtual void RefreshSettings() { }
+
         public void Register(string typeID, PackageInfo packageInfo, TService service)
         {
             try

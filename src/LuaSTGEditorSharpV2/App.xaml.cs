@@ -20,6 +20,8 @@ using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
+using LuaSTGEditorSharpV2.UICustomization;
+using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
 using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
 
@@ -43,6 +45,8 @@ namespace LuaSTGEditorSharpV2
             AddApplicationSingletonService<LocalizationService>();
             AddApplicationSingletonService<SettingsService>();
             AddApplicationSingletonService<SettingsDisplayService>();
+            AddApplicationSingletonService<UICustomizationService>();
+            AddApplicationSingletonService<ResourceDictionaryRegistrationService>();
             SetUpHost(() =>
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,16 @@ namespace LuaSTGEditorSharpV2.Core
                     curr = curr.BaseType;
                 }
                 return false;
+            }
+        }
+
+        public static IEnumerable<Type> BaseTypes(this Type type)
+        {
+            Type? curr = type;
+            while (curr != null)
+            {
+                yield return curr;
+                curr = curr.BaseType;
             }
         }
 
