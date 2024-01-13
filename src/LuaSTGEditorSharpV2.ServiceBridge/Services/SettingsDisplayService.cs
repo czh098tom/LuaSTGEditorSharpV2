@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 using Microsoft.Extensions.Logging;
 
@@ -26,6 +27,8 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
         private readonly Dictionary<Type, Type> _viewModelMappingInversed = [];
         public IReadOnlyDictionary<Type, Type> ViewModelMappingInversed => _viewModelMappingInversed;
 
+        private readonly Dictionary<Type, SettingsDisplayAttribute> _providerToDisplay = [];
+
         public void RegisterViewModel<TProvider, TViewModel>()
             where TProvider : ISettingsProvider
             where TViewModel : BaseViewModel
@@ -38,11 +41,14 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
             var settingsService = HostedApplicationHelper.GetService<SettingsService>();
             var localizationService = HostedApplicationHelper.GetService<LocalizationService>();
             List<SettingsPageViewModel> viewModels = new(settingsService.SettingsDescriptors.Count);
+            var descriptors = new List<SettingsDescriptor>(settingsService.SettingsDescriptors
+                .OrderBy(desc => _providerToDisplay.GetValueOrDefault(desc.ServiceProviderType)?.SortingOrder ?? 0));
             for (int i = 0; i < settingsService.SettingsDescriptors.Count; i++)
             {
                 var desc = settingsService.SettingsDescriptors[i];
                 if (_viewModelMapping.TryGetValue(desc.ServiceProviderType, out var viewModelType))
                 {
+                    var attr = _providerToDisplay.GetValueOrDefault(desc.ServiceProviderType);
                     try
                     {
                         var viewModel = JsonConvert.DeserializeObject(
@@ -51,7 +57,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
                             ?? new object();
                         var pageVm = new SettingsPageViewModel()
                         {
-                            Title = localizationService.GetString(desc.NameKey, desc.SettingsType.Assembly)
+                            Title = localizationService.GetString(attr?.Name ?? desc.SettingsType.Name, viewModelType.Assembly)
                         };
                         pageVm.PageItems.Add(viewModel);
                         viewModels.Add(pageVm);
@@ -97,6 +103,8 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
         {
             _viewModelMapping.Add(providerType, viewModelType);
             _viewModelMappingInversed.Add(viewModelType, providerType);
+            _providerToDisplay.Add(providerType, viewModelType.GetCustomAttribute<SettingsDisplayAttribute>()
+                ?? new SettingsDisplayAttribute());
         }
     }
 }

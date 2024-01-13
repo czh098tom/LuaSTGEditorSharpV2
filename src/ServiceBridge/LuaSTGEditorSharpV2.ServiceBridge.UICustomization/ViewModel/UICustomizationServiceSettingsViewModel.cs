@@ -12,6 +12,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 namespace LuaSTGEditorSharpV2.ServiceBridge.UICustomization.ViewModel
 {
     [DisplayName("")]
+    [SettingsDisplay("settings_title_uiCustomization", 16384)]
     public class UICustomizationServiceSettingsViewModel : BaseViewModel
     {
         [JsonProperty("uri")]

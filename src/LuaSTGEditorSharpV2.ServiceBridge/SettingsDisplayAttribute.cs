@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.Core.Settings
+namespace LuaSTGEditorSharpV2.ServiceBridge
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class SettingsDisplayAttribute(string? name = null, float sortingOrder = 0f) : Attribute

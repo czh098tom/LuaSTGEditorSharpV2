@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Resources {
+namespace LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.Core.CodeGenerator.Resources.Localized", typeof(Localized).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.Resources.Localized", typeof(Localized).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -8,10 +8,12 @@ using System.ComponentModel;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.ViewModel
 {
     [DisplayName("")]
+    [SettingsDisplay("settings_title_codeGenerator")]
     public class CodeGenerationServiceSettingsViewModel : BaseViewModel
     {
         [JsonProperty("indention_string")]

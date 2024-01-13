@@ -57,7 +57,6 @@ namespace LuaSTGEditorSharpV2.Core.Services
                 }
                 provider.RefreshSettings();
             }
-            settings = [.. settings.OrderBy(x => x.SortingOrder)];
             _settingsDescriptors = settings;
         }
 

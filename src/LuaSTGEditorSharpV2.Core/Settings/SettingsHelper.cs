@@ -13,11 +13,7 @@ namespace LuaSTGEditorSharpV2.Core.Settings
         {
             var providerType = serviceProvider.GetType();
             var settingsType = serviceProvider.Settings.GetType();
-            var attr = settingsType.GetCustomAttribute<SettingsDisplayAttribute>()
-                ?? new SettingsDisplayAttribute(providerType.Name);
             return new SettingsDescriptor(
-                attr.Name ?? providerType.Name,
-                attr.SortingOrder,
                 settingsType,
                 providerType,
                 serviceProvider);

@@ -9,7 +9,6 @@ using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
-    [SettingsDisplay("settings_title_codeGenerator")]
     public class CodeGenerationServiceSettings : ServiceExtraSettingsBase
     {
         [JsonProperty("indention_string")] 
