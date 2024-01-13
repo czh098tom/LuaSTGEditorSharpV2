@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.Core.Services
     {
         private static readonly List<SettingsDescriptor> _empty = [];
 
-        private static readonly string appendDir = "LuaSTGEditorSharpV2/Settings";
+        private static readonly string appendDir = "LuaSTGEditorSharpV2\\Settings";
 
         private readonly ILogger<SettingsService> _logger = logger;
 
@@ -58,6 +58,7 @@ namespace LuaSTGEditorSharpV2.Core.Services
         public void SaveSettings()
         {
             string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), appendDir);
+            Directory.CreateDirectory(baseDir);
             foreach (var desc in SettingsDescriptors)
             {
                 var fileName = Path.Combine(baseDir, $"{desc.ServiceProviderType.Name}.json");

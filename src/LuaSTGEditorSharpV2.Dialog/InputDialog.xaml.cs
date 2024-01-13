@@ -13,32 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using LuaSTGEditorSharpV2.Dialog.ViewModel;
+using LuaSTGEditorSharpV2.WPF;
 
 namespace LuaSTGEditorSharpV2
 {
     /// <summary>
     /// InputDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class InputDialog : Window
+    public partial class InputDialog : OKCancelWindow
     {
-        public InputDialogViewModel ViewModel { get; private set; }
+        public InputDialogViewModel ViewModel
+            => (DataContext as InputDialogViewModel) ?? throw new InvalidCastException();
 
         public InputDialog()
         {
             InitializeComponent();
-            ViewModel = new InputDialogViewModel();
-            DataContext = ViewModel;
-        }
-
-        private void OKButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Close();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

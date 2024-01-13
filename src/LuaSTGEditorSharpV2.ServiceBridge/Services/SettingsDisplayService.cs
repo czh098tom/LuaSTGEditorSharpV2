@@ -72,13 +72,14 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
             for (int i = 0; i < viewModels.Count; i++)
             {
                 var vm = viewModels[i];
-                if (_viewModelMappingInversed.TryGetValue(vm.PageItems.GetType(), out var providerType))
+                var pageItem = vm.PageItems[0];
+                if (_viewModelMappingInversed.TryGetValue(pageItem.GetType(), out var providerType))
                 {
                     try
                     {
                         if (HostedApplicationHelper.GetService(providerType) is ISettingsProvider provider)
                         {
-                            provider.Settings = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(vm.PageItems),
+                            provider.Settings = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(pageItem),
                                 provider.Settings.GetType()) ?? throw new InvalidOperationException();
                         }
                     }

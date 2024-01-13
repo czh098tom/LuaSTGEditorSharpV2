@@ -1,20 +1,21 @@
-﻿<Window x:Class="LuaSTGEditorSharpV2.InputDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LuaSTGEditorSharpV2"
-        xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        mc:Ignorable="d"
-        Title="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_title}" 
-        MinWidth="350" 
-        MinHeight="110"
-        Width="350"
-        SizeToContent="Height" 
-        ShowInTaskbar="False"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner"
-        FocusManager.FocusedElement="{Binding ElementName=contentTextBox}">
+﻿<lw:OKCancelWindow x:Class="LuaSTGEditorSharpV2.InputDialog"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:local="clr-namespace:LuaSTGEditorSharpV2"
+                   xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
+                   xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                   mc:Ignorable="d"
+                   Title="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_title}" 
+                   MinWidth="350" 
+                   MinHeight="110"
+                   Width="350"
+                   SizeToContent="Height" 
+                   ShowInTaskbar="False"
+                   ResizeMode="NoResize"
+                   WindowStartupLocation="CenterOwner"
+                   FocusManager.FocusedElement="{Binding ElementName=contentTextBox}">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -41,8 +42,8 @@
             <Button Name="okButton" Content="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_button_ok_title }"
                     Click="OKButton_Click" Height="25" Width="70" IsDefault="True" Margin="0,0,0,5"/>
             <Button Name="closeButton" Content="{lex:Loc LuaSTGEditorSharpV2.Dialog:Localized:inputDialog_button_cancel_title}"
-                    Click="CloseButton_Click" Height="25" Width="70" IsCancel="True"/>
+                    Click="CancelButton_Click" Height="25" Width="70" IsCancel="True"/>
         </StackPanel>
 
     </Grid>
-</Window>
+</lw:OKCancelWindow>

@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
 {
     public class SettingsDialogViewModel : BaseViewModel
     {
-        private readonly List<SettingsPageViewModel> SettingsPages = [];
+        public List<SettingsPageViewModel> SettingsPages { get; private set; } = [];
 
         public ObservableCollection<string> SettingsTitles { get; private set; } = [];
 
