@@ -28,6 +28,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Dialog.ViewModel;
+using LuaSTGEditorSharpV2.ServiceBridge;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -98,6 +99,15 @@ namespace LuaSTGEditorSharpV2
         {
             base.OnClosed(e);
             Application.Current.Shutdown();
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsDialog dialog = new();
+            if (dialog.ShowDialog() == true)
+            {
+
+            }
         }
     }
 }

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using LuaSTGEditorSharpV2.ServiceBridge.ViewModel;
+
 namespace LuaSTGEditorSharpV2.ServiceBridge
 {
     /// <summary>
@@ -22,6 +24,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge
         public SettingsDialog()
         {
             InitializeComponent();
+            (DataContext as SettingsDialogViewModel)?.Init();
         }
     }
 }

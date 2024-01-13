@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Newtonsoft.Json;
+
+using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
+    [SettingsDisplay("settings_title_codeGenerator")]
     public class CodeGenerationServiceSettings : ServiceExtraSettingsBase
     {
         [JsonProperty("indention_string")] 

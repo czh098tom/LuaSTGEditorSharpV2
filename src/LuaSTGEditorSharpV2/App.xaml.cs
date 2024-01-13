@@ -19,6 +19,9 @@ using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.ServiceBridge.Services;
+
+using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -33,18 +36,19 @@ namespace LuaSTGEditorSharpV2
 
             var args = e.Args;
 
-            HostedApplicationHelper.AddNodeServiceProvider(typeof(CodeGeneratorServiceProvider));
-            HostedApplicationHelper.AddNodeServiceProvider(typeof(ViewModelProviderServiceProvider));
-            HostedApplicationHelper.AddNodeServiceProvider(typeof(PropertyViewServiceProvider));
-            HostedApplicationHelper.SetUpHost(() =>
+            AddNodeServiceProvider<CodeGeneratorServiceProvider>();
+            AddNodeServiceProvider<ViewModelProviderServiceProvider>();
+            AddNodeServiceProvider<PropertyViewServiceProvider>();
+            AddApplicationSingletonService<ActiveDocumentService>();
+            AddApplicationSingletonService<LocalizationService>();
+            AddApplicationSingletonService<SettingsService>();
+            AddApplicationSingletonService<SettingsDisplayService>();
+            SetUpHost(() =>
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
 
                 applicationBuilder.Services.AddLogging(builder => builder.AddNLog());
                 applicationBuilder.Services.AddHostedService<MainWorker>();
-                applicationBuilder.Services.AddSingleton<ActiveDocumentService>();
-                applicationBuilder.Services.AddSingleton<LocalizationService>();
-                applicationBuilder.Services.AddSingleton<SettingsService>();
                 return applicationBuilder;
             }, args);
         }

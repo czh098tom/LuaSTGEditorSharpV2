@@ -16,6 +16,21 @@
     <Folder Include="package\Core\Nodes\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\Localized.Designer.cs">
+      <DependentUpon>Localized.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localized.resx">
+      <LastGenOutput>Localized.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory" Condition="$(InReferenceParent)!='true'">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\package\Core\Nodes</YourSourceDirectory>

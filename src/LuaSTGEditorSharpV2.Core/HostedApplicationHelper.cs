@@ -15,7 +15,8 @@ namespace LuaSTGEditorSharpV2.Core
 
         private static IHost? _applicationHost;
 
-        private static List<Type> nodeServiceProviderTypes = [];
+        private static readonly List<Type> nodeServiceProviderTypes = [];
+        private static readonly List<Type> applicationServiceProviderTypes = [];
 
         public static string[] Args => _args ?? throw new InvalidOperationException();
 
@@ -24,6 +25,10 @@ namespace LuaSTGEditorSharpV2.Core
             _args = args;
             var builder = builderFactory();
             foreach (var type in nodeServiceProviderTypes)
+            {
+                builder.Services.AddSingleton(type);
+            }
+            foreach (var type in applicationServiceProviderTypes)
             {
                 builder.Services.AddSingleton(type);
             }
@@ -40,9 +45,27 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
+        public static void AddNodeServiceProvider<T>()
+            where T : INodeServiceProvider
+        {
+            AddNodeServiceProvider(typeof(T));
+        }
+
         public static void AddNodeServiceProvider(Type nodeServiceProvider)
         {
             nodeServiceProviderTypes.Add(nodeServiceProvider);
+            applicationServiceProviderTypes.Add(nodeServiceProvider);
+        }
+
+        public static void AddApplicationSingletonService<T>()
+            where T : class
+        {
+            AddApplicationSingletonService(typeof(T));
+        }
+
+        public static void AddApplicationSingletonService(Type serviceType)
+        {
+            applicationServiceProviderTypes.Add(serviceType);
         }
 
         public static void ShutdownApplication()
@@ -60,8 +83,10 @@ namespace LuaSTGEditorSharpV2.Core
         public static IEnumerable<T> GetServices<T>() where T : class
         {
             if (_applicationHost == null) throw new InvalidOperationException();
-            return _applicationHost.Services.GetServices<T>()
-                ?? throw new InvalidOperationException();
+            return applicationServiceProviderTypes
+                .Where(t => t.IsAnyDerivedTypeOf(typeof(T)))
+                .Select(_applicationHost.Services.GetService)
+                .OfType<T>() ?? throw new InvalidOperationException();
         }
 
         public static object GetService(Type type)

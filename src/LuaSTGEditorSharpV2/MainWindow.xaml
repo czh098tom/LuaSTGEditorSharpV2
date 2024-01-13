@@ -79,6 +79,7 @@
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_saveAs_title}" 
                                            KeyTip="A" CanAddToQuickAccessToolBar="False"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_settings_title}" 
+                                           Click="SettingsButton_Click"
                                            KeyTip="X"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exit_title}" 
                                            KeyTip="X"/>

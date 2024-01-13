@@ -11,7 +11,8 @@ using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class NodeServiceProvider<TServiceProvider, TService, TContext, TSettings> : ISettingsProvider
+    public abstract class NodeServiceProvider<TServiceProvider, TService, TContext, TSettings> 
+        : INodeServiceProvider, ISettingsProvider
         where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContext<TSettings>
@@ -102,6 +103,8 @@ namespace LuaSTGEditorSharpV2.Core
             return service.BuildContextForNode(node, localParam, serviceSettings);
         }
     }
+
+    public interface INodeServiceProvider { }
 
     internal class DefaultNodeServiceProvider : NodeServiceProvider<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase> 
     {

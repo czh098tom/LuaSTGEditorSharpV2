@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
         protected static NotifyCollectionChangedEventHandler
             GetHookItemEventsMarshallingHandler<TItem>(Action<TItem> hook)

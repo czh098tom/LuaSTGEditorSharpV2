@@ -27,7 +27,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
         public IReadOnlyDictionary<Type, Type> ViewModelMappingInversed => _viewModelMappingInversed;
 
         public void RegisterViewModel<TProvider, TViewModel>()
-            where TProvider : IServiceProvider
+            where TProvider : ISettingsProvider
             where TViewModel : BaseViewModel
         {
             RegisterViewModel(typeof(TProvider), typeof(TViewModel));

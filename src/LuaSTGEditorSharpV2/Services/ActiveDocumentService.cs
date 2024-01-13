@@ -31,6 +31,7 @@ namespace LuaSTGEditorSharpV2.Services
             catch (Exception ex)
             {
                 _logger.LogException(ex);
+                _logger.LogError("Open documnent from {path} failed", path);
             }
             return null;
         }
