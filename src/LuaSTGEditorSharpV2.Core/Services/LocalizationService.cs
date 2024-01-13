@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 using System.Resources;
 using System.Globalization;
 
+using Microsoft.Extensions.Logging;
+
 namespace LuaSTGEditorSharpV2.Core.Services
 {
-    public class LocalizationService
+    public class LocalizationService(ILogger<LocalizationService> logger)
     {
+        ILogger<LocalizationService> _logger = logger;
+
         public class CultureInfoChangedEventHandler(CultureInfo cultureInfo) : EventArgs
         {
             public CultureInfo CultureInfo { get; private set; } = cultureInfo;
@@ -41,10 +45,29 @@ namespace LuaSTGEditorSharpV2.Core.Services
         {
             if (!_resourceManagers.ContainsKey(assembly))
             {
-                _resourceManagers.Add(assembly,
-                    new ResourceManager($"{assembly.GetName().Name}.{_resourceName}", assembly));
+                var typeName = $"{assembly.GetName().Name}.{_resourceName}";
+                try
+                {
+                    _resourceManagers.Add(assembly,
+                        new ResourceManager(typeName, assembly));
+                }
+                catch (System.Exception e)
+                {
+                    _logger.LogException(e);
+                    _logger.LogError("Load resource from {typeName} failed.", typeName);
+                    return $"key: {key}";
+                }
             }
-            return _resourceManagers[assembly].GetString(key) ?? $"key: {key}";
+            try
+            {
+                return _resourceManagers[assembly].GetString(key) ?? $"key: {key}";
+            }
+            catch (System.Exception e)
+            {
+                _logger.LogException(e);
+                _logger.LogError("Load resource from {assembly} with key {resource_key} failed.", assembly, key);
+                return $"key: {key}";
+            }
         }
 
         public void SetUICulture(CultureInfo cultureInfo)
