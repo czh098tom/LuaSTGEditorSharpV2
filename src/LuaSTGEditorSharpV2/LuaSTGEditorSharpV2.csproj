@@ -30,6 +30,7 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Resources.Shared\LuaSTGEditorSharpV2.Resources.Shared.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj" />
+    <ProjectReference Include="..\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator\LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

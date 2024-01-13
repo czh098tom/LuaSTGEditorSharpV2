@@ -3,10 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
         xmlns:local="clr-namespace:LuaSTGEditorSharpV2.ServiceBridge"
         xmlns:localvm="clr-namespace:LuaSTGEditorSharpV2.ServiceBridge.ViewModel"
         mc:Ignorable="d"
-        Title="SettingsDialog" Height="600" Width="800">
+        Title="{lex:Loc LuaSTGEditorSharpV2.ServiceBridge:Localized:settingsDialog_title}" 
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Height="600" Width="800"
+        FocusManager.FocusedElement="{Binding ElementName=_listTitles}">
     <Window.DataContext>
         <localvm:SettingsDialogViewModel/>
     </Window.DataContext>
@@ -21,15 +28,37 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="25"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding SettingsPages}">
+        <ListBox Name="_listTitles" Grid.Row="1" Grid.Column="1" 
+                 SelectedIndex="{Binding SelectedIndex}"
+                 ItemsSource="{Binding SettingsTitles}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding .}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <ScrollViewer Grid.Row="1" Grid.Column="3">
+            <ItemsControl ItemsControl.ItemsSource="{Binding SelectedItem}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <xctk:PropertyGrid SelectedObject="{Binding .}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <Grid Grid.Row="3" Grid.Column="3">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="75" Margin="5,0,0,0" IsDefault="True" 
+                        Content="{lex:Loc LuaSTGEditorSharpV2.WPF:Localized:common_ok}"/>
+                <Button Width="75" Margin="5,0,0,0" IsCancel="True" 
+                        Content="{lex:Loc LuaSTGEditorSharpV2.WPF:Localized:common_cancel}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

@@ -13,14 +13,52 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
 {
     public class SettingsDialogViewModel : BaseViewModel
     {
-        public ObservableCollection<SettingsPageViewModel> SettingsPages { get; private set; } = [];
+        private readonly List<SettingsPageViewModel> SettingsPages = [];
 
-        public void Init()
+        public ObservableCollection<string> SettingsTitles { get; private set; } = [];
+
+        private int _selectedIndex = 0;
+        public int SelectedIndex
         {
-            var disp = HostedApplicationHelper.GetService<SettingsDisplayService>();
-            foreach (var page in disp.MapViewModel())
+            get => _selectedIndex;
+            set
             {
-                SettingsPages.Add(page);
+                _selectedIndex = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(SelectedItem));
+            }
+        }
+
+        public ObservableCollection<object> SelectedItem
+        {
+            get
+            {
+                if (_selectedIndex < SettingsPages.Count)
+                {
+                    return SettingsPages[_selectedIndex].PageItems;
+                }
+                else
+                {
+                    return [];
+                }
+            }
+        }
+
+        public SettingsDialogViewModel()
+        {
+            try
+            {
+                var disp = HostedApplicationHelper.GetService<SettingsDisplayService>();
+                foreach (var page in disp.MapViewModel())
+                {
+                    SettingsTitles.Add(page.Title);
+                    SettingsPages.Add(page);
+                }
+            }
+            catch (Exception)
+            {
+                // in editor no services instantiated, ignore
+                return;
             }
         }
     }

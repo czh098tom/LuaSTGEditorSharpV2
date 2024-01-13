@@ -49,11 +49,12 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
                                 JsonConvert.SerializeObject(desc.SettingsProvider.Settings),
                                 viewModelType)
                             ?? new object();
-                        viewModels.Add(new SettingsPageViewModel()
+                        var pageVm = new SettingsPageViewModel()
                         {
-                            Title = localizationService.GetString(desc.NameKey, desc.SettingsType.Assembly),
-                            PageItems = viewModel
-                        });
+                            Title = localizationService.GetString(desc.NameKey, desc.SettingsType.Assembly)
+                        };
+                        pageVm.PageItems.Add(viewModel);
+                        viewModels.Add(pageVm);
                     }
                     catch (Exception e)
                     {

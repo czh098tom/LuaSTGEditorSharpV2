@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
+    <ProjectReference Include="..\..\LuaSTGEditorSharpV2.ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.csproj" />
+  </ItemGroup>
+
+</Project>

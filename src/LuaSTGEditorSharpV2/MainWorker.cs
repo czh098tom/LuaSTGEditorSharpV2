@@ -15,6 +15,7 @@ using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
+using LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.ViewModel;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -64,7 +65,7 @@ namespace LuaSTGEditorSharpV2
             ResourceManager.MergeResources();
 
             var settingsDisplay = HostedApplicationHelper.GetService<SettingsDisplayService>();
-            settingsDisplay.RegisterViewModel<CodeGeneratorServiceProvider, BaseViewModel>();
+            settingsDisplay.RegisterViewModel<CodeGeneratorServiceProvider, CodeGenerationServiceSettingsViewModel>();
         }
     }
 }

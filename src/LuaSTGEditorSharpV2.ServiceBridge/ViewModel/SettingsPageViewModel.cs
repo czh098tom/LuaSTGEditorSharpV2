@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,8 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
             }
         }
 
-        private object _pageItems = new();
-        public object PageItems
+        private ObservableCollection<object> _pageItems = [];
+        public ObservableCollection<object> PageItems
         {
             get => _pageItems;
             set

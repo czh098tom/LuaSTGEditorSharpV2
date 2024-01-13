@@ -63,6 +63,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Dialog"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.ServiceBridge", "src\LuaSTGEditorSharpV2.ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.csproj", "{F59BB2AD-9DD2-4E92-872B-4D72608DAD62}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceBridge", "ServiceBridge", "{52161F0E-161B-41E2-866B-FF6E02738C8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator", "src\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator\LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.csproj", "{4A7D53D0-DAF1-4BBC-B773-F166B541511D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +165,10 @@ Global
 		{F59BB2AD-9DD2-4E92-872B-4D72608DAD62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F59BB2AD-9DD2-4E92-872B-4D72608DAD62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F59BB2AD-9DD2-4E92-872B-4D72608DAD62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A7D53D0-DAF1-4BBC-B773-F166B541511D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A7D53D0-DAF1-4BBC-B773-F166B541511D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A7D53D0-DAF1-4BBC-B773-F166B541511D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A7D53D0-DAF1-4BBC-B773-F166B541511D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +200,8 @@ Global
 		{9ACE4FBC-AB8C-4FFD-9826-AEC878B12021} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{B3B0A432-3887-4A2A-A416-A7C7F35AEBE8} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{F59BB2AD-9DD2-4E92-872B-4D72608DAD62} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
+		{52161F0E-161B-41E2-866B-FF6E02738C8F} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
+		{4A7D53D0-DAF1-4BBC-B773-F166B541511D} = {52161F0E-161B-41E2-866B-FF6E02738C8F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A88633F9-126D-4418-B464-61038BFEB74C}

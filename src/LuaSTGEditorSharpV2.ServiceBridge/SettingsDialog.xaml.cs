@@ -24,7 +24,6 @@ namespace LuaSTGEditorSharpV2.ServiceBridge
         public SettingsDialog()
         {
             InitializeComponent();
-            (DataContext as SettingsDialogViewModel)?.Init();
         }
     }
 }
