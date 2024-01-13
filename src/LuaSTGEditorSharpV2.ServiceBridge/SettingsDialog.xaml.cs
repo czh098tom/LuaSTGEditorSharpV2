@@ -34,11 +34,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge
                 if (ctx == null) return;
                 HostedApplicationHelper.GetService<SettingsDisplayService>()
                     .WriteViewModelBack(ctx.SettingsPages);
-                Task.Run(() =>
-                {
-                    HostedApplicationHelper.GetService<SettingsService>()
-                        .SaveSettings();
-                });
+                HostedApplicationHelper.GetService<SettingsService>().SaveSettings();
             };
         }
     }
