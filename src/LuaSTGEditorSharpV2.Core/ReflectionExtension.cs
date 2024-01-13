@@ -10,13 +10,33 @@ namespace LuaSTGEditorSharpV2.Core
     {
         public static bool IsAnyDerivedTypeOf(this Type type, Type other)
         {
-            Type? curr = type;
-            while (curr != null)
+            if (!other.IsInterface)
             {
-                if (curr == other) return true;
-                curr = curr.BaseType;
+                Type? curr = type;
+                while (curr != null)
+                {
+                    if (curr == other) return true;
+                    curr = curr.BaseType;
+                }
+                return false;
             }
-            return false;
+            else
+            {
+                Type? curr = type;
+                while (curr != null)
+                {
+                    if (curr.ImplementedInterface(other)) return true;
+                    curr = curr.BaseType;
+                }
+                return false;
+            }
+        }
+
+        private static bool ImplementedInterface(this Type type, Type interfaceType)
+        {
+            if (type == null) return false;
+            if (type == interfaceType) return true;
+            return type.GetInterfaces().Any(type => type.ImplementedInterface(interfaceType));
         }
     }
 }
