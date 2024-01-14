@@ -1,14 +1,18 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+                    xmlns:s="clr-namespace:System;assembly=mscorlib"
+                    xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore">
     <s:Double x:Key="inspector:text_size">15</s:Double>
+    <swm:FontFamily x:Key="inspector:font_family"></swm:FontFamily>
     <Style x:Key="inspector:style">
         <Style.Resources>
             <Style TargetType="{x:Type TextBlock}">
                 <Setter Property="FontSize" Value="{DynamicResource ResourceKey=inspector:text_size}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource ResourceKey=inspector:font_family}"/>
             </Style>
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="FontSize" Value="{DynamicResource ResourceKey=inspector:text_size}"/>
+                <Setter Property="FontFamily" Value="{DynamicResource ResourceKey=inspector:font_family}"/>
             </Style>
         </Style.Resources>
     </Style>

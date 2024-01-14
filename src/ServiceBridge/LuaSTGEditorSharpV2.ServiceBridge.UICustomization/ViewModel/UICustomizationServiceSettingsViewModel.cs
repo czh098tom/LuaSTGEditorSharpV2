@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Windows.Media;
 
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.WPF.Converter;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.UICustomization.ViewModel
 {
@@ -35,6 +37,18 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.UICustomization.ViewModel
             set
             {
                 _inspectorFontSize = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        [JsonProperty("inspector_font_family"), JsonConverter(typeof(StringFontFamilyConverter))]
+        private FontFamily _inspectorFontFamily = new();
+        public FontFamily InspectorFontFamily
+        {
+            get => _inspectorFontFamily;
+            set
+            {
+                _inspectorFontFamily = value;
                 RaisePropertyChanged();
             }
         }
