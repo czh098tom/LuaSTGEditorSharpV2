@@ -61,6 +61,42 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Output format 的本地化字符串。
+        /// </summary>
+        internal static string settings_codeGenerator_format_title {
+            get {
+                return ResourceManager.GetString("settings_codeGenerator_format_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Has indention on blank line 的本地化字符串。
+        /// </summary>
+        internal static string settings_codeGenerator_indentOnBlankLine {
+            get {
+                return ResourceManager.GetString("settings_codeGenerator_indentOnBlankLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Generate all code in single line (should only be used for obfuscation purpose) 的本地化字符串。
+        /// </summary>
+        internal static string settings_codeGenerator_lineObfuscated {
+            get {
+                return ResourceManager.GetString("settings_codeGenerator_lineObfuscated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Skip any blank line in generation 的本地化字符串。
+        /// </summary>
+        internal static string settings_codeGenerator_skipBlankLine {
+            get {
+                return ResourceManager.GetString("settings_codeGenerator_skipBlankLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Code Generation 的本地化字符串。
         /// </summary>
         internal static string settings_title_codeGenerator {

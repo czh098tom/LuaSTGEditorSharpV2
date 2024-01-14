@@ -13,7 +13,7 @@ using LuaSTGEditorSharpV2.Core.Settings;
 namespace LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.ViewModel
 {
     [DisplayName("")]
-    [SettingsDisplay("settings_title_codeGenerator")]
+    [SettingsDisplay("settings_title_codeGenerator", displayKey: "code_generation")]
     public class CodeGenerationServiceSettingsViewModel : BaseViewModel
     {
         [JsonProperty("indention_string")]

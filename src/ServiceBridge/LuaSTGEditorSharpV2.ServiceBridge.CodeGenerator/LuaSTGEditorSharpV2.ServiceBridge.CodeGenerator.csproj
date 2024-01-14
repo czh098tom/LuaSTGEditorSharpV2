@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Page Remove="Test.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Test.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
     <ProjectReference Include="..\..\LuaSTGEditorSharpV2.ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.csproj" />
   </ItemGroup>
