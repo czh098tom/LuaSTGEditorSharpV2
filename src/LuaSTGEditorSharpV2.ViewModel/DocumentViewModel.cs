@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class DocumentViewModel : BaseViewModel
+    public class DocumentViewModel : ViewModelBase
     {
         public ObservableCollection<NodeViewModel> Tree { get; private set; } = new();
 

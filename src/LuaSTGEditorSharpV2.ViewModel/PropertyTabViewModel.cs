@@ -11,7 +11,7 @@ using static LuaSTGEditorSharpV2.ViewModel.PropertyItemViewModelBase;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class PropertyTabViewModel : BaseViewModel
+    public class PropertyTabViewModel : ViewModelBase
     {
         public class ItemValueUpdatedEventArgs(PropertyItemViewModelBase item, 
             ValueUpdatedEventArgs args) : EventArgs

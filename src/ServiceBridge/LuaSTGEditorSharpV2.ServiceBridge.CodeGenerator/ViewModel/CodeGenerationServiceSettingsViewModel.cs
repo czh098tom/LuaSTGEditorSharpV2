@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.ViewModel
 {
     [DisplayName("")]
     [SettingsDisplay("settings_title_codeGenerator", displayKey: "code_generation")]
-    public class CodeGenerationServiceSettingsViewModel : BaseViewModel
+    public class CodeGenerationServiceSettingsViewModel : ViewModelBase
     {
         [JsonProperty("indention_string")]
         private string _indentionString = string.Empty;

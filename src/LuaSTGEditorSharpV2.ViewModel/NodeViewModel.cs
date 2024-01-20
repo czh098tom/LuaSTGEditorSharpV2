@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class NodeViewModel : BaseViewModel
+    public class NodeViewModel : ViewModelBase
     {
         public string Icon
         {

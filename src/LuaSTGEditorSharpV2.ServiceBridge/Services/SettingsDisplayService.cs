@@ -37,7 +37,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 
         public void RegisterViewModel<TProvider, TViewModel>()
             where TProvider : ISettingsProvider
-            where TViewModel : BaseViewModel
+            where TViewModel : ViewModelBase
         {
             RegisterViewModel(typeof(TProvider), typeof(TViewModel));
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class PropertyItemViewModelBase : BaseViewModel
+    public class PropertyItemViewModelBase : ViewModelBase
     {
         public class ValueUpdatedEventArgs(string old, string @new) : EventArgs
         {

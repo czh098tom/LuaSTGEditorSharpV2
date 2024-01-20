@@ -11,7 +11,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
 {
-    public class SettingsDialogViewModel : BaseViewModel
+    public class SettingsDialogViewModel : ViewModelBase
     {
         public List<SettingsPageViewModel> SettingsPages { get; private set; } = [];
 

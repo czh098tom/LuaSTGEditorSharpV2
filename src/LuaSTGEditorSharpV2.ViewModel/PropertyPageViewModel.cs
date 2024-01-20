@@ -10,7 +10,7 @@ using static LuaSTGEditorSharpV2.ViewModel.PropertyTabViewModel;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class PropertyPageViewModel : BaseViewModel
+    public class PropertyPageViewModel : ViewModelBase
     {
         public class TabItemValueUpdatedEventArgs(PropertyTabViewModel tab,
             ItemValueUpdatedEventArgs args) : EventArgs

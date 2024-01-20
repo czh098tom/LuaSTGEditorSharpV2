@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
 {
-    public class SettingsPageViewModel : BaseViewModel
+    public class SettingsPageViewModel : ViewModelBase
     {
         private string _title = string.Empty;
         public string Title

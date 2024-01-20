@@ -14,7 +14,7 @@ using LuaSTGEditorSharpV2.Services;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class MainViewModel : BaseViewModel
+    public class MainViewModel : ViewModelBase
     {
         private PropertyPageViewModel _propertyPage = new();
 

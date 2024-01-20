@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Dialog.ViewModel
 {
-    public class InputDialogViewModel : BaseViewModel
+    public class InputDialogViewModel : ViewModelBase
     {
         private string _text = string.Empty;
         public string Text
