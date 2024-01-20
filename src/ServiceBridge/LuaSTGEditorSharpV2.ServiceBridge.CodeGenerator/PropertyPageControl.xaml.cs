@@ -10,14 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator
 {
     /// <summary>
-    /// Test.xaml 的交互逻辑
+    /// PropertyPageControl.xaml 的交互逻辑
     /// </summary>
-    public partial class Test : Window
+    public partial class PropertyPageControl : UserControl
     {
+        public PropertyPageControl()
+        {
+            InitializeComponent();
+        }
     }
 }
