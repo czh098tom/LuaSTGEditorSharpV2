@@ -217,6 +217,24 @@
                         </util:TypedResourceDictionaryKeySelector.ResourceDictionary>
                     </util:TypedResourceDictionaryKeySelector>
                 </xcad:DockingManager.LayoutItemTemplateSelector>
+                <xcad:DockingManager.LayoutUpdateStrategy>
+                    <util:LayoutUpdateStrategy/>
+                </xcad:DockingManager.LayoutUpdateStrategy>
+                <xcad:LayoutRoot>
+                    <xcad:LayoutPanel Orientation="Horizontal">
+                        <xcad:LayoutAnchorablePaneGroup>
+                            
+                        </xcad:LayoutAnchorablePaneGroup>
+                        <xcad:LayoutPanel Orientation="Vertical">
+                            <xcad:LayoutDocumentPaneGroup>
+                                <xcad:LayoutDocumentPane/>
+                            </xcad:LayoutDocumentPaneGroup>
+                        </xcad:LayoutPanel>
+                        <xcad:LayoutAnchorablePaneGroup>
+
+                        </xcad:LayoutAnchorablePaneGroup>
+                    </xcad:LayoutPanel>
+                </xcad:LayoutRoot>
             </xcad:DockingManager>
         </Grid>
     </DockPanel>
