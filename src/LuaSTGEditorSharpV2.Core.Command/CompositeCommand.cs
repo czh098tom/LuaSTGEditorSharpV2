@@ -10,12 +10,19 @@ namespace LuaSTGEditorSharpV2.Core.Command
     {
         private readonly List<CommandBase> _innerCommands;
 
+        public IReadOnlyList<CommandBase> InnerCommands => _innerCommands;
+        public bool ShouldUnpack { get; private set; } = false;
+
         public CompositeCommand(params CommandBase[] innerCommands) 
             : this((IReadOnlyList<CommandBase>)innerCommands) { }
 
-        public CompositeCommand(IReadOnlyList<CommandBase> innerCommands)
+        public CompositeCommand(bool shouldUnpack, params CommandBase[] innerCommands)
+            : this(innerCommands, shouldUnpack) { }
+
+        public CompositeCommand(IReadOnlyList<CommandBase> innerCommands, bool shouldUnpack = false)
         {
             _innerCommands = new(innerCommands);
+            ShouldUnpack = shouldUnpack;
         }
 
         protected override void DoExecute(LocalServiceParam param)

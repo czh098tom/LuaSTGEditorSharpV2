@@ -20,11 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Analyzer\LuaSTGEditorSharpV2.Analyzer.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.Building\LuaSTGEditorSharpV2.Core.Building.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.Command\LuaSTGEditorSharpV2.Core.Command.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Debugging\LuaSTGEditorSharpV2.Debugging.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Dialog\LuaSTGEditorSharpV2.Dialog.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Toolbox\LuaSTGEditorSharpV2.Toolbox.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.UICustomization\LuaSTGEditorSharpV2.UICustomization.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.ViewModel\LuaSTGEditorSharpV2.ViewModel.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />

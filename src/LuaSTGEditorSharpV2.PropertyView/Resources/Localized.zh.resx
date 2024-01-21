@@ -123,4 +123,7 @@
   <data name="native_view" xml:space="preserve">
     <value>原生视图</value>
   </data>
+  <data name="panel_property_title" xml:space="preserve">
+    <value>属性</value>
+  </data>
 </root>

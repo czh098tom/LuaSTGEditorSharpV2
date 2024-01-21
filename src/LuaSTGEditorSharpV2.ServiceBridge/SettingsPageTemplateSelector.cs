@@ -10,7 +10,7 @@ using LuaSTGEditorSharpV2.WPF;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge
 {
-    public class SettingsPageTemplateSelector : ResourceDictKeySelectorBase<object>
+    public class SettingsPageTemplateSelector : MainResourceDictKeySelectorBase<object>
     {
         public override bool HasKeyFromSource(object vm)
         {

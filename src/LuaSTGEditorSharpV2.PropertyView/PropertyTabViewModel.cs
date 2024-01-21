@@ -1,5 +1,4 @@
-﻿using LuaSTGEditorSharpV2.Core.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -7,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static LuaSTGEditorSharpV2.ViewModel.PropertyItemViewModelBase;
+using LuaSTGEditorSharpV2.ViewModel;
+using static LuaSTGEditorSharpV2.PropertyView.PropertyItemViewModelBase;
 
-namespace LuaSTGEditorSharpV2.ViewModel
+namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyTabViewModel : ViewModelBase
     {
-        public class ItemValueUpdatedEventArgs(PropertyItemViewModelBase item, 
+        public class ItemValueUpdatedEventArgs(PropertyItemViewModelBase item,
             ValueUpdatedEventArgs args) : EventArgs
         {
             public PropertyItemViewModelBase Item { get; private set; } = item;

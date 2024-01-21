@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.Core.Command
+namespace LuaSTGEditorSharpV2.Core
 {
     public abstract class CommandBase
     {

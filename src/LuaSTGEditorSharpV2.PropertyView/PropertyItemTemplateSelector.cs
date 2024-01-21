@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Resources;
-
-using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.WPF;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public class PropertyItemTemplateSelector : ResourceDictKeySelectorBase<PropertyItemViewModelBase>
+    public class PropertyItemTemplateSelector : MainResourceDictKeySelectorBase<PropertyItemViewModelBase>
     {
         public override bool HasKeyFromSource(PropertyItemViewModelBase vm)
         {

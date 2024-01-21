@@ -117,18 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="panel_error_title" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="panel_output_title" xml:space="preserve">
-    <value>Output</value>
-  </data>
-  <data name="panel_property_title" xml:space="preserve">
-    <value>Properties</value>
-  </data>
-  <data name="panel_toolBox_title" xml:space="preserve">
-    <value>Toolbox</value>
-  </data>
   <data name="ribbon_backStageMenu_document_title" xml:space="preserve">
     <value>Document</value>
   </data>

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.ViewModel
+namespace LuaSTGEditorSharpV2.PropertyView
 {
     public record class PropertyViewEditorType(
-        string Name, 
+        string Name,
         Dictionary<string, object>? Parameters = null)
     {
     }

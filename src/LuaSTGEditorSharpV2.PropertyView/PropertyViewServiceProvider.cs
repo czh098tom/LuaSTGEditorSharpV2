@@ -5,11 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
-using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {

@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class DocumentViewModel : ViewModelBase
+    public class DocumentViewModel : DockingViewModelBase
     {
-        public ObservableCollection<NodeViewModel> Tree { get; private set; } = new();
+        public ObservableCollection<NodeViewModel> Tree { get; private set; } = [];
 
-        public string Title { get; private set; } = string.Empty;
+        private string _title = string.Empty;
+        public override string Title => _title;
 
         public DocumentViewModel(string title)
         {
-            Title = title;
+            _title = title;
         }
     }
 }

@@ -61,42 +61,6 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
-        ///   查找类似 Error 的本地化字符串。
-        /// </summary>
-        internal static string panel_error_title {
-            get {
-                return ResourceManager.GetString("panel_error_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Output 的本地化字符串。
-        /// </summary>
-        internal static string panel_output_title {
-            get {
-                return ResourceManager.GetString("panel_output_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Properties 的本地化字符串。
-        /// </summary>
-        internal static string panel_property_title {
-            get {
-                return ResourceManager.GetString("panel_property_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Toolbox 的本地化字符串。
-        /// </summary>
-        internal static string panel_toolBox_title {
-            get {
-                return ResourceManager.GetString("panel_toolBox_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Document 的本地化字符串。
         /// </summary>
         internal static string ribbon_backStageMenu_document_title {

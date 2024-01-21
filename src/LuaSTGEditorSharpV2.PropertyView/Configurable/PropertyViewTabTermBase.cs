@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {

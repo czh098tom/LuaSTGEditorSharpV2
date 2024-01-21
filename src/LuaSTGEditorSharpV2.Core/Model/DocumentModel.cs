@@ -101,17 +101,17 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         public NodeData? FindDefinitionRoot()
         {
-            return _root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == definitionRootUID);
+            return Root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == definitionRootUID);
         }
 
         public NodeData? FindBuildRoot()
         {
-            return _root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == buildRootUID);
+            return Root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == buildRootUID);
         }
 
         public NodeData? FindCompileRoot()
         {
-            return _root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == compileRootUID);
+            return Root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == compileRootUID);
         }
     }
 }

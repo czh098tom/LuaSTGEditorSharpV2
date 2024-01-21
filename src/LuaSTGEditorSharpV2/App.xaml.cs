@@ -47,6 +47,7 @@ namespace LuaSTGEditorSharpV2
             AddApplicationSingletonService<SettingsDisplayService>();
             AddApplicationSingletonService<UICustomizationService>();
             AddApplicationSingletonService<ResourceDictionaryRegistrationService>();
+            AddApplicationSingletonService<MainWindowLayoutService>();
             SetUpHost(() =>
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);

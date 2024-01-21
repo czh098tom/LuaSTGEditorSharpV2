@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
-using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {

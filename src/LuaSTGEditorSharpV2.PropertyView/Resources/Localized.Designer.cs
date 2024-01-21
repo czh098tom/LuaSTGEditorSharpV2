@@ -77,5 +77,14 @@ namespace LuaSTGEditorSharpV2.PropertyView.Resources {
                 return ResourceManager.GetString("native_view", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Properties 的本地化字符串。
+        /// </summary>
+        internal static string panel_property_title {
+            get {
+                return ResourceManager.GetString("panel_property_title", resourceCulture);
+            }
+        }
     }
 }

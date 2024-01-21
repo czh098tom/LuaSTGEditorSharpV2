@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LuaSTGEditorSharpV2.ViewModel;
-
 namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class BasicPropertyItemViewModel : PropertyItemViewModelBase

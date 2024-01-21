@@ -30,6 +30,10 @@ using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Dialog.ViewModel;
 using LuaSTGEditorSharpV2.ServiceBridge;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
+using LuaSTGEditorSharpV2.Services;
+using System.ComponentModel;
+using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using System.Diagnostics;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -38,8 +42,6 @@ namespace LuaSTGEditorSharpV2
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
-        private readonly MainViewModel vm = new();
-
         private NodeViewModel? selected = null;
 
         public ICommand CommitEdit { get; private set; }
@@ -51,11 +53,14 @@ namespace LuaSTGEditorSharpV2
 
             InitializeCommand();
 
+            var layout = HostedApplicationHelper.GetService<MainWindowLayoutService>();
+            layout.RefreshSettings();
+
+            if (DataContext is not MainViewModel vm) return;
+
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test", "test.lstgxml");
 
             vm.OpenFile(testPath);
-
-            DataContext = vm;
         }
 
         [MemberNotNull(nameof(CommitEdit))]
@@ -76,24 +81,41 @@ namespace LuaSTGEditorSharpV2
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (DataContext is not MainViewModel vm) return;
             var tree = sender as TreeView;
             if (tree?.SelectedItem is NodeViewModel selectedVM)
             {
                 selected = selectedVM;
-                vm.LoadProperties(selectedVM.Source);
-                _propertyTab.SelectedIndex = 0;
+                vm.WorkSpace.BroadcastSelectedNodeChanged(selectedVM.Source);
+                //_propertyTab.SelectedIndex = 0;
             }
         }
 
         private void InsertButton_Click(object sender, RoutedEventArgs e)
         {
+            if (DataContext is not MainViewModel vm) return;
             if (selected == null) return;
             InputDialog inputDialog = new() { Owner = this };
             if (inputDialog.ShowDialog() == true)
             {
                 var type = inputDialog.ViewModel.Text;
-                vm.InsertNodeOfCustomType(selected.Source, type);
+                vm.WorkSpace.InsertNodeOfCustomType(selected.Source, type);
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            var ser = new XmlLayoutSerializer(dockingManager);
+            using MemoryStream ms = new();
+            using StreamWriter sw = new(ms);
+            ser.Serialize(sw);
+            ser.LayoutSerializationCallback += (o, e) =>
+            {
+                var str = e.Model.ContentId;
+            };
+            ms.Position = 0;
+            Debug.WriteLine(Encoding.Default.GetString(ms.ToArray()));
         }
 
         protected override void OnClosed(EventArgs e)

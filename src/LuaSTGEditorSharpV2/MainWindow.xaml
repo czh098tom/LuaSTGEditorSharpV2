@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LuaSTGEditorSharpV2"
+        xmlns:localvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel"
+        xmlns:util="clr-namespace:LuaSTGEditorSharpV2.Util"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:rc="clr-namespace:LuaSTGEditorSharpV2.RoutedCommands"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
@@ -39,6 +41,9 @@
             </lsv:PropertyItemGrid>
         </DataTemplate>
     </Window.Resources>
+    <Window.DataContext>
+        <localvm:MainViewModel/>
+    </Window.DataContext>
     <DockPanel>
         <Border DockPanel.Dock="Top">
             <fluent:Ribbon x:Name="RibbonWin">
@@ -137,88 +142,82 @@
                 <TextBlock Text="Test mode"/>
             </StatusBarItem>
         </StatusBar>
-        <xcad:DockingManager Name="dockingManager" DocumentsSource="{Binding Documents}">
-            <xcad:DockingManager.Theme>
-                <xcad:VS2010Theme/>
-            </xcad:DockingManager.Theme>
-            <xcad:DockingManager.Resources>
-                <DataTemplate DataType="{x:Type lvm:DocumentViewModel}">
-                    <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
-                </DataTemplate>
-            </xcad:DockingManager.Resources>
-            <xcad:DockingManager.LayoutItemContainerStyle>
-                <Style TargetType="{x:Type xcadc:LayoutItem}" >
-                    <Setter Property="Title" Value="{Binding Model.Title}" />
-                    <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
-                    <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
-                </Style>
-            </xcad:DockingManager.LayoutItemContainerStyle>
-            <xcad:LayoutRoot>
-                <xcad:LayoutPanel Orientation="Horizontal">
-                    <xcad:LayoutAnchorablePane DockWidth="200">
-                        <xcad:LayoutAnchorable Title="{lex:Loc LuaSTGEditorSharpV2:Localized:panel_toolBox_title}">
-                            <TreeView VirtualizingPanel.IsVirtualizing="True">
-                                <Button Click="InsertButton_Click">
-                                    <StackPanel Orientation="Horizontal" >
-                                        <Image Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"
-                                           Source="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png" />
-                                        <TextBlock VerticalAlignment="Center" Text="Add Node with Custom Type" />
-                                    </StackPanel>
-                                </Button>
-                            </TreeView>
-                        </xcad:LayoutAnchorable>
-                    </xcad:LayoutAnchorablePane>
-                    <xcad:LayoutPanel Orientation="Vertical">
-                        <xcad:LayoutDocumentPaneGroup>
-                            <xcad:LayoutDocumentPane>
-                            </xcad:LayoutDocumentPane>
-                        </xcad:LayoutDocumentPaneGroup>
-                        <xcad:LayoutAnchorablePaneGroup DockHeight="150">
-                            <xcad:LayoutAnchorablePane>
-                                <xcad:LayoutAnchorable Title="{lex:Loc LuaSTGEditorSharpV2:Localized:panel_error_title}">
-                                    <DataGrid>
-                                        
-                                    </DataGrid>
-                                </xcad:LayoutAnchorable>
-                                <xcad:LayoutAnchorable Title="{lex:Loc LuaSTGEditorSharpV2:Localized:panel_output_title}">
-                                    <TextBox>
-
-                                    </TextBox>
-                                </xcad:LayoutAnchorable>
-                            </xcad:LayoutAnchorablePane>
-                        </xcad:LayoutAnchorablePaneGroup>
-                    </xcad:LayoutPanel>
-                    <xcad:LayoutAnchorablePane DockWidth="300" DockMinWidth="300">
-                        <xcad:LayoutAnchorable Title="{lex:Loc LuaSTGEditorSharpV2:Localized:panel_property_title}">
-                            <Grid DataContext="{Binding PropertyPage}">
-                                <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
-                                            SelectedIndex="{Binding SelectedIndex}" >
-                                    <TabControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Caption}"/>
-                                        </DataTemplate>
-                                    </TabControl.ItemTemplate>
-                                    <TabControl.ContentTemplate>
-                                        <DataTemplate>
-                                            <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                                                          VerticalScrollBarVisibility="Visible"
-                                                          Margin="5">
-                                                <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
-                                                              Grid.IsSharedSizeScope="True"
-                                                              ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
-                                                    <ItemsControl.ItemTemplateSelector>
-                                                        <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
-                                                    </ItemsControl.ItemTemplateSelector>
-                                                </ItemsControl>
-                                            </ScrollViewer>
-                                        </DataTemplate>
-                                    </TabControl.ContentTemplate>
-                                </TabControl>
-                            </Grid>
-                        </xcad:LayoutAnchorable>
-                    </xcad:LayoutAnchorablePane>
-                </xcad:LayoutPanel>
-            </xcad:LayoutRoot>
-        </xcad:DockingManager>
+        <Grid DataContext="{Binding WorkSpace}">
+            <xcad:DockingManager Name="dockingManager" 
+                                 DocumentsSource="{Binding Documents}"
+                                 AnchorablesSource="{Binding Anchorables}"
+                                 >
+                <xcad:DockingManager.Theme>
+                    <xcad:VS2010Theme/>
+                </xcad:DockingManager.Theme>
+                <xcad:DockingManager.Resources>
+                </xcad:DockingManager.Resources>
+                <xcad:DockingManager.LayoutItemContainerStyle>
+                    <Style TargetType="{x:Type xcadc:LayoutItem}" >
+                        <Setter Property="Title" Value="{Binding Model.Title}" />
+                        <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                        <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+                        <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
+                        <Setter Property="IsActive" Value="True"/>
+                    </Style>
+                </xcad:DockingManager.LayoutItemContainerStyle>
+                <xcad:DockingManager.LayoutItemTemplateSelector>
+                    <util:TypedResourceDictionaryKeySelector>
+                        <util:TypedResourceDictionaryKeySelector.Default>
+                            <DataTemplate/>
+                        </util:TypedResourceDictionaryKeySelector.Default>
+                        <util:TypedResourceDictionaryKeySelector.ResourceDictionary>
+                            <DataTemplate x:Key="PropertyPageViewModel">
+                                <Grid>
+                                    <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
+                                                SelectedIndex="{Binding SelectedIndex}" >
+                                        <TabControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Caption}"/>
+                                            </DataTemplate>
+                                        </TabControl.ItemTemplate>
+                                        <TabControl.ContentTemplate>
+                                            <DataTemplate>
+                                                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                                                              VerticalScrollBarVisibility="Visible"
+                                                              Margin="5">
+                                                    <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
+                                                                  Grid.IsSharedSizeScope="True"
+                                                                  ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
+                                                        <ItemsControl.ItemTemplateSelector>
+                                                            <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
+                                                        </ItemsControl.ItemTemplateSelector>
+                                                    </ItemsControl>
+                                                </ScrollViewer>
+                                            </DataTemplate>
+                                        </TabControl.ContentTemplate>
+                                    </TabControl>
+                                </Grid>
+                            </DataTemplate>
+                            <DataTemplate x:Key="ToolboxPageViewModel">
+                                <TreeView VirtualizingPanel.IsVirtualizing="True">
+                                    <Button Click="InsertButton_Click">
+                                        <StackPanel Orientation="Horizontal" >
+                                            <Image Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"
+                                                   Source="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png" />
+                                            <TextBlock VerticalAlignment="Center" Text="Add Node with Custom Type" />
+                                        </StackPanel>
+                                    </Button>
+                                </TreeView>
+                            </DataTemplate>
+                            <DataTemplate x:Key="ErrorListPageViewModel">
+                                <DataGrid/>
+                            </DataTemplate>
+                            <DataTemplate x:Key="DebugOutputPageViewModel">
+                                <TextBox/>
+                            </DataTemplate>
+                            <DataTemplate x:Key="DocumentViewModel">
+                                <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
+                            </DataTemplate>
+                        </util:TypedResourceDictionaryKeySelector.ResourceDictionary>
+                    </util:TypedResourceDictionaryKeySelector>
+                </xcad:DockingManager.LayoutItemTemplateSelector>
+            </xcad:DockingManager>
+        </Grid>
     </DockPanel>
 </fluent:RibbonWindow>

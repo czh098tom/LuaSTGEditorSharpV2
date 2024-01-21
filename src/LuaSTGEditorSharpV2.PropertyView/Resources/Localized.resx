@@ -123,4 +123,7 @@
   <data name="native_view" xml:space="preserve">
     <value>Native View</value>
   </data>
+  <data name="panel_property_title" xml:space="preserve">
+    <value>Properties</value>
+  </data>
 </root>
