@@ -55,7 +55,11 @@ namespace LuaSTGEditorSharpV2.Core.Services
                     _logger.LogException(e);
                     _logger.LogError("Parsing JSON from \"{file_name}\" failed.", fileName);
                 }
-                provider.RefreshSettings();
+                try
+                {
+                    provider.RefreshSettings();
+                }
+                catch { }
             }
             _settingsDescriptors = settings;
         }
@@ -66,20 +70,32 @@ namespace LuaSTGEditorSharpV2.Core.Services
             Directory.CreateDirectory(baseDir);
             foreach (var desc in SettingsDescriptors)
             {
-                var fileName = Path.Combine(baseDir, $"{desc.ServiceProviderType.Name}.json");
-                try
-                {
-                    using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-                    using var sw = new StreamWriter(fs);
-                    sw.Write(JsonConvert.SerializeObject(desc.SettingsProvider.Settings, _serializerSettings));
-                }
-                catch (System.Exception e)
-                {
-                    _logger.LogException(e);
-                    _logger.LogError("Writing JSON to \"{file_name}\" failed.", fileName);
-                }
-                desc.SettingsProvider.RefreshSettings();
+                SaveSettingsForDescriptor(baseDir, desc);
             }
+        }
+
+        public void SaveSettings(ISettingsProvider provider)
+        {
+            var desc = provider.CreateDescriptor();
+            string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), _appendDir);
+            SaveSettingsForDescriptor(baseDir, desc);
+        }
+
+        private void SaveSettingsForDescriptor(string baseDir, SettingsDescriptor desc)
+        {
+            var fileName = Path.Combine(baseDir, $"{desc.ServiceProviderType.Name}.json");
+            try
+            {
+                using var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+                using var sw = new StreamWriter(fs);
+                sw.Write(JsonConvert.SerializeObject(desc.SettingsProvider.Settings, _serializerSettings));
+            }
+            catch (System.Exception e)
+            {
+                _logger.LogException(e);
+                _logger.LogError("Writing JSON to \"{file_name}\" failed.", fileName);
+            }
+            desc.SettingsProvider.RefreshSettings();
         }
     }
 }

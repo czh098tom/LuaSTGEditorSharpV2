@@ -34,6 +34,7 @@ using LuaSTGEditorSharpV2.Services;
 using System.ComponentModel;
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 using System.Diagnostics;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -53,10 +54,21 @@ namespace LuaSTGEditorSharpV2
 
             InitializeCommand();
 
-            var layout = HostedApplicationHelper.GetService<MainWindowLayoutService>();
-            layout.RefreshSettings();
-
             if (DataContext is not MainViewModel vm) return;
+
+            var layout = HostedApplicationHelper.GetService<MainWindowLayoutService>();
+            layout.LayoutSerializationCallback += (o, e) =>
+            {
+                e.Cancel = true;
+                if (string.IsNullOrEmpty(e.Model.ContentId)) return;
+                var type = Type.GetType(e.Model.ContentId);
+                if (type == null) return;
+                if (Activator.CreateInstance(type) is not AnchorableViewModelBase anc) return;
+                vm.WorkSpace.AddPage(anc);
+                e.Content = anc;
+                e.Cancel = false;
+            };
+            layout.RefreshSettings();
 
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test", "test.lstgxml");
 
@@ -106,16 +118,7 @@ namespace LuaSTGEditorSharpV2
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            var ser = new XmlLayoutSerializer(dockingManager);
-            using MemoryStream ms = new();
-            using StreamWriter sw = new(ms);
-            ser.Serialize(sw);
-            ser.LayoutSerializationCallback += (o, e) =>
-            {
-                var str = e.Model.ContentId;
-            };
-            ms.Position = 0;
-            Debug.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+            HostedApplicationHelper.GetService<MainWindowLayoutService>().SaveSettings();
         }
 
         protected override void OnClosed(EventArgs e)

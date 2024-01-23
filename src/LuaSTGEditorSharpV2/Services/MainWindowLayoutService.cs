@@ -4,18 +4,19 @@ using System.Linq;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 using LuaSTGEditorSharpV2.Core.Settings;
-using System.IO;
-using System.Xml;
+using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Services;
 
 namespace LuaSTGEditorSharpV2.Services
 {
     public class MainWindowLayoutService : ISettingsProvider
     {
-        public MainWindowLayoutSettings _settings = new();
+        private MainWindowLayoutSettings _settings = new();
 
         public object Settings 
         {
@@ -66,8 +67,7 @@ namespace LuaSTGEditorSharpV2.Services
                 try
                 {
                     using MemoryStream ms = new(Encoding.GetEncoding("UTF-8").GetBytes(_settings.LayoutXML));
-                    // TODO[*] there is a bug
-                    //serializer.Deserialize(ms);
+                    serializer.Deserialize(ms);
                 }
                 catch (Exception) { }
             }
@@ -75,7 +75,18 @@ namespace LuaSTGEditorSharpV2.Services
 
         public void SaveSettings()
         {
-
+            var serializer = Serializer;
+            if (serializer != null)
+            {
+                try
+                {
+                    using MemoryStream ms = new();
+                    serializer.Serialize(ms);
+                    _settings.LayoutXML = Encoding.GetEncoding("UTF-8").GetString(ms.ToArray());
+                    HostedApplicationHelper.GetService<SettingsService>().SaveSettings(this);
+                }
+                catch (Exception) { }
+            }
         }
     }
 }

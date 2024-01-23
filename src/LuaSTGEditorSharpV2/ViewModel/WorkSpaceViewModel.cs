@@ -26,10 +26,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public WorkSpaceViewModel()
         {
-            AddPage(new PropertyPageViewModel());
-            AddPage(new ToolboxPageViewModel());
-            AddPage(new Analyzer.ViewModel.ErrorListPageViewModel());
-            AddPage(new Debugging.ViewModel.DebugOutputPageViewModel());
         }
 
         public void AddPage(AnchorableViewModelBase viewModel)
