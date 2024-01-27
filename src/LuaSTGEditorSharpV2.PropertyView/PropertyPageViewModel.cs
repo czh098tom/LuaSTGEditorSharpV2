@@ -14,10 +14,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyPageViewModel : AnchorableViewModelBase
     {
-        public NodeData? SourceNode { get; private set; }
-
-        public IDocument? SourceDocument { get; private set; }
-
         public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = new();
 
         private int _selectedIndex = 0;
@@ -58,15 +54,11 @@ namespace LuaSTGEditorSharpV2.PropertyView
             PublishCommand(command, doc, SourceNode);
         }
 
-        public override void HandleSelectedNodeChanged(object o, SelectedNodeChangedEventArgs args)
+        public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
         {
-            var doc = args.DocumentModel;
-            if (doc == null) return;
-            SourceDocument = doc;
-            var node = args.NodeData ?? NodeData.Empty;
-            SourceNode = node;
-            var param = new LocalServiceParam(doc);
-            var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(node, param);
+            var param = new LocalServiceParam(SourceDocument ?? DocumentModel.Empty);
+            var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>()
+                .GetPropertyViewModelOfNode(SourceNode ?? NodeData.Empty, param);
             LoadProperties(list);
         }
 

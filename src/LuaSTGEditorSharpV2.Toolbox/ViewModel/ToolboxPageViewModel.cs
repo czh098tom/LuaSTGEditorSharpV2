@@ -20,10 +20,6 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
 {
     public class ToolboxPageViewModel : AnchorableViewModelBase
     {
-        public NodeData? SourceNode { get; private set; }
-
-        public IDocument? SourceDocument { get; private set; }
-
         public override string I18NTitleKey => "panel_toolBox_title";
 
         public ICommand InsertCommand { get; private set; }
@@ -33,13 +29,8 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             InsertCommand = new RelayCommand(CreateCustomTypeUIDNode);
         }
 
-        public override void HandleSelectedNodeChanged(object o, SelectedNodeChangedEventArgs args)
+        public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
         {
-            var doc = args.DocumentModel;
-            if (doc == null) return;
-            SourceDocument = doc;
-            var node = args.NodeData ?? NodeData.Empty;
-            SourceNode = node;
         }
 
         public void CreateCustomTypeUIDNode()

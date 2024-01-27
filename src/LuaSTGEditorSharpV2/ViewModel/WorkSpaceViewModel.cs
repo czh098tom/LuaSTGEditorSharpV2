@@ -15,6 +15,7 @@ using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Toolbox.ViewModel;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.WPF;
+using LuaSTGEditorSharpV2.Core.CodeGenerator;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -126,6 +127,21 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 }
                 _documents.Remove(dvm);
                 _documentMappting.Remove(dvm.DocumentModel);
+
+                foreach (var p in Anchorables)
+                {
+                    if (p.SourceDocument == dvm.DocumentModel)
+                    {
+                        p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
+                    }
+                }
+                foreach (var p in _invisibleAnchorables)
+                {
+                    if (p.SourceDocument == dvm.DocumentModel)
+                    {
+                        p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
+                    }
+                }
             }
         }
     }

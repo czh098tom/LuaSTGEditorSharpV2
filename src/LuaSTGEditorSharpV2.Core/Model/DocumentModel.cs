@@ -18,6 +18,8 @@ namespace LuaSTGEditorSharpV2.Core.Model
         public static readonly string buildRootUID = "BuildRoot";
         public static readonly string compileRootUID = "CompileRoot";
 
+        public static readonly DocumentModel Empty = new(string.Empty);
+
         protected static readonly JsonSerializerSettings _savingSerializer = new()
         {
             Formatting = Formatting.Indented
