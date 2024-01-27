@@ -20,20 +20,16 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private readonly WorkSpaceCollection<AnchorableViewModelBase> _invisibleAnchorables = [];
         public WorkSpaceCollection<AnchorableViewModelBase> Anchorables { get; private set; } = [];
 
-        public WorkSpaceCollection<DocumentViewModel> Documents { get; private set; } = [];
+        private readonly WorkSpaceCollection<DocumentViewModel> _documents = [];
+        public WorkSpaceCollection<DocumentViewModel> Documents => _documents;
 
-        public int ActiveDocumentIndex { get; set; } = 0;
-
-        public WorkSpaceViewModel()
-        {
-        }
+        private readonly Dictionary<DocumentViewModel, EditingDocumentModel> _documentMappting = [];
 
         public void AddPage(AnchorableViewModelBase viewModel)
         {
             viewModel.OnClose += (o, e) => MakeInvisible(o as AnchorableViewModelBase);
             viewModel.OnReopen += (o, e) => MakeVisible(o as AnchorableViewModelBase);
-            viewModel.OnCommandPublishing += (o, e) => AddCommandToDocument(e.Command, e.NodeData, e.ShouldRefreshView);
-            viewModel.OnFetchActiveDocument += FetchActiveDocument;
+            viewModel.OnCommandPublishing += (o, e) => AddCommandToDocument(e.Command, e.DocumentModel, e.NodeData, e.ShouldRefreshView);
             Anchorables.Add(viewModel);
         }
 
@@ -55,50 +51,45 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _invisibleAnchorables.Add(page);
         }
 
-        public void BroadcastSelectedNodeChanged(NodeData? nodeData)
+        public void BroadcastSelectedNodeChanged(DocumentViewModel dvm, NodeData nodeData)
         {
-            var doc = GetActiveDocument();
+            var doc = _documentMappting.GetValueOrDefault(dvm);
+            if (doc == null) return;
+            BroadcastSelectedNodeChanged(doc, nodeData);
+        }
+
+        public void BroadcastSelectedNodeChanged(EditingDocumentModel? documentModel, NodeData? nodeData)
+        {
             foreach (var p in Anchorables)
             {
-                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = doc, NodeData = nodeData });
+                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
             }
             foreach (var p in _invisibleAnchorables)
             {
-                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = doc, NodeData = nodeData });
+                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
             }
         }
 
-        private void AddCommandToDocument(CommandBase? command, NodeData? nodeData, bool shouldRefresh)
+        private void AddCommandToDocument(CommandBase? command, DocumentModel? document, NodeData? nodeData, bool shouldRefresh)
         {
             if (command == null) return;
-            var docService = HostedApplicationHelper.GetService<ActiveDocumentService>();
-            var doc = docService.ActiveDocuments[ActiveDocumentIndex];
+            if (document is not EditingDocumentModel doc) return;
             var param = new LocalServiceParam(doc);
             doc.CommandBuffer.Execute(command, param);
             if (shouldRefresh && nodeData != null)
             {
-                BroadcastSelectedNodeChanged(nodeData);
+                BroadcastSelectedNodeChanged(doc, nodeData);
             }
         }
 
-        public void FetchActiveDocument(object? o, AnchorableViewModelBase.FetchActiveDocumentEventArgs args)
+        public void AddDocument(EditingDocumentModel editingDocumentModel)
         {
-            args.DocumentModel = GetActiveDocument();
-        }
-
-        private EditingDocumentModel GetActiveDocument()
-        {
-            var docService = HostedApplicationHelper.GetService<ActiveDocumentService>();
-            var doc = docService.ActiveDocuments[ActiveDocumentIndex];
-            return doc;
-        }
-
-        public void InsertNodeOfCustomType(NodeData nodeData, string typeUID)
-        {
-            var activeDocService = HostedApplicationHelper.GetService<ActiveDocumentService>();
-            EditingDocumentModel doc = activeDocService.ActiveDocuments[ActiveDocumentIndex];
-            var param = new LocalServiceParam(doc);
-            doc.CommandBuffer.Execute(new AddChildCommand(nodeData, nodeData.PhysicalChildren.Count, new NodeData(typeUID)), param);
+            var doc = editingDocumentModel;
+            if (doc == null) return;
+            var dvm = new DocumentViewModel(Path.GetFileName(doc.FilePath) ?? string.Empty);
+            _documents.Add(dvm);
+            _documentMappting.Add(dvm, doc);
+            dvm.Tree.Add(HostedApplicationHelper.GetService<ViewModelProviderServiceProvider>().CreateViewModelRecursive(doc.Root, new LocalServiceParam(doc)));
         }
     }
 }

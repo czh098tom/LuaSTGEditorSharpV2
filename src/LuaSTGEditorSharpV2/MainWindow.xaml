@@ -196,7 +196,7 @@
                             </DataTemplate>
                             <DataTemplate x:Key="ToolboxPageViewModel">
                                 <TreeView VirtualizingPanel.IsVirtualizing="True">
-                                    <Button Click="InsertButton_Click">
+                                    <Button Command="{Binding InsertCommand}">
                                         <StackPanel Orientation="Horizontal" >
                                             <Image Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"
                                                    Source="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png" />

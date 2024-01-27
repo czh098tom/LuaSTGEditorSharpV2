@@ -24,17 +24,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public class PublishCommandEventArgs : EventArgs
         {
             public CommandBase? Command { get; set; }
+            public DocumentModel? DocumentModel { get; set; }
             public NodeData? NodeData { get; set; }
             public bool ShouldRefreshView { get; set; } = true;
         }
 
-        public class FetchActiveDocumentEventArgs : EventArgs
-        {
-            public DocumentModel? DocumentModel { get; set; }
-        }
-
         public event EventHandler<PublishCommandEventArgs>? OnCommandPublishing;
-        public event EventHandler<FetchActiveDocumentEventArgs>? OnFetchActiveDocument;
 
         public override string Title => HostedApplicationHelper.GetService<LocalizationService>()
             ?.GetString(I18NTitleKey, GetType().Assembly) ?? GetType().Name;
@@ -48,21 +43,15 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         }
 
-        protected void PublishCommand(CommandBase? command, NodeData? nodeData, bool shouldRefreshView = true)
+        protected void PublishCommand(CommandBase? command, DocumentModel documentModel, NodeData? nodeData, bool shouldRefreshView = true)
         {
             OnCommandPublishing?.Invoke(this, new() 
             {
                 Command = command, 
+                DocumentModel = documentModel,
                 NodeData = nodeData,
                 ShouldRefreshView = shouldRefreshView
             });
-        }
-
-        protected DocumentModel? FetchActiveDocument()
-        {
-            var args = new FetchActiveDocumentEventArgs();
-            OnFetchActiveDocument?.Invoke(this, args);
-            return args.DocumentModel;
         }
     }
 }

@@ -41,10 +41,8 @@ namespace LuaSTGEditorSharpV2
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : RibbonWindow
+    public partial class MainWindow : RibbonWindow, IMainWindow
     {
-        private NodeViewModel? selected = null;
-
         public ICommand CommitEdit { get; private set; }
         public ICommand ShowEditWindow { get; private set; }
 
@@ -95,23 +93,10 @@ namespace LuaSTGEditorSharpV2
         {
             if (DataContext is not MainViewModel vm) return;
             var tree = sender as TreeView;
-            if (tree?.SelectedItem is NodeViewModel selectedVM)
+            if (tree?.SelectedItem is NodeViewModel selectedVM && tree.DataContext is DocumentViewModel dvm)
             {
-                selected = selectedVM;
-                vm.WorkSpace.BroadcastSelectedNodeChanged(selectedVM.Source);
+                vm.WorkSpace.BroadcastSelectedNodeChanged(dvm, selectedVM.Source);
                 //_propertyTab.SelectedIndex = 0;
-            }
-        }
-
-        private void InsertButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is not MainViewModel vm) return;
-            if (selected == null) return;
-            InputDialog inputDialog = new() { Owner = this };
-            if (inputDialog.ShowDialog() == true)
-            {
-                var type = inputDialog.ViewModel.Text;
-                vm.WorkSpace.InsertNodeOfCustomType(selected.Source, type);
             }
         }
 

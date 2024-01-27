@@ -28,9 +28,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var activeDocService = HostedApplicationHelper.GetService<ActiveDocumentService>();
             var doc = activeDocService.Open(filePath);
             if (doc == null) return;
-            var dvm = new DocumentViewModel(Path.GetFileName(filePath));
-            WorkSpace.Documents.Add(dvm);
-            dvm.Tree.Add(HostedApplicationHelper.GetService<ViewModelProviderServiceProvider>().CreateViewModelRecursive(doc.Root, new LocalServiceParam(doc)));
+            _workspace.AddDocument(doc);
         }
     }
 }

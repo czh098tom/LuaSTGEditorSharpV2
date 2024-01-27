@@ -3,7 +3,7 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                   xmlns:local="clr-namespace:LuaSTGEditorSharpV2"
+                   xmlns:localvm="clr-namespace:LuaSTGEditorSharpV2.Dialog.ViewModel"
                    xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
                    mc:Ignorable="d"
@@ -16,6 +16,9 @@
                    ResizeMode="NoResize"
                    WindowStartupLocation="CenterOwner"
                    FocusManager.FocusedElement="{Binding ElementName=contentTextBox}">
+    <Window.DataContext>
+        <localvm:InputDialogViewModel/>
+    </Window.DataContext>
     <Grid>
 
         <Grid.ColumnDefinitions>

@@ -14,7 +14,9 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyPageViewModel : AnchorableViewModelBase
     {
-        public NodeData? Source { get; private set; }
+        public NodeData? SourceNode { get; private set; }
+
+        public DocumentModel? SourceDocument { get; private set; }
 
         public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = new();
 
@@ -43,33 +45,34 @@ namespace LuaSTGEditorSharpV2.PropertyView
             if (sender is not PropertyTabViewModel vm) return;
 
             var propertyViewService = HostedApplicationHelper.GetService<PropertyViewServiceProvider>();
-            var doc = FetchActiveDocument();
+            var doc = SourceDocument;
             if (doc == null) return;
             var param = new LocalServiceParam(doc);
-            if (Source == null) return;
+            if (SourceNode == null) return;
             var command = propertyViewService.GetCommandOfEditingNode(
-                Source,
+                SourceNode,
                 param, Tabs, Tabs.IndexOf(vm),
                 vm.Properties.IndexOf(e.Item),
                 e.Args.NewValue);
 
-            PublishCommand(command, Source);
+            PublishCommand(command, doc, SourceNode);
         }
 
         public override void HandleSelectedNodeChanged(object o, SelectedNodeChangedEventArgs args)
         {
-            var doc = FetchActiveDocument();
+            var doc = args.DocumentModel;
             if (doc == null) return;
-            var param = new LocalServiceParam(doc);
+            SourceDocument = doc;
             var node = args.NodeData ?? NodeData.Empty;
+            SourceNode = node;
+            var param = new LocalServiceParam(doc);
             var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>().GetPropertyViewModelOfNode(node, param);
-            LoadProperties(list, node);
+            LoadProperties(list);
         }
 
-        private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels, NodeData source)
+        private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels)
         {
             var index = SelectedIndex;
-            Source = source;
             Tabs.Clear();
             for (int i = 0; i < viewModels.Count; i++)
             {

@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.Command\LuaSTGEditorSharpV2.Core.Command.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Dialog\LuaSTGEditorSharpV2.Dialog.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Resources.Shared\LuaSTGEditorSharpV2.Resources.Shared.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.ViewModel\LuaSTGEditorSharpV2.ViewModel.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.WPF\LuaSTGEditorSharpV2.WPF.csproj" />
