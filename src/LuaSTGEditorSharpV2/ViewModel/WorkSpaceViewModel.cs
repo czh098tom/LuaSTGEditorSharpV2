@@ -31,6 +31,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void AddPage(AnchorableViewModelBase viewModel)
         {
             viewModel.OnClose += (o, e) => MakeInvisible(o as AnchorableViewModelBase);
+            viewModel.OnReopen += (o, e) => MakeVisible(o as AnchorableViewModelBase);
             viewModel.OnCommandPublishing += (o, e) => AddCommandToDocument(e.Command, e.NodeData, e.ShouldRefreshView);
             viewModel.OnFetchActiveDocument += FetchActiveDocument;
             Anchorables.Add(viewModel);
