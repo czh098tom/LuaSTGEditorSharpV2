@@ -63,6 +63,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
+        public abstract string Title { get; }
+
         public void Close()
         {
             OnClose?.Invoke(this, EventArgs.Empty);
@@ -72,7 +74,5 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             OnReopen?.Invoke(this, EventArgs.Empty);
         }
-
-        public abstract string Title { get; }
     }
 }

@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2
 {
-    public class EditingDocumentModel : DocumentModel
+    public class EditingDocumentModel : IDocument
     {
         public DocumentModel Target { get; private set; }
 
@@ -20,13 +20,19 @@ namespace LuaSTGEditorSharpV2
             Target = target;
         }
 
-        public override string? FilePath => Target.FilePath;
-        public override NodeData Root => Target.Root;
-        public override bool IsOnDisk => Target.IsOnDisk;
+        public string? FilePath => Target.FilePath;
+        public NodeData Root => Target.Root;
+        public bool IsOnDisk => Target.IsOnDisk;
+        public string FileName => Target.FileName;
 
         public bool IsModified => CommandBuffer.CanUndo;
 
-        public override void SaveAs(string filePath)
+        public void Save()
+        {
+            Target.Save();
+        }
+
+        public void SaveAs(string filePath)
         {
             Target.SaveAs(filePath);
         }

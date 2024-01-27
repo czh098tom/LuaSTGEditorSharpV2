@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
     {
         public NodeData? SourceNode { get; private set; }
 
-        public DocumentModel? SourceDocument { get; private set; }
+        public IDocument? SourceDocument { get; private set; }
 
         public override string I18NTitleKey => "panel_toolBox_title";
 

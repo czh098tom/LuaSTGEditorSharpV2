@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     {
         public NodeData? SourceNode { get; private set; }
 
-        public DocumentModel? SourceDocument { get; private set; }
+        public IDocument? SourceDocument { get; private set; }
 
         public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = new();
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows;
 
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -12,6 +13,8 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Toolbox.ViewModel;
+using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.WPF;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -23,7 +26,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private readonly ObservableCollection<DocumentViewModel> _documents = [];
         public ObservableCollection<DocumentViewModel> Documents => _documents;
 
-        private readonly Dictionary<DocumentViewModel, EditingDocumentModel> _documentMappting = [];
+        private readonly Dictionary<IDocument, DocumentViewModel> _documentMappting = [];
 
         public void AddPage(AnchorableViewModelBase viewModel)
         {
@@ -53,12 +56,10 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void BroadcastSelectedNodeChanged(DocumentViewModel dvm, NodeData nodeData)
         {
-            var doc = _documentMappting.GetValueOrDefault(dvm);
-            if (doc == null) return;
-            BroadcastSelectedNodeChanged(doc, nodeData);
+            BroadcastSelectedNodeChanged(dvm.DocumentModel, nodeData);
         }
 
-        public void BroadcastSelectedNodeChanged(EditingDocumentModel? documentModel, NodeData? nodeData)
+        public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData? nodeData)
         {
             foreach (var p in Anchorables)
             {
@@ -70,15 +71,15 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
-        private void AddCommandToDocument(CommandBase? command, DocumentModel? document, NodeData? nodeData, bool shouldRefresh)
+        private void AddCommandToDocument(CommandBase? command, IDocument? document, NodeData? nodeData, bool shouldRefresh)
         {
-            if (command == null) return;
-            if (document is not EditingDocumentModel doc) return;
-            var param = new LocalServiceParam(doc);
-            doc.CommandBuffer.Execute(command, param);
+            if (command == null || document == null) return;
+            var dvm = _documentMappting!.GetValueOrDefault(document, null);
+            if (dvm == null) return;
+            dvm.ExecuteCommand(command);
             if (shouldRefresh && nodeData != null)
             {
-                BroadcastSelectedNodeChanged(doc, nodeData);
+                BroadcastSelectedNodeChanged(document, nodeData);
             }
         }
 
@@ -86,10 +87,46 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             var doc = editingDocumentModel;
             if (doc == null) return;
-            var dvm = new DocumentViewModel(Path.GetFileName(doc.FilePath) ?? string.Empty);
+            var dvm = new DocumentViewModel(doc);
             _documents.Add(dvm);
-            _documentMappting.Add(dvm, doc);
-            dvm.Tree.Add(HostedApplicationHelper.GetService<ViewModelProviderServiceProvider>().CreateViewModelRecursive(doc.Root, new LocalServiceParam(doc)));
+            _documentMappting.Add(doc, dvm);
+            dvm.OnClose += (o, e) => CloseDocument(dvm);
+        }
+
+        public void CloseDocument(DocumentViewModel dvm)
+        {
+            if (dvm.CanClose)
+            {
+                if (dvm.IsModified)
+                {
+                    var localization = HostedApplicationHelper.GetService<LocalizationService>();
+                    var messageBoxResult = 
+                        MessageBox.Show(
+                            string.Format(localization.GetString("messageBox_saveBeforClose_message", 
+                                typeof(WorkSpaceViewModel).Assembly), dvm.RawTitle),
+                            localization.GetString("messageBox_title_app", typeof(WindowHelper).Assembly),
+                            MessageBoxButton.YesNoCancel,
+                            MessageBoxImage.Information
+                            );
+                    if (messageBoxResult == MessageBoxResult.Cancel) return;
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        if (dvm.DocumentModel.HasPath())
+                        {
+                            dvm.DocumentModel.Save();
+                        }
+                        else
+                        {
+                            var fileDialog = HostedApplicationHelper.GetService<FileDialogService>();
+                            string? path = fileDialog.ShowSaveAsFileCommandDialog();
+                            if (path == null) return;
+                            dvm.DocumentModel.SaveAs(path);
+                        }
+                    }
+                }
+                _documents.Remove(dvm);
+                _documentMappting.Remove(dvm.DocumentModel);
+            }
         }
     }
 }

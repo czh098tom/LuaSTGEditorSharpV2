@@ -86,5 +86,14 @@ namespace LuaSTGEditorSharpV2.WPF.Resources {
                 return ResourceManager.GetString("common_ok", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 LuaSTG Editor Sharp V2 的本地化字符串。
+        /// </summary>
+        internal static string messageBox_title_app {
+            get {
+                return ResourceManager.GetString("messageBox_title_app", resourceCulture);
+            }
+        }
     }
 }

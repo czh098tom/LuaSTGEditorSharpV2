@@ -126,4 +126,7 @@
   <data name="common_ok" xml:space="preserve">
     <value>确定</value>
   </data>
+  <data name="messageBox_title_app" xml:space="preserve">
+    <value>LuaSTG Editor Sharp V2</value>
+  </data>
 </root>

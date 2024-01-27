@@ -16,19 +16,22 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         public void Execute(CommandBase command, LocalServiceParam param)
         {
-            while (_commands.Count > _currentIdx + 1)
+            while (_commands.Count > _currentIdx)
             {
                 _commands.RemoveAt(_currentIdx);
             }
+            command.Execute(param);
             if (_commands.Count == _currentIdx)
             {
-                _commands.Add(command);
+                if (command is CompositeCommand cc && cc.ShouldUnpack)
+                {
+                    _commands.AddRange(cc.Flatten());
+                }
+                else
+                {
+                    _commands.Add(command);
+                }
             }
-            else
-            {
-                _commands[_currentIdx] = command;
-            }
-            command.Execute(param);
             _currentIdx++;
         }
 

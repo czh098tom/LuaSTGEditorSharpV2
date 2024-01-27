@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Exception;
+using System.Xml.Linq;
 
 namespace LuaSTGEditorSharpV2.Core.Model
 {
-    public class DocumentModel
+    public class DocumentModel : IDocument
     {
-        public static readonly string definitionRootUID = "definition root";
-        public static readonly string buildRootUID = "build root";
-        public static readonly string compileRootUID = "compile root";
+        public static readonly string RootUID = "Root";
+        public static readonly string definitionRootUID = "DefinitionRoot";
+        public static readonly string buildRootUID = "BuildRoot";
+        public static readonly string compileRootUID = "CompileRoot";
 
         protected static readonly JsonSerializerSettings _savingSerializer = new()
         {
@@ -37,6 +39,31 @@ namespace LuaSTGEditorSharpV2.Core.Model
             }
         }
 
+        public static DocumentModel? CreateFromTemplate(string templateFilePath, string fileName)
+        {
+            try
+            {
+                using FileStream fs = new(templateFilePath, FileMode.Open, FileAccess.Read);
+                using StreamReader sr = new(fs);
+                var node = DocumentFormatBase.CreateByExtension(Path.GetExtension(templateFilePath)).CreateFromStream(sr);
+                if (node == null) return null;
+                return new DocumentModel(node, fileName);
+            }
+            catch (System.Exception e)
+            {
+                throw new OpenFileException($"Could not open file by path {templateFilePath}", e);
+            }
+        }
+
+        public static DocumentModel? CreateEmpty(string fileName)
+        {
+            var node = new NodeData(RootUID);
+            node.Add(new NodeData(definitionRootUID));
+            node.Add(new NodeData(buildRootUID));
+            node.Add(new NodeData(compileRootUID));
+            return new DocumentModel(node, fileName);
+        }
+
         public static NodeData? CreateFromStream(TextReader reader)
         {
             try
@@ -51,24 +78,34 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         private NodeData _root;
 
-        public virtual NodeData Root 
+        public virtual NodeData Root
         {
             get => _root;
-            protected set => _root = value;
+            private set => _root = value;
         }
 
         public virtual string? FilePath { get; private set; }
 
+        public virtual string FileName { get; private set; }
+
         public virtual bool IsOnDisk => !string.IsNullOrWhiteSpace(FilePath);
 
-        public DocumentModel()
+        public DocumentModel(string fileName)
         {
+            FileName = fileName;
             _root = new NodeData();
         }
 
         private DocumentModel(string filePath, NodeData root)
         {
             FilePath = filePath;
+            FileName = Path.GetFileName(filePath);
+            _root = root;
+        }
+
+        private DocumentModel(NodeData root, string fileName)
+        {
+            FileName = fileName;
             _root = root;
         }
 
@@ -97,21 +134,6 @@ namespace LuaSTGEditorSharpV2.Core.Model
         {
             return new PackageInfo($"_FILE_{FilePath}"
                 , new Version(int.MaxValue, int.MaxValue, int.MaxValue), null);
-        }
-
-        public NodeData? FindDefinitionRoot()
-        {
-            return Root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == definitionRootUID);
-        }
-
-        public NodeData? FindBuildRoot()
-        {
-            return Root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == buildRootUID);
-        }
-
-        public NodeData? FindCompileRoot()
-        {
-            return Root.PhysicalChildren.FirstOrDefault(n => n.TypeUID == compileRootUID);
         }
     }
 }

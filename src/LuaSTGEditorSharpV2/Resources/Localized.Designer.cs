@@ -63,9 +63,18 @@ namespace LuaSTGEditorSharpV2.Resources {
         /// <summary>
         ///   查找类似 LuaSTG Editor Sharp V2 Document(*.lstgxml;*.lstgjson)|*.lstgxml;*.lstgjson 的本地化字符串。
         /// </summary>
-        internal static string openFileCommandDialog_fileExtension {
+        internal static string fileDialog_fileExtension {
             get {
-                return ResourceManager.GetString("openFileCommandDialog_fileExtension", resourceCulture);
+                return ResourceManager.GetString("fileDialog_fileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 &quot;{0}&quot; has been modified, save before closing? 的本地化字符串。
+        /// </summary>
+        internal static string messageBox_saveBeforClose_message {
+            get {
+                return ResourceManager.GetString("messageBox_saveBeforClose_message", resourceCulture);
             }
         }
         

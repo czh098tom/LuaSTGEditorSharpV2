@@ -17,14 +17,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
     {
         public class SelectedNodeChangedEventArgs : EventArgs
         {
-            public DocumentModel? DocumentModel { get; set; }
+            public IDocument? DocumentModel { get; set; }
             public NodeData? NodeData { get; set; }
         }
 
         public class PublishCommandEventArgs : EventArgs
         {
             public CommandBase? Command { get; set; }
-            public DocumentModel? DocumentModel { get; set; }
+            public IDocument? DocumentModel { get; set; }
             public NodeData? NodeData { get; set; }
             public bool ShouldRefreshView { get; set; } = true;
         }
@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         }
 
-        protected void PublishCommand(CommandBase? command, DocumentModel documentModel, NodeData? nodeData, bool shouldRefreshView = true)
+        protected void PublishCommand(CommandBase? command, IDocument documentModel, NodeData? nodeData, bool shouldRefreshView = true)
         {
             OnCommandPublishing?.Invoke(this, new() 
             {

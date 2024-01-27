@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
         public IReadOnlyList<CommandBase> InnerCommands => _innerCommands;
         public bool ShouldUnpack { get; private set; } = false;
 
-        public CompositeCommand(params CommandBase[] innerCommands) 
+        public CompositeCommand(params CommandBase[] innerCommands)
             : this((IReadOnlyList<CommandBase>)innerCommands) { }
 
         public CompositeCommand(bool shouldUnpack, params CommandBase[] innerCommands)
@@ -39,6 +39,24 @@ namespace LuaSTGEditorSharpV2.Core.Command
             {
                 _innerCommands[i].Revert(param);
             }
+        }
+
+        public IReadOnlyList<CommandBase> Flatten()
+        {
+            if (ShouldUnpack) return [this];
+            List<CommandBase> commands = [];
+            foreach (CommandBase command in _innerCommands)
+            {
+                if (command is CompositeCommand cc && cc.ShouldUnpack)
+                {
+                    commands.AddRange(cc.Flatten());
+                }
+                else
+                {
+                    commands.Add(command);
+                }
+            }
+            return commands;
         }
     }
 }

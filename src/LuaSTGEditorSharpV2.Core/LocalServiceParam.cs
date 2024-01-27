@@ -9,6 +9,6 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core
 {
     public record LocalServiceParam(
-        DocumentModel Source
+        IDocument Source
     );
 }
