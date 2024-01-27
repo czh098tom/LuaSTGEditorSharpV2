@@ -37,6 +37,8 @@ using LuaSTGEditorSharpV2.ServiceBridge;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.Services;
 
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+
 namespace LuaSTGEditorSharpV2
 {
     /// <summary>
@@ -44,46 +46,60 @@ namespace LuaSTGEditorSharpV2
     /// </summary>
     public partial class MainWindow : RibbonWindow, IMainWindow
     {
+        private readonly MainViewModel _viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            if (DataContext is not MainViewModel vm) return;
+            _viewModel = (DataContext as MainViewModel)!;
 
             var layout = HostedApplicationHelper.GetService<MainWindowLayoutService>();
-            layout.LayoutSerializationCallback += (o, e) =>
-            {
-                e.Cancel = true;
-                if (string.IsNullOrEmpty(e.Model.ContentId)) return;
-                var type = Type.GetType(e.Model.ContentId);
-                if (type == null) return;
-                if (Activator.CreateInstance(type) is not AnchorableViewModelBase anc) return;
-                vm.WorkSpace.AddPage(anc);
-                e.Content = anc;
-                e.Cancel = false;
-            };
+            layout.LayoutSerializationCallback += HandleLayoutSerializationCallback;
             layout.RefreshSettings();
 
             string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test", "test.lstgxml");
 
-            vm.OpenFile(testPath);
+            //vm.OpenFile(testPath);
+        }
+
+        private void HandleLayoutSerializationCallback(object? sender, LayoutSerializationCallbackEventArgs e)
+        {
+            e.Cancel = true;
+            if (string.IsNullOrEmpty(e.Model.ContentId)) return;
+            var type = Type.GetType(e.Model.ContentId);
+            if (type == null) return;
+            if (Activator.CreateInstance(type) is not AnchorableViewModelBase anc) return;
+            _viewModel.WorkSpace.AddPage(anc);
+            e.Content = anc;
+            e.Cancel = false;
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (DataContext is not MainViewModel vm) return;
             var tree = sender as TreeView;
             if (tree?.SelectedItem is NodeViewModel selectedVM && tree.DataContext is DocumentViewModel dvm)
             {
-                vm.WorkSpace.BroadcastSelectedNodeChanged(dvm, selectedVM.Source);
-                //_propertyTab.SelectedIndex = 0;
+                _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, selectedVM.Source);
+            }
+        }
+
+        private void ExecuteOpenCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dialog = HostedApplicationHelper.GetService<FileDialogService>();
+            foreach (var item in dialog.ShowOpenFileCommandDialog())
+            {
+                _viewModel.OpenFile(item);
             }
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            HostedApplicationHelper.GetService<MainWindowLayoutService>().SaveSettings();
+            foreach(var s in HostedApplicationHelper.GetServices<ISettingsSavedOnClose>())
+            {
+                s.SaveSettings();
+            }
         }
 
         protected override void OnClosed(EventArgs e)

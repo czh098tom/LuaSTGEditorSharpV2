@@ -20,8 +20,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private readonly WorkSpaceCollection<AnchorableViewModelBase> _invisibleAnchorables = [];
         public WorkSpaceCollection<AnchorableViewModelBase> Anchorables { get; private set; } = [];
 
-        private readonly WorkSpaceCollection<DocumentViewModel> _documents = [];
-        public WorkSpaceCollection<DocumentViewModel> Documents => _documents;
+        private readonly ObservableCollection<DocumentViewModel> _documents = [];
+        public ObservableCollection<DocumentViewModel> Documents => _documents;
 
         private readonly Dictionary<DocumentViewModel, EditingDocumentModel> _documentMappting = [];
 

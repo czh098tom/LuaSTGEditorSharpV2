@@ -61,6 +61,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 LuaSTG Editor Sharp V2 Document(*.lstgxml;*.lstgjson)|*.lstgxml;*.lstgjson 的本地化字符串。
+        /// </summary>
+        internal static string openFileCommandDialog_fileExtension {
+            get {
+                return ResourceManager.GetString("openFileCommandDialog_fileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Document 的本地化字符串。
         /// </summary>
         internal static string ribbon_backStageMenu_document_title {
@@ -201,6 +210,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         internal static string ribbon_menuItem_exportCode_title {
             get {
                 return ResourceManager.GetString("ribbon_menuItem_exportCode_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open... 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_menuItem_open_title {
+            get {
+                return ResourceManager.GetString("ribbon_menuItem_open_title", resourceCulture);
             }
         }
         

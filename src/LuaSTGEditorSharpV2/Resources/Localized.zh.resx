@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="openFileCommandDialog_fileExtension" xml:space="preserve">
+    <value>LuaSTG Editor Sharp V2 文档(*.lstgxml;*.lstgjson)|*.lstgxml;*.lstgjson</value>
+  </data>
   <data name="ribbon_backStageMenu_document_title" xml:space="preserve">
     <value>文档</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="ribbon_menuItem_exportCode_title" xml:space="preserve">
     <value>导出代码...</value>
+  </data>
+  <data name="ribbon_menuItem_open_title" xml:space="preserve">
+    <value>打开...</value>
   </data>
   <data name="ribbon_menuItem_saveAs_title" xml:space="preserve">
     <value>另存为...</value>

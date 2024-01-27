@@ -14,7 +14,7 @@ using LuaSTGEditorSharpV2.Core.Services;
 
 namespace LuaSTGEditorSharpV2.Services
 {
-    public class MainWindowLayoutService : ISettingsProvider
+    public class MainWindowLayoutService : ISettingsProvider, ISettingsSavedOnClose
     {
         private MainWindowLayoutSettings _settings = new();
 
