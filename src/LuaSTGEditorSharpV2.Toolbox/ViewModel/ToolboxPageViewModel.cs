@@ -8,12 +8,13 @@ using System.Windows;
 using System.Windows.Input;
 
 using CommunityToolkit.Mvvm;
+using CommunityToolkit.Mvvm.Input;
 
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
-using CommunityToolkit.Mvvm.Input;
+using LuaSTGEditorSharpV2.WPF;
 
 namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
 {
@@ -44,19 +45,9 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
         public void CreateCustomTypeUIDNode()
         {
             if (SourceDocument == null || SourceNode == null) return;
-            var windows = new ArrayList(Application.Current.Windows);
-            Window? main = null;
-            foreach (var win in windows)
+            InputDialog inputDialog = new()
             {
-                if (win is IMainWindow window)
-                {
-                    main = window as Window;
-                    break;
-                }
-            }
-            InputDialog inputDialog = new() 
-            { 
-                Owner = main
+                Owner = WindowHelper.GetMainWindow()
             };
             if (inputDialog.ShowDialog() == true)
             {
