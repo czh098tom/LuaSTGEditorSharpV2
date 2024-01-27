@@ -9,6 +9,12 @@
           FontFamily="Terminal"
           Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
           ItemsSource="{Binding Tree}">
+    <TreeView.Resources>
+        <Style TargetType="TreeViewItem">
+            <Setter Property="IsExpanded" 
+                    Value="True"/>
+        </Style>
+    </TreeView.Resources>
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
             <StackPanel Orientation="Horizontal">
