@@ -57,7 +57,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
             }
         }
 
-        public static DocumentModel? CreateEmpty(string fileName)
+        public static DocumentModel CreateEmpty(string fileName)
         {
             var node = new NodeData(RootUID);
             node.Add(new NodeData(definitionRootUID));
