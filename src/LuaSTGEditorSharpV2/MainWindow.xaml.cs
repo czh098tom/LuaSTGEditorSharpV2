@@ -93,6 +93,21 @@ namespace LuaSTGEditorSharpV2
             }
         }
 
+        private void ExecuteSaveCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.SaveActiveDocument();
+        }
+
+        private void ExecuteSaveAsCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.SaveActiveDocumentAs();
+        }
+
+        private void FileCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _viewModel?.WorkSpace?.HaveActiveDocument ?? false;
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
@@ -112,6 +127,17 @@ namespace LuaSTGEditorSharpV2
         {
             SettingsDialog dialog = new() { Owner = this };
             dialog.ShowDialog();
+        }
+
+        private void DockingManager_ActiveContentChanged(object sender, EventArgs e)
+        {
+            if (dockingManager.ActiveContent is LayoutDocument ld)
+            {
+                if (ld.Content is DocumentViewModel dvm)
+                {
+                    _viewModel.WorkSpace.SetActiveDocument(dvm);
+                }
+            }
         }
     }
 }

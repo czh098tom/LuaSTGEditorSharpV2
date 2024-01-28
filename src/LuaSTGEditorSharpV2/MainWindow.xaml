@@ -47,6 +47,12 @@
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static ApplicationCommands.Open}"
                         Executed="ExecuteOpenCommand"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.Save}"
+                        Executed="ExecuteSaveCommand"
+                        CanExecute="FileCommandCanExecute"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.SaveAs}"
+                        Executed="ExecuteSaveAsCommand"
+                        CanExecute="FileCommandCanExecute"/>
     </Window.CommandBindings>
     <DockPanel>
         <Border DockPanel.Dock="Top">
@@ -73,12 +79,14 @@
                 <fluent:Ribbon.Menu>
                     <fluent:Backstage Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_backStageMenu_document_title}">
                         <fluent:BackstageTabControl>
-                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_open_title}" 
-                                           KeyTip="O"
-                                           Command="{x:Static ApplicationCommands.Open}"/>
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_open_title}"
+                                           Command="{x:Static ApplicationCommands.Open}" 
+                                           KeyTip="O"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_save_title}" 
+                                           Command="{x:Static ApplicationCommands.Save}"
                                            KeyTip="S"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_saveAs_title}" 
+                                           Command="{x:Static ApplicationCommands.SaveAs}"
                                            KeyTip="A" CanAddToQuickAccessToolBar="False"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_settings_title}" 
                                            Click="SettingsButton_Click"
@@ -153,7 +161,7 @@
             <xcad:DockingManager Name="dockingManager" 
                                  DocumentsSource="{Binding Documents}"
                                  AnchorablesSource="{Binding Anchorables}"
-                                 >
+                                 ActiveContentChanged="DockingManager_ActiveContentChanged">
                 <xcad:DockingManager.Theme>
                     <xcad:VS2010Theme/>
                 </xcad:DockingManager.Theme>

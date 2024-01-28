@@ -27,6 +27,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private readonly ObservableCollection<DocumentViewModel> _documents = [];
         public ObservableCollection<DocumentViewModel> Documents => _documents;
 
+        private DocumentViewModel? _activeDocument;
+        public bool HaveActiveDocument => _activeDocument != null;
+
         private readonly Dictionary<IDocument, DocumentViewModel> _documentMappting = [];
 
         public void AddPage(AnchorableViewModelBase viewModel)
@@ -94,54 +97,55 @@ namespace LuaSTGEditorSharpV2.ViewModel
             dvm.OnClose += (o, e) => CloseDocument(dvm);
         }
 
+        public void SetActiveDocument(DocumentViewModel dvm)
+        {
+            _activeDocument = dvm;
+        }
+
+        public void SaveActiveDocument()
+        {
+            if (_activeDocument == null) throw new InvalidOperationException();
+            _activeDocument?.SaveOrAskingToSaveAs();
+        }
+
+        public void SaveActiveDocumentAs()
+        {
+            if (_activeDocument == null) throw new InvalidOperationException();
+            _activeDocument.SaveAs();
+        }
+
         public void CloseDocument(DocumentViewModel dvm)
         {
-            if (dvm.CanClose)
+            if (!dvm.CanClose) return;
+            if (dvm.IsModified)
             {
-                if (dvm.IsModified)
-                {
-                    var localization = HostedApplicationHelper.GetService<LocalizationService>();
-                    var messageBoxResult = 
-                        MessageBox.Show(
-                            string.Format(localization.GetString("messageBox_saveBeforClose_message", 
-                                typeof(WorkSpaceViewModel).Assembly), dvm.RawTitle),
-                            localization.GetString("messageBox_title_app", typeof(WindowHelper).Assembly),
-                            MessageBoxButton.YesNoCancel,
-                            MessageBoxImage.Information
-                            );
-                    if (messageBoxResult == MessageBoxResult.Cancel) return;
-                    if (messageBoxResult == MessageBoxResult.Yes)
-                    {
-                        if (dvm.DocumentModel.HasPath())
-                        {
-                            dvm.DocumentModel.Save();
-                        }
-                        else
-                        {
-                            var fileDialog = HostedApplicationHelper.GetService<FileDialogService>();
-                            string? path = fileDialog.ShowSaveAsFileCommandDialog();
-                            if (path == null) return;
-                            dvm.DocumentModel.SaveAs(path);
-                        }
-                    }
-                }
-                _documents.Remove(dvm);
-                _documentMappting.Remove(dvm.DocumentModel);
+                dvm.AskSaveBeforeClose();
+            }
+            _documents.Remove(dvm);
+            _documentMappting.Remove(dvm.DocumentModel);
 
-                foreach (var p in Anchorables)
+            DisposeOpenedDocument(dvm);
+        }
+
+        private void DisposeOpenedDocument(DocumentViewModel dvm)
+        {
+            foreach (var p in Anchorables)
+            {
+                if (p.SourceDocument == dvm.DocumentModel)
                 {
-                    if (p.SourceDocument == dvm.DocumentModel)
-                    {
-                        p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
-                    }
+                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
                 }
-                foreach (var p in _invisibleAnchorables)
+            }
+            foreach (var p in _invisibleAnchorables)
+            {
+                if (p.SourceDocument == dvm.DocumentModel)
                 {
-                    if (p.SourceDocument == dvm.DocumentModel)
-                    {
-                        p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
-                    }
+                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
                 }
+            }
+            if (_activeDocument == dvm)
+            {
+                _activeDocument = null;
             }
         }
     }

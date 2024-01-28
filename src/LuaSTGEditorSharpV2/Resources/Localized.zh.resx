@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="fileDialog_fileExtension" xml:space="preserve">
+  <data name="fileDialog_openFileExtension" xml:space="preserve">
     <value>LuaSTG Editor Sharp V2 文档(*.lstgxml;*.lstgjson)|*.lstgxml;*.lstgjson</value>
+  </data>
+  <data name="fileDialog_saveFileExtension" xml:space="preserve">
+    <value>LuaSTG Editor Sharp V2 XML 文档(*.lstgxml)|*.lstgxml|LuaSTG Editor Sharp V2 JSON 文档(*.lstgjson)|*.lstgjson</value>
   </data>
   <data name="messageBox_saveBeforClose_message" xml:space="preserve">
     <value>文档 "{0}" 已修改，关闭前是否保存？</value>

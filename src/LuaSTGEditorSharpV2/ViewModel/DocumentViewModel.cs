@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.IO;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Services;
+using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.WPF;
+using System.Windows;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -32,21 +36,66 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 .CreateViewModelRecursive(documentModel.Root, new LocalServiceParam(documentModel)));
         }
 
+        public void SaveOrAskingToSaveAs()
+        {
+            if (DocumentModel.IsOnDisk())
+            {
+                Save();
+            }
+            else
+            {
+                SaveAs();
+            }
+        }
+
+        private void Save()
+        {
+            DocumentModel.Save();
+            RaisePropertyChanged(nameof(Title));
+        }
+
+        public void SaveAs()
+        {
+            var fileDialog = HostedApplicationHelper.GetService<FileDialogService>();
+            string? path = fileDialog.ShowSaveAsFileCommandDialog();
+            if (path == null) return;
+            DocumentModel.SaveAs(path);
+            RaisePropertyChanged(nameof(Title));
+        }
+
+        public void AskSaveBeforeClose()
+        {
+            var localization = HostedApplicationHelper.GetService<LocalizationService>();
+            var messageBoxResult =
+                MessageBox.Show(
+                    string.Format(localization.GetString("messageBox_saveBeforClose_message",
+                        typeof(WorkSpaceViewModel).Assembly), RawTitle),
+                    localization.GetString("messageBox_title_app", typeof(WindowHelper).Assembly),
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Information
+                    );
+            if (messageBoxResult == MessageBoxResult.Cancel) return;
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                SaveOrAskingToSaveAs();
+            }
+        }
+
         public void ExecuteCommand(CommandBase command)
         {
-            _editingDocumentModel.CommandBuffer.Execute(command, new LocalServiceParam(DocumentModel));
+            _editingDocumentModel.ExecuteCommand(command);
             RaisePropertyChanged(nameof(Title));
         }
 
         public void Undo()
         {
-            _editingDocumentModel.CommandBuffer.Undo(new LocalServiceParam(DocumentModel));
+            _editingDocumentModel.Undo();
             RaisePropertyChanged(nameof(Title));
         }
 
         public void Redo()
         {
-            _editingDocumentModel.CommandBuffer.Redo(new LocalServiceParam(DocumentModel));
+            _editingDocumentModel.Redo();
             RaisePropertyChanged(nameof(Title));
         }
     }

@@ -66,7 +66,7 @@ namespace LuaSTGEditorSharpV2.Services
         public IReadOnlyList<string> ShowOpenFileCommandDialog()
         {
             var local = HostedApplicationHelper.GetService<LocalizationService>();
-            if (ShowOpenFileDialog(local.GetString("fileDialog_fileExtension", typeof(FileDialogService).Assembly), 
+            if (ShowOpenFileDialog(local.GetString("fileDialog_openFileExtension", typeof(FileDialogService).Assembly), 
                 new Property<string>(() => _settings.OpenFilePath, v => _settings.OpenFilePath = v)) 
                 is OpenFileDialog dialog)
             {
@@ -78,7 +78,7 @@ namespace LuaSTGEditorSharpV2.Services
         public string? ShowSaveAsFileCommandDialog()
         {
             var local = HostedApplicationHelper.GetService<LocalizationService>();
-            if (ShowSaveFileDialog(local.GetString("fileDialog_fileExtension", typeof(FileDialogService).Assembly),
+            if (ShowSaveFileDialog(local.GetString("fileDialog_saveFileExtension", typeof(FileDialogService).Assembly),
                 new Property<string>(() => _settings.SaveFilePath, v => _settings.SaveFilePath = v))
                 is SaveFileDialog dialog)
             {

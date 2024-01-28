@@ -8,7 +8,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
 {
     public static class DocumentHelper
     {
-        public static bool HasPath(this IDocument document)
+        public static bool IsOnDisk(this IDocument document)
         {
             return document.FilePath != null;
         }

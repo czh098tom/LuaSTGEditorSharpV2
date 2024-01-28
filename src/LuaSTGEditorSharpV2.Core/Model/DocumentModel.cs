@@ -90,8 +90,6 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         public virtual string FileName { get; private set; }
 
-        public virtual bool IsOnDisk => !string.IsNullOrWhiteSpace(FilePath);
-
         public DocumentModel(string fileName)
         {
             FileName = fileName;
@@ -111,19 +109,19 @@ namespace LuaSTGEditorSharpV2.Core.Model
             _root = root;
         }
 
-        public virtual void Save()
+        public void Save()
         {
             if (FilePath == null) throw new InvalidOperationException("This document has not been saved to a path yet.");
             SaveAs(FilePath);
         }
 
-        public virtual void SaveAs(string filePath)
+        public void SaveAs(string filePath)
         {
             try
             {
                 using FileStream fs = new(filePath, FileMode.Create, FileAccess.Write);
                 using StreamWriter sw = new(fs);
-                DocumentFormatBase.Create().SaveToStream(Root, sw);
+                DocumentFormatBase.CreateByExtension(Path.GetExtension(filePath)).SaveToStream(Root, sw);
             }
             catch (System.Exception e)
             {

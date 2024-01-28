@@ -14,8 +14,6 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         public string FileName { get; }
 
-        public bool IsOnDisk { get; }
-
         void Save();
         void SaveAs(string filePath);
     }
