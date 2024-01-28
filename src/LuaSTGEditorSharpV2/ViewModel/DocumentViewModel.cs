@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.WPF;
 using System.Windows;
+using LuaSTGEditorSharpV2.Core.Command;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -27,6 +29,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
             string.Format("{0}{1}", _rawTitle, _editingDocumentModel.IsModified ? " *" : string.Empty);
 
         public bool IsModified => _editingDocumentModel.IsModified;
+
+        public bool CanUndo => _editingDocumentModel.CanUndo;
+        public bool CanRedo => _editingDocumentModel.CanRedo;
 
         public DocumentViewModel(EditingDocumentModel documentModel)
         {

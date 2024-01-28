@@ -113,6 +113,31 @@ namespace LuaSTGEditorSharpV2
             e.CanExecute = _viewModel?.WorkSpace?.HaveActiveDocument ?? false;
         }
 
+        private void ExecuteUndoActiveDocCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.UndoActiveDocument();
+        }
+
+        private void CanPerformUndoActiveDoc(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _viewModel?.WorkSpace?.CanPerformUndoActivateDocument() ?? false;
+        }
+
+        private void ExecuteRedoActiveDocCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.RedoActiveDocument();
+        }
+
+        private void CanPerformRedoActiveDoc(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _viewModel?.WorkSpace?.CanPerformRedoActivateDocument() ?? false;
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);

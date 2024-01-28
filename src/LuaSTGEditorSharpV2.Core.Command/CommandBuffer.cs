@@ -45,8 +45,8 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         public void Redo(LocalServiceParam param)
         {
-            _currentCount++;
             _commands[_currentCount].Execute(param);
+            _currentCount++;
         }
 
         public void Save()

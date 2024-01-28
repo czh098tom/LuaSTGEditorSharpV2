@@ -27,6 +27,9 @@ namespace LuaSTGEditorSharpV2
 
         public bool IsModified => _commandBuffer.IsModified;
 
+        public bool CanUndo => _commandBuffer.CanUndo;
+        public bool CanRedo => _commandBuffer.CanRedo;
+
         public void Save()
         {
             Target.Save();

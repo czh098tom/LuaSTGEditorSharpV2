@@ -149,5 +149,27 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 _activeDocument = null;
             }
         }
+
+        public void UndoActiveDocument()
+        {
+            if (_activeDocument == null) throw new InvalidOperationException();
+            _activeDocument.Undo();
+        }
+
+        public void RedoActiveDocument()
+        {
+            if (_activeDocument == null) throw new InvalidOperationException();
+            _activeDocument.Redo();
+        }
+
+        public bool CanPerformUndoActivateDocument()
+        {
+            return _activeDocument?.CanUndo ?? false;
+        }
+
+        public bool CanPerformRedoActivateDocument()
+        {
+            return _activeDocument?.CanRedo ?? false;
+        }
     }
 }

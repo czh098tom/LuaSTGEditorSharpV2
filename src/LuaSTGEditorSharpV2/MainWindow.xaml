@@ -55,6 +55,12 @@
         <CommandBinding Command="{x:Static ApplicationCommands.SaveAs}"
                         Executed="ExecuteSaveAsCommand"
                         CanExecute="FileCommandCanExecute"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.Undo}"
+                        Executed="ExecuteUndoActiveDocCommand"
+                        CanExecute="CanPerformUndoActiveDoc"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.Redo}"
+                        Executed="ExecuteRedoActiveDocCommand"
+                        CanExecute="CanPerformRedoActiveDoc"/>
     </Window.CommandBindings>
     <DockPanel>
         <Border DockPanel.Dock="Top">
@@ -64,17 +70,22 @@
                 </fluent:Ribbon.ToolBarItems>
                 <!-- Quick Access Toolbar - located at the upper-left corner -->
                 <fluent:Ribbon.QuickAccessItems>
-                    <fluent:QuickAccessMenuItem IsChecked="true">
+                    <fluent:QuickAccessMenuItem IsChecked="True">
                         <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_save_title}" 
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/save.png" />
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/save.png"
+                                       Command="{x:Static ApplicationCommands.Save}"
+                                       KeyTip="S"/>
                     </fluent:QuickAccessMenuItem>
-                    <fluent:QuickAccessMenuItem IsChecked="true">
+                    <fluent:QuickAccessMenuItem IsChecked="True">
                         <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_undo_title}" 
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" />
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" 
+                                       Command="{x:Static ApplicationCommands.Undo}"
+                                       KeyTip="Z"/>
                     </fluent:QuickAccessMenuItem>
-                    <fluent:QuickAccessMenuItem IsChecked="False" >
+                    <fluent:QuickAccessMenuItem IsChecked="True" >
                         <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_redo_title}" 
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" />
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/redo.png" 
+                                       Command="{x:Static ApplicationCommands.Redo}"/>
                     </fluent:QuickAccessMenuItem>
                 </fluent:Ribbon.QuickAccessItems>
                 <!-- Application Menu, located at the left-hand side (down arrow) -->
@@ -97,7 +108,8 @@
                                            Click="SettingsButton_Click"
                                            KeyTip="X"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exit_title}" 
-                                           KeyTip="X"/>
+                                           Click="Exit_Click"
+                                           KeyTip="Q"/>
                         </fluent:BackstageTabControl>
                     </fluent:Backstage>
                 </fluent:Ribbon.Menu>
