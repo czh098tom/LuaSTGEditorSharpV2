@@ -62,7 +62,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void SaveAs()
         {
             var fileDialog = HostedApplicationHelper.GetService<FileDialogService>();
-            string? path = fileDialog.ShowSaveAsFileCommandDialog();
+            string? path = fileDialog.ShowSaveAsFileCommandDialog(DocumentModel.FileName);
             if (path == null) return;
             DocumentModel.SaveAs(path);
             RaisePropertyChanged(nameof(Title));

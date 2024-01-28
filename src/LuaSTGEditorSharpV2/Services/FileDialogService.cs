@@ -33,11 +33,12 @@ namespace LuaSTGEditorSharpV2.Services
             return null;
         }
 
-        private static SaveFileDialog? ShowSaveFileDialog(string filter, Property<string> filePath)
+        private static SaveFileDialog? ShowSaveFileDialog(string fileName, string filter, Property<string> filePath)
         {
             var dialog = new SaveFileDialog()
             {
                 CheckPathExists = true,
+                FileName = fileName,
                 Filter = filter,
                 InitialDirectory = filePath
             };
@@ -75,10 +76,11 @@ namespace LuaSTGEditorSharpV2.Services
             return [];
         }
 
-        public string? ShowSaveAsFileCommandDialog()
+        public string? ShowSaveAsFileCommandDialog(string fileName)
         {
             var local = HostedApplicationHelper.GetService<LocalizationService>();
-            if (ShowSaveFileDialog(local.GetString("fileDialog_saveFileExtension", typeof(FileDialogService).Assembly),
+            if (ShowSaveFileDialog(fileName,
+                local.GetString("fileDialog_saveFileExtension", typeof(FileDialogService).Assembly),
                 new Property<string>(() => _settings.SaveFilePath, v => _settings.SaveFilePath = v))
                 is SaveFileDialog dialog)
             {
