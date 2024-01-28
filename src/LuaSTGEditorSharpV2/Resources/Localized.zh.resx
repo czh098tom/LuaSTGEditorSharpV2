@@ -174,6 +174,9 @@
   <data name="ribbon_menuItem_exportCode_title" xml:space="preserve">
     <value>导出代码...</value>
   </data>
+  <data name="ribbon_menuItem_new_title" xml:space="preserve">
+    <value>新建</value>
+  </data>
   <data name="ribbon_menuItem_open_title" xml:space="preserve">
     <value>打开...</value>
   </data>
@@ -200,5 +203,8 @@
   </data>
   <data name="ribbon_tab_home_title" xml:space="preserve">
     <value>开始</value>
+  </data>
+  <data name="untitled_file_default_name" xml:space="preserve">
+    <value>未命名</value>
   </data>
 </root>

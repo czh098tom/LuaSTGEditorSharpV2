@@ -84,6 +84,11 @@ namespace LuaSTGEditorSharpV2
             }
         }
 
+        private void ExecuteNewCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.NewBlankFile();
+        }
+
         private void ExecuteOpenCommand(object sender, ExecutedRoutedEventArgs e)
         {
             var dialog = HostedApplicationHelper.GetService<FileDialogService>();

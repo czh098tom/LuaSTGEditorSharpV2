@@ -30,5 +30,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
             if (doc == null) return;
             _workspace.AddDocument(doc);
         }
+
+        public void NewBlankFile()
+        {
+            var activeDocService = HostedApplicationHelper.GetService<ActiveDocumentService>();
+            var doc = activeDocService.CreateBlank();
+            if (doc == null) return;
+            _workspace.AddDocument(doc);
+        }
     }
 }

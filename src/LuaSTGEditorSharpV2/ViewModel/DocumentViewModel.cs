@@ -81,6 +81,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
+        public void CloseActiveDocument()
+        {
+            var activeDocService = HostedApplicationHelper.GetService<ActiveDocumentService>();
+            activeDocService.Close(_editingDocumentModel);
+            activeDocService.MarkAsSaved(_editingDocumentModel);
+        }
+
         public void ExecuteCommand(CommandBase command)
         {
             _editingDocumentModel.ExecuteCommand(command);

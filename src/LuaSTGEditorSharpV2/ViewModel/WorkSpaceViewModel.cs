@@ -123,6 +123,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
             _documents.Remove(dvm);
             _documentMappting.Remove(dvm.DocumentModel);
+            dvm.CloseActiveDocument();
 
             DisposeOpenedDocument(dvm);
         }

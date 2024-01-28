@@ -232,6 +232,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 New 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_menuItem_new_title {
+            get {
+                return ResourceManager.GetString("ribbon_menuItem_new_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open... 的本地化字符串。
         /// </summary>
         internal static string ribbon_menuItem_open_title {
@@ -309,6 +318,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         internal static string ribbon_tab_home_title {
             get {
                 return ResourceManager.GetString("ribbon_tab_home_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Untitled 的本地化字符串。
+        /// </summary>
+        internal static string untitled_file_default_name {
+            get {
+                return ResourceManager.GetString("untitled_file_default_name", resourceCulture);
             }
         }
     }

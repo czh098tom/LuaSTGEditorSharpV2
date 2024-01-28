@@ -45,6 +45,8 @@
         <localvm:MainViewModel/>
     </Window.DataContext>
     <Window.CommandBindings>
+        <CommandBinding Command="{x:Static ApplicationCommands.New}"
+                        Executed="ExecuteNewCommand"/>
         <CommandBinding Command="{x:Static ApplicationCommands.Open}"
                         Executed="ExecuteOpenCommand"/>
         <CommandBinding Command="{x:Static ApplicationCommands.Save}"
@@ -79,6 +81,9 @@
                 <fluent:Ribbon.Menu>
                     <fluent:Backstage Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_backStageMenu_document_title}">
                         <fluent:BackstageTabControl>
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_new_title}"
+                                           Command="{x:Static ApplicationCommands.New}" 
+                                           KeyTip="N"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_open_title}"
                                            Command="{x:Static ApplicationCommands.Open}" 
                                            KeyTip="O"/>
