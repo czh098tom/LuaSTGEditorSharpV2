@@ -15,6 +15,7 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.WPF;
+using LuaSTGEditorSharpV2.Core.Command.Service;
 
 namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
 {
@@ -43,8 +44,9 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             if (inputDialog.ShowDialog() == true)
             {
                 var type = inputDialog.ViewModel.Text;
-                PublishCommand(new AddChildCommand(SourceNode, SourceNode.PhysicalChildren.Count, new NodeData(type)),
-                    SourceDocument, SourceNode);
+                var command = HostedApplicationHelper.GetService<InsertCommandHostingService>().InsertCommandFactory
+                    .CreateInsertCommand(SourceNode, new NodeData(type));
+                PublishCommand(command, SourceDocument, SourceNode);
             }
         }
     }

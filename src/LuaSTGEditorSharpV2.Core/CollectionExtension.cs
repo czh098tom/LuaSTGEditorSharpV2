@@ -45,5 +45,18 @@ namespace LuaSTGEditorSharpV2.Core
                 values.Add(key, value);
             }
         }
+
+        public static int FindIndex<T>(this IReadOnlyList<T> list, T value)
+            where T : class
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] == value)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }

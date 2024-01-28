@@ -11,16 +11,23 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Services;
+using LuaSTGEditorSharpV2.Core.Command.Factory;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         private readonly WorkSpaceViewModel _workspace = new();
+        private readonly InsertPanelViewModel _insertPanel = new();
 
         public WorkSpaceViewModel WorkSpace
         {
             get => _workspace;
+        }
+
+        public InsertPanelViewModel InsertPanel
+        {
+            get => _insertPanel;
         }
 
         public void OpenFile(string filePath)

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Settings;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.Core.Command.Factory;
 
 namespace LuaSTGEditorSharpV2.Services
 {

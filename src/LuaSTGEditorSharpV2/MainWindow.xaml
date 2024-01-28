@@ -126,18 +126,19 @@
                                        KeyTip="C" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
                     </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox x:Name="Insert" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_insertDirection_title}">
+                    <fluent:RibbonGroupBox x:Name="Insert" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_insertDirection_title}"
+                                           DataContext="{Binding InsertPanel}">
                         <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_upDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X"
+                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertUp}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/up.png" />
                         <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_downDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="True"
+                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertDown}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/down.png"/>
                         <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_childDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X" 
+                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsChild}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/child.png"/>
                         <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_parentDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X" 
+                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsParent}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/parent.png"/>
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox x:Name="Code" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_code_title}">
