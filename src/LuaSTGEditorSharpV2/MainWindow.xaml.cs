@@ -75,15 +75,6 @@ namespace LuaSTGEditorSharpV2
             e.Cancel = false;
         }
 
-        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            var tree = sender as TreeView;
-            if (tree?.SelectedItem is NodeViewModel selectedVM && tree.DataContext is DocumentViewModel dvm)
-            {
-                _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, selectedVM.Source);
-            }
-        }
-
         private void ExecuteNewCommand(object sender, ExecutedRoutedEventArgs e)
         {
             _viewModel.NewBlankFile();
@@ -141,7 +132,7 @@ namespace LuaSTGEditorSharpV2
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            foreach(var s in HostedApplicationHelper.GetServices<ISettingsSavedOnClose>())
+            foreach (var s in HostedApplicationHelper.GetServices<ISettingsSavedOnClose>())
             {
                 s.SaveSettings();
             }
@@ -166,6 +157,23 @@ namespace LuaSTGEditorSharpV2
                 if (ld.Content is DocumentViewModel dvm)
                 {
                     _viewModel.WorkSpace.SetActiveDocument(dvm);
+                }
+            }
+        }
+
+        private void DocumentTreeView_SelectionChanged(object sender, EventArgs e)
+        {
+            if (sender is MultiSelectTreeView mstv)
+            {
+                var list = mstv.SelectedItems.OfType<NodeViewModel>().ToList();
+                if (list.Count == 1 && mstv.DataContext is DocumentViewModel dvm)
+                {
+                    _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, list[0].Source);
+                    return;
+                }
+                else
+                {
+                    _viewModel.WorkSpace.BroadcastSelectedNodeChanged((DocumentViewModel?)null, null);
                 }
             }
         }

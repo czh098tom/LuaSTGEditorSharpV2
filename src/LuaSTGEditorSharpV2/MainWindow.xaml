@@ -245,7 +245,7 @@
                                 <TextBox/>
                             </DataTemplate>
                             <DataTemplate x:Key="DocumentViewModel">
-                                <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
+                                <lsv:DocumentTreeView SelectionChanged="DocumentTreeView_SelectionChanged"/>
                             </DataTemplate>
                         </util:TypedResourceDictionaryKeySelector.ResourceDictionary>
                     </util:TypedResourceDictionaryKeySelector>
