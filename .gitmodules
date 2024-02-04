@@ -1,0 +1,3 @@
+[submodule "src/External/MultiSelectTreeView"]
+	path = src/External/MultiSelectTreeView
+	url = https://github.com/czh098tom/MultiSelectTreeView.git
