@@ -166,14 +166,9 @@ namespace LuaSTGEditorSharpV2
             if (sender is MultiSelectTreeView mstv)
             {
                 var list = mstv.SelectedItems.OfType<NodeViewModel>().ToList();
-                if (list.Count == 1 && mstv.DataContext is DocumentViewModel dvm)
+                if (mstv.DataContext is DocumentViewModel dvm)
                 {
-                    _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, list[0].Source);
-                    return;
-                }
-                else
-                {
-                    _viewModel.WorkSpace.BroadcastSelectedNodeChanged((DocumentViewModel?)null, null);
+                    _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, list.Select(vm => vm.Source).ToArray());
                 }
             }
         }
