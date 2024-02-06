@@ -18,7 +18,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public class SelectedNodeChangedEventArgs : EventArgs
         {
             public IDocument? DocumentModel { get; set; }
-            public NodeData? NodeData { get; set; }
+            public NodeData[] NodeData { get; set; } = [];
         }
 
         public class PublishCommandEventArgs : EventArgs
@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             public bool ShouldRefreshView { get; set; } = true;
         }
 
-        public NodeData? SourceNode { get; private set; }
+        public NodeData[] SourceNodes { get; private set; } = [];
 
         public IDocument? SourceDocument { get; private set; }
 
@@ -47,8 +47,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
             if (!ShouldChangeSelectedNode(o, args)) return;
             var doc = args.DocumentModel;
             SourceDocument = doc;
-            var node = args.NodeData ?? NodeData.Empty;
-            SourceNode = node;
+            var node = args.NodeData;
+            SourceNodes = node;
             HandleSelectedNodeChangedImpl(o, args);
         }
 

@@ -36,17 +36,20 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
 
         public void CreateCustomTypeUIDNode()
         {
-            if (SourceDocument == null || SourceNode == null) return;
+            if (SourceDocument == null) return;
             InputDialog inputDialog = new()
             {
                 Owner = WindowHelper.GetMainWindow()
             };
             if (inputDialog.ShowDialog() == true)
             {
-                var type = inputDialog.ViewModel.Text;
-                var command = HostedApplicationHelper.GetService<InsertCommandHostingService>().InsertCommandFactory
-                    .CreateInsertCommand(SourceNode, new NodeData(type));
-                PublishCommand(command, SourceDocument, SourceNode);
+                foreach (var node in SourceNodes)
+                {
+                    var type = inputDialog.ViewModel.Text;
+                    var command = HostedApplicationHelper.GetService<InsertCommandHostingService>().InsertCommandFactory
+                        .CreateInsertCommand(node, new NodeData(type));
+                    PublishCommand(command, SourceDocument, node);
+                }
             }
         }
     }
