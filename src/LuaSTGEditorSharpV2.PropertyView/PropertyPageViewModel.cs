@@ -44,22 +44,31 @@ namespace LuaSTGEditorSharpV2.PropertyView
             var doc = SourceDocument;
             if (doc == null) return;
             var param = new LocalServiceParam(doc);
-            if (SourceNode == null) return;
+            if (SourceNodes.Length != 1) return;
             var command = propertyViewService.GetCommandOfEditingNode(
-                SourceNode,
+                SourceNodes[0],
                 param, Tabs, Tabs.IndexOf(vm),
                 vm.Properties.IndexOf(e.Item),
                 e.Args.NewValue);
 
-            PublishCommand(command, doc, SourceNode);
+            PublishCommand(command, doc, SourceNodes[0]);
         }
 
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
         {
             var param = new LocalServiceParam(SourceDocument ?? DocumentModel.Empty);
-            var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>()
-                .GetPropertyViewModelOfNode(SourceNode ?? NodeData.Empty, param);
-            LoadProperties(list);
+            if (SourceNodes.Length == 1)
+            {
+                var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>()
+                    .GetPropertyViewModelOfNode(SourceNodes[0], param);
+                LoadProperties(list);
+            }
+            else
+            {
+                var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>()
+                    .GetPropertyViewModelOfNode(NodeData.Empty, param);
+                LoadProperties(list);
+            }
         }
 
         private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels)

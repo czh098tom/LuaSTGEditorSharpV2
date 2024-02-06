@@ -58,12 +58,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _invisibleAnchorables.Add(page);
         }
 
-        public void BroadcastSelectedNodeChanged(DocumentViewModel dvm, NodeData nodeData)
+        public void BroadcastSelectedNodeChanged(DocumentViewModel dvm, NodeData[] nodeData)
         {
             BroadcastSelectedNodeChanged(dvm.DocumentModel, nodeData);
         }
 
-        public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData? nodeData)
+        public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData[] nodeData)
         {
             foreach (var p in Anchorables)
             {
@@ -83,7 +83,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             dvm.ExecuteCommand(command);
             if (shouldRefresh && nodeData != null)
             {
-                BroadcastSelectedNodeChanged(document, nodeData);
+                BroadcastSelectedNodeChanged(document, [nodeData]);
             }
         }
 
