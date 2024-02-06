@@ -134,14 +134,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
             {
                 if (p.SourceDocument == dvm.DocumentModel)
                 {
-                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
+                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = [] });
                 }
             }
             foreach (var p in _invisibleAnchorables)
             {
                 if (p.SourceDocument == dvm.DocumentModel)
                 {
-                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = null });
+                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = [] });
                 }
             }
             if (_activeDocument == dvm)
