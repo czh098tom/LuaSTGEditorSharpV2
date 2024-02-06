@@ -4,11 +4,15 @@
           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
           xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
           xmlns:local="clr-namespace:LuaSTGEditorSharpV2.View"
+          xmlns:dd="urn:gong-wpf-dragdrop"
           mc:Ignorable="d" 
           d:DesignHeight="450" d:DesignWidth="800"
           FontFamily="Terminal"
           Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
-          ItemsSource="{Binding Tree}">
+          ItemsSource="{Binding Tree}"
+          dd:DragDrop.IsDragSource="True"
+          dd:DragDrop.IsDropTarget="True"
+          dd:DragDrop.UseDefaultDragAdorner="True">
     <TreeView.Resources>
         <Style TargetType="TreeViewItem">
             <Setter Property="IsExpanded" 
