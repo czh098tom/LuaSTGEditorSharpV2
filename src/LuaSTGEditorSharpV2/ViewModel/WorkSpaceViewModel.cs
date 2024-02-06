@@ -58,9 +58,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _invisibleAnchorables.Add(page);
         }
 
-        public void BroadcastSelectedNodeChanged(DocumentViewModel dvm, NodeData[] nodeData)
+        public void BroadcastSelectedNodeChanged(DocumentViewModel? dvm, NodeData[] nodeData)
         {
-            BroadcastSelectedNodeChanged(dvm.DocumentModel, nodeData);
+            BroadcastSelectedNodeChanged(dvm?.DocumentModel, nodeData);
         }
 
         public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData[] nodeData)
