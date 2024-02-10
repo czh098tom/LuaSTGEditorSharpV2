@@ -141,6 +141,9 @@
   <data name="ribbon_button_cut_title" xml:space="preserve">
     <value>Cut</value>
   </data>
+  <data name="ribbon_button_delete_title" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="ribbon_button_downDirection_title" xml:space="preserve">
     <value>Down</value>
   </data>

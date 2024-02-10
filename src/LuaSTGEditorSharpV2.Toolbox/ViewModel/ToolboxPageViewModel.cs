@@ -43,12 +43,21 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             };
             if (inputDialog.ShowDialog() == true)
             {
+                var insCommandHost = HostedApplicationHelper.GetService<InsertCommandHostingService>();
+                var commands = new List<CommandBase>();
                 foreach (var node in SourceNodes)
                 {
                     var type = inputDialog.ViewModel.Text;
-                    var command = HostedApplicationHelper.GetService<InsertCommandHostingService>().InsertCommandFactory
+                    var command = insCommandHost.InsertCommandFactory
                         .CreateInsertCommand(node, new NodeData(type));
-                    PublishCommand(command, SourceDocument, node);
+                    if (command != null)
+                    {
+                        commands.Add(command);
+                    }
+                }
+                if (commands.Count > 0)
+                {
+                    PublishCommand(new CompositeCommand(commands), SourceDocument, SourceNodes);
                 }
             }
         }

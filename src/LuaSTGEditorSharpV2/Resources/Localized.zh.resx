@@ -141,6 +141,9 @@
   <data name="ribbon_button_cut_title" xml:space="preserve">
     <value>剪切</value>
   </data>
+  <data name="ribbon_button_delete_title" xml:space="preserve">
+    <value>删除</value>
+  </data>
   <data name="ribbon_button_downDirection_title" xml:space="preserve">
     <value>下</value>
   </data>

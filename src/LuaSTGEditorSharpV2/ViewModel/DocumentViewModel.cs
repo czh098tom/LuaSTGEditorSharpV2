@@ -13,6 +13,7 @@ using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.WPF;
 using System.Windows;
 using LuaSTGEditorSharpV2.Core.Command;
+using LuaSTGEditorSharpV2.Core.Command.Service;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {

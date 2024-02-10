@@ -7,6 +7,9 @@ using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.Input;
 
+using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core;
+
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     /// <summary>
@@ -14,6 +17,24 @@ namespace LuaSTGEditorSharpV2.ViewModel
     /// </summary>
     public abstract class DockingViewModelBase : ViewModelBase
     {
+        public class PublishCommandEventArgs : EventArgs
+        {
+            public CommandBase? Command { get; set; }
+            public IDocument? DocumentModel { get; set; }
+            public NodeData[] NodeData { get; set; }
+            public bool ShouldRefreshView { get; set; } = true;
+        }
+
+        public class SelectedNodeChangedEventArgs : EventArgs
+        {
+            public IDocument? DocumentModel { get; set; }
+            public NodeData[] NodeData { get; set; } = [];
+        }
+
+        public NodeData[] SourceNodes { get; private set; } = [];
+
+        public IDocument? SourceDocument { get; private set; }
+
         public event EventHandler? OnClose;
         public event EventHandler? OnReopen;
 
@@ -63,6 +84,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
+        public event EventHandler<PublishCommandEventArgs>? OnCommandPublishing;
+
         public abstract string Title { get; }
 
         public void Close()
@@ -73,6 +96,36 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void Reopen()
         {
             OnReopen?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected void PublishCommand(CommandBase? command, IDocument documentModel, NodeData[] nodeData, bool shouldRefreshView = true)
+        {
+            OnCommandPublishing?.Invoke(this, new()
+            {
+                Command = command,
+                DocumentModel = documentModel,
+                NodeData = nodeData,
+                ShouldRefreshView = shouldRefreshView
+            });
+        }
+
+        public void HandleSelectedNodeChanged(object o, SelectedNodeChangedEventArgs args)
+        {
+            if (!ShouldChangeSelectedNode(o, args)) return;
+            var doc = args.DocumentModel;
+            SourceDocument = doc;
+            var node = args.NodeData;
+            SourceNodes = node;
+            HandleSelectedNodeChangedImpl(o, args);
+        }
+
+        public virtual bool ShouldChangeSelectedNode(object o, SelectedNodeChangedEventArgs args)
+        {
+            return true;
+        }
+
+        public virtual void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
+        {
         }
     }
 }

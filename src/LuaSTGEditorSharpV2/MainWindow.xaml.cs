@@ -128,9 +128,40 @@ namespace LuaSTGEditorSharpV2
             _viewModel.WorkSpace.RedoActiveDocument();
         }
 
+        private void ExecuteDeleteSelectedCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.DeleteSelectedNode();
+        }
+
+        private void ExecuteCutSelectedCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.CutSelectedNode();
+        }
+
+        private void ExecuteCopySelectedCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.CopySelectedNode();
+        }
+
+        private void ExecutePasteToSelectedCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.PasteToSelectedNode();
+        }
+
         private void CanPerformRedoActiveDoc(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = _viewModel?.WorkSpace?.CanPerformRedoActivateDocument() ?? false;
+        }
+
+        private void CanManipulateNode(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _viewModel?.WorkSpace?.HaveSelected ?? false;
+        }
+
+        private void CanPaste(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (_viewModel?.WorkSpace?.HaveSelected ?? false) &&
+                HostedApplicationHelper.GetService<ClipboardService>().CheckHaveNodes();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

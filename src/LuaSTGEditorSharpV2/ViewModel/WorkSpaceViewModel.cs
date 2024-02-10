@@ -16,6 +16,8 @@ using LuaSTGEditorSharpV2.Toolbox.ViewModel;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.WPF;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
+using LuaSTGEditorSharpV2.Core.Command.Service;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -28,15 +30,22 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public ObservableCollection<DocumentViewModel> Documents => _documents;
 
         private DocumentViewModel? _activeDocument;
+
+        public NodeData[] SelectedNodes { get; private set; } = [];
+
+        [MemberNotNullWhen(true, nameof(_activeDocument))]
         public bool HaveActiveDocument => _activeDocument != null;
+        [MemberNotNullWhen(true, nameof(_activeDocument))]
+        public bool HaveSelected => SelectedNodes.Length > 0 && _activeDocument != null;
 
         private readonly Dictionary<IDocument, DocumentViewModel> _documentMappting = [];
+
 
         public void AddPage(AnchorableViewModelBase viewModel)
         {
             viewModel.OnClose += (o, e) => MakeInvisible(o as AnchorableViewModelBase);
             viewModel.OnReopen += (o, e) => MakeVisible(o as AnchorableViewModelBase);
-            viewModel.OnCommandPublishing += (o, e) => AddCommandToDocument(e.Command, e.DocumentModel, e.NodeData, e.ShouldRefreshView);
+            viewModel.OnCommandPublishing += HandleAddCommandEvent;
             Anchorables.Add(viewModel);
         }
 
@@ -65,6 +74,15 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData[] nodeData)
         {
+            if(documentModel == null)
+            {
+                _activeDocument = null;
+            }
+            else
+            {
+                _activeDocument = _documentMappting.GetValueOrDefault(documentModel);
+            }
+            SelectedNodes = nodeData;
             foreach (var p in Anchorables)
             {
                 p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
@@ -73,17 +91,21 @@ namespace LuaSTGEditorSharpV2.ViewModel
             {
                 p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
             }
+            foreach (var p in _documents)
+            {
+                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
+            }
         }
 
-        private void AddCommandToDocument(CommandBase? command, IDocument? document, NodeData? nodeData, bool shouldRefresh)
+        private void AddCommandToDocument(CommandBase? command, IDocument? document, NodeData[] nodeData, bool shouldRefresh)
         {
             if (command == null || document == null) return;
             var dvm = _documentMappting!.GetValueOrDefault(document, null);
             if (dvm == null) return;
             dvm.ExecuteCommand(command);
-            if (shouldRefresh && nodeData != null)
+            if (shouldRefresh)
             {
-                BroadcastSelectedNodeChanged(document, [nodeData]);
+                BroadcastSelectedNodeChanged(document, nodeData);
             }
         }
 
@@ -95,6 +117,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _documents.Add(dvm);
             _documentMappting.Add(doc, dvm);
             dvm.OnClose += (o, e) => CloseDocument(dvm);
+            dvm.OnCommandPublishing += HandleAddCommandEvent;
         }
 
         public void SetActiveDocument(DocumentViewModel dvm)
@@ -104,13 +127,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void SaveActiveDocument()
         {
-            if (_activeDocument == null) throw new InvalidOperationException();
-            _activeDocument?.SaveOrAskingToSaveAs();
+            if (!HaveActiveDocument) throw new InvalidOperationException();
+            _activeDocument.SaveOrAskingToSaveAs();
         }
 
         public void SaveActiveDocumentAs()
         {
-            if (_activeDocument == null) throw new InvalidOperationException();
+            if (!HaveActiveDocument) throw new InvalidOperationException();
             _activeDocument.SaveAs();
         }
 
@@ -126,6 +149,65 @@ namespace LuaSTGEditorSharpV2.ViewModel
             dvm.CloseActiveDocument();
 
             DisposeOpenedDocument(dvm);
+        }
+
+        public void UndoActiveDocument()
+        {
+            if (!HaveActiveDocument) throw new InvalidOperationException();
+            _activeDocument.Undo();
+        }
+
+        public void RedoActiveDocument()
+        {
+            if (!HaveActiveDocument) throw new InvalidOperationException();
+            _activeDocument.Redo();
+        }
+
+        public bool CanPerformUndoActivateDocument()
+        {
+            return _activeDocument?.CanUndo ?? false;
+        }
+
+        public bool CanPerformRedoActivateDocument()
+        {
+            return _activeDocument?.CanRedo ?? false;
+        }
+
+        public void DeleteSelectedNode()
+        {
+            if (!HaveSelected) throw new InvalidOperationException();
+            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
+            {
+                if (n.PhysicalParent == null) return null;
+                return new RemoveChildCommand(n.PhysicalParent, n.PhysicalParent.PhysicalChildren.FindIndex(n));
+            }), _activeDocument.DocumentModel, [], true);
+        }
+
+        public void CopySelectedNode()
+        {
+            if (!HaveSelected) throw new InvalidOperationException();
+            var nodes = _activeDocument.DocumentModel.Root.FindPhysicalMinForestContaining(SelectedNodes);
+            HostedApplicationHelper.GetService<ClipboardService>().CopyNode(nodes);
+        }
+
+        public void CutSelectedNode()
+        {
+            CopySelectedNode();
+            DeleteSelectedNode();
+        }
+
+        public void PasteToSelectedNode()
+        {
+            var clipBoard = HostedApplicationHelper.GetService<ClipboardService>();
+            if (!clipBoard.CheckHaveNodes()) throw new InvalidOperationException();
+            if (!HaveSelected) throw new InvalidOperationException();
+            var insCommandHost = HostedApplicationHelper.GetService<InsertCommandHostingService>();
+
+            var clipBoardContent = clipBoard.GetNodes();
+
+            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
+                clipBoardContent.SelectCommand(c => insCommandHost.InsertCommandFactory.CreateInsertCommand(n, c)))
+                , _activeDocument.DocumentModel, SelectedNodes, true);
         }
 
         private void DisposeOpenedDocument(DocumentViewModel dvm)
@@ -150,26 +232,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
-        public void UndoActiveDocument()
+        private void HandleAddCommandEvent(object? o, DockingViewModelBase.PublishCommandEventArgs e)
         {
-            if (_activeDocument == null) throw new InvalidOperationException();
-            _activeDocument.Undo();
-        }
-
-        public void RedoActiveDocument()
-        {
-            if (_activeDocument == null) throw new InvalidOperationException();
-            _activeDocument.Redo();
-        }
-
-        public bool CanPerformUndoActivateDocument()
-        {
-            return _activeDocument?.CanUndo ?? false;
-        }
-
-        public bool CanPerformRedoActivateDocument()
-        {
-            return _activeDocument?.CanRedo ?? false;
+            AddCommandToDocument(e.Command, e.DocumentModel, e.NodeData, e.ShouldRefreshView);
         }
     }
 }

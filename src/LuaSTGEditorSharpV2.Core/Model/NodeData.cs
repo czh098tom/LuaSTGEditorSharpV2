@@ -14,6 +14,9 @@ namespace LuaSTGEditorSharpV2.Core.Model
     {
         public static readonly NodeData Empty = new();
 
+        private static readonly Predicate<NodeData> _default = _ => true;
+        private static readonly Predicate<NodeData> _logical = n => n.IsActive;
+
         [JsonProperty]
         public string TypeUID { get; private set; } = string.Empty;
         [JsonProperty]
@@ -43,16 +46,16 @@ namespace LuaSTGEditorSharpV2.Core.Model
 
         public NodeData() { }
 
-        public NodeData(string typeUID) 
+        public NodeData(string typeUID)
         {
             TypeUID = typeUID;
         }
 
         public IEnumerable<NodeData> GetLogicalChildren()
         {
-            foreach(var child in PhysicalChildren)
+            foreach (var child in PhysicalChildren)
             {
-                if(child.IsActive) yield return child;
+                if (child.IsActive) yield return child;
             }
         }
 
@@ -74,6 +77,75 @@ namespace LuaSTGEditorSharpV2.Core.Model
             n.PhysicalParent = null;
             _physicalChildren.RemoveAt(position);
             return n;
+        }
+
+        public IEnumerable<NodeData> PerformBFS() => PerformBFS(_default);
+
+        public IEnumerable<NodeData> PerformBFS(Predicate<NodeData> continuePred)
+        {
+            if (!continuePred(this)) yield break;
+            Queue<NodeData> q = [];
+            q.Enqueue(this);
+            while (q.Count > 0)
+            {
+                var n = q.Dequeue();
+                if (continuePred(n))
+                {
+                    foreach (var c in n._physicalChildren)
+                    {
+                        q.Enqueue(c);
+                    }
+                }
+                yield return n;
+            }
+        }
+
+        public IEnumerable<NodeData> PerformDFS() => PerformDFS(_default);
+
+        public IEnumerable<NodeData> PerformDFS(Predicate<NodeData> continuePred)
+        {
+            if (!continuePred(this)) yield break;
+            Stack<NodeData> q = [];
+            q.Push(this);
+            while (q.Count > 0)
+            {
+                var n = q.Pop();
+                if (continuePred(n))
+                {
+                    foreach (var c in n._physicalChildren)
+                    {
+                        q.Push(c);
+                    }
+                }
+                yield return n;
+            }
+        }
+
+        public IReadOnlyList<NodeData> FindPhysicalMinForestContaining(IReadOnlyList<NodeData> nodes)
+        {
+            List<NodeData> result = [];
+            HashSet<NodeData> resultSet = [];
+
+            foreach (var node in nodes)
+            {
+                var toRemove = new List<NodeData>();
+                foreach (var n in node.PerformBFS(n => !resultSet.Contains(n)))
+                {
+                    if (resultSet.Contains(n))
+                    {
+                        toRemove.Add(n);
+                    }
+                }
+                foreach (var c in toRemove)
+                {
+                    result.Remove(c);
+                    resultSet.Remove(c);
+                }
+                result.Add(node);
+                resultSet.Add(node);
+            }
+
+            return result;
         }
     }
 }

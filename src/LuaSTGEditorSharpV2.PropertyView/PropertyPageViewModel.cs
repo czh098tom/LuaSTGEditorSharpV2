@@ -51,7 +51,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 vm.Properties.IndexOf(e.Item),
                 e.Args.NewValue);
 
-            PublishCommand(command, doc, SourceNodes[0]);
+            PublishCommand(command, doc, SourceNodes);
         }
 
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)

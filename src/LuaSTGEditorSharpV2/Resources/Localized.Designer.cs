@@ -133,6 +133,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Delete 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_button_delete_title {
+            get {
+                return ResourceManager.GetString("ribbon_button_delete_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Down 的本地化字符串。
         /// </summary>
         internal static string ribbon_button_downDirection_title {

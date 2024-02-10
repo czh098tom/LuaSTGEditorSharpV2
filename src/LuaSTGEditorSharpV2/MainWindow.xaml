@@ -61,6 +61,18 @@
         <CommandBinding Command="{x:Static ApplicationCommands.Redo}"
                         Executed="ExecuteRedoActiveDocCommand"
                         CanExecute="CanPerformRedoActiveDoc"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.Delete}"
+                        Executed="ExecuteDeleteSelectedCommand"
+                        CanExecute="CanManipulateNode"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.Cut}"
+                        Executed="ExecuteCutSelectedCommand"
+                        CanExecute="CanManipulateNode"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.Copy}"
+                        Executed="ExecuteCopySelectedCommand"
+                        CanExecute="CanManipulateNode"/>
+        <CommandBinding Command="{x:Static ApplicationCommands.Paste}"
+                        Executed="ExecutePasteToSelectedCommand"
+                        CanExecute="CanPaste"/>
     </Window.CommandBindings>
     <DockPanel>
         <Border DockPanel.Dock="Top">
@@ -116,15 +128,22 @@
                 <!-- Ribbon Tab #1: Home -->
                 <fluent:RibbonTabItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_home_title}" KeyTip="H" >
                     <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="{lex:Loc ribbon_group_edit_title}">
+                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_copy_title}" 
+                                       Command="{x:Static ApplicationCommands.Copy}"
+                                       KeyTip="C" Size="Large"
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
                         <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_paste_title}" 
+                                       Command="{x:Static ApplicationCommands.Paste}"
                                        KeyTip="V" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" />
                         <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_cut_title}" 
+                                       Command="{x:Static ApplicationCommands.Cut}"
                                        KeyTip="X" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/cut.png"/>
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_copy_title}" 
-                                       KeyTip="C" Size="Large"
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
+                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_delete_title}" 
+                                       Command="{x:Static ApplicationCommands.Delete}"
+                                       KeyTip="X" Size="Large"
+                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/delete.png"/>
                     </fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox x:Name="Insert" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_insertDirection_title}"
                                            DataContext="{Binding InsertPanel}">
