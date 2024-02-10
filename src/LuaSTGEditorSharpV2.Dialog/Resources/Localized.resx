@@ -129,4 +129,7 @@
   <data name="inputDialog_title" xml:space="preserve">
     <value>Input...</value>
   </data>
+  <data name="viewCodeDialog_title" xml:space="preserve">
+    <value>Generated code</value>
+  </data>
 </root>

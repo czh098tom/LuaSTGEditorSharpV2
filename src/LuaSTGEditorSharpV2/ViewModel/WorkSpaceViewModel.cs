@@ -18,6 +18,10 @@ using LuaSTGEditorSharpV2.WPF;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Command.Service;
 using System.Diagnostics.CodeAnalysis;
+using static CommunityToolkit.Mvvm.ComponentModel.__Internals.__TaskExtensions.TaskAwaitableWithoutEndValidation;
+using LuaSTGEditorSharpV2.Dialog;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Windows.Forms;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -37,6 +41,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public bool HaveActiveDocument => _activeDocument != null;
         [MemberNotNullWhen(true, nameof(_activeDocument))]
         public bool HaveSelected => SelectedNodes.Length > 0 && _activeDocument != null;
+        [MemberNotNullWhen(true, nameof(_activeDocument))]
+        public bool HaveSelectedSingle => SelectedNodes.Length == 1 && _activeDocument != null;
 
         private readonly Dictionary<IDocument, DocumentViewModel> _documentMappting = [];
 
@@ -208,6 +214,59 @@ namespace LuaSTGEditorSharpV2.ViewModel
             AddCommandToDocument(SelectedNodes.SelectCommand(n =>
                 clipBoardContent.SelectCommand(c => insCommandHost.InsertCommandFactory.CreateInsertCommand(n, c)))
                 , _activeDocument.DocumentModel, SelectedNodes, true);
+        }
+
+        public async void ViewCode()
+        {
+            var str = await Task.Run(GenerateCodeForFirstSelectedNode);
+            var dialog = new ViewCodeDialog(str).ShowDialog();
+        }
+
+        public async void ExportCode()
+        {
+            if(_activeDocument?.SourceDocument == null) throw new InvalidOperationException();
+            var dialog = new SaveFileDialog()
+            {
+                CheckPathExists = true,
+                FileName = _activeDocument.DocumentModel.FileName,
+                Filter = "*.*|*.*",
+                InitialDirectory = _activeDocument.DocumentModel.FilePath ?? string.Empty,
+            };
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+            var fileName = dialog.FileName;
+            await Task.Run(() =>
+            {
+                using FileStream fs = new(fileName, FileMode.Create, FileAccess.Write);
+                using StreamWriter sw = new(fs);
+                foreach (var codedata in EnumerateCodeForFirstSelectedNode())
+                {
+                    sw.Write(codedata.Content);
+                }
+            });
+        }
+
+        private string GenerateCodeForFirstSelectedNode()
+        {
+            var sb = new StringBuilder();
+            foreach (CodeData codeData in EnumerateCodeForFirstSelectedNode())
+            {
+                sb.Append(codeData.Content);
+            }
+            return sb.ToString();
+        }
+
+        private IEnumerable<CodeData> EnumerateCodeForFirstSelectedNode()
+        {
+            if (!HaveSelected || SelectedNodes.Length != 1 || _activeDocument.SourceDocument == null)
+            {
+                throw new InvalidOperationException();
+            }
+            var root = SelectedNodes[0];
+            foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>()
+                .GenerateCode(root, new LocalServiceParam(_activeDocument.SourceDocument)))
+            {
+                yield return codeData;
+            }
         }
 
         private void DisposeOpenedDocument(DocumentViewModel dvm)

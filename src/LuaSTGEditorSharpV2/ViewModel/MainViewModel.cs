@@ -12,6 +12,10 @@ using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Core.Command.Factory;
+using LuaSTGEditorSharpV2.Dialog;
+using NLog.Filters;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Windows.Forms;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {

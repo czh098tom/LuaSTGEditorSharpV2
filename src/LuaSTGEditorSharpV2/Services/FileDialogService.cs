@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Services
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                filePath.Setter(dialog.FileNames.FirstOrDefault(string.Empty));
+                filePath.Setter(Path.GetDirectoryName(dialog.FileNames.FirstOrDefault(string.Empty)) ?? string.Empty);
                 return dialog;
             }
             return null;
@@ -44,7 +45,7 @@ namespace LuaSTGEditorSharpV2.Services
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                filePath.Setter(dialog.FileName);
+                filePath.Setter(Path.GetDirectoryName(dialog.FileName) ?? string.Empty);
                 return dialog;
             }
             return null;

@@ -100,12 +100,26 @@ namespace LuaSTGEditorSharpV2
 
         private void ExecuteSaveCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            _viewModel.WorkSpace.SaveActiveDocument();
+            try
+            {
+                _viewModel.WorkSpace.SaveActiveDocument();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ExecuteSaveAsCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            _viewModel.WorkSpace.SaveActiveDocumentAs();
+            try
+            {
+                _viewModel.WorkSpace.SaveActiveDocumentAs();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void FileCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -148,6 +162,23 @@ namespace LuaSTGEditorSharpV2
             _viewModel.WorkSpace.PasteToSelectedNode();
         }
 
+        private void ExecuteViewCodeCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            _viewModel.WorkSpace.ViewCode();
+        }
+
+        private void ExecuteExportCodeCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                _viewModel.WorkSpace.ExportCode();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
         private void CanPerformRedoActiveDoc(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = _viewModel?.WorkSpace?.CanPerformRedoActivateDocument() ?? false;
@@ -156,6 +187,11 @@ namespace LuaSTGEditorSharpV2
         private void CanManipulateNode(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = _viewModel?.WorkSpace?.HaveSelected ?? false;
+        }
+
+        private void CanManipulateSingleNode(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = _viewModel?.WorkSpace?.HaveSelectedSingle ?? false;
         }
 
         private void CanPaste(object sender, CanExecuteRoutedEventArgs e)
@@ -172,7 +208,7 @@ namespace LuaSTGEditorSharpV2
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            foreach(var s in HostedApplicationHelper.GetServices<ISettingsSavedOnClose>())
+            foreach (var s in HostedApplicationHelper.GetServices<ISettingsSavedOnClose>())
             {
                 s.SaveSettings();
             }

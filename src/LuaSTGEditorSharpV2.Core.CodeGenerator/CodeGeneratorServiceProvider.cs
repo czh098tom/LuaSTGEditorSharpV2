@@ -57,7 +57,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 
         public LanguageBase? GetLanguageOfNode(NodeData nodeData)
         {
-            return LanguageBase.GetLanguage(GetServiceOfNode(nodeData).Language);
+            return HostedApplicationHelper.GetService<LanguageProviderService>()
+                .GetLanguage(GetServiceOfNode(nodeData).Language);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LuaSTGEditorSharpV2.Core.CodeGenerator;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator
 {

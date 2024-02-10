@@ -95,5 +95,14 @@ namespace LuaSTGEditorSharpV2.Dialog.Resources {
                 return ResourceManager.GetString("inputDialog_title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Generated code 的本地化字符串。
+        /// </summary>
+        internal static string viewCodeDialog_title {
+            get {
+                return ResourceManager.GetString("viewCodeDialog_title", resourceCulture);
+            }
+        }
     }
 }

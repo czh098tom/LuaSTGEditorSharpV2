@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator
     {
         public void InitializePackage()
         {
-            LanguageBase.RegisterLanguage("Lua", new LuaLanguage());
+            HostedApplicationHelper.GetService<LanguageProviderService>().RegisterLanguage("Lua", new LuaLanguage());
         }
     }
 }

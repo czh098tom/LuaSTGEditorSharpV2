@@ -21,7 +21,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             public CommandBase? Command { get; set; }
             public IDocument? DocumentModel { get; set; }
-            public NodeData[] NodeData { get; set; }
+            public NodeData[] NodeData { get; set; } = [];
             public bool ShouldRefreshView { get; set; } = true;
         }
 

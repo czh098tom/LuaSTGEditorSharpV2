@@ -129,4 +129,7 @@
   <data name="inputDialog_title" xml:space="preserve">
     <value>输入...</value>
   </data>
+  <data name="viewCodeDialog_title" xml:space="preserve">
+    <value>生成的代码</value>
+  </data>
 </root>

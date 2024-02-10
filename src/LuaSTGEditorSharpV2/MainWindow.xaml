@@ -14,6 +14,7 @@
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:fluent="urn:fluent-ribbon"
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
+        xmlns:lrc="clr-namespace:LuaSTGEditorSharpV2.RoutedCommands;assembly=LuaSTGEditorSharpV2"
         xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel;assembly=LuaSTGEditorSharpV2.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -73,6 +74,12 @@
         <CommandBinding Command="{x:Static ApplicationCommands.Paste}"
                         Executed="ExecutePasteToSelectedCommand"
                         CanExecute="CanPaste"/>
+        <CommandBinding Command="{x:Static lrc:LuaSTGEditingCommands.ViewCode}"
+                        Executed="ExecuteViewCodeCommand"
+                        CanExecute="CanManipulateSingleNode"/>
+        <CommandBinding Command="{x:Static lrc:LuaSTGEditingCommands.ExportCode}"
+                        Executed="ExecuteExportCodeCommand"
+                        CanExecute="CanManipulateSingleNode"/>
     </Window.CommandBindings>
     <DockPanel>
         <Border DockPanel.Dock="Top">
@@ -166,9 +173,11 @@
                                                Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png">
                             <fluent:Gallery Orientation="Vertical">
                                 <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_viewCode_title}" 
+                                                 Command="{x:Static lrc:LuaSTGEditingCommands.ViewCode}"
                                                  KeyTip="T"
                                                  Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png"/>
                                 <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exportCode_title}" 
+                                                 Command="{x:Static lrc:LuaSTGEditingCommands.ExportCode}"
                                                  KeyTip="S"
                                                  Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png"/>
                             </fluent:Gallery>
