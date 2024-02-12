@@ -12,6 +12,7 @@ namespace LuaSTGEditorSharpV2.CLI
         static void Main(string[] args)
         {
             HostedApplicationHelper.AddNodeServiceProvider(typeof(CodeGeneratorServiceProvider));
+            HostedApplicationHelper.AddApplicationSingletonService(typeof(LanguageProviderService));
             HostedApplicationHelper.SetUpHost(() =>
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
