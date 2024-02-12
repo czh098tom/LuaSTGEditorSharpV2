@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Forms;
 
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -17,11 +19,7 @@ using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.WPF;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Command.Service;
-using System.Diagnostics.CodeAnalysis;
-using static CommunityToolkit.Mvvm.ComponentModel.__Internals.__TaskExtensions.TaskAwaitableWithoutEndValidation;
 using LuaSTGEditorSharpV2.Dialog;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Windows.Forms;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
