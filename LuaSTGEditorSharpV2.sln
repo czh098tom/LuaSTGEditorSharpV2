@@ -81,6 +81,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Analyze
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Package.Lua.Toolbox", "src\BuiltInPackages\Lua\LuaSTGEditorSharpV2.Package.Lua.Toolbox\LuaSTGEditorSharpV2.Package.Lua.Toolbox.csproj", "{EF00D6C8-2F03-43FB-AE19-B0F2FF44CDEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Package.LegacyNode.Toolbox", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.Toolbox\LuaSTGEditorSharpV2.Package.LegacyNode.Toolbox.csproj", "{5A45AC82-2C1D-49A8-8BF7-8C29E40813B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,6 +213,10 @@ Global
 		{EF00D6C8-2F03-43FB-AE19-B0F2FF44CDEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF00D6C8-2F03-43FB-AE19-B0F2FF44CDEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF00D6C8-2F03-43FB-AE19-B0F2FF44CDEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A45AC82-2C1D-49A8-8BF7-8C29E40813B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A45AC82-2C1D-49A8-8BF7-8C29E40813B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A45AC82-2C1D-49A8-8BF7-8C29E40813B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A45AC82-2C1D-49A8-8BF7-8C29E40813B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,6 +257,7 @@ Global
 		{01109F37-5396-49C7-BF10-141D04BCE304} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{2BB0A6CC-9E13-4E33-8A43-40029A6DAFA3} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{EF00D6C8-2F03-43FB-AE19-B0F2FF44CDEE} = {4FFE30D3-7F9B-4C24-B199-7542F56A2987}
+		{5A45AC82-2C1D-49A8-8BF7-8C29E40813B8} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A88633F9-126D-4418-B464-61038BFEB74C}
