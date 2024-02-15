@@ -18,6 +18,7 @@ namespace LuaSTGEditorSharpV2.Core
     /// <typeparam name="TService"> The service itself. </typeparam>
     /// <typeparam name="TContext"> The context that preserves frequently used data for this service. </typeparam>
     /// <typeparam name="TSettings"> The singleton settings used by this service during the lifecycle of the application. </typeparam>
+    [PackagePrimaryKey(nameof(TypeUID))]
     public abstract class NodeService<TServiceProvider, TService, TContext, TSettings>
         where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
@@ -31,12 +32,12 @@ namespace LuaSTGEditorSharpV2.Core
 
         protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
         {
-            var service = GetServiceProvider().GetServiceOfTypeID(node.TypeUID);
+            var service = GetServiceProvider().GetServiceInstanceOfTypeUID(node.TypeUID);
             return service.BuildContextForNode(node, localParam, serviceSettings);
         }
 
         protected static TService GetServiceOfTypeID(string typeUID)
-            => GetServiceProvider().GetServiceOfTypeID(typeUID);
+            => GetServiceProvider().GetServiceInstanceOfTypeUID(typeUID);
 
         protected static TService GetServiceOfNode(NodeData node)
             => GetServiceProvider().GetServiceOfNode(node);

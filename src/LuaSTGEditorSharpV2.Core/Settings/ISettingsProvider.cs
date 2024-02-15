@@ -12,4 +12,9 @@ namespace LuaSTGEditorSharpV2.Core.Settings
 
         void RefreshSettings();
     }
+
+    public interface ISettingsProvider<TSettings> : ISettingsProvider
+    {
+
+    }
 }

@@ -23,6 +23,8 @@ using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.UICustomization;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
 using LuaSTGEditorSharpV2.Core.Command.Service;
+using LuaSTGEditorSharpV2.Toolbox.Service;
+using LuaSTGEditorSharpV2.Toolbox.Model;
 
 using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
 
@@ -42,6 +44,7 @@ namespace LuaSTGEditorSharpV2
             AddNodeServiceProvider<CodeGeneratorServiceProvider>();
             AddNodeServiceProvider<ViewModelProviderServiceProvider>();
             AddNodeServiceProvider<PropertyViewServiceProvider>();
+            AddPackedDataProvider<ToolboxProviderService, ToolboxItemModelBase>();
             AddApplicationSingletonService<ActiveDocumentService>();
             AddApplicationSingletonService<InsertCommandHostingService>();
             AddApplicationSingletonService<LocalizationService>();

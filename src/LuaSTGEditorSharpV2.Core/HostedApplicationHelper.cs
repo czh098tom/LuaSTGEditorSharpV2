@@ -48,10 +48,16 @@ namespace LuaSTGEditorSharpV2.Core
         public static void AddNodeServiceProvider<T>()
             where T : INodeServiceProvider
         {
-            AddNodeServiceProvider(typeof(T));
+            AddPackedDataProvider(typeof(T));
         }
 
-        public static void AddNodeServiceProvider(Type nodeServiceProvider)
+        public static void AddPackedDataProvider<T, TData>()
+            where T : IPackedDataProviderService<TData>
+        {
+            AddPackedDataProvider(typeof(T));
+        }
+
+        public static void AddPackedDataProvider(Type nodeServiceProvider)
         {
             nodeServiceProviderTypes.Add(nodeServiceProvider);
             applicationServiceProviderTypes.Add(nodeServiceProvider);
