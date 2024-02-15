@@ -1,9 +1,10 @@
-﻿using LuaSTGEditorSharpV2.Core.Exception;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core
 {

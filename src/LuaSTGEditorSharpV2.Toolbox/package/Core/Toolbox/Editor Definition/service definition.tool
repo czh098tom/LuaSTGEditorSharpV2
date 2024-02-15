@@ -6,7 +6,6 @@
   "NodeTemplate": [
     {
       "TypeUID": "ServiceDefinition",
-      "IsActive": true,
       "Properties": {
         "serviceShortName": "",
         "serviceDeclaration": ""

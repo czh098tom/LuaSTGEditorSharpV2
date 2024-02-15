@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.Service
     public class ToolboxProviderService : PackedDataProviderServiceBase<ToolboxItemModelBase>
     {
         public static readonly char seperator = '/';
-        public static readonly int orderLast = int.MaxValue;
+        public static readonly int orderUndefined = int.MaxValue - 1;
 
         private static void AddToListBasedOnOrder(IList<ToolboxItemViewModel> target,
             ToolboxItemViewModel toInsert, IReadOnlyDictionary<ToolboxItemViewModel, int> order)
@@ -55,7 +55,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.Service
                         {
                             Caption = currPath.Last()
                         });
-                        createdOrder.Add(created[currPathStr], orderLast);
+                        createdOrder.Add(created[currPathStr], orderUndefined);
                     }
                     currPath.RemoveAt(currPath.Count - 1);
                 }

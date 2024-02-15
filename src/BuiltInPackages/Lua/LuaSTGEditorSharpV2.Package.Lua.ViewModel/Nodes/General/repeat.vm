@@ -1,6 +1,6 @@
 {
 	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "If",
+	"TypeUID": "Repeat",
 	"Captures": [ { "Key": "times" } ],
 	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/repeat.png",
 	"Text": {
