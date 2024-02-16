@@ -17,6 +17,7 @@
         xmlns:lrc="clr-namespace:LuaSTGEditorSharpV2.RoutedCommands;assembly=LuaSTGEditorSharpV2"
         xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel;assembly=LuaSTGEditorSharpV2.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
+        xmlns:lto="clr-namespace:LuaSTGEditorSharpV2.Toolbox;assembly=LuaSTGEditorSharpV2.Toolbox"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         lex:ResxLocalizationProvider.DefaultAssembly="LuaSTGEditorSharpV2"
         lex:ResxLocalizationProvider.DefaultDictionary="Localized"
@@ -256,26 +257,8 @@
                                 </Grid>
                             </DataTemplate>
                             <DataTemplate x:Key="ToolboxPageViewModel">
-                                <TreeView ItemsSource="{Binding ToolboxItems}" VirtualizingPanel.IsVirtualizing="True">
-                                    <TreeView.Resources>
-                                        <Style TargetType="TreeViewItem">
-                                            <Setter Property="IsExpanded"
-                                                    Value="True"/>
-                                        </Style>
-                                    </TreeView.Resources>
-                                    <TreeView.ItemTemplate>
-                                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                                            <Button Command="{Binding InsertCommand}"
-                                                    BorderBrush="Transparent" Background="Transparent">
-                                                <StackPanel Orientation="Horizontal" >
-                                                    <Image Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"
-                                                           Source="{Binding IconSource}" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Caption}" />
-                                                </StackPanel>
-                                            </Button>
-                                        </HierarchicalDataTemplate>
-                                    </TreeView.ItemTemplate>
-                                </TreeView>
+                                <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" 
+                                                 VirtualizingPanel.IsVirtualizing="True"/>
                             </DataTemplate>
                             <DataTemplate x:Key="ErrorListPageViewModel">
                                 <DataGrid/>

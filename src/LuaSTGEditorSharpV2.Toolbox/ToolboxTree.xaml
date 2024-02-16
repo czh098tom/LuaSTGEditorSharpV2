@@ -1,0 +1,41 @@
+﻿<TreeView x:Class="LuaSTGEditorSharpV2.Toolbox.ToolboxTree"
+          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+          xmlns:local="clr-namespace:LuaSTGEditorSharpV2.Toolbox"
+          mc:Ignorable="d" 
+          d:DesignHeight="450" d:DesignWidth="800">
+    <TreeView.Resources>
+        <Style TargetType="TreeViewItem">
+            <Setter Property="IsExpanded"
+                    Value="True"/>
+        </Style>
+    </TreeView.Resources>
+    <TreeView.ItemTemplateSelector>
+        <local:HasCommandSelector>
+            <local:HasCommandSelector.Default>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" >
+                        <Image Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"
+                                   Source="{Binding IconSource}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Caption}" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </local:HasCommandSelector.Default>
+            <local:HasCommandSelector.ResourceDictionary>
+                <HierarchicalDataTemplate x:Key="True" 
+                                          ItemsSource="{Binding Children}">
+                    <Button Command="{Binding InsertCommand}"
+                            BorderBrush="Transparent" Background="Transparent">
+                        <StackPanel Orientation="Horizontal" >
+                            <Image Stretch="Fill" Width="16" Height="16" Margin="0,0,2,2" VerticalAlignment="Top"
+                                   Source="{Binding IconSource}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Caption}" />
+                        </StackPanel>
+                    </Button>
+                </HierarchicalDataTemplate>
+            </local:HasCommandSelector.ResourceDictionary>
+        </local:HasCommandSelector>
+    </TreeView.ItemTemplateSelector>
+</TreeView>
