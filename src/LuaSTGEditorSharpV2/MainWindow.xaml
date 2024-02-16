@@ -18,6 +18,7 @@
         xmlns:lvm="clr-namespace:LuaSTGEditorSharpV2.ViewModel;assembly=LuaSTGEditorSharpV2.ViewModel"
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
         xmlns:lto="clr-namespace:LuaSTGEditorSharpV2.Toolbox;assembly=LuaSTGEditorSharpV2.Toolbox"
+        xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         lex:ResxLocalizationProvider.DefaultAssembly="LuaSTGEditorSharpV2"
         lex:ResxLocalizationProvider.DefaultDictionary="Localized"
@@ -25,7 +26,8 @@
         mc:Ignorable="d"
         Title="LuaSTG Editor Sharp V2" Height="450" Width="800"
         WindowState="Maximized"
-        Icon="pack://application:,,,/icon.ico">
+        Icon="pack://application:,,,/icon.ico"
+        FocusManager.FocusedElement="{Binding ElementName=RibbonWin}">
     <Window.Resources>
         <DataTemplate x:Key="defaultPropertyView">
             <lsv:PropertyItemGrid>
@@ -82,202 +84,204 @@
                         Executed="ExecuteExportCodeCommand"
                         CanExecute="CanManipulateSingleNode"/>
     </Window.CommandBindings>
-    <DockPanel>
-        <Border DockPanel.Dock="Top">
-            <fluent:Ribbon x:Name="RibbonWin">
-                <!-- Help Pane, located at the right-hand side -->
-                <fluent:Ribbon.ToolBarItems>
-                </fluent:Ribbon.ToolBarItems>
-                <!-- Quick Access Toolbar - located at the upper-left corner -->
-                <fluent:Ribbon.QuickAccessItems>
-                    <fluent:QuickAccessMenuItem IsChecked="True">
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_save_title}" 
+    <lw:ScalableGrid>
+        <DockPanel>
+            <Border DockPanel.Dock="Top">
+                <fluent:Ribbon x:Name="RibbonWin">
+                    <!-- Help Pane, located at the right-hand side -->
+                    <fluent:Ribbon.ToolBarItems>
+                    </fluent:Ribbon.ToolBarItems>
+                    <!-- Quick Access Toolbar - located at the upper-left corner -->
+                    <fluent:Ribbon.QuickAccessItems>
+                        <fluent:QuickAccessMenuItem IsChecked="True">
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_save_title}" 
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/save.png"
                                        Command="{x:Static ApplicationCommands.Save}"
                                        KeyTip="S"/>
-                    </fluent:QuickAccessMenuItem>
-                    <fluent:QuickAccessMenuItem IsChecked="True">
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_undo_title}" 
+                        </fluent:QuickAccessMenuItem>
+                        <fluent:QuickAccessMenuItem IsChecked="True">
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_undo_title}" 
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" 
                                        Command="{x:Static ApplicationCommands.Undo}"
                                        KeyTip="Z"/>
-                    </fluent:QuickAccessMenuItem>
-                    <fluent:QuickAccessMenuItem IsChecked="True" >
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_redo_title}" 
+                        </fluent:QuickAccessMenuItem>
+                        <fluent:QuickAccessMenuItem IsChecked="True" >
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_redo_title}" 
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/redo.png" 
                                        Command="{x:Static ApplicationCommands.Redo}"/>
-                    </fluent:QuickAccessMenuItem>
-                </fluent:Ribbon.QuickAccessItems>
-                <!-- Application Menu, located at the left-hand side (down arrow) -->
-                <fluent:Ribbon.Menu>
-                    <fluent:Backstage Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_backStageMenu_document_title}">
-                        <fluent:BackstageTabControl>
-                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_new_title}"
+                        </fluent:QuickAccessMenuItem>
+                    </fluent:Ribbon.QuickAccessItems>
+                    <!-- Application Menu, located at the left-hand side (down arrow) -->
+                    <fluent:Ribbon.Menu>
+                        <fluent:Backstage Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_backStageMenu_document_title}">
+                            <fluent:BackstageTabControl>
+                                <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_new_title}"
                                            Command="{x:Static ApplicationCommands.New}" 
                                            KeyTip="N"/>
-                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_open_title}"
+                                <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_open_title}"
                                            Command="{x:Static ApplicationCommands.Open}" 
                                            KeyTip="O"/>
-                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_save_title}" 
+                                <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_save_title}" 
                                            Command="{x:Static ApplicationCommands.Save}"
                                            KeyTip="S"/>
-                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_saveAs_title}" 
+                                <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_saveAs_title}" 
                                            Command="{x:Static ApplicationCommands.SaveAs}"
                                            KeyTip="A" CanAddToQuickAccessToolBar="False"/>
-                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_settings_title}" 
+                                <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_settings_title}" 
                                            Click="SettingsButton_Click"
                                            KeyTip="X"/>
-                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exit_title}" 
+                                <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exit_title}" 
                                            Click="Exit_Click"
                                            KeyTip="Q"/>
-                        </fluent:BackstageTabControl>
-                    </fluent:Backstage>
-                </fluent:Ribbon.Menu>
-                <!-- Ribbon Tab #1: Home -->
-                <fluent:RibbonTabItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_home_title}" KeyTip="H" >
-                    <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="{lex:Loc ribbon_group_edit_title}">
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_copy_title}" 
+                            </fluent:BackstageTabControl>
+                        </fluent:Backstage>
+                    </fluent:Ribbon.Menu>
+                    <!-- Ribbon Tab #1: Home -->
+                    <fluent:RibbonTabItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_home_title}" KeyTip="H" >
+                        <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="{lex:Loc ribbon_group_edit_title}">
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_copy_title}" 
                                        Command="{x:Static ApplicationCommands.Copy}"
                                        KeyTip="C" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_paste_title}" 
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_paste_title}" 
                                        Command="{x:Static ApplicationCommands.Paste}"
                                        KeyTip="V" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" />
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_cut_title}" 
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_cut_title}" 
                                        Command="{x:Static ApplicationCommands.Cut}"
                                        KeyTip="X" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/cut.png"/>
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_delete_title}" 
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_delete_title}" 
                                        Command="{x:Static ApplicationCommands.Delete}"
                                        KeyTip="X" Size="Large"
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/delete.png"/>
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox x:Name="Insert" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_insertDirection_title}"
+                        </fluent:RibbonGroupBox>
+                        <fluent:RibbonGroupBox x:Name="Insert" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_insertDirection_title}"
                                            DataContext="{Binding InsertPanel}">
-                        <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_upDirection_title}" 
+                            <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_upDirection_title}" 
                                              Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertUp}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/up.png" />
-                        <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_downDirection_title}" 
+                            <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_downDirection_title}" 
                                              Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertDown}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/down.png"/>
-                        <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_childDirection_title}" 
+                            <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_childDirection_title}" 
                                              Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsChild}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/child.png"/>
-                        <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_parentDirection_title}" 
+                            <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_parentDirection_title}" 
                                              Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsParent}"
                                              Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/parent.png"/>
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox x:Name="Code" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_code_title}">
-                        <fluent:DropDownButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_code_title}" 
+                        </fluent:RibbonGroupBox>
+                        <fluent:RibbonGroupBox x:Name="Code" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_code_title}">
+                            <fluent:DropDownButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_code_title}" 
                                                KeyTip="V"
                                                Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png">
-                            <fluent:Gallery Orientation="Vertical">
-                                <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_viewCode_title}" 
+                                <fluent:Gallery Orientation="Vertical">
+                                    <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_viewCode_title}" 
                                                  Command="{x:Static lrc:LuaSTGEditingCommands.ViewCode}"
                                                  KeyTip="T"
                                                  Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png"/>
-                                <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exportCode_title}" 
+                                    <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exportCode_title}" 
                                                  Command="{x:Static lrc:LuaSTGEditingCommands.ExportCode}"
                                                  KeyTip="S"
                                                  Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png"/>
-                            </fluent:Gallery>
-                        </fluent:DropDownButton>
-                    </fluent:RibbonGroupBox>
-                    <fluent:RibbonGroupBox x:Name="Navigation" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_navigation_title}">
-                        <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_jumpTo_title}" 
+                                </fluent:Gallery>
+                            </fluent:DropDownButton>
+                        </fluent:RibbonGroupBox>
+                        <fluent:RibbonGroupBox x:Name="Navigation" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_navigation_title}">
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_jumpTo_title}" 
                                        KeyTip="X" 
                                        Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/search.png" />
-                        <fluent:TextBox/>
-                    </fluent:RibbonGroupBox>
-                </fluent:RibbonTabItem>
-            </fluent:Ribbon>
-        </Border>
-        <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
-                <ProgressBar/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock Text="Test mode"/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock Text="Test mode"/>
-            </StatusBarItem>
-        </StatusBar>
-        <Grid DataContext="{Binding WorkSpace}">
-            <xcad:DockingManager Name="dockingManager" 
+                            <fluent:TextBox/>
+                        </fluent:RibbonGroupBox>
+                    </fluent:RibbonTabItem>
+                </fluent:Ribbon>
+            </Border>
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem>
+                    <ProgressBar/>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <TextBlock Text="Test mode"/>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <TextBlock Text="Test mode"/>
+                </StatusBarItem>
+            </StatusBar>
+            <Grid DataContext="{Binding WorkSpace}">
+                <xcad:DockingManager Name="dockingManager" 
                                  DocumentsSource="{Binding Documents}"
                                  AnchorablesSource="{Binding Anchorables}"
                                  ActiveContentChanged="DockingManager_ActiveContentChanged">
-                <xcad:DockingManager.Theme>
-                    <xcad:VS2010Theme/>
-                </xcad:DockingManager.Theme>
-                <xcad:DockingManager.Resources>
-                </xcad:DockingManager.Resources>
-                <xcad:DockingManager.LayoutItemContainerStyle>
-                    <Style TargetType="{x:Type xcadc:LayoutItem}" >
-                        <Setter Property="Title" Value="{Binding Model.Title}" />
-                        <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
-                        <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
-                        <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
-                        <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
-                    </Style>
-                </xcad:DockingManager.LayoutItemContainerStyle>
-                <xcad:DockingManager.LayoutItemTemplateSelector>
-                    <util:TypedResourceDictionaryKeySelector>
-                        <util:TypedResourceDictionaryKeySelector.Default>
-                            <DataTemplate/>
-                        </util:TypedResourceDictionaryKeySelector.Default>
-                        <util:TypedResourceDictionaryKeySelector.ResourceDictionary>
-                            <DataTemplate x:Key="PropertyPageViewModel">
-                                <Grid>
-                                    <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
+                    <xcad:DockingManager.Theme>
+                        <xcad:VS2010Theme/>
+                    </xcad:DockingManager.Theme>
+                    <xcad:DockingManager.Resources>
+                    </xcad:DockingManager.Resources>
+                    <xcad:DockingManager.LayoutItemContainerStyle>
+                        <Style TargetType="{x:Type xcadc:LayoutItem}" >
+                            <Setter Property="Title" Value="{Binding Model.Title}" />
+                            <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                            <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+                            <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
+                            <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
+                        </Style>
+                    </xcad:DockingManager.LayoutItemContainerStyle>
+                    <xcad:DockingManager.LayoutItemTemplateSelector>
+                        <util:TypedResourceDictionaryKeySelector>
+                            <util:TypedResourceDictionaryKeySelector.Default>
+                                <DataTemplate/>
+                            </util:TypedResourceDictionaryKeySelector.Default>
+                            <util:TypedResourceDictionaryKeySelector.ResourceDictionary>
+                                <DataTemplate x:Key="PropertyPageViewModel">
+                                    <Grid>
+                                        <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
                                                 SelectedIndex="{Binding SelectedIndex}" >
-                                        <TabControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Caption}"/>
-                                            </DataTemplate>
-                                        </TabControl.ItemTemplate>
-                                        <TabControl.ContentTemplate>
-                                            <DataTemplate>
-                                                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                                            <TabControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Caption}"/>
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <DataTemplate>
+                                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
                                                               VerticalScrollBarVisibility="Visible"
                                                               Margin="5">
-                                                    <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
+                                                        <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
                                                                   Grid.IsSharedSizeScope="True"
                                                                   ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
-                                                        <ItemsControl.ItemTemplateSelector>
-                                                            <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
-                                                        </ItemsControl.ItemTemplateSelector>
-                                                    </ItemsControl>
-                                                </ScrollViewer>
-                                            </DataTemplate>
-                                        </TabControl.ContentTemplate>
-                                    </TabControl>
-                                </Grid>
-                            </DataTemplate>
-                            <DataTemplate x:Key="ToolboxPageViewModel">
-                                <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" 
+                                                            <ItemsControl.ItemTemplateSelector>
+                                                                <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
+                                                            </ItemsControl.ItemTemplateSelector>
+                                                        </ItemsControl>
+                                                    </ScrollViewer>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
+                                    </Grid>
+                                </DataTemplate>
+                                <DataTemplate x:Key="ToolboxPageViewModel">
+                                    <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" 
                                                  VirtualizingPanel.IsVirtualizing="True"/>
-                            </DataTemplate>
-                            <DataTemplate x:Key="ErrorListPageViewModel">
-                                <DataGrid/>
-                            </DataTemplate>
-                            <DataTemplate x:Key="DebugOutputPageViewModel">
-                                <TextBox/>
-                            </DataTemplate>
-                            <DataTemplate x:Key="DocumentViewModel">
-                                <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
-                            </DataTemplate>
-                        </util:TypedResourceDictionaryKeySelector.ResourceDictionary>
-                    </util:TypedResourceDictionaryKeySelector>
-                </xcad:DockingManager.LayoutItemTemplateSelector>
-                <xcad:DockingManager.LayoutUpdateStrategy>
-                    <util:LayoutUpdateStrategy/>
-                </xcad:DockingManager.LayoutUpdateStrategy>
-                <xcad:LayoutRoot>
-                </xcad:LayoutRoot>
-            </xcad:DockingManager>
-        </Grid>
-    </DockPanel>
+                                </DataTemplate>
+                                <DataTemplate x:Key="ErrorListPageViewModel">
+                                    <DataGrid/>
+                                </DataTemplate>
+                                <DataTemplate x:Key="DebugOutputPageViewModel">
+                                    <TextBox/>
+                                </DataTemplate>
+                                <DataTemplate x:Key="DocumentViewModel">
+                                    <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
+                                </DataTemplate>
+                            </util:TypedResourceDictionaryKeySelector.ResourceDictionary>
+                        </util:TypedResourceDictionaryKeySelector>
+                    </xcad:DockingManager.LayoutItemTemplateSelector>
+                    <xcad:DockingManager.LayoutUpdateStrategy>
+                        <util:LayoutUpdateStrategy/>
+                    </xcad:DockingManager.LayoutUpdateStrategy>
+                    <xcad:LayoutRoot>
+                    </xcad:LayoutRoot>
+                </xcad:DockingManager>
+            </Grid>
+        </DockPanel>
+    </lw:ScalableGrid>
 </fluent:RibbonWindow>
