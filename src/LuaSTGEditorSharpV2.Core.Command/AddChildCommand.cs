@@ -18,7 +18,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
         public AddChildCommand(NodeData parent, int position, NodeData child)
         {
             Parent = parent;
-            Child = child;
+            Child = child.DeepClone();
             Position = position;
         }
 

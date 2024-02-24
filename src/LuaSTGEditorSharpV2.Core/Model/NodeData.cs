@@ -28,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
         public IReadOnlyList<NodeData> PhysicalChildren => _physicalChildren;
 
         [JsonProperty("Children")]
-        private List<NodeData> _physicalChildren = new();
+        private List<NodeData> _physicalChildren = [];
         [JsonIgnore] public NodeData? PhysicalParent { get; private set; } = null;
 
         [OnDeserialized]
@@ -146,6 +146,11 @@ namespace LuaSTGEditorSharpV2.Core.Model
             }
 
             return result;
+        }
+
+        public NodeData DeepClone()
+        {
+            return JsonConvert.DeserializeObject<NodeData>(JsonConvert.SerializeObject(this))!;
         }
     }
 }
