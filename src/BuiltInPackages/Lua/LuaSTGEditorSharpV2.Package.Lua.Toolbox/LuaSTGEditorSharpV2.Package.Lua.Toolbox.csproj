@@ -9,6 +9,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\</OutputPath>
 
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
 

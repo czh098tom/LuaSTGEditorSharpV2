@@ -10,6 +10,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\Lua\</OutputPath>
 
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
 
@@ -32,6 +33,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj">
       <ExcludeAssets>**\*.prop</ExcludeAssets>
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj">
       <Private>false</Private>
     </ProjectReference>
   </ItemGroup>

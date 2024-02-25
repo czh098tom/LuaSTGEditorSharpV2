@@ -10,6 +10,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
 
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
 
