@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public class BuildActionContext : NodeContext<BuildActionServiceSettings>
+    public class BuildActionContext : NodeContextWithSettings<BuildActionServiceSettings>
     {
         public LocalServiceParam LocalSettings => base.LocalParam;
 

@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
-    public class CodeGenerationContext : NodeContext<CodeGenerationServiceSettings>
+    public class CodeGenerationContext : NodeContextWithSettings<CodeGenerationServiceSettings>
     {
         private static CodeGeneratorServiceProvider CodeGeneratorServiceProvider =>
             HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>();

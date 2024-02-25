@@ -23,8 +23,9 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
+            var token = new NodePropertyAccessToken(dataSource, context);
             _captureResult ??= new string[GetCaptureCacheLength()];
-            WriteCaptureResult(dataSource, _captureResult);
+            WriteCaptureResult(token, _captureResult);
             string text = GetLocalizedTextIfExists();
             viewModel.Text = string.Format(text, _captureResult);
             viewModel.Icon = Icon;
@@ -41,12 +42,12 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             return l;
         }
 
-        protected virtual int WriteCaptureResult(NodeData dataSource, string?[] captureResult)
+        protected virtual int WriteCaptureResult(NodePropertyAccessToken token, string?[] captureResult)
         {
             int n;
             for (n = 0; n < Captures.Length; n++)
             {
-                captureResult[n] = Captures[n]?.Capture(dataSource) ?? string.Empty;
+                captureResult[n] = Captures[n]?.Capture(token) ?? string.Empty;
             }
             return n;
         }

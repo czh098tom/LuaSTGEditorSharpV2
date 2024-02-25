@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     [ServiceName("PropertyView"), ServiceShortName("prop")]
     public class PropertyViewServiceProvider
-        : NodeServiceProvider<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
+        : CompactNodeServiceProvider<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
         , IResourceProvider
     {
         private static PropertyViewServiceBase _defaultService = new();

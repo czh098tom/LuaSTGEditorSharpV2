@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
     /// </summary>
     [ServiceShortName("build"), ServiceName("BuildAction")]
     public class BuildActionServiceBase 
-        : NodeService<BuildActionServiceProvider, BuildActionServiceBase, BuildActionContext, BuildActionServiceSettings>
+        : CompactNodeService<BuildActionServiceProvider, BuildActionServiceBase, BuildActionContext, BuildActionServiceSettings>
     {
         public override sealed BuildActionContext GetEmptyContext(LocalServiceParam localSettings
             , BuildActionServiceSettings serviceSettings)

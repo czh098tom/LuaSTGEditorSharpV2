@@ -10,7 +10,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
     [ServiceShortName("valid"), ServiceName("Analyzer.StructuralValidation")]
     public class StructuralValidationServiceProvider 
-        : NodeServiceProvider<StructuralValidationServiceProvider, StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
+        : CompactNodeServiceProvider<StructuralValidationServiceProvider, StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
     {
         private static readonly StructuralValidationServiceBase _defaultService = new();
 

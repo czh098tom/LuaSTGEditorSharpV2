@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,29 +9,27 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class NodeContext<TSettings>
-        where TSettings : new()
+    public class NodeContext
     {
         protected LocalServiceParam LocalParam { get; private set; }
 
-        protected TSettings ServiceSettings { get; private set; }
-
-        private readonly Dictionary<string, Stack<NodeData>> _contextData = new();
+        private readonly Dictionary<string, Stack<NodeData>> _contextData = [];
         private readonly Stack<NodeData> _top = new();
 
-        public NodeContext(LocalServiceParam localParam, TSettings serviceSettings)
+        public NodeContext(LocalServiceParam localParam)
         {
             LocalParam = localParam;
-            ServiceSettings = serviceSettings;
         }
 
         public virtual void Push(NodeData current)
         {
-            if (!_contextData.ContainsKey(current.TypeUID))
+            if (!_contextData.TryGetValue(current.TypeUID, out Stack<NodeData>? value))
             {
-                _contextData.Add(current.TypeUID, new Stack<NodeData>());
+                value = new Stack<NodeData>();
+                _contextData.Add(current.TypeUID, value);
             }
-            _contextData[current.TypeUID].Push(current);
+
+            value.Push(current);
             _top.Push(current);
         }
 
@@ -103,7 +102,19 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeContext : NodeContext<ServiceExtraSettingsBase>
+    public abstract class NodeContextWithSettings<TSettings> : NodeContext
+        where TSettings : new()
+    {
+        protected TSettings ServiceSettings { get; private set; }
+
+        public NodeContextWithSettings(LocalServiceParam localParam, TSettings serviceSettings)
+            : base(localParam)
+        {
+            ServiceSettings = serviceSettings;
+        }
+    }
+
+    internal class DefaultNodeContext : NodeContextWithSettings<ServiceExtraSettingsBase>
     {
         internal DefaultNodeContext(LocalServiceParam localParam, ServiceExtraSettingsBase serviceSettings)
             : base(localParam, serviceSettings) { }

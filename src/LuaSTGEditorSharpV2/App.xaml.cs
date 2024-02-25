@@ -44,6 +44,7 @@ namespace LuaSTGEditorSharpV2
             AddNodeServiceProvider<CodeGeneratorServiceProvider>();
             AddNodeServiceProvider<ViewModelProviderServiceProvider>();
             AddNodeServiceProvider<PropertyViewServiceProvider>();
+            AddNodeServiceProvider<DefaultValueServiceProvider>();
             AddPackedDataProvider<ToolboxProviderService, ToolboxItemModelBase>();
             AddApplicationSingletonService<ActiveDocumentService>();
             AddApplicationSingletonService<InsertCommandHostingService>();

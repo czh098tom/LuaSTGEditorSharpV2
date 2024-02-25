@@ -15,12 +15,12 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         LocalizableString Caption,
         PropertyViewEditorType? Editor = null)
     {
-        public PropertyItemViewModelBase GetViewModel(NodeData nodeData)
+        public PropertyItemViewModelBase GetViewModel(NodePropertyAccessToken token)
         {
             return new BasicPropertyItemViewModel()
             {
                 Name = Caption.GetLocalized(),
-                Value = Mapping?.Capture(nodeData) ?? string.Empty,
+                Value = Mapping?.Capture(token) ?? string.Empty,
                 Type = Editor
             };
         }

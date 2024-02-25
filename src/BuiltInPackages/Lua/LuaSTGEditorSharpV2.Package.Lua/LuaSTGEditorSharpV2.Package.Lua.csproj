@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -19,13 +19,26 @@
     </ProjectReference>
   </ItemGroup>
 
-  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+  <Target Name="CopyManifest" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)</YourSourceDirectory>
       <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua</YourDestinationDirectory>
     </PropertyGroup>
     <Copy SourceFiles="$(YourSourceDirectory)\manifest"
           DestinationFiles="$(YourDestinationDirectory)\manifest"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua\Nodes</YourDestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)"
+          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)"
           SkipUnchangedFiles="true" />
   </Target>
 

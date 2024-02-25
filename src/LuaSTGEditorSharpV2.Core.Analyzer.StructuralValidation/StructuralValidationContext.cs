@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
-    public class StructuralValidationContext : NodeContext<StructuralValidationServiceSettings>
+    public class StructuralValidationContext : NodeContextWithSettings<StructuralValidationServiceSettings>
     {
         public StructuralValidationContext(LocalServiceParam localSettings, StructuralValidationServiceSettings serviceSettings) 
             : base(localSettings, serviceSettings) { }

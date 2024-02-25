@@ -10,7 +10,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
 {
     [ServiceShortName("resg"), ServiceName("ResourceGathering")]
     public class ResourceGatheringServiceProvider
-        : NodeServiceProvider<ResourceGatheringServiceProvider, ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
+        : CompactNodeServiceProvider<ResourceGatheringServiceProvider, ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
     {
         private static readonly ResourceGatheringServiceBase _defaultService = new();
 

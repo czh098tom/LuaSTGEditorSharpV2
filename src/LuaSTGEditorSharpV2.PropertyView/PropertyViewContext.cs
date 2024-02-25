@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public class PropertyViewContext : NodeContext<PropertyViewServiceSettings>
+    public class PropertyViewContext : NodeContextWithSettings<PropertyViewServiceSettings>
     {
         public PropertyViewContext(LocalServiceParam localSettings, PropertyViewServiceSettings serviceSettings) 
             : base(localSettings, serviceSettings)

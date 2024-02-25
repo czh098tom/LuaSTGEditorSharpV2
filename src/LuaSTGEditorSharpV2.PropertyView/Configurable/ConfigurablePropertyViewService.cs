@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             List<PropertyTabViewModel> propertyTabViewModels = [];
             for (int i = 0; i < Tabs.Length; i++)
             {
-                propertyTabViewModels.Add(Tabs[i].GetPropertyTabViewModel(nodeData));
+                propertyTabViewModels.Add(Tabs[i].GetPropertyTabViewModel(nodeData, context));
             }
             return propertyTabViewModels;
         }

@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     /// Provide functionality of presenting and manipulating <see cref="NodeData"/> properties.
     /// </summary>
     public class PropertyViewServiceBase 
-        : NodeService<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
+        : CompactNodeService<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
     {
         public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings
             , PropertyViewServiceSettings serviceSettings)

@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core.Building
 {
     public class BuildActionServiceProvider
-        : NodeServiceProvider<BuildActionServiceProvider, BuildActionServiceBase, BuildActionContext, BuildActionServiceSettings>
+        : CompactNodeServiceProvider<BuildActionServiceProvider, BuildActionServiceBase, BuildActionContext, BuildActionServiceSettings>
     {
         private static readonly BuildActionServiceBase _defaultService = new();
 

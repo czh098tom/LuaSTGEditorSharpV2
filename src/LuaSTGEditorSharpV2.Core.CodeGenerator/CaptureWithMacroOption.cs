@@ -14,22 +14,22 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
     {
         [JsonProperty] public bool DisableMacro { get; set; }
 
-        public string ApplyMacro(NodeData node, CodeGenerationContext context)
+        public string ApplyMacro(NodePropertyAccessToken token, CodeGenerationContext context)
         {
-            string original = Capture(node) ?? string.Empty;
-            return Apply(node, context, original);
+            string original = Capture(token) ?? string.Empty;
+            return Apply(token.NodeData, context, original);
         }
 
-        public string ApplyMacroWithFormat(NodeData node, CodeGenerationContext context, object? arg0)
+        public string ApplyMacroWithFormat(NodePropertyAccessToken token, CodeGenerationContext context, object? arg0)
         {
-            string original = CaptureByFormat(node, arg0) ?? string.Empty;
-            return Apply(node, context, original);
+            string original = CaptureByFormat(token, arg0) ?? string.Empty;
+            return Apply(token.NodeData, context, original);
         }
 
-        public string ApplyMacroWithFormat(NodeData node, CodeGenerationContext context, params object?[] args)
+        public string ApplyMacroWithFormat(NodePropertyAccessToken token, CodeGenerationContext context, params object?[] args)
         {
-            string original = CaptureByFormat(node, args) ?? string.Empty;
-            return Apply(node, context, original);
+            string original = CaptureByFormat(token, args) ?? string.Empty;
+            return Apply(token.NodeData, context, original);
         }
 
         private string Apply(NodeData node, CodeGenerationContext context, string original)

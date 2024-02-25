@@ -17,14 +17,15 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     {
         [JsonProperty] public PropertyViewTerm[] Mapping { get; set; } = [];
 
-        public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData)
+        public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)
         {
+            var token = new NodePropertyAccessToken(nodeData, context);
             var mapping = Mapping;
             List<PropertyItemViewModelBase> propertyViewModels = new(mapping.Length);
 
             for (int j = 0; j < mapping.Length; j++)
             {
-                propertyViewModels.Add(mapping[j].GetViewModel(nodeData));
+                propertyViewModels.Add(mapping[j].GetViewModel(token));
             }
             var tab = new PropertyTabViewModel()
             {

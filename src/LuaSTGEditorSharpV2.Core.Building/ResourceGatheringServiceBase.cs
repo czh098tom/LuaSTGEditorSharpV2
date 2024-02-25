@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
     /// Provide functionality of gathering resources from <see cref="NodeData"/>.
     /// </summary>
     public class ResourceGatheringServiceBase 
-        : NodeService<ResourceGatheringServiceProvider, ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
+        : CompactNodeService<ResourceGatheringServiceProvider, ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
     {
         public override sealed ResourceGatheringContext GetEmptyContext(LocalServiceParam localSettings
             , ResourceGatheringServiceSettings serviceSettings)

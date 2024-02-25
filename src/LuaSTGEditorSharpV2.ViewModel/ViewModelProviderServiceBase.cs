@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
     /// Provide functionality of presenting and preserving tree structure on GUI according to <see cref="NodeData"/>.
     /// </summary>
     public abstract class ViewModelProviderServiceBase
-        : NodeService<ViewModelProviderServiceProvider, ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
+        : CompactNodeService<ViewModelProviderServiceProvider, ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
     {
         public override sealed NodeViewModelContext GetEmptyContext(LocalServiceParam localSettings
             , ViewModelProviderServiceSettings serviceSettings)

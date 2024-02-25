@@ -23,8 +23,9 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
 
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
-            var shortName = ShortNameCaputure?.Capture(dataSource) ?? string.Empty;
-            var jsonDecl = DeclarationCaputure?.Capture(dataSource) ?? string.Empty;
+            var token = new NodePropertyAccessToken(dataSource, context);
+            var shortName = ShortNameCaputure?.Capture(token) ?? string.Empty;
+            var jsonDecl = DeclarationCaputure?.Capture(token) ?? string.Empty;
             try
             {
                 var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();

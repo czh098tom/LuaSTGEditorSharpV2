@@ -20,19 +20,20 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         [JsonProperty] public PropertyViewTerm? Count { get; private set; } = null;
         [JsonProperty] public TTermVariable? VariableProperty { get; private set; } = null;
 
-        public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData)
+        public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)
         {
+            var token = new NodePropertyAccessToken(nodeData, context);
             List<PropertyItemViewModelBase> properties = [];
             if (Count != null && VariableProperty != null)
             {
-                string countStr = Count.Mapping?.Capture(nodeData) ?? string.Empty;
+                string countStr = Count.Mapping?.Capture(token) ?? string.Empty;
                 int count = 0;
                 if (int.TryParse(countStr, out var c))
                 {
                     count = c;
                 }
-                properties.Add(Count.GetViewModel(nodeData));
-                properties.AddRange(VariableProperty.GetViewModel(nodeData, count));
+                properties.Add(Count.GetViewModel(token));
+                properties.AddRange(VariableProperty.GetViewModel(nodeData, context, count));
             }
             var tab = new PropertyTabViewModel()
             {

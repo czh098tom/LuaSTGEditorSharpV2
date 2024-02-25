@@ -16,7 +16,8 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
         public override IEnumerable<GroupedResource> GetResourcesToPackWithContext(NodeData node
             , ResourceGatheringContext context)
         {
-            string path = PathCapture?.Capture(node) ?? string.Empty;
+            var token = new NodePropertyAccessToken(node, context);
+            string path = PathCapture?.Capture(token) ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(path))
             {
                 foreach (var s in context.EnumerateResourceGroups())

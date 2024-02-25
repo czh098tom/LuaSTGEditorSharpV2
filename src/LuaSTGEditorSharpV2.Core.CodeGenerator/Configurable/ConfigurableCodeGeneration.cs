@@ -51,10 +51,11 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 
         protected virtual int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
         {
+            var token = new NodePropertyAccessToken(node, context);
             int n;
             for (n = 0; n < Captures.Length; n++)
             {
-                captureResult[n] = Captures[n].ApplyMacro(node, context);
+                captureResult[n] = Captures[n].ApplyMacro(token, context);
             }
 
             for (int i = 0; i < ContextCaptures.Length; i++)
@@ -64,7 +65,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                     var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
                     if (contextNode != null)
                     {
-                        captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNode, context);
+                        var contextNodeToken = new NodePropertyAccessToken(contextNode, context);
+                        captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNodeToken, context);
                     }
                     else
                     {

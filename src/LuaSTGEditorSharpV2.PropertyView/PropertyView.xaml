@@ -14,7 +14,7 @@
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}"/>
             <ComboBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay}" IsEditable="True"
-                      ItemsSource="{Binding Type.Parameters[Key], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
+                      ItemsSource="{Binding Type.Parameters[Options], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
             <Button Grid.Column="2" Height="16" Content="...">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">

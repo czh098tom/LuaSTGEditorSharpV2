@@ -22,10 +22,13 @@
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory" Condition="$(InReferenceParent)!='true'">
     <PropertyGroup>
-      <YourSourceDirectory>$(MSBuildProjectDirectory)\package\Core</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\package\Core</YourDestinationDirectory>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\package</YourDestinationDirectory>
     </PropertyGroup>
-    <Copy SourceFiles="$(YourSourceDirectory)\manifest" DestinationFiles="$(YourDestinationDirectory)\manifest" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

@@ -18,13 +18,14 @@ namespace LuaSTGEditorSharpV2.Core
     /// <typeparam name="TService"> The service itself. </typeparam>
     /// <typeparam name="TContext"> The context that preserves frequently used data for this service. </typeparam>
     /// <typeparam name="TSettings"> The singleton settings used by this service during the lifecycle of the application. </typeparam>
-    [PackagePrimaryKey(nameof(TypeUID))]
-    public abstract class NodeService<TServiceProvider, TService, TContext, TSettings>
-        where TServiceProvider : NodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
-        where TService : NodeService<TServiceProvider, TService, TContext, TSettings>
-        where TContext : NodeContext<TSettings>
+    public abstract class CompactNodeService<TServiceProvider, TService, TContext, TSettings>
+        : NodeServiceBase
+        where TServiceProvider : CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
+        where TService : CompactNodeService<TServiceProvider, TService, TContext, TSettings>
+        where TContext : NodeContextWithSettings<TSettings>
         where TSettings : class, new()
     {
+        // TODO[*] optimize by removing these static methods
         protected static TServiceProvider GetServiceProvider()
         {
             return HostedApplicationHelper.GetService<TServiceProvider>();
@@ -41,9 +42,6 @@ namespace LuaSTGEditorSharpV2.Core
 
         protected static TService GetServiceOfNode(NodeData node)
             => GetServiceProvider().GetServiceOfNode(node);
-
-        [JsonProperty]
-        public string TypeUID { get; protected set; } = string.Empty;
 
         /// <summary>
         /// When overridden in derived class, obtain an empty context object.
@@ -83,5 +81,5 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeService : NodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase> { }
+    internal class DefaultNodeService : CompactNodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase> { }
 }

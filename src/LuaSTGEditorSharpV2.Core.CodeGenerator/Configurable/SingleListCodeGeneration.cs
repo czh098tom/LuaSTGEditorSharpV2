@@ -28,10 +28,11 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 
         protected override int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
         {
+            var token = new NodePropertyAccessToken(node, context);
             int n = base.WriteCaptureResult(captureResult, node, context);
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
-                var countStr = CountCapture.Capture(node) ?? string.Empty;
+                var countStr = CountCapture.Capture(token) ?? string.Empty;
                 captureResult[n] = string.Empty;
                 var subCaptureResult = new string[SubCaptureRule.Length];
                 if (int.TryParse(countStr, out var count))
@@ -42,7 +43,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                         object idx = i;
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(node, idx) ?? string.Empty;
+                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(token, idx) ?? string.Empty;
                         }
                         for (int j = 0; j < SubCaptureFormat.Length; j++)
                         {

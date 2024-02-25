@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     {
         [JsonProperty] public LocalizableString? Caption { get; private set; }
 
-        public abstract PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData);
+        public abstract PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context);
 
         public abstract CommandBase? ResolveCommandOfEditingNode(NodeData nodeData,
             PropertyViewContext context, int itemIndex, string edited);

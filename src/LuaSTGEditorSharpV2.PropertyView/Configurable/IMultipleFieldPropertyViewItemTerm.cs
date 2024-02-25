@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     public interface IMultipleFieldPropertyViewItemTerm<TIntermediateModel>
         where TIntermediateModel : class
     {
-        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, int count);
+        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, PropertyViewContext context, int count);
 
         public CommandBase? GetCommand(NodeData nodeData, TIntermediateModel intermediateModel, int index);
     }

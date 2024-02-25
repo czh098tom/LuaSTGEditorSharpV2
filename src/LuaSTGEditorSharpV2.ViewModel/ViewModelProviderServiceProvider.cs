@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 {
     [ServiceName("ViewModel"), ServiceShortName("vm")]
     public class ViewModelProviderServiceProvider
-        : NodeServiceProvider<ViewModelProviderServiceProvider, ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
+        : CompactNodeServiceProvider<ViewModelProviderServiceProvider, ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
     {
         private static readonly ViewModelProviderServiceBase _defaultService = new DefaultViewModelProviderService();
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public class ResourceGatheringContext : NodeContext<ResourceGatheringServiceSettings>
+    public class ResourceGatheringContext : NodeContextWithSettings<ResourceGatheringServiceSettings>
     {
         private Stack<string> _resourceGroup = new ();
 

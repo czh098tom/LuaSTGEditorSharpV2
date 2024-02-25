@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
     /// Provide functionality of generating code from <see cref="NodeData"/>.
     /// </summary>
     public class CodeGeneratorServiceBase 
-        : NodeService<CodeGeneratorServiceProvider, CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
+        : CompactNodeService<CodeGeneratorServiceProvider, CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
     {
         [JsonProperty("Language")]
         public string Language { get; private set; } = string.Empty;

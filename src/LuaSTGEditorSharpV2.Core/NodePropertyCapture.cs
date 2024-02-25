@@ -15,19 +15,19 @@ namespace LuaSTGEditorSharpV2.Core
         [JsonProperty] public string Key { get; private set; } = string.Empty;
         [JsonProperty] public string DefaultValue { get; private set; } = string.Empty;
 
-        public string Capture(NodeData nodeData)
+        public string Capture(NodePropertyAccessToken token)
         {
-            return nodeData.GetProperty(Key, DefaultValue);
+            return token.GetValueWithDefault(Key, DefaultValue);
         }
 
-        public string CaptureByFormat(NodeData nodeData, object? arg0)
+        public string CaptureByFormat(NodePropertyAccessToken token, object? arg0)
         {
-            return nodeData.GetProperty(string.Format(Key, arg0), DefaultValue);
+            return token.GetValueWithDefault(string.Format(Key, arg0), DefaultValue);
         }
 
-        public string CaptureByFormat(NodeData nodeData, params object?[] args)
+        public string CaptureByFormat(NodePropertyAccessToken token, params object?[] args)
         {
-            return nodeData.GetProperty(string.Format(Key, args), DefaultValue);
+            return token.GetValueWithDefault(string.Format(Key, args), DefaultValue);
         }
     }
 }

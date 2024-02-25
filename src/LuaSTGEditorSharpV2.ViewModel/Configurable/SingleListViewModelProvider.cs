@@ -27,12 +27,12 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             return base.GetCaptureCacheLength();
         }
 
-        protected override int WriteCaptureResult(NodeData dataSource, string?[] captureResult)
+        protected override int WriteCaptureResult(NodePropertyAccessToken token, string?[] captureResult)
         {
-            int n = base.WriteCaptureResult(dataSource, captureResult);
+            int n = base.WriteCaptureResult(token, captureResult);
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
-                var countStr = CountCapture.Capture(dataSource) ?? string.Empty;
+                var countStr = CountCapture.Capture(token) ?? string.Empty;
                 captureResult[n] = string.Empty;
                 var subCaptureResult = new string[SubCaptureRule.Length];
                 if (int.TryParse(countStr, out var count))
@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
                         object idx = i;
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(dataSource, idx) ?? string.Empty;
+                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(token, idx) ?? string.Empty;
                         }
                         var subCaptureFormat = SubCaptureFormat.GetLocalized();
                         for (int j = 0; j < subCaptureFormat.Length; j++)
