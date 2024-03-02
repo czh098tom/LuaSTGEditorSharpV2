@@ -1,10 +1,35 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SingleListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "Repeat",
 	"Language": "Lua",
-	"Captures":[
+	"Captures": [
 		{ "Key": "times" }
 	],
-	"Head": "for _ = 1, {1} do",
-	"Tail": "end"
-  }
+	"CountCapture": { "Key": "count" },
+	"SubCaptureRule": [
+		{ "Key": "name_{0}" },
+		{
+			"Key": "init_{0}",
+			"DefaultValue": "0"
+		},
+		{
+			"Key": "increment_{0}",
+			"DefaultValue": "0"
+		}
+	],
+	"SubCaptureFormat": [
+		{
+			"Text": "{0}local {1} = {2} local _d_{1} = {3}\n",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": true
+		},
+		{
+			"Text": "{0}{1} = {1} + _d_{1}\n",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": true
+		}
+	],
+	"Head": "for _ = 1, {1} do\n{2}{0}do",
+	"Tail": "{0}end\n{3}end",
+	"IndentionIncrement": 2
+}

@@ -132,10 +132,20 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public StringBuilder ApplyIndentedFormat(StringBuilder indention
             , string toAppend, params object?[] source)
         {
+            return ApplyIndented(indention, string.Format(toAppend, MergeParam(source)));
+        }
+
+        public string ApplyFormat(string toAppend, params object?[] source)
+        {
+            return string.Format(toAppend, MergeParam(source));
+        }
+
+        private object?[] MergeParam(params object?[] source)
+        {
             object?[] fullParams = new object[source.Length + 1];
-            fullParams[0] = indention.ToString();
+            fullParams[0] = ServiceSettings.IndentionString;
             Array.Copy(source, 0, fullParams, 1, source.Length);
-            return ApplyIndented(indention, string.Format(toAppend, fullParams));
+            return fullParams;
         }
     }
 }

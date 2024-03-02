@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public LocalNodeServices()
         {
-            _packageInfo = new PackageInfo(string.Empty, new Version(), null);
+            _packageInfo = new PackageInfo(string.Empty, new Version(), float.MaxValue, null);
         }
 
         [MemberNotNull(nameof(_packageInfo))]

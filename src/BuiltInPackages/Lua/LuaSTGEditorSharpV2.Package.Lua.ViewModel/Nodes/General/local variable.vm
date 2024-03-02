@@ -1,7 +1,6 @@
 ﻿{
 	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SingleListViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LocalVariable",
-
 	"CountCapture": { "Key": "count" },
 	"SubCaptureRule": [
 		{ "Key": "name_{0}" },
@@ -38,9 +37,9 @@
 		}
 	},
 	"Text": {
-		"Neutral": "define:{0}",
+		"Neutral": "define:{0}{1}",
 		"Localized": {
-			"zh": "定义：{0}"
+			"zh": "定义：{0}{1}"
 		}
 	}
 }

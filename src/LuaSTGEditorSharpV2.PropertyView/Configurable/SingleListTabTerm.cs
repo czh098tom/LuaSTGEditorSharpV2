@@ -24,6 +24,10 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         {
             var token = new NodePropertyAccessToken(nodeData, context);
             List<PropertyItemViewModelBase> properties = [];
+            for (int i = 0; i < ImmutableProperty.Length; i++)
+            {
+                properties.Add(ImmutableProperty[i].GetViewModel(token));
+            }
             if (Count != null && VariableProperty != null)
             {
                 string countStr = Count.Mapping?.Capture(token) ?? string.Empty;

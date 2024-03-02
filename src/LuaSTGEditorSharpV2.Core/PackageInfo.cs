@@ -12,12 +12,15 @@ namespace LuaSTGEditorSharpV2.Core
     [Serializable]
     public record class PackageInfo(string Name, 
         Version Version, 
+        float Priority,
         string? LibraryPath) : IComparable<PackageInfo>
     {
         public int CompareTo(PackageInfo? other)
         {
             if (other == null) return 1;
-            return Version.CompareTo(other.Version);
+            var priorityCmp = Priority.CompareTo(other.Priority);
+            var versionCmp = Priority.CompareTo(other.Version);
+            return priorityCmp == 0 ? Version.CompareTo(other.Version) : versionCmp;
         }
     }
 }

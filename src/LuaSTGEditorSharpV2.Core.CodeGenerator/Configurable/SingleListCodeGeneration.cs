@@ -21,7 +21,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
         {
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
-                return base.GetCaptureCacheLength() + 1;
+                return base.GetCaptureCacheLength() + SubCaptureFormat.Length;
             }
             return base.GetCaptureCacheLength();
         }
@@ -33,11 +33,15 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
                 var countStr = CountCapture.Capture(token) ?? string.Empty;
-                captureResult[n] = string.Empty;
                 var subCaptureResult = new string[SubCaptureRule.Length];
+                StringBuilder[] captureResultBuilder = new StringBuilder[SubCaptureFormat.Length];
+                for (int i = 0; i < SubCaptureFormat.Length; i++)
+                {
+                    captureResult[n + i] = string.Empty;
+                    captureResultBuilder[i] = new StringBuilder();
+                }
                 if (int.TryParse(countStr, out var count))
                 {
-                    var sb = new StringBuilder();
                     for (int i = 0; i < count; i++)
                     {
                         object idx = i;
@@ -50,13 +54,16 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                             var sel = SubCaptureFormat[j];
                             if (sel.ShouldAppend(subCaptureResult))
                             {
-                                sb.Append(context.ApplyIndentedFormat(context.GetIndented(), sel.Text, subCaptureResult));
+                                captureResultBuilder[j].Append(context.ApplyFormat(sel.Text, subCaptureResult));
                             }
                         }
                     }
-                    captureResult[n] = sb.ToString();
+                    for (int i = 0; i < SubCaptureFormat.Length; i++)
+                    {
+                        captureResult[n + i] = captureResultBuilder[i].ToString();
+                    }
                 }
-                n++;
+                n += SubCaptureFormat.Length;
             }
             return n;
         }

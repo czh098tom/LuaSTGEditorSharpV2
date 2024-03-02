@@ -22,7 +22,8 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
         {
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
-                return base.GetCaptureCacheLength() + 1;
+                var subCaptureFormat = SubCaptureFormat.GetLocalized();
+                return base.GetCaptureCacheLength() + subCaptureFormat.Length;
             }
             return base.GetCaptureCacheLength();
         }
@@ -32,12 +33,17 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             int n = base.WriteCaptureResult(token, captureResult);
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
+                var subCaptureFormat = SubCaptureFormat.GetLocalized();
                 var countStr = CountCapture.Capture(token) ?? string.Empty;
-                captureResult[n] = string.Empty;
                 var subCaptureResult = new string[SubCaptureRule.Length];
+                StringBuilder[] captureResultBuilder = new StringBuilder[subCaptureFormat.Length];
+                for (int i = 0; i < subCaptureFormat.Length; i++)
+                {
+                    captureResult[n + i] = string.Empty;
+                    captureResultBuilder[i] = new StringBuilder();
+                }
                 if (int.TryParse(countStr, out var count))
                 {
-                    var sb = new StringBuilder();
                     for (int i = 0; i < count; i++)
                     {
                         object idx = i;
@@ -45,19 +51,21 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
                         {
                             subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(token, idx) ?? string.Empty;
                         }
-                        var subCaptureFormat = SubCaptureFormat.GetLocalized();
                         for (int j = 0; j < subCaptureFormat.Length; j++)
                         {
                             var sel = subCaptureFormat[j];
                             if (sel.ShouldAppend(subCaptureResult))
                             {
-                                sb.AppendFormat(sel.Text, subCaptureResult);
+                                captureResultBuilder[j].AppendFormat(sel.Text, subCaptureResult);
                             }
                         }
                     }
-                    captureResult[n] = sb.ToString();
+                    for (int i = 0; i < subCaptureFormat.Length; i++)
+                    {
+                        captureResult[n + i] = captureResultBuilder[i].ToString();
+                    }
                 }
-                n++;
+                n += subCaptureFormat.Length;
             }
             return n;
         }
