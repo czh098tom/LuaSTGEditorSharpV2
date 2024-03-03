@@ -23,12 +23,12 @@ namespace LuaSTGEditorSharpV2.PropertyView
             return new PropertyViewContext(localSettings, serviceSettings);
         }
 
-        internal protected static CommandBase? ResolveNativeEditing(NodeData nodeData,
+        internal protected static EditResult ResolveNativeEditing(NodeData nodeData,
             IReadOnlyList<PropertyItemViewModelBase> propertyList,
             int itemIndex, string edited)
         {
-            return EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
-                (propertyList[itemIndex] as BasicPropertyItemViewModel)?.Name, edited);
+            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+                (propertyList[itemIndex] as BasicPropertyItemViewModel)?.Name, edited));
         }
 
         /// <summary>
@@ -55,11 +55,11 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <param name="itemIndex"> Index of item in <see cref="PropertyItemViewModelBase"/>s. </param>
         /// <param name="edited"> The <see cref="string"/> as edit result. </param>
         /// <returns></returns>
-        internal protected virtual CommandBase? ResolveCommandOfEditingNode(NodeData nodeData, 
+        internal protected virtual EditResult ResolveCommandOfEditingNode(NodeData nodeData, 
             PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
             int tabIndex, int itemIndex, string edited)
         {
-            return null;
+            return EditResult.Empty;
         }
     }
 }

@@ -27,11 +27,11 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return propertyTabViewModels;
         }
 
-        internal protected override CommandBase? ResolveCommandOfEditingNode(NodeData nodeData, 
+        internal protected override EditResult ResolveCommandOfEditingNode(NodeData nodeData, 
             PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
             int tabIndex, int itemIndex, string edited)
         {
-            if (tabIndex < 0 || tabIndex >= Tabs.Length) return null;
+            if (tabIndex < 0 || tabIndex >= Tabs.Length) return EditResult.Empty;
             return Tabs[tabIndex].ResolveCommandOfEditingNode(nodeData, context, itemIndex, edited);
         }
     }

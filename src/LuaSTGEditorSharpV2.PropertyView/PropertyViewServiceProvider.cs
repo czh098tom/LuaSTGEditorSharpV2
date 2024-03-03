@@ -57,7 +57,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             return list;
         }
 
-        public CommandBase? GetCommandOfEditingNode(NodeData nodeData,
+        public EditResult GetCommandOfEditingNode(NodeData nodeData,
             LocalServiceParam localParams, IReadOnlyList<PropertyTabViewModel> propertyList,
             int tabIndex, int itemIndex, string edited)
             => GetCommandOfEditingNode(nodeData, localParams, ServiceSettings, propertyList
@@ -75,7 +75,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <param name="itemIndex"> Index of item in <see cref="PropertyItemViewModelBase"/>s. </param>
         /// <param name="edited"> The <see cref="string"/> as edit result. </param>
         /// <returns></returns>
-        public CommandBase? GetCommandOfEditingNode(NodeData nodeData,
+        public EditResult GetCommandOfEditingNode(NodeData nodeData,
             LocalServiceParam localParams, PropertyViewServiceSettings serviceSettings,
             IReadOnlyList<PropertyTabViewModel> propertyList, int tabIndex, int itemIndex,
             string edited)

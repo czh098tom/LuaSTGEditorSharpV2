@@ -47,7 +47,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return tab;
         }
 
-        public override CommandBase? ResolveCommandOfEditingNode(NodeData nodeData, PropertyViewContext context, int itemIndex, string edited)
+        public override EditResult ResolveCommandOfEditingNode(NodeData nodeData, PropertyViewContext context, int itemIndex, string edited)
         {
             int idxCount = ImmutableProperty.Length;
             if (itemIndex > idxCount)
@@ -63,28 +63,28 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                     catch (Exception) { }
                     if (variableDef != null)
                     {
-                        return VariableProperty?.GetCommand(nodeData, variableDef, idx);
+                        return new EditResult(VariableProperty?.GetCommand(nodeData, variableDef, idx));
                     }
                     else
                     {
-                        return null;
+                        return EditResult.Empty;
                     }
                 }
-                return null;
+                return EditResult.Empty;
             }
             else if (itemIndex == idxCount)
             {
                 if (Count != null && VariableProperty != null)
                 {
-                    return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Count.Mapping?.Key, edited);
+                    return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Count.Mapping?.Key, edited), true);
                 }
-                return null;
+                return EditResult.Empty;
             }
-            else if (itemIndex < idxCount && itemIndex > 0)
+            else if (itemIndex < idxCount && itemIndex >= 0)
             {
-                return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, ImmutableProperty[itemIndex].Mapping?.Key, edited);
+                return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData, ImmutableProperty[itemIndex].Mapping?.Key, edited));
             }
-            return null;
+            return EditResult.Empty;
         }
     }
 }
