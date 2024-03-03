@@ -45,13 +45,13 @@ namespace LuaSTGEditorSharpV2.PropertyView
             if (doc == null) return;
             var param = new LocalServiceParam(doc);
             if (SourceNodes.Length != 1) return;
-            var command = propertyViewService.GetCommandOfEditingNode(
+            var editResult = propertyViewService.GetCommandOfEditingNode(
                 SourceNodes[0],
                 param, Tabs, Tabs.IndexOf(vm),
                 vm.Properties.IndexOf(e.Item),
                 e.Args.NewValue);
 
-            PublishCommand(command, doc, SourceNodes);
+            PublishCommand(editResult.Command, doc, SourceNodes, editResult.ShouldRefreshView);
         }
 
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)

@@ -35,11 +35,11 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return tab;
         }
 
-        public override CommandBase? ResolveCommandOfEditingNode(NodeData nodeData,
+        public override EditResult ResolveCommandOfEditingNode(NodeData nodeData,
             PropertyViewContext context, int itemIndex, string edited)
         {
-            if (itemIndex < 0 || itemIndex >= Mapping.Length) return null;
-            return EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Mapping[itemIndex].Mapping?.Key, edited);
+            if (itemIndex < 0 || itemIndex >= Mapping.Length) return EditResult.Empty;
+            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Mapping[itemIndex].Mapping?.Key, edited), false);
         }
     }
 }
