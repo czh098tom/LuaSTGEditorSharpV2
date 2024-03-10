@@ -1,0 +1,6 @@
+﻿{
+  "TypeUID": "ServiceDefinition",
+  "DefaultValue": {
+    "serviceShortName": "cgen"
+  }
+}

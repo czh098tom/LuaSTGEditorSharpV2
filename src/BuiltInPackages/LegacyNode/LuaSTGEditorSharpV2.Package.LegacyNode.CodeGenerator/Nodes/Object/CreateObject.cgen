@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateObject",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "position" },
+		{ "Key": "parameters" }
+	],
+	"Head": [
+		{
+			"Text": "last = New(_editor_class[\"{1}\"], {2}, {3})",
+			"ConditionOn": 3,
+			"UseExistanceInsteadOfBoolValue": "true"
+		},
+		{
+			"Text": "last = New(_editor_class[\"{1}\"], {2})",
+			"ConditionOn": 3,
+			"UseExistanceInsteadOfBoolValue": "true",
+			"Inversed": "true"
+		}
+	]
+}

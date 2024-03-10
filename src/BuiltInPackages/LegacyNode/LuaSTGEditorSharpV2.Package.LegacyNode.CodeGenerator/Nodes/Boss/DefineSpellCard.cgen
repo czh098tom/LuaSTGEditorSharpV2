@@ -1,0 +1,42 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineSpellCard",
+	"Captures": [
+		{ "Key": "spellcard_name" },
+		{ "Key": "protect_time" },
+		{ "Key": "resist_time" },
+		{ "Key": "total_time" },
+		{ "Key": "hp" },
+		{ "Key": "power_amount" },
+		{ "Key": "faith_amount" },
+		{ "Key": "point_amount" },
+		{ "Key": "bomb_immunity" },
+		{ "Key": "opening_uperformance" }
+	],
+	"ContextCaptures": [
+		{
+			"TypeUID": "DefineBoss",
+			"Property": [
+				{ "Key": "identifier"}
+			]
+		}
+	],
+	"Head": [
+		{ "Text": "local _temporary_spellcard = boss.card.New('{1}', {2}, {3}, {4}, {5}, {{{6}, {7}, {8}}}, {9})" },
+		{ "Text": "_temporary_class.cards = {{}}" },
+		{ "Text": "_temporary_class.name = '{3}'" },
+		{ "Text": "_temporary_class.bgm = {5}" },
+		{ "Text": "_temporary_class._bg = {4}" },
+		{ "Text": "_temporary_class.difficulty = {2}" }
+	],
+	"Tail": [
+		{ "Text": "_temporary_spellcard.perform = {10}" },
+		{ "Text": "table.insert(_temporary_class.cards, _temporary_spellcard" },
+		{
+			"Text": "table.insert(_sc_table, {{{11}, {1}, _temporary_spellcard, #_temporary_class.cards, {10}}})",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true"
+		}
+	],
+	"IndentionIncrement": 0
+}

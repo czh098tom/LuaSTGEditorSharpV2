@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ClearBulletInRange",
+	"Captures":[
+		{"Key":"position"}, 
+		{"Key":"radius"},
+		{"Key":"expanding_time"},
+		{"Key":"clearing_time"},
+		{"Key":"convert_to_faith"},
+		{"Key":"include_indestructible"},
+		{"Key":"expanding_time"},
+		{"Key":"vertical_veloctiy"}
+	],
+	"Head": "New(bullet_cleaner, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})"
+  }

@@ -1,0 +1,28 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BulletInit",
+	"Captures": [
+		{ "Key":"parameters" },
+		{ "Key":"style" },
+		{ "Key":"color" },
+		{ "Key":"stay" },
+		{ "Key":"destroyable" }
+	],
+	"Head": [
+		{
+			"Text": "function _temporary_class:init(self, _x, _y, {1})",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true"
+		},
+		{
+			"Text": "function _temporary_class:init(self, _x, _y)",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true",
+			"Inversed": "true"
+		},
+		{ "Text": "{0}self.x, self.y = _x, _y" }
+	],
+	"Tail": [
+		{ "Text": "end" }
+	]
+}
