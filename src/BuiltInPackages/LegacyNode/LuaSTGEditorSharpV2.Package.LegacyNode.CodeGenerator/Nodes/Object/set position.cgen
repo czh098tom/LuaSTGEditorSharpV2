@@ -1,9 +1,0 @@
-{
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "SetPosition",
-	"Captures":[
-		{"Key":"target"},
-		{"Key":"position"}
-	],
-	"Head": "{1}.x,{1}.y = {2}"
-  }
