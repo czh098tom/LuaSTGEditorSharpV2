@@ -82,8 +82,7 @@ namespace LuaSTGEditorSharpV2.Core
         public static T GetService<T>() where T : class
         {
             if (_applicationHost == null) throw new InvalidOperationException();
-            return _applicationHost.Services.GetService<T>()
-                ?? throw new InvalidOperationException();
+            return _applicationHost.Services.GetRequiredService<T>();
         }
 
         public static IEnumerable<T> GetServices<T>() where T : class
@@ -91,15 +90,14 @@ namespace LuaSTGEditorSharpV2.Core
             if (_applicationHost == null) throw new InvalidOperationException();
             return applicationServiceProviderTypes
                 .Where(t => t.IsAnyDerivedTypeOf(typeof(T)))
-                .Select(_applicationHost.Services.GetService)
+                .Select(_applicationHost.Services.GetRequiredService)
                 .OfType<T>() ?? throw new InvalidOperationException();
         }
 
         public static object GetService(Type type)
         {
             if (_applicationHost == null) throw new InvalidOperationException();
-            return _applicationHost.Services.GetService(type)
-                ?? throw new InvalidOperationException();
+            return _applicationHost.Services.GetRequiredService(type);
         }
     }
 }
