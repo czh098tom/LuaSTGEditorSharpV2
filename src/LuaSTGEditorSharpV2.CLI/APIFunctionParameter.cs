@@ -21,14 +21,16 @@ namespace LuaSTGEditorSharpV2.CLI
         public IReadOnlyList<string>? Packages { get; private set; }
         public string? InputPath { get; private set; }
         public string? OutputPath { get; private set; }
+        public string? TaskName { get; private set; }
         public IReadOnlyDictionary<string, JObject>? ServiceSettings { get; private set; }
 
-        public APIFunctionParameter(IReadOnlyList<string>? packages, string? inputPath, string? outputPath
+        public APIFunctionParameter(BuiltInParams builtInParams
             , IReadOnlyDictionary<string, JObject>? serviceSettings)
         {
-            Packages = packages;
-            InputPath = inputPath;
-            OutputPath = outputPath;
+            Packages = builtInParams.Packages;
+            InputPath = builtInParams.InputPath;
+            OutputPath = builtInParams.OutputPath;
+            TaskName = builtInParams.TaskName;
             ServiceSettings = serviceSettings;
         }
 

@@ -12,7 +12,9 @@
 }]]></_.serviceDeclaration>
     </ServiceDefinition>
   </DefinitionRoot>
-  <BuildRoot />
+  <BuildRoot>
+    <DefaultLuaSTGBuilding taskName="test" outputName="SHARPV2_TEST"/>
+  </BuildRoot>
   <CompileRoot>
     <DefineBullet identifier="test_bullet">
       <BulletInit parameters="what did genshin do with you!?" style="grain_a" color="COLOR_RED" stay="true" destroyable="false" />

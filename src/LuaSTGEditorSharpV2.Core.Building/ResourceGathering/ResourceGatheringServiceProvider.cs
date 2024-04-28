@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using LuaSTGEditorSharpV2.Core.Model;
 
-namespace LuaSTGEditorSharpV2.Core.Building
+namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
 {
     [ServiceShortName("resg"), ServiceName("ResourceGathering")]
     public class ResourceGatheringServiceProvider
@@ -27,8 +26,8 @@ namespace LuaSTGEditorSharpV2.Core.Building
             return service.GetResourcesToPackWithContext(nodeData, ctx);
         }
 
-        public IEnumerable<GroupedResource> ProceedChildren(NodeData node
-            , ResourceGatheringContext context)
+        public IEnumerable<GroupedResource> ProceedChildren(NodeData node, 
+            ResourceGatheringContext context)
         {
             context.Push(node);
             foreach (NodeData child in node.GetLogicalChildren())

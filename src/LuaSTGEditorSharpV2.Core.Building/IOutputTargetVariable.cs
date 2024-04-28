@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public interface IInputSource
+    public interface IOutputTargetVariable
     {
-        string[] GetSource(BuildingContext context);
+        void WriteTarget(IReadOnlyList<string> target, BuildingContext context);
     }
 }

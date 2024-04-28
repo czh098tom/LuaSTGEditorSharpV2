@@ -130,9 +130,9 @@ namespace LuaSTGEditorSharpV2.Core.Model
             FilePath = filePath;
         }
 
-        public PackageInfo GetPackageInfoForLocalNodeService()
+        public PackageManifest GetPackageInfoForLocalNodeService()
         {
-            return new PackageInfo($"_FILE_{FilePath}", 
+            return new PackageManifest($"_FILE_{FilePath}", 
                 new Version(int.MaxValue, int.MaxValue, int.MaxValue), 
                 float.MaxValue,
                 null);

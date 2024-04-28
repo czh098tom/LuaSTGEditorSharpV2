@@ -12,6 +12,7 @@ namespace LuaSTGEditorSharpV2.Core
         where TData : class
     {
         private readonly Dictionary<string, PriorityQueue<TData, PackageInfo>> _registered = [];
+        private readonly Dictionary<TData, PackageInfo> _data2PackageInfo = [];
 
         public void Register(string id, PackageInfo packageInfo, TData data)
         {
@@ -22,11 +23,17 @@ namespace LuaSTGEditorSharpV2.Core
                     _registered.Add(id, new PriorityQueue<TData, PackageInfo>());
                 }
                 _registered[id].Enqueue(data, packageInfo);
+                _data2PackageInfo.Add(data, packageInfo);
             }
             catch (ArgumentException e)
             {
                 throw new DuplicatedIDException(id, e);
             }
+        }
+
+        public PackageInfo GetPackageInfo(TData data)
+        {
+            return _data2PackageInfo[data];
         }
 
         public void UnloadPackage(PackageInfo packageInfo)
@@ -52,6 +59,18 @@ namespace LuaSTGEditorSharpV2.Core
                 {
                     pq.Enqueue(services[i], packageInfos[i]);
                 }
+            }
+            List<TData> toRemove = [];
+            foreach (var kvp in _data2PackageInfo)
+            {
+                if (kvp.Value == packageInfo)
+                {
+                    toRemove.Add(kvp.Key);
+                }
+            }
+            foreach (var data in toRemove)
+            {
+                _data2PackageInfo.Remove(data);
             }
         }
 

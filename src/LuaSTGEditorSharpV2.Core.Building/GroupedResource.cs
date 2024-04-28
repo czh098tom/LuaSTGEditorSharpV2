@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public record GroupedResource(string Path, string ResourceGroup)
+    public record GroupedResource(string Path, string TargetName, string ResourceGroup)
     {
     }
 }

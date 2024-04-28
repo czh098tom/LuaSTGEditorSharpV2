@@ -6,8 +6,5 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public abstract class BuildingTaskBase
-    {
-        public abstract void Execute(BuildingContext context);
-    }
+    public record struct WeightedBuildingTask(IBuildingTask BuildingTask, float Weight = 1f) { }
 }

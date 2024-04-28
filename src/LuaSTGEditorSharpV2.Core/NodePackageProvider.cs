@@ -118,11 +118,11 @@ namespace LuaSTGEditorSharpV2.Core
         {
             List<Assembly> assembly = [];
             var manifestPath = Path.Combine(basePath, _manifestName);
-            PackageInfo packageInfo = GetManifest(manifestPath);
+            PackageManifest packageManifest = GetManifest(manifestPath);
             _logger.LogInformation("Loaded manifest from \"{path}\"", manifestPath);
-            if (!string.IsNullOrWhiteSpace(packageInfo.LibraryPath))
+            if (!string.IsNullOrWhiteSpace(packageManifest.LibraryPath))
             {
-                var assemblyPath = Path.Combine(basePath, packageInfo.LibraryPath);
+                var assemblyPath = Path.Combine(basePath, packageManifest.LibraryPath);
                 Assembly asm = Assembly.LoadFrom(assemblyPath);
                 assembly.Add(asm);
                 _logger.LogInformation("Loaded main assembly from \"{path}\"", manifestPath);
@@ -130,7 +130,7 @@ namespace LuaSTGEditorSharpV2.Core
                 {
                     string serviceName = kvp.Value.Name;
                     string serviceAssembly = Path.Combine(basePath,
-                        $"{Path.GetFileNameWithoutExtension(packageInfo.LibraryPath)}.{serviceName}.dll");
+                        $"{Path.GetFileNameWithoutExtension(packageManifest.LibraryPath)}.{serviceName}.dll");
                     if (File.Exists(serviceAssembly))
                     {
                         asm = Assembly.LoadFrom(serviceAssembly);
@@ -140,7 +140,7 @@ namespace LuaSTGEditorSharpV2.Core
                 }
             }
             object?[] param = new object?[4];
-            param[2] = packageInfo;
+            param[2] = new PackageInfo(packageManifest, basePath);
             foreach (var kvp in _servicesProvider2Info)
             {
                 Type serviceProviderType = kvp.Value.ServiceProviderType;
@@ -207,7 +207,7 @@ namespace LuaSTGEditorSharpV2.Core
             return assembly;
         }
 
-        private PackageInfo GetManifest(string path)
+        private PackageManifest GetManifest(string path)
         {
             string manifestString;
             try
@@ -217,7 +217,7 @@ namespace LuaSTGEditorSharpV2.Core
                     using StreamReader sr = new(fs);
                     manifestString = sr.ReadToEnd();
                 }
-                return JsonConvert.DeserializeObject<PackageInfo>(manifestString, _versionConverter)
+                return JsonConvert.DeserializeObject<PackageManifest>(manifestString, _versionConverter)
                     ?? throw new PackageLoadingException($"Failed to deserialize package manifest at {path} .");
             }
             catch (System.Exception e)
@@ -265,6 +265,19 @@ namespace LuaSTGEditorSharpV2.Core
                     ReplaceSettingsForServiceIfValid(info.ServiceInstanceType, settings);
                 }
             }
+        }
+
+        public IReadOnlyDictionary<string, object> GetServiceShortName2SettingsDict()
+        {
+            var dictionary = new Dictionary<string, object>();
+            foreach (var kvp in _shortName2ServiceProviders)
+            {
+                if (HostedApplicationHelper.GetService(kvp.Value) is ISettingsProvider isp)
+                {
+                    dictionary.Add(kvp.Key, isp.Settings);
+                }
+            }
+            return dictionary;
         }
     }
 }

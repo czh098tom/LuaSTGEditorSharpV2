@@ -12,42 +12,43 @@ namespace LuaSTGEditorSharpV2.CLI
 {
     public class APIFunctionParameterResolver
     {
-        public static readonly string outputKey = "o";
         public static readonly string packageKey = "pkg";
+        public static readonly string outputKey = "o";
+        public static readonly string taskKey = "t";
         public static readonly char levelIndicator = '-';
 
-        private readonly HashSet<string> builtinKeys = new() { outputKey, packageKey };
-        private Dictionary<string, int> builtInkeyPositions = new();
-        private Dictionary<string, int> settingsKeyPositions = new();
-        private Dictionary<string, int> ends = new();
+        private readonly HashSet<string> builtinKeys = [packageKey, outputKey, taskKey];
+        private Dictionary<string, int> builtInkeyPositions = [];
+        private Dictionary<string, int> settingsKeyPositions = [];
+        private Dictionary<string, int> ends = [];
         private Stack<int> idxLevel = new();
 
-        private int[] levels = Array.Empty<int>();
+        private int[] levels = [];
 
-        private Dictionary<string, JObject> settingsEx = new();
+        private Dictionary<string, JObject> settingsEx = [];
 
-        private Dictionary<JToken, int> jvalue2Idx = new();
-        private Dictionary<JObject, int> jobj2Idx = new();
+        private Dictionary<JToken, int> jvalue2Idx = [];
+        private Dictionary<JObject, int> jobj2Idx = [];
         private Stack<JObject> objs = new();
         private Stack<int> idxs = new();
         private Stack<string> keys = new();
 
         public APIFunctionParameter Resolve(string[] args)
         {
-            builtInkeyPositions = new();
-            settingsKeyPositions = new();
-            ends = new();
+            builtInkeyPositions = [];
+            settingsKeyPositions = [];
+            ends = [];
             idxLevel = new();
             levels = new int[args.Length];
 
             idxLevel.Push(-1);
 
-            ResolveBuiltIn(args, out string? ipath, out string? opath, out string[]? pkg);
+            var builtIn = ResolveBuiltIn(args);
             Dictionary<string, JObject> settingsEx = ResolveSettingsEX(args);
-            return new APIFunctionParameter(pkg, ipath, opath, settingsEx);
+            return new APIFunctionParameter(builtIn, settingsEx);
         }
 
-        private void ResolveBuiltIn(string[] args, out string? ipath, out string? opath, out string[]? pkg)
+        private BuiltInParams ResolveBuiltIn(string[] args)
         {
             for (int i = 0; i < args.Length; i++)
             {
@@ -78,19 +79,25 @@ namespace LuaSTGEditorSharpV2.CLI
                 var o = idxLevel.Pop();
                 if (o > 0) ends.Add(args[o].TrimStart(levelIndicator), args.Length);
             }
-            ipath = args.GetOrDefault(1);
-            opath = null;
-            if (builtInkeyPositions.TryGetValue(outputKey, out int idx))
+            string? ipath = args.GetOrDefault(1);
+            string? opath = null;
+            if (builtInkeyPositions.TryGetValue(outputKey, out int idxOutput))
             {
-                opath = args.GetOrDefault(idx + 1);
+                opath = args.GetOrDefault(idxOutput + 1);
             }
             if (ipath != null) ipath = Path.GetFullPath(ipath);
             if (opath != null) opath = Path.GetFullPath(opath);
-            pkg = null;
+            string[]? pkg = null;
             if (builtInkeyPositions.TryGetValue(packageKey, out int idxpkg))
             {
                 pkg = args[(idxpkg + 1)..ends[packageKey]];
             }
+            string? task = null;
+            if (builtInkeyPositions.TryGetValue(taskKey, out int idxTask))
+            {
+                task = args.GetOrDefault(idxTask + 1);
+            }
+            return new BuiltInParams(pkg, ipath, opath, task);
         }
 
         private Dictionary<string, JObject> ResolveSettingsEX(string[] args)
@@ -99,11 +106,11 @@ namespace LuaSTGEditorSharpV2.CLI
             foreach (var kvp in settingsKeyPositions)
             {
                 jvalue2Idx = new(ReferenceEqualityComparer.Instance);
-                jobj2Idx = new();
+                jobj2Idx = [];
                 objs = new();
                 idxs = new();
                 keys = new();
-                objs.Push(new());
+                objs.Push([]);
                 idxs.Push(kvp.Value);
                 keys.Push(kvp.Key);
                 for (int i = kvp.Value + 1; i < ends[kvp.Key]; i++)

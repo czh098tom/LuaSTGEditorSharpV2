@@ -24,14 +24,14 @@ namespace LuaSTGEditorSharpV2.Core
         }
 
         public IReadOnlyList<(object, string)> Services => _services;
-        public PackageInfo PackageInfo => _packageInfo;
+        public PackageManifest PackageInfo => _packageInfo;
 
         private readonly List<(object, string)> _services = new();
-        private PackageInfo _packageInfo;
+        private PackageManifest _packageInfo;
 
         public LocalNodeServices()
         {
-            _packageInfo = new PackageInfo(string.Empty, new Version(), float.MaxValue, null);
+            _packageInfo = new PackageManifest(string.Empty, new Version(), float.MaxValue, null);
         }
 
         [MemberNotNull(nameof(_packageInfo))]

@@ -33,19 +33,6 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public static void AddOrSet<TKey, TValue>(this Dictionary<TKey, TValue> values, TKey key, TValue value)
-            where TKey : notnull
-        {
-            if (values.ContainsKey(key))
-            {
-                values[key] = value;
-            }
-            else
-            {
-                values.Add(key, value);
-            }
-        }
-
         public static int FindIndex<T>(this IReadOnlyList<T> list, T value)
             where T : class
         {

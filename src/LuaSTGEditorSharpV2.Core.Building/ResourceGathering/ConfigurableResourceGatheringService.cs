@@ -12,17 +12,19 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
     public class ConfigurableResourceGatheringService : ResourceGatheringServiceBase
     {
         [JsonProperty] public NodePropertyCapture? PathCapture { get; private set; }
+        [JsonProperty] public NodePropertyCapture? TargetNameCapture { get; private set; }
 
         public override IEnumerable<GroupedResource> GetResourcesToPackWithContext(NodeData node
             , ResourceGatheringContext context)
         {
             var token = new NodePropertyAccessToken(node, context);
             string path = PathCapture?.Capture(token) ?? string.Empty;
+            string target = TargetNameCapture?.Capture(token) ?? Path.GetFileName(path);
             if (!string.IsNullOrWhiteSpace(path))
             {
                 foreach (var s in context.EnumerateResourceGroups())
                 {
-                    yield return new GroupedResource(path, s);
+                    yield return new GroupedResource(path, target, s);
                 }
             }
             foreach (var rs in GetServiceProvider().ProceedChildren(node, context))

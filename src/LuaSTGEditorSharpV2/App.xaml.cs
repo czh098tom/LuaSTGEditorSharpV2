@@ -37,8 +37,6 @@ namespace LuaSTGEditorSharpV2
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-
             var args = e.Args;
 
             AddNodeServiceProvider<CodeGeneratorServiceProvider>();
@@ -65,6 +63,14 @@ namespace LuaSTGEditorSharpV2
                 applicationBuilder.Services.AddHostedService<MainWorker>();
                 return applicationBuilder;
             }, args);
+
+            base.OnStartup(e);
+        }
+
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            await ExitApplicationAsync();
+            base.OnExit(e);
         }
     }
 }

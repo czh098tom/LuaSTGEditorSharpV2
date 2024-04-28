@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.Core.Building
+namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
 {
     public class ResourceGatheringContext : NodeContextWithSettings<ResourceGatheringServiceSettings>
     {
-        private Stack<string> _resourceGroup = new ();
+        private Stack<string> _resourceGroup = new();
 
-        public ResourceGatheringContext(LocalServiceParam localSettings, ResourceGatheringServiceSettings serviceSettings) 
+        public ResourceGatheringContext(LocalServiceParam localSettings, ResourceGatheringServiceSettings serviceSettings)
             : base(localSettings, serviceSettings)
         {
         }

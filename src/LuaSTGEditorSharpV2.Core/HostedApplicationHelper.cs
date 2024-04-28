@@ -79,6 +79,11 @@ namespace LuaSTGEditorSharpV2.Core
             _applicationHost?.StopAsync();
         }
 
+        public static void WaitForShutdown()
+        {
+            _applicationHost?.WaitForShutdown();
+        }
+
         public static T GetService<T>() where T : class
         {
             if (_applicationHost == null) throw new InvalidOperationException();
@@ -98,6 +103,12 @@ namespace LuaSTGEditorSharpV2.Core
         {
             if (_applicationHost == null) throw new InvalidOperationException();
             return _applicationHost.Services.GetRequiredService(type);
+        }
+
+        public static async Task ExitApplicationAsync()
+        {
+            if (_applicationHost == null) return;
+            await _applicationHost.StopAsync();
         }
     }
 }

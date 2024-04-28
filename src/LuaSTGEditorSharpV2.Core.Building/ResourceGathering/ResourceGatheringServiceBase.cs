@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using LuaSTGEditorSharpV2.Core.Model;
 
-namespace LuaSTGEditorSharpV2.Core.Building
+namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
 {
     /// <summary>
     /// Provide functionality of gathering resources from <see cref="NodeData"/>.
     /// </summary>
-    public class ResourceGatheringServiceBase 
+    public class ResourceGatheringServiceBase
         : CompactNodeService<ResourceGatheringServiceProvider, ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
     {
         public override sealed ResourceGatheringContext GetEmptyContext(LocalServiceParam localSettings

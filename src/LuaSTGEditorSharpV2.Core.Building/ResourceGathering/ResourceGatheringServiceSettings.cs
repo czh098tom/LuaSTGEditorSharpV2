@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.Core.Building
+namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
 {
     public class ResourceGatheringServiceSettings : ServiceExtraSettingsBase
     {

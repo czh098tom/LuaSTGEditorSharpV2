@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public class BuildActionServiceSettings : ServiceExtraSettingsBase
+    public interface IInputSourceVariable
     {
+        IReadOnlyList<string> GetVariable(BuildingContext context);
     }
 }

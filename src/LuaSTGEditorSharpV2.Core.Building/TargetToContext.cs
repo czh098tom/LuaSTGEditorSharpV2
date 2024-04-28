@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public class SourceFromContext : IInputSourceVariable
+    public class TargetToContext : IOutputTargetVariable
     {
         public string Key { get; private set; }
 
-        public SourceFromContext(string key)
+        public TargetToContext(string key)
         {
             Key = key;
         }
 
-        public IReadOnlyList<string> GetVariable(BuildingContext context)
+        public void WriteTarget(IReadOnlyList<string> target, BuildingContext context)
         {
-            return context.GetVariables(Key);
+            context.SetVariable(Key, [.. target]);
         }
     }
 }

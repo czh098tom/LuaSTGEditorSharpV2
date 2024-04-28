@@ -10,5 +10,6 @@ namespace LuaSTGEditorSharpV2.Core
     {
         public void Register(string id, PackageInfo packageInfo, TData data);
         public void UnloadPackage(PackageInfo packageInfo);
+        public PackageInfo GetPackageInfo(TData data);
     }
 }

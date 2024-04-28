@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public class FixedSource : IInputSource
+    public class FixedSource : IInputSourceVariable
     {
         public string[] Path { get; private set; }
 
@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
             Path = path;
         }
 
-        public string[] GetSource(BuildingContext context)
+        public IReadOnlyList<string> GetVariable(BuildingContext context)
         {
             return Path;
         }

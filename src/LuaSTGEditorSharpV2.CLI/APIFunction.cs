@@ -12,35 +12,35 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         private static readonly Dictionary<string, APIFunction> _apis = [];
 
-        public static void Register(string name, Action<APIFunctionParameter> execution)
+        public static void Register(string name, Func<APIFunctionParameter, Task> execution)
         {
             _apis.Add(name, new APIFunction(name, execution));
         }
 
-        public static void FindAndExecute(string name, APIFunctionParameter param)
+        public static async Task FindAndExecute(string name, APIFunctionParameter param)
         {
             if (_apis.TryGetValue(name, out APIFunction? api))
             {
-                api.Execute(param);
+                await api.Execute(param);
             }
         }
 
         public string Name { get; private set; }
 
-        private Action<APIFunctionParameter> _execution;
+        private Func<APIFunctionParameter, Task> _execution;
 
-        private APIFunction(string name, Action<APIFunctionParameter> execution)
+        private APIFunction(string name, Func<APIFunctionParameter, Task> execution)
         {
             Name = name;
             _execution = execution;
         }
 
-        public void Execute(APIFunctionParameter param)
+        public async Task Execute(APIFunctionParameter param)
         {
             var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
             param.UsePackages();
             param.ReassignSettings();
-            _execution(param);
+            await _execution(param);
         }
     }
 }

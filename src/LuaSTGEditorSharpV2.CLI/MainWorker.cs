@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LuaSTGEditorSharpV2.Core;
+
 using Microsoft.Extensions.Hosting;
+
+using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Services;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
     public class MainWorker : BackgroundService
     {
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var args = HostedApplicationHelper.Args;
             APIFunctionRegistration.Register();
@@ -18,14 +21,14 @@ namespace LuaSTGEditorSharpV2.CLI
             try
             {
                 HostedApplicationHelper.InitNodeService();
-                APIFunction.FindAndExecute(args[0], param);
+                HostedApplicationHelper.GetService<SettingsService>().LoadSettings();
+                await APIFunction.FindAndExecute(args[0], param);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
             HostedApplicationHelper.ShutdownApplication();
-            return Task.CompletedTask;
         }
     }
 }

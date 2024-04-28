@@ -43,12 +43,11 @@ namespace LuaSTGEditorSharpV2.Core.Services
                 var fileName = Path.Combine(baseDir, $"{providerType.Name}.json");
                 try
                 {
-                    using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                    using var fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Read);
                     using var sr = new StreamReader(fs);
                     var str = sr.ReadToEnd();
-                    object? s = JsonConvert.DeserializeObject(str, settingsType, _serializerSettings)
-                        ?? throw new InvalidOperationException("Json serialized is null");
-                    provider.Settings = s;
+                    object? s = JsonConvert.DeserializeObject(str, settingsType, _serializerSettings);
+                    if (s != null) provider.Settings = s;
                 }
                 catch (System.Exception e)
                 {

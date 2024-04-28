@@ -15,6 +15,10 @@
     "CLI formatxml test": {
       "commandName": "Project",
       "commandLineArgs": "formatxml \"../../test/test.lstgxml\" -o \"../../test/output/test.lstgxml\" -pkg Core LegacyNode"
+    },
+    "CLI build test": {
+      "commandName": "Project",
+      "commandLineArgs": "build \"../../test/test.lstgxml\" -t \"test\" -pkg Core Lua LegacyNode -cgen --line_obfuscated --indention_string \"\""
     }
   }
 }

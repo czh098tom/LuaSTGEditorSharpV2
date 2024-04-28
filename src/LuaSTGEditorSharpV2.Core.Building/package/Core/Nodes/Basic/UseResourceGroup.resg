@@ -1,5 +1,5 @@
 ﻿{
   "$type": "LuaSTGEditorSharpV2.Core.Building.ResourceGathering.ConfigurableResourceGatheringService, LuaSTGEditorSharpV2.Core.Building, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "Include",
+  "TypeUID": "UseResourceGroup",
   "GroupCapture": { "Key": "name" }
 }
