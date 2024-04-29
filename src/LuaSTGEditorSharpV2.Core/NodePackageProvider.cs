@@ -249,9 +249,17 @@ namespace LuaSTGEditorSharpV2.Core
                 if (serviceInfo.HasSettings)
                 {
                     var assign = serviceInfo.SettingsReplacementFunction;
-                    var settingsType = serviceInfo.SettingsType;
-                    var settingsObj = JsonConvert.DeserializeObject(settings.ToString(), settingsType);
-                    assign.DynamicInvoke(HostedApplicationHelper.GetService(serviceProviderType), settingsObj);
+                    var serviceProvider = HostedApplicationHelper.GetService(serviceProviderType) as ISettingsProvider;
+                    if (serviceProvider?.Settings != null)
+                    {
+                        var settingsClone = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(serviceProvider.Settings),
+                            serviceProvider.Settings.GetType());
+                        if (settingsClone != null)
+                        {
+                            JsonConvert.PopulateObject(settings.ToString(), settingsClone);
+                            assign.DynamicInvoke(HostedApplicationHelper.GetService(serviceProviderType), settingsClone);
+                        }
+                    }
                 }
             }
         }
@@ -260,10 +268,7 @@ namespace LuaSTGEditorSharpV2.Core
         {
             if (_shortName2ServiceProviders.TryGetValue(serviceShortName, out var serviceProviderType))
             {
-                if (_servicesProvider2Info.TryGetValue(serviceProviderType, out var info))
-                {
-                    ReplaceSettingsForServiceIfValid(info.ServiceInstanceType, settings);
-                }
+                ReplaceSettingsForServiceIfValid(serviceProviderType, settings);
             }
         }
 
