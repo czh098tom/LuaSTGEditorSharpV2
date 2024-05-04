@@ -97,6 +97,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Build Selected... 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_button_buildSelected_title {
+            get {
+                return ResourceManager.GetString("ribbon_button_buildSelected_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Child 的本地化字符串。
         /// </summary>
         internal static string ribbon_button_childDirection_title {
@@ -187,6 +196,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Building 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_group_building_title {
+            get {
+                return ResourceManager.GetString("ribbon_group_building_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Code Export 的本地化字符串。
         /// </summary>
         internal static string ribbon_group_code_title {
@@ -232,7 +250,7 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
-        ///   查找类似 Export code... 的本地化字符串。
+        ///   查找类似 Export Code... 的本地化字符串。
         /// </summary>
         internal static string ribbon_menuItem_exportCode_title {
             get {
@@ -286,7 +304,7 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
-        ///   查找类似 View code... 的本地化字符串。
+        ///   查找类似 View Code... 的本地化字符串。
         /// </summary>
         internal static string ribbon_menuItem_viewCode_title {
             get {

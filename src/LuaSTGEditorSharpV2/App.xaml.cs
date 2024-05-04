@@ -27,6 +27,8 @@ using LuaSTGEditorSharpV2.Toolbox.Service;
 using LuaSTGEditorSharpV2.Toolbox.Model;
 
 using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
+using LuaSTGEditorSharpV2.Core.Building.ResourceGathering;
+using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -41,6 +43,8 @@ namespace LuaSTGEditorSharpV2
 
             AddNodeServiceProvider<CodeGeneratorServiceProvider>();
             AddNodeServiceProvider<ViewModelProviderServiceProvider>();
+            AddNodeServiceProvider<ResourceGatheringServiceProvider>();
+            AddNodeServiceProvider<BuildTaskFactoryServiceProvider>();
             AddNodeServiceProvider<PropertyViewServiceProvider>();
             AddNodeServiceProvider<DefaultValueServiceProvider>();
             AddPackedDataProvider<ToolboxProviderService, ToolboxItemModelBase>();

@@ -20,6 +20,9 @@ using LuaSTGEditorSharpV2.WPF;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Command.Service;
 using LuaSTGEditorSharpV2.Dialog;
+using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
+using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
+using LuaSTGEditorSharpV2.Core.Building;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -243,6 +246,19 @@ namespace LuaSTGEditorSharpV2.ViewModel
             });
         }
 
+        public async void ExecuteBuildForSelected()
+        {
+            if (_activeDocument?.SourceDocument == null) throw new InvalidOperationException();
+            var taskFactoryService = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
+            var selectedDoc = _activeDocument.SourceDocument;
+            var param = new LocalServiceParam(selectedDoc);
+            var buildingContext = new BuildingContext(param);
+            await Task.WhenAll(SelectedNodes
+                .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)?.BuildingTask)
+                .OfType<NamedBuildtingTask>()
+                .Select(t => t.Execute(buildingContext)));
+        }
+
         private string GenerateCodeForFirstSelectedNode()
         {
             var sb = new StringBuilder();
@@ -265,6 +281,17 @@ namespace LuaSTGEditorSharpV2.ViewModel
             {
                 yield return codeData;
             }
+        }
+
+        public bool CanPerformBuild()
+        {
+            if (_activeDocument == null) return false;
+            if (_activeDocument.SourceDocument == null) return false;
+            var taskFactoryService = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
+            var selectedDoc = _activeDocument.SourceDocument;
+            var param = new LocalServiceParam(selectedDoc);
+            return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)
+                ?.BuildingTask is NamedBuildtingTask);
         }
 
         private void DisposeOpenedDocument(DocumentViewModel dvm)

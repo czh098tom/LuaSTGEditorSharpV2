@@ -129,6 +129,9 @@
   <data name="ribbon_backStageMenu_document_title" xml:space="preserve">
     <value>Document</value>
   </data>
+  <data name="ribbon_button_buildSelected_title" xml:space="preserve">
+    <value>Build Selected...</value>
+  </data>
   <data name="ribbon_button_childDirection_title" xml:space="preserve">
     <value>Child</value>
   </data>
@@ -159,6 +162,9 @@
   <data name="ribbon_button_upDirection_title" xml:space="preserve">
     <value>Up</value>
   </data>
+  <data name="ribbon_group_building_title" xml:space="preserve">
+    <value>Building</value>
+  </data>
   <data name="ribbon_group_code_title" xml:space="preserve">
     <value>Code Export</value>
   </data>
@@ -175,7 +181,7 @@
     <value>Exit</value>
   </data>
   <data name="ribbon_menuItem_exportCode_title" xml:space="preserve">
-    <value>Export code...</value>
+    <value>Export Code...</value>
   </data>
   <data name="ribbon_menuItem_new_title" xml:space="preserve">
     <value>New</value>
@@ -193,7 +199,7 @@
     <value>Settings</value>
   </data>
   <data name="ribbon_menuItem_viewCode_title" xml:space="preserve">
-    <value>View code...</value>
+    <value>View Code...</value>
   </data>
   <data name="ribbon_quickAccess_redo_title" xml:space="preserve">
     <value>Redo</value>

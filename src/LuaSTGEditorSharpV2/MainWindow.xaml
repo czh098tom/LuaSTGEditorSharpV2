@@ -83,6 +83,9 @@
         <CommandBinding Command="{x:Static lrc:LuaSTGEditingCommands.ExportCode}"
                         Executed="ExecuteExportCodeCommand"
                         CanExecute="CanManipulateSingleNode"/>
+        <CommandBinding Command="{x:Static lrc:LuaSTGBuildingCommand.BuildSelected}"
+                        Executed="ExecuteBuildSelectedCommand"
+                        CanExecute="CanExecuteBuildForSingleNode"/>
     </Window.CommandBindings>
     <lw:ScalableGrid>
         <DockPanel>
@@ -189,9 +192,15 @@
                         </fluent:RibbonGroupBox>
                         <fluent:RibbonGroupBox x:Name="Navigation" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_navigation_title}">
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_jumpTo_title}" 
-                                       KeyTip="X" 
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/search.png" />
+                                           KeyTip="X" 
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/search.png" />
                             <fluent:TextBox/>
+                        </fluent:RibbonGroupBox>
+                        <fluent:RibbonGroupBox x:Name="Building" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_building_title}">
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_buildSelected_title}" 
+                                           Command="{x:Static lrc:LuaSTGBuildingCommand.BuildSelected}"
+                                           KeyTip="X" 
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/debugstage.png" />
                         </fluent:RibbonGroupBox>
                     </fluent:RibbonTabItem>
                 </fluent:Ribbon>
