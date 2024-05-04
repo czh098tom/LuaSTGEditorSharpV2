@@ -20,7 +20,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
             ArchivePathVariable = archivePathVariable;
         }
 
-        public async Task Execute(BuildingContext context, IProgress<float>? progressReporter = null, CancellationToken cancellationToken = default)
+        public async Task Execute(BuildingContext context, IProgress<ProgressReportingParam>? progressReporter = null, CancellationToken cancellationToken = default)
         {
             var outputBasePaths = ArchivePathVariable.GetVariable(context);
             var sourcePaths = SourceVariable.GetVariable(context);

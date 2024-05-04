@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
 
         private readonly Func<string, string> mapper = mapper ?? _unit;
 
-        public async Task Execute(BuildingContext context, IProgress<float>? progressReporter = null, 
+        public async Task Execute(BuildingContext context, IProgress<ProgressReportingParam>? progressReporter = null, 
             CancellationToken cancellationToken = default)
         {
             TargetVariable.WriteTarget(SourceVariable.GetVariable(context)

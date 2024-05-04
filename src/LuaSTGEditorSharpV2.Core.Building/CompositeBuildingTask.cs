@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,18 +58,14 @@ namespace LuaSTGEditorSharpV2.Core.Building
         }
 
         private class WeightedProgressWrapper(float offset, float step)
-            : IProgress<float>
+            : IProgress<ProgressReportingParam>
         {
-            public IProgress<float>? inner;
+            public IProgress<ProgressReportingParam>? inner;
 
-            public void Report(float value)
+            public void Report(ProgressReportingParam value)
             {
-                inner?.Report(offset + value * step);
-            }
-
-            public void ReportFinished()
-            {
-                inner?.Report(offset + step);
+                inner?.Report(new ProgressReportingParam(
+                    offset + value.Percentage * step, value.NameKey));
             }
         }
 
@@ -111,7 +108,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
         }
 
         public async Task Execute(BuildingContext context,
-            IProgress<float>? progressReporter = null, CancellationToken cancellationToken = default)
+            IProgress<ProgressReportingParam>? progressReporter = null, CancellationToken cancellationToken = default)
         {
             if (executing) throw new InvalidOperationException("A task has already been executing");
             try
@@ -122,7 +119,6 @@ namespace LuaSTGEditorSharpV2.Core.Building
                     var reporter = _wrappers[task];
                     reporter.inner = progressReporter;
                     await task.Execute(context, reporter, cancellationToken);
-                    reporter.ReportFinished();
                 }
             }
             finally

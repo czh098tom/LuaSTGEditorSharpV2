@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
             private readonly IBuildingTask _inner = inner;
 
             public async Task Execute(BuildingContext context,
-                IProgress<float>? progressReporter = null,
+                IProgress<ProgressReportingParam>? progressReporter = null,
                 CancellationToken cancellationToken = default)
             {
                 using var innerContext = new BuildingContext(context);
@@ -34,7 +34,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
             }
             else
             {
-                return new NamedBuildtingTask(name, inner);
+                return new NamedBuildingTask(name, inner);
             }
         }
 

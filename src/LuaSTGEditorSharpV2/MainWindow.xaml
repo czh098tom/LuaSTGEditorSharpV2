@@ -90,7 +90,9 @@
     <lw:ScalableGrid>
         <DockPanel>
             <Border DockPanel.Dock="Top">
-                <fluent:Ribbon x:Name="RibbonWin">
+                <fluent:Ribbon x:Name="RibbonWin" 
+                               DataContext="{Binding Ribbon}"
+                               IsEnabled="{Binding IsEnabled}">
                     <!-- Help Pane, located at the right-hand side -->
                     <fluent:Ribbon.ToolBarItems>
                     </fluent:Ribbon.ToolBarItems>
@@ -98,20 +100,20 @@
                     <fluent:Ribbon.QuickAccessItems>
                         <fluent:QuickAccessMenuItem IsChecked="True">
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_save_title}" 
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/save.png"
-                                       Command="{x:Static ApplicationCommands.Save}"
-                                       KeyTip="S"/>
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/save.png"
+                                           Command="{x:Static ApplicationCommands.Save}"
+                                           KeyTip="S"/>
                         </fluent:QuickAccessMenuItem>
                         <fluent:QuickAccessMenuItem IsChecked="True">
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_undo_title}" 
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" 
-                                       Command="{x:Static ApplicationCommands.Undo}"
-                                       KeyTip="Z"/>
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/undo.png" 
+                                           Command="{x:Static ApplicationCommands.Undo}"
+                                           KeyTip="Z"/>
                         </fluent:QuickAccessMenuItem>
                         <fluent:QuickAccessMenuItem IsChecked="True" >
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_quickAccess_redo_title}" 
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/redo.png" 
-                                       Command="{x:Static ApplicationCommands.Redo}"/>
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/redo.png" 
+                                           Command="{x:Static ApplicationCommands.Redo}"/>
                         </fluent:QuickAccessMenuItem>
                     </fluent:Ribbon.QuickAccessItems>
                     <!-- Application Menu, located at the left-hand side (down arrow) -->
@@ -119,23 +121,23 @@
                         <fluent:Backstage Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_backStageMenu_document_title}">
                             <fluent:BackstageTabControl>
                                 <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_new_title}"
-                                           Command="{x:Static ApplicationCommands.New}" 
-                                           KeyTip="N"/>
+                                               Command="{x:Static ApplicationCommands.New}" 
+                                               KeyTip="N"/>
                                 <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_open_title}"
-                                           Command="{x:Static ApplicationCommands.Open}" 
-                                           KeyTip="O"/>
+                                               Command="{x:Static ApplicationCommands.Open}" 
+                                               KeyTip="O"/>
                                 <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_save_title}" 
-                                           Command="{x:Static ApplicationCommands.Save}"
-                                           KeyTip="S"/>
+                                               Command="{x:Static ApplicationCommands.Save}"
+                                               KeyTip="S"/>
                                 <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_saveAs_title}" 
-                                           Command="{x:Static ApplicationCommands.SaveAs}"
-                                           KeyTip="A" CanAddToQuickAccessToolBar="False"/>
+                                               Command="{x:Static ApplicationCommands.SaveAs}"
+                                               KeyTip="A" CanAddToQuickAccessToolBar="False"/>
                                 <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_settings_title}" 
-                                           Click="SettingsButton_Click"
-                                           KeyTip="X"/>
+                                               Click="SettingsButton_Click"
+                                               KeyTip="X"/>
                                 <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exit_title}" 
-                                           Click="Exit_Click"
-                                           KeyTip="Q"/>
+                                               Click="Exit_Click"
+                                               KeyTip="Q"/>
                             </fluent:BackstageTabControl>
                         </fluent:Backstage>
                     </fluent:Ribbon.Menu>
@@ -143,50 +145,50 @@
                     <fluent:RibbonTabItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_home_title}" KeyTip="H" >
                         <fluent:RibbonGroupBox x:Name="ClipboardGroup" Header="{lex:Loc ribbon_group_edit_title}">
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_copy_title}" 
-                                       Command="{x:Static ApplicationCommands.Copy}"
-                                       KeyTip="C" Size="Large"
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
+                                           Command="{x:Static ApplicationCommands.Copy}"
+                                           KeyTip="C" Size="Large"
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/copy.png"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_paste_title}" 
-                                       Command="{x:Static ApplicationCommands.Paste}"
-                                       KeyTip="V" Size="Large"
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" />
+                                           Command="{x:Static ApplicationCommands.Paste}"
+                                           KeyTip="V" Size="Large"
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/paste.png" />
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_cut_title}" 
-                                       Command="{x:Static ApplicationCommands.Cut}"
-                                       KeyTip="X" Size="Large"
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/cut.png"/>
+                                           Command="{x:Static ApplicationCommands.Cut}"
+                                           KeyTip="X" Size="Large"
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/cut.png"/>
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_delete_title}" 
-                                       Command="{x:Static ApplicationCommands.Delete}"
-                                       KeyTip="X" Size="Large"
-                                       Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/delete.png"/>
+                                           Command="{x:Static ApplicationCommands.Delete}"
+                                           KeyTip="X" Size="Large"
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/delete.png"/>
                         </fluent:RibbonGroupBox>
                         <fluent:RibbonGroupBox x:Name="Insert" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_insertDirection_title}"
-                                           DataContext="{Binding InsertPanel}">
+                                               DataContext="{Binding InsertPanel}">
                             <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_upDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertUp}"
-                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/up.png" />
+                                                 Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertUp}"
+                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/up.png" />
                             <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_downDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertDown}"
-                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/down.png"/>
+                                                 Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertDown}"
+                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/down.png"/>
                             <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_childDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsChild}"
-                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/child.png"/>
+                                                 Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsChild}"
+                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/child.png"/>
                             <fluent:ToggleButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_parentDirection_title}" 
-                                             Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsParent}"
-                                             Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/parent.png"/>
+                                                 Size="Large" GroupName="direction" KeyTip="X" IsChecked="{Binding IsInsertAsParent}"
+                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/parent.png"/>
                         </fluent:RibbonGroupBox>
                         <fluent:RibbonGroupBox x:Name="Code" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_code_title}">
                             <fluent:DropDownButton Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_code_title}" 
-                                               KeyTip="V"
-                                               Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png">
+                                                   KeyTip="V"
+                                                   Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png">
                                 <fluent:Gallery Orientation="Vertical">
                                     <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_viewCode_title}" 
-                                                 Command="{x:Static lrc:LuaSTGEditingCommands.ViewCode}"
-                                                 KeyTip="T"
-                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png"/>
+                                                     Command="{x:Static lrc:LuaSTGEditingCommands.ViewCode}"
+                                                     KeyTip="T"
+                                                     Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/viewcode.png"/>
                                     <fluent:MenuItem Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_menuItem_exportCode_title}" 
-                                                 Command="{x:Static lrc:LuaSTGEditingCommands.ExportCode}"
-                                                 KeyTip="S"
-                                                 Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png"/>
+                                                     Command="{x:Static lrc:LuaSTGEditingCommands.ExportCode}"
+                                                     KeyTip="S"
+                                                     Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/savecode.png"/>
                                 </fluent:Gallery>
                             </fluent:DropDownButton>
                         </fluent:RibbonGroupBox>
@@ -199,7 +201,7 @@
                         <fluent:RibbonGroupBox x:Name="Building" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_building_title}">
                             <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_buildSelected_title}" 
                                            Command="{x:Static lrc:LuaSTGBuildingCommand.BuildSelected}"
-                                           KeyTip="X" 
+                                           KeyTip="B" 
                                            Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/debugstage.png" />
                         </fluent:RibbonGroupBox>
                     </fluent:RibbonTabItem>
@@ -216,7 +218,7 @@
                     <TextBlock Text="Test mode"/>
                 </StatusBarItem>
             </StatusBar>
-            <Grid DataContext="{Binding WorkSpace}">
+            <Grid DataContext="{Binding WorkSpace}" IsEnabled="{Binding IsEnabled}">
                 <xcad:DockingManager Name="dockingManager" 
                                  DocumentsSource="{Binding Documents}"
                                  AnchorablesSource="{Binding Anchorables}"

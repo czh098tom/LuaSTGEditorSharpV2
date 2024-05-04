@@ -8,7 +8,7 @@ namespace LuaSTGEditorSharpV2.Core.Building
 {
     public interface IBuildingTask
     {
-        public Task Execute(BuildingContext context, IProgress<float>? progressReporter = null,
+        public Task Execute(BuildingContext context, IProgress<ProgressReportingParam>? progressReporter = null,
             CancellationToken cancellationToken = default);
     }
 }

@@ -88,7 +88,7 @@ namespace LuaSTGEditorSharpV2.CLI
                     var service = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
                     var tasks = buildRoot.GetLogicalChildren()
                         .Select(n => service.GetWeightedBuildingTaskForNode(n, new LocalServiceParam(doc))?.BuildingTask)
-                        .OfType<NamedBuildtingTask>()
+                        .OfType<NamedBuildingTask>()
                         .Where(nbt => nbt.Name == param.TaskName);
                     foreach (var task in tasks)
                     {

@@ -23,6 +23,7 @@ using LuaSTGEditorSharpV2.Dialog;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
 using LuaSTGEditorSharpV2.Core.Building;
+using System.Reactive.Disposables;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -36,6 +37,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private DocumentViewModel? _activeDocument;
 
+        private readonly Dictionary<IDocument, DocumentViewModel> _documentMapping = [];
+
+        public QueuedBoolHandle IsEnabledHandle { get; private set; }
+        public bool IsEnabled
+        {
+            get => IsEnabledHandle.Value;
+        }
+
         public NodeData[] SelectedNodes { get; private set; } = [];
 
         [MemberNotNullWhen(true, nameof(_activeDocument))]
@@ -45,8 +54,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
         [MemberNotNullWhen(true, nameof(_activeDocument))]
         public bool HaveSelectedSingle => SelectedNodes.Length == 1 && _activeDocument != null;
 
-        private readonly Dictionary<IDocument, DocumentViewModel> _documentMappting = [];
+        public event EventHandler<OnEnableHandleRequestedEventArgs>? EnableRequesting;
 
+        public WorkSpaceViewModel()
+        {
+            IsEnabledHandle = new(this, nameof(IsEnabled));
+        }
 
         public void AddPage(AnchorableViewModelBase viewModel)
         {
@@ -87,7 +100,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
             else
             {
-                _activeDocument = _documentMappting.GetValueOrDefault(documentModel);
+                _activeDocument = _documentMapping.GetValueOrDefault(documentModel);
             }
             SelectedNodes = nodeData;
             foreach (var p in Anchorables)
@@ -107,7 +120,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private void AddCommandToDocument(CommandBase? command, IDocument? document, NodeData[] nodeData, bool shouldRefresh)
         {
             if (command == null || document == null) return;
-            var dvm = _documentMappting!.GetValueOrDefault(document, null);
+            var dvm = _documentMapping!.GetValueOrDefault(document, null);
             if (dvm == null) return;
             dvm.ExecuteCommand(command);
             if (shouldRefresh)
@@ -122,7 +135,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             if (doc == null) return;
             var dvm = new DocumentViewModel(doc);
             _documents.Add(dvm);
-            _documentMappting.Add(doc, dvm);
+            _documentMapping.Add(doc, dvm);
             dvm.OnClose += (o, e) => CloseDocument(dvm);
             dvm.OnCommandPublishing += HandleAddCommandEvent;
         }
@@ -152,7 +165,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 dvm.AskSaveBeforeClose();
             }
             _documents.Remove(dvm);
-            _documentMappting.Remove(dvm.DocumentModel);
+            _documentMapping.Remove(dvm.DocumentModel);
             dvm.CloseActiveDocument();
 
             DisposeOpenedDocument(dvm);
@@ -253,10 +266,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var selectedDoc = _activeDocument.SourceDocument;
             var param = new LocalServiceParam(selectedDoc);
             var buildingContext = new BuildingContext(param);
+
+            using var _ = new CompositeDisposable(RaiseEnableRequestingEvent());
             await Task.WhenAll(SelectedNodes
                 .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)?.BuildingTask)
-                .OfType<NamedBuildtingTask>()
+                .OfType<NamedBuildingTask>()
                 .Select(t => t.Execute(buildingContext)));
+            await Task.Delay(1000);
         }
 
         private string GenerateCodeForFirstSelectedNode()
@@ -291,7 +307,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var selectedDoc = _activeDocument.SourceDocument;
             var param = new LocalServiceParam(selectedDoc);
             return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)
-                ?.BuildingTask is NamedBuildtingTask);
+                ?.BuildingTask is NamedBuildingTask);
         }
 
         private void DisposeOpenedDocument(DocumentViewModel dvm)
@@ -319,6 +335,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private void HandleAddCommandEvent(object? o, DockingViewModelBase.PublishCommandEventArgs e)
         {
             AddCommandToDocument(e.Command, e.DocumentModel, e.NodeData, e.ShouldRefreshView);
+        }
+
+        private IEnumerable<IDisposable> RaiseEnableRequestingEvent()
+        {
+            var args = new OnEnableHandleRequestedEventArgs();
+            EnableRequesting?.Invoke(this, args);
+            return args.Disposables;
         }
     }
 }

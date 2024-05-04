@@ -38,7 +38,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
             }
         }
 
-        public async Task Execute(BuildingContext context, IProgress<float>? progressReporter = null,
+        public async Task Execute(BuildingContext context, IProgress<ProgressReportingParam>? progressReporter = null,
             CancellationToken cancellationToken = default)
         {
             IReadOnlyList<string> documentPaths = SourceDocumentPathVariable.GetVariable(context);

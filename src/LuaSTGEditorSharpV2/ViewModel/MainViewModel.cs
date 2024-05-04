@@ -13,25 +13,33 @@ using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Core.Command.Factory;
 using LuaSTGEditorSharpV2.Dialog;
-using NLog.Filters;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Windows.Forms;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         private readonly WorkSpaceViewModel _workspace = new();
-        private readonly InsertPanelViewModel _insertPanel = new();
+        private readonly RibbonViewModel _ribbon = new();
+        private readonly StatusBarViewModel _statusBar = new();
 
         public WorkSpaceViewModel WorkSpace
         {
             get => _workspace;
         }
 
-        public InsertPanelViewModel InsertPanel
+        public RibbonViewModel Ribbon
         {
-            get => _insertPanel;
+            get => _ribbon;
+        }
+
+        public StatusBarViewModel StatusBar
+        {
+            get => _statusBar;
+        }
+
+        public MainViewModel()
+        {
+            _workspace.EnableRequesting += HandleEnableRequesting;
         }
 
         public void OpenFile(string filePath)
@@ -48,6 +56,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var doc = activeDocService.CreateBlank();
             if (doc == null) return;
             _workspace.AddDocument(doc);
+        }
+
+        private void HandleEnableRequesting(object? sender, OnEnableHandleRequestedEventArgs e)
+        {
+            e.Add(_workspace.IsEnabledHandle.RequestNonNormalState());
+            e.Add(_ribbon.IsEnabledHandle.RequestNonNormalState());
         }
     }
 }
