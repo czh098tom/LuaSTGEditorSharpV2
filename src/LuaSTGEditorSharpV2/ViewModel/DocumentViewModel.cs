@@ -42,15 +42,23 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 .CreateViewModelRecursive(documentModel.Root, new LocalServiceParam(documentModel)));
         }
 
-        public void SaveOrAskingToSaveAs()
+        /// <summary>
+        /// If the document is already on disk, save the file.
+        /// Otherwise ask user the path where the document should be saved.
+        /// </summary>
+        /// <returns> 
+        /// <see cref="true"/> if Document has saved, otherwise <see cref="false"/>. 
+        /// </returns>
+        public bool SaveOrAskToSaveAs()
         {
             if (DocumentModel.IsOnDisk())
             {
                 Save();
+                return true;
             }
             else
             {
-                SaveAs();
+                return SaveAs();
             }
         }
 
@@ -60,13 +68,20 @@ namespace LuaSTGEditorSharpV2.ViewModel
             RaisePropertyChanged(nameof(Title));
         }
 
-        public void SaveAs()
+        /// <summary>
+        /// Ask user the path where the document should be saved, then save the document to that directory.
+        /// </summary>
+        /// <returns> 
+        /// <see cref="true"/> if Document has saved, otherwise <see cref="false"/>. 
+        /// </returns>
+        public bool SaveAs()
         {
             var fileDialog = HostedApplicationHelper.GetService<FileDialogService>();
             string? path = fileDialog.ShowSaveAsFileCommandDialog(DocumentModel.FileName);
-            if (path == null) return;
+            if (path == null) return false;
             DocumentModel.SaveAs(path);
             RaisePropertyChanged(nameof(Title));
+            return true;
         }
 
         public void AskSaveBeforeClose()
@@ -83,7 +98,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             if (messageBoxResult == MessageBoxResult.Cancel) return;
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                SaveOrAskingToSaveAs();
+                SaveOrAskToSaveAs();
             }
         }
 

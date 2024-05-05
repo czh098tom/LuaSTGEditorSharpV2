@@ -13,7 +13,7 @@
     </ServiceDefinition>
   </DefinitionRoot>
   <BuildRoot>
-    <DefaultLuaSTGBuilding taskName="test" outputName="SHARPV2_TEST"/>
+    <DefaultLuaSTGBuilding taskName="test" outputName="SHARPV2_TEST" />
   </BuildRoot>
   <CompileRoot>
     <DefineBullet identifier="test_bullet">

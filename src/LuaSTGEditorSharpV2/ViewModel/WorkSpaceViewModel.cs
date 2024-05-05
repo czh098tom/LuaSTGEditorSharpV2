@@ -148,7 +148,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void SaveActiveDocument()
         {
             if (!HaveActiveDocument) throw new InvalidOperationException();
-            _activeDocument.SaveOrAskingToSaveAs();
+            _activeDocument.SaveOrAskToSaveAs();
         }
 
         public void SaveActiveDocumentAs()
@@ -262,8 +262,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public async void ExecuteBuildForSelected()
         {
             if (_activeDocument?.SourceDocument == null) throw new InvalidOperationException();
-            var taskFactoryService = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
+            if (!_activeDocument.SaveOrAskToSaveAs()) return;
+
             var selectedDoc = _activeDocument.SourceDocument;
+
+            var taskFactoryService = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
             var param = new LocalServiceParam(selectedDoc);
             var buildingContext = new BuildingContext(param);
 
@@ -272,7 +275,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)?.BuildingTask)
                 .OfType<NamedBuildingTask>()
                 .Select(t => t.Execute(buildingContext)));
-            await Task.Delay(1000);
         }
 
         private string GenerateCodeForFirstSelectedNode()
