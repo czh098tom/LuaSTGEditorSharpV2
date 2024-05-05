@@ -19,6 +19,8 @@ using LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.ViewModel;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
 using LuaSTGEditorSharpV2.UICustomization;
 using LuaSTGEditorSharpV2.ServiceBridge.UICustomization.ViewModel;
+using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
+using LuaSTGEditorSharpV2.ServiceBridge.Building.ViewModel;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -68,6 +70,7 @@ namespace LuaSTGEditorSharpV2
             var settingsDisplay = HostedApplicationHelper.GetService<SettingsDisplayService>();
             settingsDisplay.RegisterViewModel<CodeGeneratorServiceProvider, CodeGenerationServiceSettingsViewModel>();
             settingsDisplay.RegisterViewModel<UICustomizationService, UICustomizationServiceSettingsViewModel>();
+            settingsDisplay.RegisterViewModel<BuildTaskFactoryServiceProvider, BuildTaskFactoryServiceSettingsViewModel>();
 
             HostedApplicationHelper.GetService<SettingsDisplayService>()
                 .AddResourceDictUri("pack://application:,,,/LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator;component/PropertyPage.xaml");
