@@ -75,7 +75,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
             while (stack.Count > 0)
             {
-                context.Push(stack.Pop());
+                context.AcquireContextHandle(stack.Pop());
             }
             return context;
         }

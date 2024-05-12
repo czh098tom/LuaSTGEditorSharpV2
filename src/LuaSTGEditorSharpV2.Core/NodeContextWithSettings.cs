@@ -11,17 +11,77 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public class NodeContext
     {
+        protected class ContextHandle(NodeContext context) : IDisposable
+        {
+            private enum ContextHandleState
+            {
+                Created,
+                Stepped,
+                Disposed,
+            }
+
+            protected readonly NodeContext _context = context;
+            private readonly object _lock = new();
+
+            private ContextHandleState _state = ContextHandleState.Created;
+
+            public void Dispose()
+            {
+                lock (_lock)
+                {
+                    if (_state == ContextHandleState.Disposed || _state == ContextHandleState.Created) return;
+                    DisposeImpl();
+                    _state = ContextHandleState.Disposed;
+                }
+            }
+
+            public void Step(NodeData nodeData)
+            {
+                lock (_lock)
+                {
+                    if (_state == ContextHandleState.Stepped || _state == ContextHandleState.Disposed) return;
+                    StepImpl(nodeData);
+                    _state = ContextHandleState.Stepped;
+                }
+            }
+
+            protected virtual void StepImpl(NodeData nodeData)
+            {
+                lock (_context._lock)
+                {
+                    _context.PushBasicInfo(nodeData);
+                }
+            }
+
+            protected virtual void DisposeImpl()
+            {
+                lock (_context._lock)
+                {
+                    _context.PopBasicInfo();
+                }
+            }
+        }
+
         protected LocalServiceParam LocalParam { get; private set; }
 
         private readonly Dictionary<string, Stack<NodeData>> _contextData = [];
         private readonly Stack<NodeData> _top = new();
+
+        protected readonly object _lock = new();
 
         public NodeContext(LocalServiceParam localParam)
         {
             LocalParam = localParam;
         }
 
-        public virtual void Push(NodeData current)
+        public virtual IDisposable AcquireContextHandle(NodeData current)
+        {
+            var handle = new ContextHandle(this);
+            handle.Step(current);
+            return handle;
+        }
+
+        protected void PushBasicInfo(NodeData current)
         {
             if (!_contextData.TryGetValue(current.TypeUID, out Stack<NodeData>? value))
             {
@@ -33,7 +93,7 @@ namespace LuaSTGEditorSharpV2.Core
             _top.Push(current);
         }
 
-        public virtual NodeData Pop()
+        protected NodeData PopBasicInfo()
         {
             if (_top.Count != 0)
             {
@@ -71,7 +131,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 return _top;
             }
-            return Enumerable.Empty<NodeData>();
+            return [];
         }
 
         public IEnumerable<NodeData> EnumerateFromFarest()
@@ -80,7 +140,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 return _top.Reverse();
             }
-            return Enumerable.Empty<NodeData>();
+            return [];
         }
 
         public IEnumerable<NodeData> EnumerateTypeFromNearest(string type)
@@ -89,7 +149,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 return _contextData[type];
             }
-            return Enumerable.Empty<NodeData>();
+            return [];
         }
 
         public IEnumerable<NodeData> EnumerateTypeFromFarest(string type)
@@ -98,7 +158,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 return _contextData[type].Reverse();
             }
-            return Enumerable.Empty<NodeData>();
+            return [];
         }
     }
 

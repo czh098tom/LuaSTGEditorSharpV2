@@ -68,12 +68,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private void UpdateViewModelDataRecursive(NodeData dataSource, NodeViewModelContext context)
         {
             GetServiceOfNode(dataSource).UpdateViewModelData(_mapping[dataSource], dataSource, context);
-            context.Push(dataSource);
+            using var _ = context.AcquireContextHandle(dataSource);
             foreach (var child in dataSource.PhysicalChildren)
             {
                 UpdateViewModelDataRecursive(child, context);
             }
-            context.Pop();
         }
 
         public void InsertNodeAt(NodeData parent, int position, NodeData child, LocalServiceParam param)
@@ -120,12 +119,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private NodeViewModel CreateViewModelRecursive(NodeData target, NodeViewModelContext context)
         {
             NodeViewModel viewModel = CreateViewModel(target, context);
-            context.Push(target);
+            using var _ = context.AcquireContextHandle(target);
             for (int i = 0; i < target.PhysicalChildren.Count; i++)
             {
                 viewModel.Children.Add(CreateViewModelRecursive(target.PhysicalChildren[i], context));
             }
-            context.Pop();
             return viewModel;
         }
 

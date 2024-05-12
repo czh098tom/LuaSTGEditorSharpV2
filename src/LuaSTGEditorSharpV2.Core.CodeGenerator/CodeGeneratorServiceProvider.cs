@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         /// <returns> <see cref="IEnumerable{T}"/> for enumerating <see cref="CodeData"/> generated. </returns>
         public IEnumerable<CodeData> GenerateForChildren(NodeData node, CodeGenerationContext context, int indentionIncrement)
         {
-            context.Push(node, indentionIncrement);
+            using var _ = context.AcquireContextHandle(node, indentionIncrement);
             foreach (NodeData child in node.GetLogicalChildren())
             {
                 foreach (CodeData s in GetServiceOfNode(child).GenerateCodeWithContext(child, context))
@@ -34,7 +34,6 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
                     yield return s;
                 }
             }
-            context.Pop(indentionIncrement);
         }
 
         public IEnumerable<CodeData> GenerateCode(NodeData nodeData, LocalServiceParam param)

@@ -11,6 +11,35 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
     public class CodeGenerationContext : NodeContextWithSettings<CodeGenerationServiceSettings>
     {
+        protected class CodeGenerationContextHandle : ContextHandle
+        {
+            private readonly CodeGenerationContext _codeGenerationContext;
+            private readonly int _indentionIncrement;
+
+            public CodeGenerationContextHandle(CodeGenerationContext context, int indentionIncrement)
+                : base(context)
+            {
+                _codeGenerationContext = context;
+                _indentionIncrement = indentionIncrement;
+            }
+
+            protected override void StepImpl(NodeData nodeData)
+            {
+                lock (_codeGenerationContext._lock)
+                {
+                    _codeGenerationContext.Push(nodeData, _indentionIncrement);
+                }
+            }
+
+            protected override void DisposeImpl()
+            {
+                lock (_codeGenerationContext._lock)
+                {
+                    _codeGenerationContext.Pop(_indentionIncrement);
+                }
+            }
+        }
+
         private static CodeGeneratorServiceProvider CodeGeneratorServiceProvider =>
             HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>();
 
@@ -24,20 +53,21 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public CodeGenerationContext(LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings)
             : base(localSettings, serviceSettings) { }
 
-        public void Push(NodeData current, int indentionIncrement)
+        public IDisposable AcquireContextHandle(NodeData current, int indentionIncrement = 0)
+        {
+            var handle = new CodeGenerationContextHandle(this, indentionIncrement);
+            handle.Step(current);
+            return handle;
+        }
+
+        public override IDisposable AcquireContextHandle(NodeData current)
+        {
+            return AcquireContextHandle(current, 0);
+        }
+
+        protected void Push(NodeData current, int indentionIncrement)
         {
             IndentionLevel += indentionIncrement;
-            Push(current);
-        }
-
-        public NodeData Pop(int indentionIncrement)
-        {
-            IndentionLevel -= indentionIncrement;
-            return Pop();
-        }
-
-        public override void Push(NodeData current)
-        {
             _contextVariables.Add(current, []);
             var lang = CodeGeneratorServiceProvider.GetLanguageOfNode(current);
             _languageEnvironment.Push(lang);
@@ -45,12 +75,13 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             {
                 _nearestLanguage = lang;
             }
-            base.Push(current);
+            PushBasicInfo(current);
         }
 
-        public override NodeData Pop()
+        protected NodeData Pop(int indentionIncrement)
         {
-            var node = base.Pop();
+            var node = PopBasicInfo();
+            IndentionLevel -= indentionIncrement;
             _contextVariables.Remove(node);
             _languageEnvironment.Pop();
             if (_languageEnvironment.Peek() != null)

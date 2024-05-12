@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
         public IEnumerable<GroupedResource> ProceedChildren(NodeData node, 
             ResourceGatheringContext context)
         {
-            context.Push(node);
+            using var _ = context.AcquireContextHandle(node);
             foreach (NodeData child in node.GetLogicalChildren())
             {
                 foreach (GroupedResource s in GetServiceOfNode(child).GetResourcesToPackWithContext(child, context))
@@ -37,7 +37,6 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
                     yield return s;
                 }
             }
-            context.Pop();
         }
     }
 }
