@@ -23,9 +23,10 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
         protected static readonly string _codeGenerationVariableKey = "GENERATED_CODE";
         protected static readonly string _gatheredResourcePathVariableKey = "GATHERED_RESOURCE_PATH";
         protected static readonly string _gatheredResourceTargetNameVariableKey = "GATHERED_RESOURCE_TARGET";
+        protected static readonly string _rootLuaVariableKey = "ROOT_LUA";
 
         protected static readonly string _entryPointName = "_editor_output.lua";
-        protected static readonly string _packageSupplementarySourceName = "root.lua";
+        protected static readonly string _packageSupplementarySourceName = "package\\LegacyNode\\root.lua";
         protected static readonly string _packageSupplementaryTargetName = "root.lua";
 
         protected static readonly string _buildTargetDirSettingsJPath = "build.target_dir";
@@ -37,12 +38,12 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
         {
             var token = new NodePropertyAccessToken(nodeData, context);
 
-            var sourcePath = Path.Combine(GetServiceProvider().GetPackageInfo(this).BasePath, 
-                _packageSupplementarySourceName);
             var outputName = OutputNameCapture?.Capture(token) ?? _defaultOutputNameIfNotConfiguredForService;
             var taskName = TaskNameCapture?.Capture(token) ?? _defaultTaskNameIfNotConfiguredForService;
 
             var task = new CompositeBuildingTask(
+                new ParseContextVariableTask(new EditorPathSource(),
+                    new TargetToContext(_rootLuaVariableKey), s => Path.Combine(_packageSupplementarySourceName)),
                 new ParseContextVariableTask(new SourceFromSettings(_buildTargetDirSettingsJPath),
                     new TargetToContext(_outputTargetVariableKey), s => Path.Combine(s, outputName)),
                 new CodeGenerationTask(new DocumentPathSource(),
@@ -56,7 +57,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
                 new CopyTask(new SourceFromContext(_gatheredResourcePathVariableKey),
                     new SourceFromContext(_gatheredResourceTargetNameVariableKey),
                     new SourceFromContext(_outputTargetVariableKey)),
-                new CopyTask(new FixedSource(sourcePath),
+                new CopyTask(new SourceFromContext(_rootLuaVariableKey),
                     new FixedSource(_packageSupplementaryTargetName),
                     new SourceFromContext(_outputTargetVariableKey)));
             var childTask = base.CreateBuildingTask(nodeData, context);
