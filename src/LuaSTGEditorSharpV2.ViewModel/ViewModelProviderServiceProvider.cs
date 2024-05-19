@@ -68,7 +68,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private void UpdateViewModelDataRecursive(NodeData dataSource, NodeViewModelContext context)
         {
             GetServiceOfNode(dataSource).UpdateViewModelData(_mapping[dataSource], dataSource, context);
-            using var _ = context.AcquireContextHandle(dataSource);
+            using var _ = context.AcquireContextLevelHandle(dataSource);
             foreach (var child in dataSource.PhysicalChildren)
             {
                 UpdateViewModelDataRecursive(child, context);
@@ -119,7 +119,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private NodeViewModel CreateViewModelRecursive(NodeData target, NodeViewModelContext context)
         {
             NodeViewModel viewModel = CreateViewModel(target, context);
-            using var _ = context.AcquireContextHandle(target);
+            using var _ = context.AcquireContextLevelHandle(target);
             for (int i = 0; i < target.PhysicalChildren.Count; i++)
             {
                 viewModel.Children.Add(CreateViewModelRecursive(target.PhysicalChildren[i], context));

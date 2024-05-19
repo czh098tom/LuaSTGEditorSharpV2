@@ -14,6 +14,76 @@
   </DefinitionRoot>
   <BuildRoot>
     <DefaultLuaSTGBuilding taskName="test" outputName="SHARPV2_TEST" />
+    <CompositeTask taskName="test2">
+      <ParseContextVariableTask>
+        <BuildTaskProperty propertyName="source">
+          <EditorPathBuildSource />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="targetVariable">
+          <ToContextVariableBuildTarget key="ROOT_LUA" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="mapper">
+          <CombinePathBuildMapper toAppend="package\LegacyNode\root.lua" />
+        </BuildTaskProperty>
+      </ParseContextVariableTask>
+      <ParseContextVariableTask>
+        <BuildTaskProperty propertyName="source">
+          <FromSettingsBuildSource settingsJPath="build.target_dir" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="targetVariable">
+          <ToContextVariableBuildTarget key="OUTPUT_TARGET" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="mapper">
+          <CombinePathBuildMapper toAppend="SHARPV2_TEST_2" />
+        </BuildTaskProperty>
+      </ParseContextVariableTask>
+      <CodeGenerationTask>
+        <BuildTaskProperty propertyName="source">
+          <DocumentPathBuildSource />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="targetVariable">
+          <ToContextVariableBuildTarget key="GENERATED_CODE" />
+        </BuildTaskProperty>
+      </CodeGenerationTask>
+      <CaptureResourceGroupTask>
+        <BuildTaskProperty propertyName="source">
+          <DocumentPathBuildSource />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="gatheredResourcePath">
+          <ToContextVariableBuildTarget key="GATHERED_RESOURCE_PATH" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="gatheredNameInPackage">
+          <ToContextVariableBuildTarget key="GATHERED_RESOURCE_TARGET" />
+        </BuildTaskProperty>
+      </CaptureResourceGroupTask>
+      <CopyTask targetName="_editor_output.lua">
+        <BuildTaskProperty propertyName="source">
+          <FromContextVariableBuildSource key="GENERATED_CODE" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="targetArchivePath">
+          <FromContextVariableBuildSource key="OUTPUT_TARGET" />
+        </BuildTaskProperty>
+      </CopyTask>
+      <CopyTask>
+        <BuildTaskProperty propertyName="source">
+          <FromContextVariableBuildSource key="GATHERED_RESOURCE_PATH" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="targetName">
+          <FromContextVariableBuildSource key="GATHERED_RESOURCE_TARGET" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="targetArchivePath">
+          <FromContextVariableBuildSource key="OUTPUT_TARGET" />
+        </BuildTaskProperty>
+      </CopyTask>
+      <CopyTask targetName="root.lua">
+        <BuildTaskProperty propertyName="source">
+          <FromContextVariableBuildSource key="ROOT_LUA" />
+        </BuildTaskProperty>
+        <BuildTaskProperty propertyName="targetArchivePath">
+          <FromContextVariableBuildSource key="OUTPUT_TARGET" />
+        </BuildTaskProperty>
+      </CopyTask>
+    </CompositeTask>
   </BuildRoot>
   <CompileRoot>
     <DefineBullet identifier="test_bullet">

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building
 {
-    public class FixedSource : IInputSourceVariable
+    public class ConstantSource : IInputSourceVariable
     {
         public string[] Path { get; private set; }
 
-        public FixedSource(params string[] path)
+        public ConstantSource(params string[] path)
         {
             Path = path;
         }

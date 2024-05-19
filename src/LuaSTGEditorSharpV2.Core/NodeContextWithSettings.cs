@@ -74,7 +74,7 @@ namespace LuaSTGEditorSharpV2.Core
             LocalParam = localParam;
         }
 
-        public virtual IDisposable AcquireContextHandle(NodeData current)
+        public virtual IDisposable AcquireContextLevelHandle(NodeData current)
         {
             var handle = new ContextHandle(this);
             handle.Step(current);

@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             , StructuralValidationServiceSettings serviceSettings)
         {
             var ctx = GetContextOfNode(parent, param, serviceSettings);
-            ctx.AcquireContextHandle(parent);
+            ctx.AcquireContextLevelHandle(parent);
             return GetInvalidPositionsRecursive(toInsert, ctx).Any();
         }
 
@@ -48,7 +48,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             if (root.PhysicalParent != null
                 && !GetServiceOfNode(root).CanPlaceAsChildOf(root.PhysicalParent, context))
                 yield return root;
-            using var _ = context.AcquireContextHandle(root);
+            using var _ = context.AcquireContextLevelHandle(root);
             foreach (var child in root.PhysicalChildren)
             {
                 foreach (var inv in GetInvalidPositionsRecursive(child, context))

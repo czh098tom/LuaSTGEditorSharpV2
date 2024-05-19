@@ -1,0 +1,4 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable.InputSource.EditorPathSourceFactory, LuaSTGEditorSharpV2.Core.Building, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "EditorPathBuildSource"
+}

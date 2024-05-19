@@ -60,7 +60,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             return handle;
         }
 
-        public override IDisposable AcquireContextHandle(NodeData current)
+        public override IDisposable AcquireContextLevelHandle(NodeData current)
         {
             return AcquireContextHandle(current, 0);
         }

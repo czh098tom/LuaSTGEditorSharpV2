@@ -38,9 +38,10 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
             }
         }
 
-        public static WeightedBuildingTask WithNameIfValid(this WeightedBuildingTask inner, string? name)
+        public static WeightedBuildingTask WithNameIfValid(this WeightedBuildingTask inner, string? name, float? weightOverride = null)
         {
-            return new WeightedBuildingTask(inner.BuildingTask.WithNameIfValid(name), inner.Weight);
+            var weight = weightOverride ?? inner.Weight;
+            return new WeightedBuildingTask(inner.BuildingTask.WithNameIfValid(name), weight);
         }
     }
 }

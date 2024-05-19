@@ -11,7 +11,7 @@ using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings> 
+    public abstract class CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         : NodeServiceProvider<TService>, ISettingsProvider<TSettings>
         where TServiceProvider : CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : CompactNodeService<TServiceProvider, TService, TContext, TSettings>
@@ -44,9 +44,22 @@ namespace LuaSTGEditorSharpV2.Core
             var service = GetServiceInstanceOfTypeUID(node.TypeUID);
             return service.BuildContextForNode(node, localParam, serviceSettings);
         }
+
+        public IEnumerable<NodeServicePair<UService>> GetServicesPairForLogicalChildrenOfType<UService>(NodeData nodeData)
+            where UService : TService
+        {
+            foreach (var n in nodeData.GetLogicalChildren())
+            {
+                var s = GetServiceOfNode(n);
+                if (s is UService service)
+                {
+                    yield return new NodeServicePair<UService>(service, n);
+                }
+            }
+        }
     }
 
-    internal class DefaultNodeServiceProvider : CompactNodeServiceProvider<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase> 
+    internal class DefaultNodeServiceProvider : CompactNodeServiceProvider<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase>
     {
         private static readonly DefaultNodeService _default = new();
 

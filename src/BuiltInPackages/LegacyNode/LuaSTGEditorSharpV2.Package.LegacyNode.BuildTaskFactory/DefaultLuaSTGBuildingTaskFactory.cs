@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
 
             var task = new CompositeBuildingTask(
                 new ParseContextVariableTask(new EditorPathSource(),
-                    new TargetToContext(_rootLuaVariableKey), s => Path.Combine(_packageSupplementarySourceName)),
+                    new TargetToContext(_rootLuaVariableKey), s => Path.Combine(s, _packageSupplementarySourceName)),
                 new ParseContextVariableTask(new SourceFromSettings(_buildTargetDirSettingsJPath),
                     new TargetToContext(_outputTargetVariableKey), s => Path.Combine(s, outputName)),
                 new CodeGenerationTask(new DocumentPathSource(),
@@ -52,13 +52,13 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
                     new TargetToContext(_gatheredResourcePathVariableKey),
                     new TargetToContext(_gatheredResourceTargetNameVariableKey)),
                 new CopyTask(new SourceFromContext(_codeGenerationVariableKey),
-                    new FixedSource(_entryPointName),
+                    new ConstantSource(_entryPointName),
                     new SourceFromContext(_outputTargetVariableKey)),
                 new CopyTask(new SourceFromContext(_gatheredResourcePathVariableKey),
                     new SourceFromContext(_gatheredResourceTargetNameVariableKey),
                     new SourceFromContext(_outputTargetVariableKey)),
                 new CopyTask(new SourceFromContext(_rootLuaVariableKey),
-                    new FixedSource(_packageSupplementaryTargetName),
+                    new ConstantSource(_packageSupplementaryTargetName),
                     new SourceFromContext(_outputTargetVariableKey)));
             var childTask = base.CreateBuildingTask(nodeData, context);
             return CompositeBuildingTask.LeastObjectCombine(new WeightedBuildingTask(task, 1), childTask)

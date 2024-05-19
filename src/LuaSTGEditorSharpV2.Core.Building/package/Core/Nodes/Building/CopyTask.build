@@ -1,0 +1,12 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable.CopyTaskFactory, LuaSTGEditorSharpV2.Core.Building, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "CopyTask",
+  "NameCapture": { "Key": "taskName" },
+  "WeightCapture": { "Key": "taskWeight" },
+  "SourceCapture": { "Key": "source" },
+  "SourceVariableName": "source",
+  "ArchivePathCapture": { "Key": "targetArchivePath" },
+  "ArchivePathVariableName": "targetArchivePath",
+  "TargetNameCapture": { "Key": "targetName" },
+  "TargetNameVariableName": "targetName"
+}

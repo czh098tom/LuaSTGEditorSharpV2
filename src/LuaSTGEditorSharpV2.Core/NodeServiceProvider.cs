@@ -12,6 +12,12 @@ namespace LuaSTGEditorSharpV2.Core
     public abstract class NodeServiceProvider<TService> : PackedDataProviderServiceBase<TService>, INodeServiceProvider
         where TService : NodeServiceBase
     {
+        public record struct NodeServicePair<UService>(UService Service, NodeData NodeData)
+            where UService : TService
+        {
+
+        }
+
         protected abstract TService DefaultService { get; }
 
         internal protected TService GetServiceInstanceOfTypeUID(string typeUID)

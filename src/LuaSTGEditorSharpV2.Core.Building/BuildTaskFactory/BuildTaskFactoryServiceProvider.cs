@@ -28,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory
         public WeightedBuildingTask? ProceedChildren(NodeData node, 
             BuildTaskFactoryContext context)
         {
-            using var _ = context.AcquireContextHandle(node);
+            using var _ = context.AcquireContextLevelHandle(node);
             var tasks = new List<WeightedBuildingTask>();
             foreach (NodeData child in node.GetLogicalChildren())
             {

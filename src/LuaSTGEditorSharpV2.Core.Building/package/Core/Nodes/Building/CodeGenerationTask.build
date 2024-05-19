@@ -1,0 +1,9 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable.CodeGenerationTaskFactory, LuaSTGEditorSharpV2.Core.Building, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "CodeGenerationTask",
+  "NameCapture": { "Key": "taskName" },
+  "WeightCapture": { "Key": "taskWeight" },
+  "SourceCapture": { "Key": "source" },
+  "SourceVariableName": "source",
+  "TargetVariableVariableName": "targetVariable"
+}
