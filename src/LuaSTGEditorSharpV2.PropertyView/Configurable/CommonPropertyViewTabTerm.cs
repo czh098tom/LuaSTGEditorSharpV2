@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     public class CommonPropertyViewTabTerm : PropertyViewTabTermBase
     {
-        [JsonProperty] public PropertyViewTerm[] Mapping { get; set; } = [];
+        [JsonProperty] public IPropertyViewTerm[] Mapping { get; set; } = [];
 
         public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)
         {
@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             PropertyViewContext context, int itemIndex, string edited)
         {
             if (itemIndex < 0 || itemIndex >= Mapping.Length) return EditResult.Empty;
-            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Mapping[itemIndex].Mapping?.Key, edited), false);
+            return new EditResult(Mapping[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), false);
         }
     }
 }

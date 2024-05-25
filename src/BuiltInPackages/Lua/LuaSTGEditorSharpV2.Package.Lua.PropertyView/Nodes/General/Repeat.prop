@@ -6,6 +6,7 @@
       "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.SingleListTabTerm`2[[LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat.RepeatPropertyViewItemTerm, LuaSTGEditorSharpV2.Package.Lua.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat.RepeatVariableDefinition, LuaSTGEditorSharpV2.Package.Lua.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
       "ImmutableProperty": [
         {
+          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
           "Mapping": { "Key": "times" },
           "Caption": {
             "Neutral": "Times",

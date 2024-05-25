@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         where TTermVariable : class, IMultipleFieldPropertyViewItemTerm<TIntermediateModel>
         where TIntermediateModel : class
     {
-        [JsonProperty] public PropertyViewTerm[] ImmutableProperty { get; private set; } = [];
+        [JsonProperty] public IPropertyViewTerm[] ImmutableProperty { get; private set; } = [];
         [JsonProperty] public PropertyViewTerm? Count { get; private set; } = null;
         [JsonProperty] public TTermVariable? VariableProperty { get; private set; } = null;
 
@@ -76,13 +76,13 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             {
                 if (Count != null && VariableProperty != null)
                 {
-                    return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData, Count.Mapping?.Key, edited), true);
+                    return new EditResult(Count.ResolveCommandOfEditingNode(nodeData, context, edited), true);
                 }
                 return EditResult.Empty;
             }
             else if (itemIndex < idxCount && itemIndex >= 0)
             {
-                return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData, ImmutableProperty[itemIndex].Mapping?.Key, edited));
+                return new EditResult(ImmutableProperty[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), false);
             }
             return EditResult.Empty;
         }
