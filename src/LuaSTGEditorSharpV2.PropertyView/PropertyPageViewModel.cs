@@ -57,7 +57,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             var editResult = propertyViewService.GetCommandOfEditingNode(
                 e.Args.Args.NodeData,
                 e.Args.Args.LocalServiceParam, tabs, e.Index,
-                e.Index,
+                e.Args.Index,
                 e.Args.Args.NewValue);
 
             PublishCommand(editResult.Command, 
