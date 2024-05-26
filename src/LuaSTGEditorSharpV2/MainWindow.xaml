@@ -29,21 +29,6 @@
         Icon="pack://application:,,,/icon.ico"
         FocusManager.FocusedElement="{Binding ElementName=RibbonWin}">
     <Window.Resources>
-        <DataTemplate x:Key="defaultPropertyView">
-            <lsv:PropertyItemGrid>
-                <TextBlock Text="{Binding Name}" />
-                <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                <Button Grid.Column="2" Height="16" Content="...">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:InvokeCommandAction PassEventArgsToCommand="True"
-                                Command="{Binding ShowEditWindow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
-            </lsv:PropertyItemGrid>
-        </DataTemplate>
     </Window.Resources>
     <Window.DataContext>
         <localvm:MainViewModel/>
@@ -261,7 +246,7 @@
                                                                   Grid.IsSharedSizeScope="True"
                                                                   ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
                                                             <ItemsControl.ItemTemplateSelector>
-                                                                <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = defaultPropertyView}"/>
+                                                                <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey=property:default}"/>
                                                             </ItemsControl.ItemTemplateSelector>
                                                         </ItemsControl>
                                                     </ScrollViewer>

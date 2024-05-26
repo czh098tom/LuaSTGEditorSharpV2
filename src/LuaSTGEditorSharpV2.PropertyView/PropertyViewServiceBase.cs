@@ -56,7 +56,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <param name="edited"> The <see cref="string"/> as edit result. </param>
         /// <returns></returns>
         internal protected virtual EditResult ResolveCommandOfEditingNode(NodeData nodeData, 
-            PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
+            PropertyViewContext context, 
             int tabIndex, int itemIndex, string edited)
         {
             return EditResult.Empty;

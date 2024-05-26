@@ -28,7 +28,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         }
 
         internal protected override EditResult ResolveCommandOfEditingNode(NodeData nodeData, 
-            PropertyViewContext context, IReadOnlyList<PropertyTabViewModel> propertyList, 
+            PropertyViewContext context, 
             int tabIndex, int itemIndex, string edited)
         {
             if (tabIndex < 0 || tabIndex >= Tabs.Length) return EditResult.Empty;

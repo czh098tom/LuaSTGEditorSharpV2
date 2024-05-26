@@ -62,7 +62,7 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        protected LocalServiceParam LocalParam { get; private set; }
+        public LocalServiceParam LocalParam { get; private set; }
 
         private readonly Dictionary<string, Stack<NodeData>> _contextData = [];
         private readonly Stack<NodeData> _top = new();

@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Newtonsoft.Json;
+
+using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -22,7 +26,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
             }
         }
 
-        public JsonProxiedPropertyItemViewModel(T proxyValue)
+        public JsonProxiedPropertyItemViewModel(T proxyValue, NodeData nodeData, 
+            LocalServiceParam localServiceParam) : base(nodeData, localServiceParam)
         {
             _proxyValue = proxyValue;
         }

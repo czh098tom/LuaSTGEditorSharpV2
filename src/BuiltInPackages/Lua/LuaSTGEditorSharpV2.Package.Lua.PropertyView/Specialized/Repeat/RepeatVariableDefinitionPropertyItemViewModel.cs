@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
@@ -48,8 +50,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             }
         }
 
-        public RepeatVariableDefinitionPropertyItemViewModel(string propName, string propValue, string propIncrement)
-            : base(new RepeatVariableDefinition(propName, propValue, propIncrement))
+        public RepeatVariableDefinitionPropertyItemViewModel(string propName, string propValue, string propIncrement,
+            NodeData nodeData, LocalServiceParam localServiceParam)
+            : base(new RepeatVariableDefinition(propName, propValue, propIncrement), nodeData, localServiceParam)
         {
             _propName = propName;
             _propInit = propValue;

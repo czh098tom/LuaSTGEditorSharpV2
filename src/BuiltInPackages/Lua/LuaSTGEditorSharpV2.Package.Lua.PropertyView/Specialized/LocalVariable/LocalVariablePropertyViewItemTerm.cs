@@ -29,7 +29,8 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
                 object idx = i;
                 properties.Add(new VariableDefinitionPropertyItemViewModel(
                     NameRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    ValueRule?.CaptureByFormat(token, idx) ?? string.Empty)
+                    ValueRule?.CaptureByFormat(token, idx) ?? string.Empty,
+                    nodeData, context.LocalParam)
                 {
                     Type = NameValueEditor
                 });

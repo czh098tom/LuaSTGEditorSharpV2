@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -11,18 +13,28 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public record class PropertyViewTerm(
-        NodePropertyCapture? Mapping,
-        LocalizableString Caption,
-        PropertyViewEditorType? Editor = null) : IPropertyViewTerm
+    public class PropertyViewTerm(
+        NodePropertyCapture? mapping,
+        LocalizableString caption,
+        PropertyViewEditorType? editor = null,
+        bool enabled = true) : IPropertyViewTerm
     {
-        public PropertyItemViewModelBase GetViewModel(NodePropertyAccessToken token)
+        [JsonProperty] public NodePropertyCapture? Mapping { get; private set; } = mapping;
+        [JsonProperty] public LocalizableString Caption { get; private set; } = caption;
+        [JsonProperty] public PropertyViewEditorType? Editor { get; private set; } = editor;
+        [JsonProperty] public bool Enabled { get; private set; } = enabled;
+
+        public PropertyViewTerm() : this(null, new(), null, true) { }
+
+        public PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context)
         {
-            return new BasicPropertyItemViewModel()
+            var token = new NodePropertyAccessToken(nodeData, context);
+            return new BasicPropertyItemViewModel(nodeData, context.LocalParam)
             {
                 Name = Caption.GetLocalized(),
                 Value = Mapping?.Capture(token) ?? string.Empty,
-                Type = Editor
+                Type = Editor,
+                Enabled = Enabled
             };
         }
 

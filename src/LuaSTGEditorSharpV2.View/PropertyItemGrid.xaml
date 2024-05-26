@@ -8,6 +8,7 @@
       d:DesignHeight="450" 
       d:DesignWidth="800" 
       DataContext="{Binding ., Mode=OneTime}"
+      IsEnabled="{Binding Enabled}"
       Margin="0">
     <!-- 
     Bind datacontext to itself once to prevent parent regenerate datacontext for its children
@@ -16,6 +17,6 @@
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" MinWidth="75" SharedSizeGroup="Inspector_Name" />
         <ColumnDefinition Width="*" MinWidth="150"/>
-        <ColumnDefinition Width="16" SharedSizeGroup="Inspector_Button"/>
+        <ColumnDefinition Width="16" />
     </Grid.ColumnDefinitions>
 </Grid>

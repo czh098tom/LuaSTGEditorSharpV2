@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 
             for (int j = 0; j < mapping.Length; j++)
             {
-                propertyViewModels.Add(mapping[j].GetViewModel(token));
+                propertyViewModels.Add(mapping[j].GetViewModel(nodeData, context));
             }
             var tab = new PropertyTabViewModel()
             {

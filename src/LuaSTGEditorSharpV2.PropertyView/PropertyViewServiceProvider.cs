@@ -51,14 +51,19 @@ namespace LuaSTGEditorSharpV2.PropertyView
             , LocalServiceParam localParam, PropertyViewServiceSettings serviceSettings)
         {
             var ctx = GetContextOfNode(nodeData, localParam, serviceSettings);
+            return GetPropertyViewModelOfNode(nodeData, ctx);
+        }
+
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData, PropertyViewContext ctx)
+        {
             var list = new List<PropertyTabViewModel>();
             list.AddRange(GetServiceOfNode(nodeData).ResolvePropertyViewModelOfNode(nodeData, ctx));
-            list.Add(CreateDefaultViewModel(nodeData));
+            list.Add(CreateDefaultViewModel(nodeData, ctx));
             return list;
         }
 
         public EditResult GetCommandOfEditingNode(NodeData nodeData,
-            LocalServiceParam localParams, IReadOnlyList<PropertyTabViewModel> propertyList,
+            LocalServiceParam localParams, IReadOnlyList<PropertyTabViewModel>? propertyList,
             int tabIndex, int itemIndex, string edited)
             => GetCommandOfEditingNode(nodeData, localParams, ServiceSettings, propertyList
                 , tabIndex, itemIndex, edited);
@@ -77,24 +82,23 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <returns></returns>
         public EditResult GetCommandOfEditingNode(NodeData nodeData,
             LocalServiceParam localParams, PropertyViewServiceSettings serviceSettings,
-            IReadOnlyList<PropertyTabViewModel> propertyList, int tabIndex, int itemIndex,
+            IReadOnlyList<PropertyTabViewModel>? propertyList, int tabIndex, int itemIndex,
             string edited)
         {
-            if (tabIndex == propertyList.Count - 1)
+            if (propertyList != null && tabIndex == propertyList.Count - 1)
                 return PropertyViewServiceBase.ResolveNativeEditing(nodeData, propertyList[^1].Properties,
                     itemIndex, edited);
-            var otherProperties = new List<PropertyTabViewModel>(propertyList.Take(propertyList.Count - 1));
             return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData,
                 GetContextOfNode(nodeData, localParams, serviceSettings),
-                otherProperties, tabIndex, itemIndex, edited);
+                tabIndex, itemIndex, edited);
         }
 
-        private PropertyTabViewModel CreateDefaultViewModel(NodeData nodeData)
+        private PropertyTabViewModel CreateDefaultViewModel(NodeData nodeData, PropertyViewContext context)
         {
             List<PropertyItemViewModelBase> result = new(nodeData.Properties.Count);
             foreach (var prop in nodeData.Properties)
             {
-                result.Add(new BasicPropertyItemViewModel()
+                result.Add(new BasicPropertyItemViewModel(nodeData, context.LocalParam)
                 {
                     Name = prop.Key,
                     Value = prop.Value

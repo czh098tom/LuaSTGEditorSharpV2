@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < ImmutableProperty.Length; i++)
             {
-                properties.Add(ImmutableProperty[i].GetViewModel(token));
+                properties.Add(ImmutableProperty[i].GetViewModel(nodeData, context));
             }
             if (Count != null && VariableProperty != null)
             {
@@ -36,7 +36,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                 {
                     count = c;
                 }
-                properties.Add(Count.GetViewModel(token));
+                properties.Add(Count.GetViewModel(nodeData, context));
                 properties.AddRange(VariableProperty.GetViewModel(nodeData, context, count));
             }
             var tab = new PropertyTabViewModel()

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
@@ -36,8 +38,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             }
         }
 
-        public VariableDefinitionPropertyItemViewModel(string propName, string propValue)
-            : base(new VariableDefinition(propName, propValue))
+        public VariableDefinitionPropertyItemViewModel(string propName, string propValue,
+            NodeData nodeData, LocalServiceParam localServiceParam)
+            : base(new VariableDefinition(propName, propValue), nodeData, localServiceParam)
         {
             _propName = propName;
             _propValue = propValue;

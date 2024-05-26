@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
+using static LuaSTGEditorSharpV2.PropertyView.PropertyItemViewModelBase;
 using static LuaSTGEditorSharpV2.PropertyView.PropertyTabViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyPageViewModel : AnchorableViewModelBase
     {
-        public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = new();
+        public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = [];
 
         private int _selectedIndex = 0;
 
@@ -34,24 +36,34 @@ namespace LuaSTGEditorSharpV2.PropertyView
         {
             Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
                 (vm => vm.OnItemValueUpdated += Tab_OnItemValueUpdated);
+            Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
+                (vm => vm.OnItemValueUpdatedRaw += Tab_OnItemValueUpdated);
+        }
+
+        private void Tab_OnItemValueUpdated(object? sender, PropertyTabViewModel.ItemValueUpdatedEventArgs e)
+        {
+            if (sender is not PropertyTabViewModel vm) return;
+            Tab_OnItemValueUpdatedImpl(Tabs, new ItemValueUpdatedEventArgs(Tabs.IndexOf(vm), e));
         }
 
         private void Tab_OnItemValueUpdated(object? sender, ItemValueUpdatedEventArgs e)
         {
-            if (sender is not PropertyTabViewModel vm) return;
+            Tab_OnItemValueUpdatedImpl(null, e);
+        }
 
+        private void Tab_OnItemValueUpdatedImpl(IReadOnlyList<PropertyTabViewModel>? tabs, ItemValueUpdatedEventArgs e)
+        {
             var propertyViewService = HostedApplicationHelper.GetService<PropertyViewServiceProvider>();
-            var doc = SourceDocument;
-            if (doc == null) return;
-            var param = new LocalServiceParam(doc);
-            if (SourceNodes.Length != 1) return;
             var editResult = propertyViewService.GetCommandOfEditingNode(
-                SourceNodes[0],
-                param, Tabs, Tabs.IndexOf(vm),
-                vm.Properties.IndexOf(e.Item),
-                e.Args.NewValue);
+                e.Args.Args.NodeData,
+                e.Args.Args.LocalServiceParam, tabs, e.Index,
+                e.Index,
+                e.Args.Args.NewValue);
 
-            PublishCommand(editResult.Command, doc, SourceNodes, editResult.ShouldRefreshView);
+            PublishCommand(editResult.Command, 
+                e.Args.Args.LocalServiceParam.Source, 
+                [e.Args.Args.NodeData], 
+                editResult.ShouldRefreshView);
         }
 
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)

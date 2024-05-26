@@ -18,7 +18,7 @@ namespace LuaSTGEditorSharpV2.WPF
             ResourceDictionary dataTemplates = GetResourceDictionary();
             if (Default == null) throw new InvalidOperationException($"{nameof(dataTemplates)} has not been assigned");
             if (item == null) return Default;
-            if (item is not TViewModel vm) throw new ArgumentException($"{nameof(item)} is not a {nameof(TViewModel)}");
+            if (item is not TViewModel vm) throw new ArgumentException($"{nameof(item)} is not a {typeof(TViewModel)}");
             if (dataTemplates != null && HasKeyFromSource(vm))
             {
                 string key = CreateKey(vm);

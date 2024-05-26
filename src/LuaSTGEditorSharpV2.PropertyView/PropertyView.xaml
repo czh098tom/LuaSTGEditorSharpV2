@@ -2,7 +2,48 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:e="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
-                    xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View">
+                    xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
+                    xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView">
+    <DataTemplate x:Key="property:default">
+        <lsv:PropertyItemGrid>
+            <TextBlock Text="{Binding Name}" />
+            <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <Button Grid.Column="2" Height="16" Content="...">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                Command="{Binding ShowEditWindow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                                />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <DataTemplate x:Key="property:childNode">
+        <lsv:PropertyItemGrid>
+            <Grid Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ItemsControl ItemsSource="{Binding Tabs}" 
+                              Grid.Column="1"
+                              Grid.IsSharedSizeScope="False">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding Properties}"
+                                          Grid.IsSharedSizeScope="True"
+                                          ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
+                                <ItemsControl.ItemTemplateSelector>
+                                    <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey = property:default}"/>
+                                </ItemsControl.ItemTemplateSelector>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
     <DataTemplate x:Key="property:editorBoolean">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}"/>

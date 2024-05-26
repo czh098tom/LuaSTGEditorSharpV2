@@ -31,7 +31,8 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
                 properties.Add(new RepeatVariableDefinitionPropertyItemViewModel(
                     NameRule?.CaptureByFormat(token, idx) ?? string.Empty,
                     InitRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    IncrementRule?.CaptureByFormat(token, idx) ?? string.Empty)
+                    IncrementRule?.CaptureByFormat(token, idx) ?? string.Empty,
+                    nodeData, context.LocalParam)
                 {
                     Type = NameValueEditor
                 });
