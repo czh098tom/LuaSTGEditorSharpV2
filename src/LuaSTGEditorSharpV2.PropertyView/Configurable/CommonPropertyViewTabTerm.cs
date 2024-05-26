@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             PropertyViewContext context, int itemIndex, string edited)
         {
             if (itemIndex < 0 || itemIndex >= Mapping.Length) return EditResult.Empty;
-            return new EditResult(Mapping[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), false);
+            return new EditResult(Mapping[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), true);
         }
     }
 }

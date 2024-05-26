@@ -82,7 +82,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             }
             else if (itemIndex < idxCount && itemIndex >= 0)
             {
-                return new EditResult(ImmutableProperty[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), false);
+                return new EditResult(ImmutableProperty[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), true);
             }
             return EditResult.Empty;
         }
