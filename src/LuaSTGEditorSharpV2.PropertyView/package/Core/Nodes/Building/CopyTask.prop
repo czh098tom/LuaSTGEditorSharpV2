@@ -26,19 +26,58 @@
           }
         },
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-          "FindProperty": { "Key": "propertyName" },
-          "OfName": [ "source" ]
+          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PorpertyTermSelector, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "Candidate": {
+            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "FindProperty": { "Key": "propertyName" },
+            "OfName": [ "source" ]
+          },
+          "IfEmpty": {
+            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Mapping": { "Key": "source" },
+            "Caption": {
+              "Neutral": "Copy Source (Constant)",
+              "Localized": {
+                "zh": "复制的源（常量）"
+              }
+            }
+          }
         },
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-          "FindProperty": { "Key": "propertyName" },
-          "OfName": [ "targetArchivePath" ]
+          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PorpertyTermSelector, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "Candidate": {
+            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "FindProperty": { "Key": "propertyName" },
+            "OfName": [ "targetArchivePath" ]
+          },
+          "IfEmpty": {
+            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Mapping": { "Key": "targetArchivePath" },
+            "Caption": {
+              "Neutral": "Copy Target Base Path (Constant)",
+              "Localized": {
+                "zh": "复制目标根路径（常量）"
+              }
+            }
+          }
         },
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-          "FindProperty": { "Key": "propertyName" },
-          "OfName": [ "targetName" ]
+          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PorpertyTermSelector, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "Candidate": {
+            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "FindProperty": { "Key": "propertyName" },
+            "OfName": [ "targetName" ]
+          },
+          "IfEmpty": {
+            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Mapping": { "Key": "targetName" },
+            "Caption": {
+              "Neutral": "Copy Target Name (Constant)",
+              "Localized": {
+                "zh": "复制目标名称（常量）"
+              }
+            }
+          }
         }
       ]
     }

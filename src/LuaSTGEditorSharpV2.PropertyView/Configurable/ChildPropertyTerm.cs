@@ -18,6 +18,11 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 
         public PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context)
         {
+            return GetViewModelImpl(nodeData, context);
+        }
+
+        public PropertyTabWrapperItemViewModel GetViewModelImpl(NodeData nodeData, PropertyViewContext context)
+        {
             var service = HostedApplicationHelper.GetService<PropertyViewServiceProvider>();
 
             using var _ = context.AcquireContextLevelHandle(nodeData);

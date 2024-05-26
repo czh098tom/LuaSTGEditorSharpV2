@@ -44,6 +44,16 @@
             </Grid>
         </lsv:PropertyItemGrid>
     </DataTemplate>
+    <DataTemplate x:Key="property:captionName">
+        <lsv:PropertyItemGrid>
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <DataTemplate x:Key="property:captionValue">
+        <lsv:PropertyItemGrid>
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Value}" />
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
     <DataTemplate x:Key="property:editorBoolean">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}"/>
