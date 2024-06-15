@@ -12,7 +12,7 @@ using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
 namespace LuaSTGEditorSharpV2.UICustomization
 {
-    public class UICustomizationService : ISettingsProvider, IResourceProvider
+    public class UICustomizationService : ISettingsProvider
     {
         internal static readonly string uri = "pack://application:,,,/LuaSTGEditorSharpV2.UICustomization;component/UICustomizationStyles.xaml";
 

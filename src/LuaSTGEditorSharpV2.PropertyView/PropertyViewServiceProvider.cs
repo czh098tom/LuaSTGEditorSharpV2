@@ -14,7 +14,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
     [ServiceName("PropertyView"), ServiceShortName("prop")]
     public class PropertyViewServiceProvider
         : CompactNodeServiceProvider<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
-        , IResourceProvider
     {
         private static PropertyViewServiceBase _defaultService = new();
 
@@ -29,11 +28,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
             .GetString(_defaultViewI18NKey, typeof(PropertyViewServiceBase).Assembly);
 
         protected override PropertyViewServiceBase DefaultService => _defaultService;
-
-        public IReadOnlyList<string> ResourceDictUris => _resourceDictUris;
-
-        private readonly List<string> _resourceDictUris =
-            ["pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/PropertyView.xaml"];
 
         public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData
             , LocalServiceParam localParam)
@@ -110,11 +104,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
             };
             result.ForEach(tab.Properties.Add);
             return tab;
-        }
-
-        public void AddResourceDictUri(string uri)
-        {
-            _resourceDictUris.Add(uri);
         }
     }
 }

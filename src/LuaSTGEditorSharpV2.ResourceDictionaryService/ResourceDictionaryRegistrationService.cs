@@ -15,16 +15,6 @@ namespace LuaSTGEditorSharpV2.ResourceDictionaryService
         private readonly Dictionary<string, ResourceDictionary> _resourceDictionarys = [];
         public IReadOnlyDictionary<string, ResourceDictionary> ResourceDictionarys => _resourceDictionarys;
 
-        // TODO: remove related codes
-        public void Init()
-        {
-            foreach (string uri in HostedApplicationHelper.GetServices<IResourceProvider>()
-                .SelectMany(iprov => iprov.ResourceDictUris))
-            {
-                Add(uri);
-            }
-        }
-
         protected override void OnRegistered(string id, PackageInfo packageInfo, ResourceDictionaryDescriptor data)
         {
             base.OnRegistered(id, packageInfo, data);

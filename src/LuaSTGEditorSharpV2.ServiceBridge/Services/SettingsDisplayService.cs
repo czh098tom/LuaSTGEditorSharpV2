@@ -19,7 +19,6 @@ using LuaSTGEditorSharpV2.ResourceDictionaryService;
 namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 {
     public class SettingsDisplayService(ILogger<SettingsDisplayService> logger)
-        : IResourceProvider
     {
         private readonly ILogger<SettingsDisplayService> _logger = logger;
 
@@ -28,9 +27,6 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 
         private readonly Dictionary<Type, Type> _viewModelMappingInversed = [];
         public IReadOnlyDictionary<Type, Type> ViewModelMappingInversed => _viewModelMappingInversed;
-
-        private readonly List<string> _resourceDictUris = ["pack://application:,,,/LuaSTGEditorSharpV2.ServiceBridge;component/Style.xaml"];
-        public IReadOnlyList<string> ResourceDictUris => _resourceDictUris;
 
         private readonly Dictionary<Type, SettingsDisplayAttribute> _providerToDisplay = [];
         public IReadOnlyDictionary<Type, SettingsDisplayAttribute> ProviderToDisplay => _providerToDisplay;
@@ -111,11 +107,6 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
             _viewModelMappingInversed.Add(viewModelType, providerType);
             _providerToDisplay.Add(providerType, viewModelType.GetCustomAttribute<SettingsDisplayAttribute>()
                 ?? new SettingsDisplayAttribute());
-        }
-
-        public void AddResourceDictUri(string uri)
-        {
-            _resourceDictUris.Add(uri);
         }
     }
 }
