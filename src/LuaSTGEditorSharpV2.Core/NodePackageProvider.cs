@@ -70,8 +70,8 @@ namespace LuaSTGEditorSharpV2.Core
                 // find register func
                 MethodInfo reg = serviceProviderType.GetMethod(nameof(DefaultNodeServiceProvider.Register)
                     , BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!;
-                Type regDelegateType = typeof(Action<,,,>).MakeGenericType(providerType, typeof(string), typeof(PackageInfo)
-                    , serviceInstance);
+                Type regDelegateType = typeof(Func<,,,,>).MakeGenericType(providerType, typeof(string), typeof(PackageInfo)
+                    , serviceInstance, typeof(IDisposable));
                 Delegate register = reg!.CreateDelegate(regDelegateType);
 
                 // find reassign func

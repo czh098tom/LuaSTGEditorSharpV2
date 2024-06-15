@@ -11,10 +11,30 @@ namespace LuaSTGEditorSharpV2.Core
     public abstract class PackedDataProviderServiceBase<TData> : IPackedDataProviderService<TData>
         where TData : class
     {
+        private class RegisteredDataProviderServiceHandle(PackedDataProviderServiceBase<TData> providerService, 
+            string id, PackageInfo packageInfo, TData data) 
+            : IDisposable
+        {
+            private readonly string _id = id;
+            private readonly PackageInfo _packageInfo = packageInfo;
+            private readonly TData _data = data;
+
+            private readonly PackedDataProviderServiceBase<TData> _providerService = providerService;
+
+            private bool _disposed = false;
+
+            public void Dispose()
+            {
+                if(_disposed) return;
+                _providerService.Unload(_id, _packageInfo, _data);
+                _disposed = true;
+            }
+        }
+
         private readonly Dictionary<string, PriorityQueue<TData, PackageInfo>> _registered = [];
         private readonly Dictionary<TData, PackageInfo> _data2PackageInfo = [];
 
-        public void Register(string id, PackageInfo packageInfo, TData data)
+        public IDisposable Register(string id, PackageInfo packageInfo, TData data)
         {
             try
             {
@@ -24,6 +44,7 @@ namespace LuaSTGEditorSharpV2.Core
                 }
                 _registered[id].Enqueue(data, packageInfo);
                 _data2PackageInfo.Add(data, packageInfo);
+                return new RegisteredDataProviderServiceHandle(this, id, packageInfo, data);
             }
             catch (ArgumentException e)
             {
@@ -36,17 +57,12 @@ namespace LuaSTGEditorSharpV2.Core
             return _data2PackageInfo[data];
         }
 
-        public void UnloadPackage(PackageInfo packageInfo)
+        private void Unload(string id, PackageInfo packageInfo, TData data)
         {
-            List<TData> services = [];
-            List<PackageInfo> packageInfos = [];
-            foreach (var kvp in _registered)
+            if (_registered.TryGetValue(id, out var pq))
             {
-                var pq = kvp.Value;
-                services.Clear();
-                packageInfos.Clear();
-                services.Capacity = services.Capacity < pq.Count ? pq.Count : services.Capacity;
-                packageInfos.Capacity = packageInfos.Capacity < pq.Count ? pq.Count : packageInfos.Capacity;
+                List<TData> services = new(pq.Count);
+                List<PackageInfo> packageInfos = new(pq.Count);
                 while (pq.TryDequeue(out TData? s, out PackageInfo? pi))
                 {
                     if (pi != packageInfo)
@@ -60,18 +76,7 @@ namespace LuaSTGEditorSharpV2.Core
                     pq.Enqueue(services[i], packageInfos[i]);
                 }
             }
-            List<TData> toRemove = [];
-            foreach (var kvp in _data2PackageInfo)
-            {
-                if (kvp.Value == packageInfo)
-                {
-                    toRemove.Add(kvp.Key);
-                }
-            }
-            foreach (var data in toRemove)
-            {
-                _data2PackageInfo.Remove(data);
-            }
+            _data2PackageInfo.Remove(data);
         }
 
         internal protected TData? GetDataOfID(string id)

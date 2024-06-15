@@ -33,8 +33,8 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             }
         }
 
-        private string _iconSource = string.Empty;
-        public string IconSource
+        private string? _iconSource = string.Empty;
+        public string? IconSource
         {
             get => _iconSource;
             set

@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.Model
 
         [JsonProperty] public string Path { get; private set; } = invalidPath;
         [JsonProperty] public int Order { get; private set; } = 0;
-        [JsonProperty] public string IconSource { get; private set; } = string.Empty;
+        [JsonProperty] public string? IconSource { get; private set; } = string.Empty;
         [JsonProperty] public LocalizableString? Caption { get; private set; }
 
         public virtual ToolboxItemViewModel CreateViewModel()

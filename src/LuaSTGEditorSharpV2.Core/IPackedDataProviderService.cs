@@ -8,8 +8,7 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public interface IPackedDataProviderService<TData>
     {
-        public void Register(string id, PackageInfo packageInfo, TData data);
-        public void UnloadPackage(PackageInfo packageInfo);
+        public IDisposable Register(string id, PackageInfo packageInfo, TData data);
         public PackageInfo GetPackageInfo(TData data);
     }
 }
