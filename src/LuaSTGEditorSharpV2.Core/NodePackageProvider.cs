@@ -104,19 +104,20 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public IReadOnlyList<Assembly> LoadPackage(string packageName)
+        public PackageDescriptor LoadPackage(string packageName)
         {
             _logger.LogInformation("Begin loading package \"{package_name}\"", packageName);
             var path = Process.GetCurrentProcess().MainModule?.FileName;
-            var assemblies = LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
+            var descriptor = LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
                 ?? throw new InvalidOperationException(), _packageBasePath, packageName));
             _logger.LogInformation("Loaded package \"{package_name}\"", packageName);
-            return assemblies;
+            return descriptor;
         }
 
-        public IReadOnlyList<Assembly> LoadPackageFromDirectory(string basePath)
+        public PackageDescriptor LoadPackageFromDirectory(string basePath)
         {
             List<Assembly> assembly = [];
+            List<IDisposable> serviceDisposeHandles = [];
             var manifestPath = Path.Combine(basePath, _manifestName);
             PackageManifest packageManifest = GetManifest(manifestPath);
             _logger.LogInformation("Loaded manifest from \"{path}\"", manifestPath);
@@ -165,7 +166,10 @@ namespace LuaSTGEditorSharpV2.Core
                         {
                             param[1] = serviceType.GetProperty(kvp.Value.ServiceInstancePrimaryKeyName)!.GetValue(obj);
                             param[3] = obj;
-                            registerFunc.DynamicInvoke(param);
+                            if (registerFunc.DynamicInvoke(param) is IDisposable disposable)
+                            {
+                                serviceDisposeHandles.Add(disposable);
+                            }
                             _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{path}\"",
                                 param[1], manifestPath);
                         }
@@ -204,7 +208,7 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                 }
             }
-            return assembly;
+            return new PackageDescriptor(serviceDisposeHandles, assembly);
         }
 
         private PackageManifest GetManifest(string path)

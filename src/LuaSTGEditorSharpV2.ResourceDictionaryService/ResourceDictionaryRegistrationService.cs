@@ -9,17 +9,49 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.ResourceDictionaryService
 {
-    public class ResourceDictionaryRegistrationService
+    [ServiceShortName("resource")]
+    public class ResourceDictionaryRegistrationService : PackedDataProviderServiceBase<ResourceDictionaryDescriptor>
     {
         private readonly Dictionary<string, ResourceDictionary> _resourceDictionarys = [];
         public IReadOnlyDictionary<string, ResourceDictionary> ResourceDictionarys => _resourceDictionarys;
 
+        // TODO: remove related codes
         public void Init()
         {
             foreach (string uri in HostedApplicationHelper.GetServices<IResourceProvider>()
                 .SelectMany(iprov => iprov.ResourceDictUris))
             {
                 Add(uri);
+            }
+        }
+
+        protected override void OnRegistered(string id, PackageInfo packageInfo, ResourceDictionaryDescriptor data)
+        {
+            base.OnRegistered(id, packageInfo, data);
+            if (data.Uris != null)
+            {
+                foreach (string? uri in data.Uris)
+                {
+                    if (!string.IsNullOrEmpty(uri))
+                    {
+                        Add(uri);
+                    }
+                }
+            }
+        }
+
+        protected override void OnUnloaded(string id, PackageInfo packageInfo, ResourceDictionaryDescriptor data)
+        {
+            base.OnUnloaded(id, packageInfo, data);
+            if (data.Uris != null)
+            {
+                foreach (string? uri in data.Uris)
+                {
+                    if (!string.IsNullOrEmpty(uri))
+                    {
+                        Remove(uri);
+                    }
+                }
             }
         }
 

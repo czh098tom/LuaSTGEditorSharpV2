@@ -72,9 +72,6 @@ namespace LuaSTGEditorSharpV2
             settingsDisplay.RegisterViewModel<UICustomizationService, UICustomizationServiceSettingsViewModel>();
             settingsDisplay.RegisterViewModel<BuildTaskFactoryServiceProvider, BuildTaskFactoryServiceSettingsViewModel>();
 
-            HostedApplicationHelper.GetService<SettingsDisplayService>()
-                .AddResourceDictUri("pack://application:,,,/LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator;component/PropertyPage.xaml");
-
             HostedApplicationHelper.GetService<ResourceDictionaryRegistrationService>().Init();
         }
     }

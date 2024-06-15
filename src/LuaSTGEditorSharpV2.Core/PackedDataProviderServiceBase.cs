@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.Core
 
             public void Dispose()
             {
-                if(_disposed) return;
+                if (_disposed) return;
                 _providerService.Unload(_id, _packageInfo, _data);
                 _disposed = true;
             }
@@ -44,6 +44,7 @@ namespace LuaSTGEditorSharpV2.Core
                 }
                 _registered[id].Enqueue(data, packageInfo);
                 _data2PackageInfo.Add(data, packageInfo);
+                OnRegistered(id, packageInfo, data);
                 return new RegisteredDataProviderServiceHandle(this, id, packageInfo, data);
             }
             catch (ArgumentException e)
@@ -77,7 +78,11 @@ namespace LuaSTGEditorSharpV2.Core
                 }
             }
             _data2PackageInfo.Remove(data);
+            OnUnloaded(id, packageInfo, data);
         }
+
+        protected virtual void OnRegistered(string id, PackageInfo packageInfo, TData data) { }
+        protected virtual void OnUnloaded(string id, PackageInfo packageInfo, TData data) { }
 
         internal protected TData? GetDataOfID(string id)
         {

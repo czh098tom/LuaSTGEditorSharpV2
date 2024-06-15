@@ -48,13 +48,13 @@ namespace LuaSTGEditorSharpV2
             AddNodeServiceProvider<PropertyViewServiceProvider>();
             AddNodeServiceProvider<DefaultValueServiceProvider>();
             AddPackedDataProvider<ToolboxProviderService, ToolboxItemModelBase>();
+            AddPackedDataProvider<ResourceDictionaryRegistrationService, ResourceDictionaryDescriptor>();
             AddApplicationSingletonService<ActiveDocumentService>();
             AddApplicationSingletonService<InsertCommandHostingService>();
             AddApplicationSingletonService<LocalizationService>();
             AddApplicationSingletonService<SettingsService>();
             AddApplicationSingletonService<SettingsDisplayService>();
             AddApplicationSingletonService<UICustomizationService>();
-            AddApplicationSingletonService<ResourceDictionaryRegistrationService>();
             AddApplicationSingletonService<MainWindowLayoutService>();
             AddApplicationSingletonService<FileDialogService>();
             AddApplicationSingletonService<ClipboardService>();
