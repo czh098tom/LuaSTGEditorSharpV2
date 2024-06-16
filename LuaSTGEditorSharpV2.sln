@@ -85,7 +85,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory\LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory.csproj", "{0129D93E-E477-42AB-AD72-F8486BE42BDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.ServiceBridge.Building", "src\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.Building\LuaSTGEditorSharpV2.ServiceBridge.Building.csproj", "{230F9124-9402-4CED-B537-8F34A8BFBA65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.ServiceBridge.Building", "src\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.Building\LuaSTGEditorSharpV2.ServiceBridge.Building.csproj", "{230F9124-9402-4CED-B537-8F34A8BFBA65}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared\LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared.csproj", "{9D596AAA-D9E0-4728-AE7E-D6F615C5A712}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package.Lua.Resources.Shared", "src\BuiltInPackages\Lua\LuaSTGEditorSharpV2.Package.Lua.Resources.Shared\LuaSTGEditorSharpV2.Package.Lua.Resources.Shared.csproj", "{31A0ED1B-36BB-4E92-B244-B3528E042976}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -229,6 +233,14 @@ Global
 		{230F9124-9402-4CED-B537-8F34A8BFBA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{230F9124-9402-4CED-B537-8F34A8BFBA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{230F9124-9402-4CED-B537-8F34A8BFBA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D596AAA-D9E0-4728-AE7E-D6F615C5A712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D596AAA-D9E0-4728-AE7E-D6F615C5A712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D596AAA-D9E0-4728-AE7E-D6F615C5A712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D596AAA-D9E0-4728-AE7E-D6F615C5A712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A0ED1B-36BB-4E92-B244-B3528E042976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A0ED1B-36BB-4E92-B244-B3528E042976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A0ED1B-36BB-4E92-B244-B3528E042976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A0ED1B-36BB-4E92-B244-B3528E042976}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -272,6 +284,8 @@ Global
 		{5A45AC82-2C1D-49A8-8BF7-8C29E40813B8} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
 		{0129D93E-E477-42AB-AD72-F8486BE42BDC} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
 		{230F9124-9402-4CED-B537-8F34A8BFBA65} = {52161F0E-161B-41E2-866B-FF6E02738C8F}
+		{9D596AAA-D9E0-4728-AE7E-D6F615C5A712} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
+		{31A0ED1B-36BB-4E92-B244-B3528E042976} = {4FFE30D3-7F9B-4C24-B199-7542F56A2987}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A88633F9-126D-4418-B464-61038BFEB74C}
