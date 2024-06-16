@@ -30,15 +30,13 @@
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
-      <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua\Nodes</YourDestinationDirectory>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package</YourDestinationDirectory>
     </PropertyGroup>
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(ExtraFiles)"
-          DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

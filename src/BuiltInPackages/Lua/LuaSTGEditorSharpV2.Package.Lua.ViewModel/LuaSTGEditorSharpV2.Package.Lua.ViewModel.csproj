@@ -26,8 +26,8 @@
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
-      <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\Lua\Nodes</YourDestinationDirectory>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package</YourDestinationDirectory>
     </PropertyGroup>
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />

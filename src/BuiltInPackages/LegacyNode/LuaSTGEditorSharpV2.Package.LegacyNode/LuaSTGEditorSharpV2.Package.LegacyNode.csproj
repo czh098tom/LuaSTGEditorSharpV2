@@ -20,18 +20,10 @@
     </ProjectReference>
   </ItemGroup>
 
-  <Target Name="CopyManifest" AfterTargets="CopyFilesToOutputDirectory">
-    <PropertyGroup>
-      <YourSourceDirectory>$(MSBuildProjectDirectory)</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode</YourDestinationDirectory>
-    </PropertyGroup>
-    <Copy SourceFiles="$(YourSourceDirectory)\manifest" DestinationFiles="$(YourDestinationDirectory)\manifest" SkipUnchangedFiles="true" />
-  </Target>
-
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
-      <YourSourceDirectory>$(MSBuildProjectDirectory)\Nodes</YourSourceDirectory>
-      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package\LegacyNode\Nodes</YourDestinationDirectory>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package</YourDestinationDirectory>
     </PropertyGroup>
     <ItemGroup>
       <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
