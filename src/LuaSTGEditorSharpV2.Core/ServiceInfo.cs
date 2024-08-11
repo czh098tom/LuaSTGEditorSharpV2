@@ -13,6 +13,7 @@ namespace LuaSTGEditorSharpV2.Core
         public required string ShortName { get; init; }
         public required Type ServiceProviderType { get; init; }
         public required Type ServiceInstanceType { get; init; }
+        public required Type ServiceInstanceProviderType { get; init; }
         public required Delegate RegisterFunction { get; init; }
         public required string ServiceInstancePrimaryKeyName { get; init; }
 

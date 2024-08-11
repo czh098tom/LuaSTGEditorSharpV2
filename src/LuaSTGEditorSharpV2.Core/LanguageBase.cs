@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
+    [PackagePrimaryKey(nameof(Name))]
     public class LanguageBase
     {
+        public virtual string Name => "Neutral";
+
         public string? MacroTemplate { get; protected set; } = null;
 
         public string ApplyMacroWithString(string original, string toBeReplaced, string @new)

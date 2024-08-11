@@ -49,6 +49,7 @@ namespace LuaSTGEditorSharpV2
             AddNodeServiceProvider<DefaultValueServiceProvider>();
             AddPackedDataProvider<ToolboxProviderService, ToolboxItemModelBase>();
             AddPackedDataProvider<ResourceDictionaryRegistrationService, ResourceDictionaryDescriptor>();
+            AddPackedDataProvider<LanguageProviderService, LanguageBase>();
             AddApplicationSingletonService<ActiveDocumentService>();
             AddApplicationSingletonService<InsertCommandHostingService>();
             AddApplicationSingletonService<LocalizationService>();
@@ -58,7 +59,6 @@ namespace LuaSTGEditorSharpV2
             AddApplicationSingletonService<MainWindowLayoutService>();
             AddApplicationSingletonService<FileDialogService>();
             AddApplicationSingletonService<ClipboardService>();
-            AddApplicationSingletonService<LanguageProviderService>();
             SetUpHost(() =>
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);

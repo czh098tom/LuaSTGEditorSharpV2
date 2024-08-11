@@ -33,17 +33,14 @@ namespace LuaSTGEditorSharpV2.Core
 
         private readonly ILogger<NodePackageProvider> _logger = logger;
 
-        private readonly Dictionary<Type, ServiceInfo> _servicesProvider2Info = [];
-        private readonly Dictionary<string, Type> _shortName2ServiceProviders = [];
-
-        public Type GetServiceProviderTypeOfShortName(string shortName)
-        {
-            return _shortName2ServiceProviders[shortName];
-        }
+        private readonly List<ServiceInfo> _infos = [];
+        private readonly Dictionary<Type, ServiceInfo> _servicesProviderType2Info = [];
+        private readonly Dictionary<Type, ServiceInfo> _servicesInstanceType2Info = [];
+        private readonly Dictionary<string, ServiceInfo> _shortName2Info = [];
 
         public Type GetServiceTypeOfShortName(string shortName)
         {
-            return _servicesProvider2Info[GetServiceProviderTypeOfShortName(shortName)].ServiceInstanceType;
+            return _shortName2Info[shortName].ServiceInstanceType;
         }
 
         public void UseServiceProvider(Type serviceProviderType)
@@ -56,22 +53,22 @@ namespace LuaSTGEditorSharpV2.Core
                 string serviceName = serviceProviderType.GetCustomAttribute<ServiceNameAttribute>()?.Name ?? serviceProviderType.Name;
                 string serviceShortName = serviceProviderType.GetCustomAttribute<ServiceShortNameAttribute>()?.Name
                     ?? serviceProviderType.Name;
-                if (_shortName2ServiceProviders.ContainsKey(serviceShortName))
+                if (_shortName2Info.ContainsKey(serviceShortName))
                     throw new InvalidOperationException($"Service Short Name {serviceShortName} Duplicated.");
 
                 Type providerType = serviceProviderType;
                 var settingsProviderInterface = serviceProviderType.GetInterfaces()
                     .FirstOrDefault(t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == typeof(ISettingsProvider<>));
                 Type? settingsType = settingsProviderInterface?.GetGenericArguments()?.GetOrDefault(0);
-                Type serviceInstance = baseCoordType.GetGenericArguments()[0];
-                string serviceInstancePrimaryKey = serviceInstance.GetCustomAttribute<PackagePrimaryKeyAttribute>()
+                Type instanceType = baseCoordType.GetGenericArguments()[0];
+                string serviceInstancePrimaryKey = instanceType.GetCustomAttribute<PackagePrimaryKeyAttribute>()
                     ?.KeyPropertyName ?? throw new InvalidOperationException($"Cannot find service primary key.");
 
                 // find register func
                 MethodInfo reg = serviceProviderType.GetMethod(nameof(DefaultNodeServiceProvider.Register)
                     , BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!;
                 Type regDelegateType = typeof(Func<,,,,>).MakeGenericType(providerType, typeof(string), typeof(PackageInfo)
-                    , serviceInstance, typeof(IDisposable));
+                    , instanceType, typeof(IDisposable));
                 Delegate register = reg!.CreateDelegate(regDelegateType);
 
                 // find reassign func
@@ -84,19 +81,26 @@ namespace LuaSTGEditorSharpV2.Core
                     reassign = rea?.CreateDelegate(reaDelegateType);
                 }
 
-                _shortName2ServiceProviders.Add(serviceShortName, serviceProviderType);
-                _servicesProvider2Info.Add(serviceProviderType, new ServiceInfo() 
+                Type instanceProviderType = typeof(IServiceInstanceProvider<>).MakeGenericType(instanceType);
+
+                var serviceInfo = new ServiceInfo()
                 {
-                    Name = serviceName, 
-                    ShortName = serviceShortName, 
-                    ServiceProviderType = providerType, 
-                    ServiceInstanceType = serviceInstance, 
+                    Name = serviceName,
+                    ShortName = serviceShortName,
+                    ServiceProviderType = providerType,
+                    ServiceInstanceType = instanceType,
+                    ServiceInstanceProviderType = instanceProviderType,
                     RegisterFunction = register,
                     ServiceInstancePrimaryKeyName = serviceInstancePrimaryKey,
 
                     SettingsType = settingsType,
                     SettingsReplacementFunction = reassign
-                });
+                };
+
+                _infos.Add(serviceInfo);
+                _shortName2Info.Add(serviceShortName, serviceInfo);
+                _servicesProviderType2Info.Add(serviceProviderType, serviceInfo);
+                _servicesInstanceType2Info.Add(instanceType, serviceInfo);
             }
             else
             {
@@ -116,6 +120,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public PackageDescriptor LoadPackageFromDirectory(string basePath)
         {
+            // Load Assembly first, to ensure all class dependended by text files loaded
             List<Assembly> assembly = [];
             List<IDisposable> serviceDisposeHandles = [];
             var manifestPath = Path.Combine(basePath, _manifestName);
@@ -127,7 +132,7 @@ namespace LuaSTGEditorSharpV2.Core
                 Assembly asm = Assembly.LoadFrom(assemblyPath);
                 assembly.Add(asm);
                 _logger.LogInformation("Loaded main assembly from \"{path}\"", manifestPath);
-                foreach (var kvp in _servicesProvider2Info)
+                foreach (var kvp in _servicesProviderType2Info)
                 {
                     string serviceName = kvp.Value.Name;
                     string serviceAssembly = Path.Combine(basePath,
@@ -140,15 +145,16 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                 }
             }
+            // Enumerate all infos and register all instances
             object?[] param = new object?[4];
             param[2] = new PackageInfo(packageManifest, basePath);
-            foreach (var kvp in _servicesProvider2Info)
+            foreach (var info in _infos)
             {
-                Type serviceProviderType = kvp.Value.ServiceProviderType;
-                Type serviceType = kvp.Value.ServiceInstanceType;
+                Type serviceType = info.ServiceInstanceType;
+                Type serviceProviderType = info.ServiceProviderType;
+                Delegate registerFunc = info.RegisterFunction;
                 param[0] = HostedApplicationHelper.GetService(serviceProviderType);
-                Delegate registerFunc = kvp.Value.RegisterFunction;
-                string serviceShortName = kvp.Value.ShortName;
+                string serviceShortName = info.ShortName;
                 foreach (var fileName in Directory.EnumerateFiles(basePath
                     , $"*.{serviceShortName}", SearchOption.AllDirectories))
                 {
@@ -158,18 +164,13 @@ namespace LuaSTGEditorSharpV2.Core
                         using StreamReader sr = new(fs);
                         def = sr.ReadToEnd();
                     }
-                    object? obj;
+                    object? instance;
                     try
                     {
-                        obj = JsonConvert.DeserializeObject(def, serviceType, _serviceDeserializationSettings);
-                        if (obj != null && obj.GetType().IsAnyDerivedTypeOf(serviceType))
+                        instance = JsonConvert.DeserializeObject(def, serviceType, _serviceDeserializationSettings);
+                        if (instance != null && instance.GetType().IsAnyDerivedTypeOf(serviceType))
                         {
-                            param[1] = serviceType.GetProperty(kvp.Value.ServiceInstancePrimaryKeyName)!.GetValue(obj);
-                            param[3] = obj;
-                            if (registerFunc.DynamicInvoke(param) is IDisposable disposable)
-                            {
-                                serviceDisposeHandles.Add(disposable);
-                            }
+                            RegisterImpl(serviceDisposeHandles, param, info, instance);
                             _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{path}\"",
                                 param[1], manifestPath);
                         }
@@ -182,6 +183,28 @@ namespace LuaSTGEditorSharpV2.Core
                     {
                         _logger.LogException(e);
                         _logger.LogError("Parsing JSON from \"{file_name}\" failed.", fileName);
+                    }
+                }
+                foreach (var asm in assembly)
+                {
+                    var instanceProviders = asm.GetTypes()
+                        .Where(t => t.IsAnyDerivedTypeOf(info.ServiceInstanceProviderType))
+                        .Select(t => Activator.CreateInstance(t) as IServiceInstanceProvider<object>);
+                    foreach (var provider in instanceProviders ?? [])
+                    {
+                        foreach (var instance in provider?.GetServiceInstances() ?? [])
+                        {
+                            if (instance != null && instance.GetType().IsAnyDerivedTypeOf(serviceType))
+                            {
+                                RegisterImpl(serviceDisposeHandles, param, info, instance);
+                                _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{class}\"",
+                                    param[1], provider);
+                            }
+                            else
+                            {
+                                throw new PackageLoadingException($"Deserialized object is not a service defined at {provider} .");
+                            }
+                        }
                     }
                 }
             }
@@ -237,9 +260,9 @@ namespace LuaSTGEditorSharpV2.Core
             param[2] = services.PackageInfo;
             foreach (var tup in services.Services)
             {
-                Type serviceProviderType = _shortName2ServiceProviders[tup.Item2];
+                Type serviceProviderType = _shortName2Info[tup.Item2].ServiceProviderType;
                 param[0] = HostedApplicationHelper.GetService(serviceProviderType);
-                var info = _servicesProvider2Info[serviceProviderType];
+                var info = _servicesProviderType2Info[serviceProviderType];
                 param[1] = serviceProviderType.GetProperty(info.ServiceInstancePrimaryKeyName)!.GetValue(tup.Item1);
                 param[3] = tup.Item1;
                 info.RegisterFunction.DynamicInvoke(param);
@@ -248,7 +271,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public void ReplaceSettingsForServiceIfValid(Type serviceProviderType, JObject settings)
         {
-            if (_servicesProvider2Info.TryGetValue(serviceProviderType, out var serviceInfo))
+            if (_servicesProviderType2Info.TryGetValue(serviceProviderType, out var serviceInfo))
             {
                 if (serviceInfo.HasSettings)
                 {
@@ -270,23 +293,35 @@ namespace LuaSTGEditorSharpV2.Core
 
         public void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
-            if (_shortName2ServiceProviders.TryGetValue(serviceShortName, out var serviceProviderType))
+            if (_shortName2Info.TryGetValue(serviceShortName, out var info))
             {
-                ReplaceSettingsForServiceIfValid(serviceProviderType, settings);
+                ReplaceSettingsForServiceIfValid(info.ServiceProviderType, settings);
             }
         }
 
         public IReadOnlyDictionary<string, object> GetServiceShortName2SettingsDict()
         {
             var dictionary = new Dictionary<string, object>();
-            foreach (var kvp in _shortName2ServiceProviders)
+            foreach (var info in _infos)
             {
-                if (HostedApplicationHelper.GetService(kvp.Value) is ISettingsProvider isp)
+                if (HostedApplicationHelper.GetService(info.ServiceProviderType) is ISettingsProvider isp)
                 {
-                    dictionary.Add(kvp.Key, isp.Settings);
+                    dictionary.Add(info.ShortName, isp.Settings);
                 }
             }
             return dictionary;
+        }
+
+#pragma warning disable CA1822
+        private void RegisterImpl(List<IDisposable> serviceDisposeHandles, object?[] param, ServiceInfo info, object? instance)
+#pragma warning restore CA1822
+        {
+            param[1] = info.ServiceInstanceType.GetProperty(info.ServiceInstancePrimaryKeyName)!.GetValue(instance);
+            param[3] = instance;
+            if (info.RegisterFunction.DynamicInvoke(param) is IDisposable disposable)
+            {
+                serviceDisposeHandles.Add(disposable);
+            }
         }
     }
 }

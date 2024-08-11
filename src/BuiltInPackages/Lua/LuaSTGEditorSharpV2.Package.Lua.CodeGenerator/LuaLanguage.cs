@@ -10,6 +10,8 @@ namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator
 {
     public class LuaLanguage : LanguageBase
     {
+        public override string Name => "Lua";
+
         // TODO: Serialize
         internal LuaLanguage()
         {
