@@ -18,8 +18,10 @@ using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public class NodePackageProvider(ILogger<NodePackageProvider> logger)
+    public class NodePackageProvider
     {
+        public static readonly string CORE_PACKAGE_NAME = "Core";
+
         private static readonly string _packageBasePath = "package";
         private static readonly string _manifestName = "manifest";
 
@@ -31,12 +33,19 @@ namespace LuaSTGEditorSharpV2.Core
             TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
         };
 
-        private readonly ILogger<NodePackageProvider> _logger = logger;
+        private readonly ILogger<NodePackageProvider> _logger;
 
         private readonly List<ServiceInfo> _infos = [];
         private readonly Dictionary<Type, ServiceInfo> _servicesProviderType2Info = [];
         private readonly Dictionary<Type, ServiceInfo> _servicesInstanceType2Info = [];
         private readonly Dictionary<string, ServiceInfo> _shortName2Info = [];
+
+        private readonly HashSet<string> _loadedPackageName = [];
+
+        public NodePackageProvider(ILogger<NodePackageProvider> logger)
+        {
+            _logger = logger;
+        }
 
         public Type GetServiceTypeOfShortName(string shortName)
         {
@@ -110,11 +119,16 @@ namespace LuaSTGEditorSharpV2.Core
 
         public PackageDescriptor LoadPackage(string packageName)
         {
+            if (_loadedPackageName.Contains(packageName))
+            {
+                _logger.LogInformation("package \"{package_name}\", has already loaded, skip current loading.", packageName);
+            }
             _logger.LogInformation("Begin loading package \"{package_name}\"", packageName);
             var path = Process.GetCurrentProcess().MainModule?.FileName;
             var descriptor = LoadPackageFromDirectory(Path.Combine(Path.GetDirectoryName(path)
                 ?? throw new InvalidOperationException(), _packageBasePath, packageName));
             _logger.LogInformation("Loaded package \"{package_name}\"", packageName);
+            _loadedPackageName.Add(packageName);
             return descriptor;
         }
 
@@ -198,11 +212,11 @@ namespace LuaSTGEditorSharpV2.Core
                             {
                                 RegisterImpl(serviceDisposeHandles, param, info, instance);
                                 _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{class}\"",
-                                    param[1], provider);
+                                    param[1], provider!.GetType());
                             }
                             else
                             {
-                                throw new PackageLoadingException($"Deserialized object is not a service defined at {provider} .");
+                                throw new PackageLoadingException($"Deserialized object is not a service defined at {serviceProviderType} .");
                             }
                         }
                     }
@@ -287,6 +301,35 @@ namespace LuaSTGEditorSharpV2.Core
                 }
             }
             return dictionary;
+        }
+
+        public IReadOnlyCollection<IDisposable> Register<T>(IServiceInstanceProvider<T> instanceProvider)
+        {
+            List<IDisposable> disposables = [];
+            object?[] param = new object?[4];
+            // use default manifest
+            var path = Process.GetCurrentProcess().MainModule?.FileName;
+            var basePath = Path.Combine(Path.GetDirectoryName(path)
+                ?? throw new InvalidOperationException(), _packageBasePath, CORE_PACKAGE_NAME);
+            param[2] = new PackageInfo(PackageManifest.CORE, basePath);
+            Type serviceInstanceType = typeof(T);
+            var info = _servicesInstanceType2Info[serviceInstanceType];
+            Type serviceProviderType = info.ServiceProviderType;
+            param[0] = HostedApplicationHelper.GetService(serviceProviderType);
+            foreach (var instance in instanceProvider.GetServiceInstances())
+            {
+                if (instance != null && instance.GetType().IsAnyDerivedTypeOf(serviceInstanceType))
+                {
+                    RegisterImpl(disposables, param, info, instance);
+                    _logger.LogInformation("Loaded service instance for \"{type_uid}\" from \"{class}\"",
+                        param[1], instanceProvider.GetType());
+                }
+                else
+                {
+                    throw new PackageLoadingException($"Deserialized object is not a service defined at {serviceProviderType} .");
+                }
+            }
+            return disposables;
         }
 
 #pragma warning disable CA1822
