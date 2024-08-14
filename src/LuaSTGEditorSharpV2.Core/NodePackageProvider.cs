@@ -208,29 +208,6 @@ namespace LuaSTGEditorSharpV2.Core
                     }
                 }
             }
-            foreach (var asm in assembly)
-            {
-                var entryClasses = asm.GetTypes()
-                    .Where(t => t.GetInterfaces().Contains(typeof(IPackageEntry)))
-                    .Select(t => Activator.CreateInstance(t) as IPackageEntry);
-                foreach (var c in entryClasses)
-                {
-                    if (c != null)
-                    {
-                        try
-                        {
-                            c.InitializePackage();
-                            _logger.LogInformation("Initialized package with entry class \"{entry_class}\"",
-                                c.GetType());
-                        }
-                        catch (System.Exception e)
-                        {
-                            _logger.LogException(e);
-                            _logger.LogError("Initialization of package from entry class \"{entry_class}\" failed", c.GetType());
-                        }
-                    }
-                }
-            }
             return new PackageDescriptor(serviceDisposeHandles, assembly);
         }
 
