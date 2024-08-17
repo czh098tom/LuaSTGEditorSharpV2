@@ -20,16 +20,14 @@ namespace LuaSTGEditorSharpV2.ServiceBridge
         public override string CreateKey(object vm)
         {
             var service = HostedApplicationHelper.GetService<SettingsDisplayService>();
-            if (service.ViewModelMappingInversed.TryGetValue(vm.GetType(), out Type? settingsType))
+            if (service.ViewModelToDescriptor.TryGetValue(vm.GetType(), out var desc))
             {
-                if (service.ProviderToDisplay.TryGetValue(settingsType, out var attr))
+                var attr = desc.DisplayAttribute;
+                if (!string.IsNullOrEmpty(attr.DisplayKey))
                 {
-                    if (!string.IsNullOrEmpty(attr.DisplayKey))
-                    {
-                        return $"settings_page:{attr.DisplayKey}";
-                    }
-                    return $"settings_page:null";
+                    return $"settings_page:{attr.DisplayKey}";
                 }
+                return $"settings_page:null";
             }
             return $"settings_page:null";
         }

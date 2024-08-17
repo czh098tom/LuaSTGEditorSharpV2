@@ -18,25 +18,15 @@ using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 {
-    public class SettingsDisplayService(ILogger<SettingsDisplayService> logger)
+    public class SettingsDisplayService(ILogger<SettingsDisplayService> logger) : PackedDataProviderServiceBase<SettingsDisplayDescriptor>
     {
         private readonly ILogger<SettingsDisplayService> _logger = logger;
 
-        private readonly Dictionary<Type, Type> _viewModelMapping = [];
-        public IReadOnlyDictionary<Type, Type> ViewModelMapping => _viewModelMapping;
+        private readonly Dictionary<Type, SettingsDisplayDescriptor> _providerToDescriptor = [];
+        public IReadOnlyDictionary<Type, SettingsDisplayDescriptor> ProviderToDescriptor => _providerToDescriptor;
 
-        private readonly Dictionary<Type, Type> _viewModelMappingInversed = [];
-        public IReadOnlyDictionary<Type, Type> ViewModelMappingInversed => _viewModelMappingInversed;
-
-        private readonly Dictionary<Type, SettingsDisplayAttribute> _providerToDisplay = [];
-        public IReadOnlyDictionary<Type, SettingsDisplayAttribute> ProviderToDisplay => _providerToDisplay;
-
-        public void RegisterViewModel<TProvider, TViewModel>()
-            where TProvider : ISettingsProvider
-            where TViewModel : ViewModelBase
-        {
-            RegisterViewModel(typeof(TProvider), typeof(TViewModel));
-        }
+        private readonly Dictionary<Type, SettingsDisplayDescriptor> _viewModelToDescriptor = [];
+        public IReadOnlyDictionary<Type, SettingsDisplayDescriptor> ViewModelToDescriptor => _viewModelToDescriptor;
 
         public IReadOnlyList<SettingsPageViewModel> MapViewModel()
         {
@@ -44,13 +34,14 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
             var localizationService = HostedApplicationHelper.GetService<LocalizationService>();
             List<SettingsPageViewModel> viewModels = new(settingsService.SettingsDescriptors.Count);
             var descriptors = new List<SettingsDescriptor>(settingsService.SettingsDescriptors
-                .OrderBy(desc => _providerToDisplay.GetValueOrDefault(desc.ServiceProviderType)?.SortingOrder ?? 0));
+                .OrderBy(desc => _providerToDescriptor.GetValueOrDefault(desc.ServiceProviderType)?.DisplayAttribute?.SortingOrder ?? 0));
             for (int i = 0; i < settingsService.SettingsDescriptors.Count; i++)
             {
                 var desc = settingsService.SettingsDescriptors[i];
-                if (_viewModelMapping.TryGetValue(desc.ServiceProviderType, out var viewModelType))
+                if (_providerToDescriptor.TryGetValue(desc.ServiceProviderType, out var displayDesc))
                 {
-                    var attr = _providerToDisplay.GetValueOrDefault(desc.ServiceProviderType);
+                    var viewModelType = displayDesc.ViewModelType;
+                    var attr = _providerToDescriptor.GetValueOrDefault(desc.ServiceProviderType)?.DisplayAttribute;
                     try
                     {
                         var viewModel = JsonConvert.DeserializeObject(
@@ -81,8 +72,9 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
             {
                 var vm = viewModels[i];
                 var pageItem = vm.PageItems[0];
-                if (_viewModelMappingInversed.TryGetValue(pageItem.GetType(), out var providerType))
+                if (_viewModelToDescriptor.TryGetValue(pageItem.GetType(), out var desc))
                 {
+                    var providerType = desc.ProviderType;
                     try
                     {
                         if (HostedApplicationHelper.GetService(providerType) is ISettingsProvider provider)
@@ -101,12 +93,18 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
             }
         }
 
-        private void RegisterViewModel(Type providerType, Type viewModelType)
+        protected override void OnActiveServiceAdded(SettingsDisplayDescriptor newValue)
         {
-            _viewModelMapping.Add(providerType, viewModelType);
-            _viewModelMappingInversed.Add(viewModelType, providerType);
-            _providerToDisplay.Add(providerType, viewModelType.GetCustomAttribute<SettingsDisplayAttribute>()
-                ?? new SettingsDisplayAttribute());
+            base.OnActiveServiceAdded(newValue);
+            _viewModelToDescriptor.Add(newValue.ViewModelType, newValue);
+            _providerToDescriptor.Add(newValue.ProviderType, newValue);
+        }
+
+        protected override void OnActiveServiceRemoved(SettingsDisplayDescriptor oldValue)
+        {
+            base.OnActiveServiceRemoved(oldValue);
+            _viewModelToDescriptor.Remove(oldValue.ViewModelType);
+            _providerToDescriptor.Remove(oldValue.ProviderType);
         }
     }
 }

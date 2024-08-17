@@ -21,6 +21,7 @@ using LuaSTGEditorSharpV2.UICustomization;
 using LuaSTGEditorSharpV2.ServiceBridge.UICustomization.ViewModel;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 using LuaSTGEditorSharpV2.ServiceBridge.Building.ViewModel;
+using LuaSTGEditorSharpV2.ServiceInstanceProvider;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -66,11 +67,8 @@ namespace LuaSTGEditorSharpV2
             var resc = nodePackageProvider.LoadPackage("Core");
             var lua = nodePackageProvider.LoadPackage("Lua");
             var resln = nodePackageProvider.LoadPackage("LegacyNode");
-
-            var settingsDisplay = HostedApplicationHelper.GetService<SettingsDisplayService>();
-            settingsDisplay.RegisterViewModel<CodeGeneratorServiceProvider, CodeGenerationServiceSettingsViewModel>();
-            settingsDisplay.RegisterViewModel<UICustomizationService, UICustomizationServiceSettingsViewModel>();
-            settingsDisplay.RegisterViewModel<BuildTaskFactoryServiceProvider, BuildTaskFactoryServiceSettingsViewModel>();
+            
+            nodePackageProvider.Register(new SettingsDisplayDescriptorProvider());
         }
     }
 }

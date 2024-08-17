@@ -29,6 +29,7 @@ using LuaSTGEditorSharpV2.Toolbox.Model;
 using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
 using LuaSTGEditorSharpV2.Core.Building.ResourceGathering;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
+using LuaSTGEditorSharpV2.ServiceBridge;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -50,11 +51,11 @@ namespace LuaSTGEditorSharpV2
             AddPackedDataProvider<ToolboxProviderService, ToolboxItemModelBase>();
             AddPackedDataProvider<ResourceDictionaryRegistrationService, ResourceDictionaryDescriptor>();
             AddPackedDataProvider<LanguageProviderService, LanguageBase>();
+            AddPackedDataProvider<SettingsDisplayService, SettingsDisplayDescriptor>();
             AddApplicationSingletonService<ActiveDocumentService>();
             AddApplicationSingletonService<InsertCommandHostingService>();
             AddApplicationSingletonService<LocalizationService>();
             AddApplicationSingletonService<SettingsService>();
-            AddApplicationSingletonService<SettingsDisplayService>();
             AddApplicationSingletonService<UICustomizationService>();
             AddApplicationSingletonService<MainWindowLayoutService>();
             AddApplicationSingletonService<FileDialogService>();

@@ -5,15 +5,20 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+using LuaSTGEditorSharpV2.Core;
+
 namespace LuaSTGEditorSharpV2.ServiceBridge
 {
-    public record class SettingsDisplayServiceDescriptor(
+    [PackagePrimaryKey(nameof(Name))]
+    public record class SettingsDisplayDescriptor(
         Type ProviderType,
         Type ViewModelType,
         SettingsDisplayAttribute DisplayAttribute
         )
     {
-        public SettingsDisplayServiceDescriptor(Type providerType, Type viewModelType)
+        public string Name => ProviderType.Name;
+
+        public SettingsDisplayDescriptor(Type providerType, Type viewModelType)
             : this(providerType, viewModelType, viewModelType.GetCustomAttribute<SettingsDisplayAttribute>()
                 ?? new SettingsDisplayAttribute())
         { }
