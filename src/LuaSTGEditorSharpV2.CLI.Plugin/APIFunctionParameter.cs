@@ -9,15 +9,10 @@ using Newtonsoft.Json.Linq;
 
 using LuaSTGEditorSharpV2.Core;
 
-namespace LuaSTGEditorSharpV2.CLI
+namespace LuaSTGEditorSharpV2.CLI.Plugin
 {
     public class APIFunctionParameter
     {
-        public static APIFunctionParameter ParseFromCommandLineArgs(string[] args)
-        {
-            return new APIFunctionParameterResolver().Resolve(args);
-        }
-
         public IReadOnlyList<string>? Packages { get; private set; }
         public string? InputPath { get; private set; }
         public string? OutputPath { get; private set; }

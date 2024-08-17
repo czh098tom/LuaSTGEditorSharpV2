@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.CLI.Plugin\LuaSTGEditorSharpV2.CLI.Plugin.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.Building\LuaSTGEditorSharpV2.Core.Building.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core.CodeGenerator\LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />

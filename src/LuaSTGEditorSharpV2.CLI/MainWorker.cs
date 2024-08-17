@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.CLI.Plugin;
+using LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -16,13 +18,14 @@ namespace LuaSTGEditorSharpV2.CLI
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var args = HostedApplicationHelper.Args;
-            APIFunctionRegistration.Register();
-            var param = APIFunctionParameter.ParseFromCommandLineArgs(args);
+            var param = APIFunctionParameterResolver.ParseFromCommandLineArgs(args);
+            HostedApplicationHelper.InitNodeService();
+            param.UsePackages();
+            HostedApplicationHelper.GetService<NodePackageProvider>().Register(new CLIPluginDescriptorProvider());
+            HostedApplicationHelper.GetService<SettingsService>().LoadSettings();
             try
             {
-                HostedApplicationHelper.InitNodeService();
-                HostedApplicationHelper.GetService<SettingsService>().LoadSettings();
-                await APIFunction.FindAndExecute(args[0], param);
+                await HostedApplicationHelper.GetService<CLIPluginProviderService>().FindAndExecute(args[0], param);
             }
             catch (Exception e)
             {

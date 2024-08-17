@@ -9,6 +9,7 @@ using LuaSTGEditorSharpV2.Core.Building.ResourceGathering;
 
 using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.CLI.Plugin;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -20,6 +21,7 @@ namespace LuaSTGEditorSharpV2.CLI
             AddPackedDataProvider(typeof(CodeGeneratorServiceProvider));
             AddPackedDataProvider(typeof(BuildTaskFactoryServiceProvider));
             AddPackedDataProvider(typeof(ResourceGatheringServiceProvider));
+            AddPackedDataProvider(typeof(CLIPluginProviderService));
             AddApplicationSingletonService<SettingsService>();
             AddApplicationSingletonService(typeof(LanguageProviderService));
             SetUpHost(() =>
