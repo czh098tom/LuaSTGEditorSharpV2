@@ -42,9 +42,20 @@ namespace LuaSTGEditorSharpV2.Core
                 {
                     _registered.Add(id, new PriorityQueue<TData, PackageInfo>());
                 }
+                TData? peekBefore = _registered[id].Count > 0 ? _registered[id].Peek() : null;
                 _registered[id].Enqueue(data, packageInfo);
+                TData peekAfter = _registered[id].Peek();
                 _data2PackageInfo.Add(data, packageInfo);
                 OnRegistered(id, packageInfo, data);
+                switch (peekBefore, peekAfter)
+                {
+                    case (null, TData):
+                        OnActiveServiceAdded(peekAfter);
+                        break;
+                    case (TData, TData):
+                        OnActiveServiceChanged(peekBefore, peekAfter);
+                        break;
+                }
                 return new RegisteredDataProviderServiceHandle(this, id, packageInfo, data);
             }
             catch (ArgumentException e)
@@ -64,6 +75,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 List<TData> services = new(pq.Count);
                 List<PackageInfo> packageInfos = new(pq.Count);
+                TData peekBefore = pq.Peek();
                 while (pq.TryDequeue(out TData? s, out PackageInfo? pi))
                 {
                     if (pi != packageInfo)
@@ -76,6 +88,16 @@ namespace LuaSTGEditorSharpV2.Core
                 {
                     pq.Enqueue(services[i], packageInfos[i]);
                 }
+                TData? peekAfter = pq.Count > 0 ? pq.Peek() : null;
+                switch (peekBefore, peekAfter)
+                {
+                    case (TData, null):
+                        OnActiveServiceRemoved(peekBefore);
+                        break;
+                    case (TData, TData):
+                        OnActiveServiceChanged(peekBefore, peekAfter);
+                        break;
+                }
             }
             _data2PackageInfo.Remove(data);
             OnUnloaded(id, packageInfo, data);
@@ -83,6 +105,14 @@ namespace LuaSTGEditorSharpV2.Core
 
         protected virtual void OnRegistered(string id, PackageInfo packageInfo, TData data) { }
         protected virtual void OnUnloaded(string id, PackageInfo packageInfo, TData data) { }
+
+        protected virtual void OnActiveServiceAdded(TData newValue) { }
+        protected virtual void OnActiveServiceRemoved(TData oldValue) { }
+        protected virtual void OnActiveServiceChanged(TData oldValue, TData newValue)
+        {
+            OnActiveServiceRemoved(oldValue);
+            OnActiveServiceAdded(newValue);
+        }
 
         internal protected TData? GetDataOfID(string id)
         {

@@ -15,12 +15,12 @@ namespace LuaSTGEditorSharpV2.ResourceDictionaryService
         private readonly Dictionary<string, ResourceDictionary> _resourceDictionarys = [];
         public IReadOnlyDictionary<string, ResourceDictionary> ResourceDictionarys => _resourceDictionarys;
 
-        protected override void OnRegistered(string id, PackageInfo packageInfo, ResourceDictionaryDescriptor data)
+        protected override void OnActiveServiceAdded(ResourceDictionaryDescriptor newValue)
         {
-            base.OnRegistered(id, packageInfo, data);
-            if (data.Uris != null)
+            base.OnActiveServiceAdded(newValue);
+            if (newValue.Uris != null)
             {
-                foreach (string? uri in data.Uris)
+                foreach (string? uri in newValue.Uris)
                 {
                     if (!string.IsNullOrEmpty(uri))
                     {
@@ -30,12 +30,12 @@ namespace LuaSTGEditorSharpV2.ResourceDictionaryService
             }
         }
 
-        protected override void OnUnloaded(string id, PackageInfo packageInfo, ResourceDictionaryDescriptor data)
+        protected override void OnActiveServiceRemoved(ResourceDictionaryDescriptor oldValue)
         {
-            base.OnUnloaded(id, packageInfo, data);
-            if (data.Uris != null)
+            base.OnActiveServiceRemoved(oldValue);
+            if (oldValue.Uris != null)
             {
-                foreach (string? uri in data.Uris)
+                foreach (string? uri in oldValue.Uris)
                 {
                     if (!string.IsNullOrEmpty(uri))
                     {
