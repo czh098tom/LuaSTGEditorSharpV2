@@ -8,6 +8,7 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.CLI.Plugin
 {
+    [ServiceName("CLIPluginProvider")]
     public class CLIPluginProviderService : PackedDataProviderServiceBase<CLIPluginDescriptor>
     {
         public async Task FindAndExecute(string name, APIFunctionParameter param)
