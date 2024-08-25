@@ -62,11 +62,15 @@ namespace LuaSTGEditorSharpV2
         {
             HostedApplicationHelper.GetService<SettingsService>().LoadSettings();
 
-            HostedApplicationHelper.InitNodeService();
+            //HostedApplicationHelper.InitNodeService();
             var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
-            var resc = nodePackageProvider.LoadPackage("Core");
-            var lua = nodePackageProvider.LoadPackage("Lua");
-            var resln = nodePackageProvider.LoadPackage("LegacyNode");
+            //var resc = nodePackageProvider.LoadPackage("Core");
+            //var lua = nodePackageProvider.LoadPackage("Lua");
+            //var resln = nodePackageProvider.LoadPackage("LegacyNode");
+            foreach (var desc in HostedApplicationHelper.GetService<IReadOnlyCollection<PackageAssemblyDescriptor>>())
+            {
+                nodePackageProvider.LoadPackage(desc);
+            }
             
             nodePackageProvider.Register(new SettingsDisplayDescriptorProvider());
         }

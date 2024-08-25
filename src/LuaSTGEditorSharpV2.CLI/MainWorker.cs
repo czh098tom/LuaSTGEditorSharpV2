@@ -17,12 +17,17 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var args = HostedApplicationHelper.Args;
-            var param = APIFunctionParameterResolver.ParseFromCommandLineArgs(args);
-            HostedApplicationHelper.InitNodeService();
-            param.UsePackages();
+            //HostedApplicationHelper.InitNodeService();
+            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
+            foreach (var desc in HostedApplicationHelper.GetService<IReadOnlyCollection<PackageAssemblyDescriptor>>())
+            {
+                nodePackageProvider.LoadPackage(desc);
+            }
             HostedApplicationHelper.GetService<NodePackageProvider>().Register(new CLIPluginDescriptorProvider());
             HostedApplicationHelper.GetService<SettingsService>().LoadSettings();
+
+            var args = HostedApplicationHelper.Args;
+            var param = APIFunctionParameterResolver.ParseFromCommandLineArgs(args);
             try
             {
                 await HostedApplicationHelper.GetService<CLIPluginProviderService>().FindAndExecute(args[0], param);

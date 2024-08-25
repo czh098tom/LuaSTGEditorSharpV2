@@ -35,7 +35,7 @@ namespace LuaSTGEditorSharpV2.CLI.Plugin
             var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
             foreach (var p in Packages)
             {
-                nodePackageProvider.LoadPackage(p);
+                //nodePackageProvider.LoadPackage(p);
             }
         }
 

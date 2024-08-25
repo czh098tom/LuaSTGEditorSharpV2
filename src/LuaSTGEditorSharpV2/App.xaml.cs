@@ -42,20 +42,40 @@ namespace LuaSTGEditorSharpV2
         {
             var args = e.Args;
 
-            AddNodeServiceProvider<CodeGeneratorServiceProvider>();
-            AddNodeServiceProvider<ViewModelProviderServiceProvider>();
-            AddNodeServiceProvider<ResourceGatheringServiceProvider>();
-            AddNodeServiceProvider<BuildTaskFactoryServiceProvider>();
-            AddNodeServiceProvider<PropertyViewServiceProvider>();
-            AddNodeServiceProvider<DefaultValueServiceProvider>();
-            AddPackedDataProvider<ToolboxProviderService, ToolboxItemModelBase>();
-            AddPackedDataProvider<ResourceDictionaryRegistrationService, ResourceDictionaryDescriptor>();
-            AddPackedDataProvider<LanguageProviderService, LanguageBase>();
-            AddPackedDataProvider<SettingsDisplayService, SettingsDisplayDescriptor>();
+            PackedServiceCollection packedServiceInfos = new();
+
+            packedServiceInfos.Add<CodeGeneratorServiceProvider>();
+            packedServiceInfos.Add<ViewModelProviderServiceProvider>();
+            packedServiceInfos.Add<ResourceGatheringServiceProvider>();
+            packedServiceInfos.Add<BuildTaskFactoryServiceProvider>();
+            packedServiceInfos.Add<PropertyViewServiceProvider>();
+            packedServiceInfos.Add<DefaultValueServiceProvider>();
+            packedServiceInfos.Add<ToolboxProviderService>();
+            packedServiceInfos.Add<ResourceDictionaryRegistrationService>();
+            packedServiceInfos.Add<LanguageProviderService>();
+            packedServiceInfos.Add<SettingsDisplayService>();
+
+            ApplicationBootstrapLoader applicationBootstrapLoader = new(packedServiceInfos, builder =>
+            {
+                builder.AddNLog();
+            });
+
+            IReadOnlyCollection<PackageAssemblyDescriptor> assemblyDesc = [];
+            using (var bootStrap = applicationBootstrapLoader.Load())
+            {
+                var bootStrapService = bootStrap.GetRequiredService<BootstrapLoaderNodePackageProvider>();
+                assemblyDesc = bootStrapService.LoadAssemblies();
+            }
+
+            foreach(var info in packedServiceInfos)
+            {
+                AddPackedDataProvider(info.ServiceProviderType);
+            }
+
+            AddApplicationSingletonService<SettingsService>();
             AddApplicationSingletonService<ActiveDocumentService>();
             AddApplicationSingletonService<InsertCommandHostingService>();
             AddApplicationSingletonService<LocalizationService>();
-            AddApplicationSingletonService<SettingsService>();
             AddApplicationSingletonService<UICustomizationService>();
             AddApplicationSingletonService<MainWindowLayoutService>();
             AddApplicationSingletonService<FileDialogService>();
@@ -64,6 +84,8 @@ namespace LuaSTGEditorSharpV2
             {
                 HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
 
+                applicationBuilder.Services.AddSingleton<IPackedServiceCollection>(_ => packedServiceInfos);
+                applicationBuilder.Services.AddSingleton(_ => assemblyDesc);
                 applicationBuilder.Services.AddLogging(builder => builder.AddNLog());
                 applicationBuilder.Services.AddHostedService<MainWorker>();
                 return applicationBuilder;

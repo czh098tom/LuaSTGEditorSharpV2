@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    internal class ServiceInfo
+    public class PackedServiceInfo
     {
         public required string Name { get; init; }
         public required string ShortName { get; init; }

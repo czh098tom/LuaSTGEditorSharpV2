@@ -28,8 +28,8 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
             var jsonDecl = DeclarationCaputure?.Capture(token) ?? string.Empty;
             try
             {
-                var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
-                var type = nodePackageProvider.GetServiceTypeOfShortName(shortName);
+                var nodePackageProvider = HostedApplicationHelper.GetService<IPackedServiceCollection>();
+                var type = nodePackageProvider.ShortName2Info[shortName].ServiceInstanceType;
                 var obj = JsonConvert.DeserializeObject(jsonDecl, type);
                 string? uid = type.BaseType?.GetProperty("TypeUID")?.GetValue(obj) as string;
                 viewModel.Text = string.Format(Text?.GetLocalized() ?? string.Empty

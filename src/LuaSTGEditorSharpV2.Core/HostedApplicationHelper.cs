@@ -37,22 +37,8 @@ namespace LuaSTGEditorSharpV2.Core
             _applicationHost.RunAsync();
         }
 
-        public static void InitNodeService()
-        {
-            foreach (var type in nodeServiceProviderTypes)
-            {
-                GetService<NodePackageProvider>().UseServiceProvider(type);
-            }
-        }
-
-        public static void AddNodeServiceProvider<T>()
-            where T : INodeServiceProvider
-        {
-            AddPackedDataProvider(typeof(T));
-        }
-
-        public static void AddPackedDataProvider<T, TData>()
-            where T : IPackedDataProviderService<TData>
+        public static void AddPackedDataProvider<T>()
+            where T : IPackedDataProviderService
         {
             AddPackedDataProvider(typeof(T));
         }
