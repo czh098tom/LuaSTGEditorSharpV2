@@ -5,12 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.Services
 {
+    [Inject(lifetime: ServiceLifetime.Singleton)]
     public class ClipboardService
     {
         public void CopyNode(IReadOnlyList<NodeData> nodes)

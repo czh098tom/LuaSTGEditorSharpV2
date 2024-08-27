@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 using LuaSTGEditorSharpV2.Core.Settings;
@@ -14,6 +16,7 @@ using LuaSTGEditorSharpV2.Core.Services;
 
 namespace LuaSTGEditorSharpV2.Services
 {
+    [Inject(lifetime: ServiceLifetime.Singleton)]
     public class MainWindowLayoutService : ISettingsProvider, ISettingsSavedOnClose
     {
         private MainWindowLayoutSettings _settings = new();

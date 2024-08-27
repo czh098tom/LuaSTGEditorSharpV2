@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.Core.Settings;
@@ -15,6 +17,7 @@ using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 
 namespace LuaSTGEditorSharpV2.Services
 {
+    [Inject(lifetime: ServiceLifetime.Singleton)]
     public class FileDialogService : ISettingsProvider, ISettingsSavedOnClose
     {
         private static OpenFileDialog? ShowOpenFileDialog(string filter, Property<string> filePath)

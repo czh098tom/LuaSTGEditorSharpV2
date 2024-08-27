@@ -16,6 +16,7 @@ namespace LuaSTGEditorSharpV2.Core
             ServiceCollection services = new();
             services.AddLogging(configureLogging);
             services.AddSingleton(_ => packedServices);
+            services.AddSingleton<IServiceCollection>(_ => services);
             services.AddSingleton<SettingsService>();
             services.AddSingleton<BootstrapLoaderNodePackageProvider>();
 

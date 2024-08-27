@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Building.ResourceGathering;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.CLI.Plugin;
 
-using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
+using LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -17,54 +17,18 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         static void Main(string[] args)
         {
-            PackedServiceCollection packedServiceInfos = new();
-
-            packedServiceInfos.Add<DefaultValueServiceProvider>();
-            packedServiceInfos.Add<CodeGeneratorServiceProvider>();
-            packedServiceInfos.Add<BuildTaskFactoryServiceProvider>();
-            packedServiceInfos.Add<ResourceGatheringServiceProvider>();
-            packedServiceInfos.Add<CLIPluginProviderService>();
-            
-            ApplicationBootstrapLoader applicationBootstrapLoader = new(packedServiceInfos, builder =>
-            {
-                builder.AddConsole();
-            });
-
+            var host = new CLIApplicationHostBuilder(args)
+                .BuildHost();
+            host.Services.GetRequiredService<NodePackageProvider>().Register(new CLIPluginDescriptorProvider());
             var param = APIFunctionParameterResolver.ParseFromCommandLineArgs(args);
-
-            IReadOnlyCollection<PackageAssemblyDescriptor> assemblyDesc = [];
-            using (var bootStrap = applicationBootstrapLoader.Load())
+            try
             {
-                var bootStrapService = bootStrap.GetRequiredService<BootstrapLoaderNodePackageProvider>();
-
-                var settingsService = bootStrap.GetRequiredService<SettingsService>();
-                settingsService.LoadSettings();
-
-                assemblyDesc = param.Packages
-                    ?.Select(bootStrapService.LoadAssembly)
-                    ?.OfType<PackageAssemblyDescriptor>()
-                    ?.ToArray() ?? bootStrapService.LoadAssemblies();
+                host.Services.GetRequiredService<CLIPluginProviderService>().FindAndExecute(args[0], param).Wait();
             }
-
-            foreach (var info in packedServiceInfos)
+            catch (Exception e)
             {
-                AddPackedDataProvider(info.ServiceProviderType);
+                Console.WriteLine(e.Message);
             }
-
-            AddApplicationSingletonService<SettingsService>();
-            AddApplicationSingletonService(typeof(LanguageProviderService));
-            SetUpHost(() =>
-            {
-                HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
-
-                applicationBuilder.Services.AddSingleton<IPackedServiceCollection>(_ => packedServiceInfos);
-                applicationBuilder.Services.AddSingleton(_ => assemblyDesc);
-                applicationBuilder.Services.AddLogging(builder => builder.AddConsole());
-                applicationBuilder.Services.AddHostedService<MainWorker>();
-                return applicationBuilder;
-            }, args);
-
-            WaitForShutdown();
         }
     }
 }

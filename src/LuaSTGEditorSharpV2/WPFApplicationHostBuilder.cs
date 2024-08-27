@@ -52,13 +52,13 @@ namespace LuaSTGEditorSharpV2
         {
             base.ConfigureService(services);
 
-            services.AddSingleton<ActiveDocumentService>();
-            services.AddSingleton<InsertCommandHostingService>();
-            services.AddSingleton<LocalizationService>();
-            services.AddSingleton<UICustomizationService>();
-            services.AddSingleton<MainWindowLayoutService>();
-            services.AddSingleton<FileDialogService>();
-            services.AddSingleton<ClipboardService>();
+            //services.AddSingleton<ActiveDocumentService>();
+            //services.AddSingleton<InsertCommandHostingService>();
+            //services.AddSingleton<LocalizationService>();
+            //services.AddSingleton<UICustomizationService>();
+            //services.AddSingleton<MainWindowLayoutService>();
+            //services.AddSingleton<FileDialogService>();
+            //services.AddSingleton<ClipboardService>();
         }
     }
 }

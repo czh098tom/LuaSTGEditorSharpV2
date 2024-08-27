@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Core
     {
         private static string[]? _args;
 
-        private static IHost? _applicationHost;
+        private static IServiceProvider _applicationHost => ApplicationHostBuilder.ServiceProvider;
 
         private static readonly List<Type> nodeServiceProviderTypes = [];
         private static readonly List<Type> applicationServiceProviderTypes = [];
@@ -33,8 +33,8 @@ namespace LuaSTGEditorSharpV2.Core
                 builder.Services.AddSingleton(type);
             }
             builder.Services.AddSingleton<NodePackageProvider>();
-            _applicationHost = builder.Build();
-            _applicationHost.RunAsync();
+            //_applicationHost = builder.Build();
+            //_applicationHost.RunAsync();
         }
 
         public static void AddPackedDataProvider<T>()
@@ -62,18 +62,18 @@ namespace LuaSTGEditorSharpV2.Core
 
         public static void ShutdownApplication()
         {
-            _applicationHost?.StopAsync();
+            //_applicationHost?.StopAsync();
         }
 
         public static void WaitForShutdown()
         {
-            _applicationHost?.WaitForShutdown();
+            //_applicationHost?.WaitForShutdown();
         }
 
         public static T GetService<T>() where T : class
         {
             if (_applicationHost == null) throw new InvalidOperationException();
-            return _applicationHost.Services.GetRequiredService<T>();
+            return _applicationHost.GetRequiredService<T>();
         }
 
         public static IEnumerable<T> GetServices<T>() where T : class
@@ -81,20 +81,30 @@ namespace LuaSTGEditorSharpV2.Core
             if (_applicationHost == null) throw new InvalidOperationException();
             return applicationServiceProviderTypes
                 .Where(t => t.IsAnyDerivedTypeOf(typeof(T)))
-                .Select(_applicationHost.Services.GetRequiredService)
+                .Select(_applicationHost.GetRequiredService)
+                .OfType<T>() ?? throw new InvalidOperationException();
+        }
+
+        public static IEnumerable<T> GetServices<T>(this IServiceCollection services) where T : class
+        {
+            if (_applicationHost == null) throw new InvalidOperationException();
+            return services
+                .Select(desc => desc.ServiceType)
+                .Where(t => t.IsAnyDerivedTypeOf(typeof(T)))
+                .Select(_applicationHost.GetRequiredService)
                 .OfType<T>() ?? throw new InvalidOperationException();
         }
 
         public static object GetService(Type type)
         {
             if (_applicationHost == null) throw new InvalidOperationException();
-            return _applicationHost.Services.GetRequiredService(type);
+            return _applicationHost.GetRequiredService(type);
         }
 
         public static async Task ExitApplicationAsync()
         {
             if (_applicationHost == null) return;
-            await _applicationHost.StopAsync();
+            //await _applicationHost.StopAsync();
         }
     }
 }

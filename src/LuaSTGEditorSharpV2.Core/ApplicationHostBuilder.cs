@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,11 +11,13 @@ using Microsoft.Extensions.Logging;
 using LuaSTGEditorSharpV2.Core.Services;
 
 using Microsoft.Extensions.Hosting;
+using System.Runtime.Loader;
 
 namespace LuaSTGEditorSharpV2.Core
 {
     public abstract class ApplicationHostBuilder(string[] args)
     {
+        protected string[] _args = args;
         public static IServiceProvider ServiceProvider { get; private set; } = new ServiceCollection().BuildServiceProvider();
 
         public IHost BuildHost()
@@ -23,7 +26,7 @@ namespace LuaSTGEditorSharpV2.Core
 
             var assemblyDescs = CreatePackageDependentAssemblyDescriptor(packedServiceInfos);
 
-            HostApplicationBuilder applicationBuilder = CreateApplicationBuilder(args, packedServiceInfos);
+            HostApplicationBuilder applicationBuilder = CreateApplicationBuilder(_args, packedServiceInfos);
 
             var host = applicationBuilder.Build();
             ServiceProvider = host.Services;
@@ -63,7 +66,10 @@ namespace LuaSTGEditorSharpV2.Core
         {
             HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
 
+            var services = applicationBuilder.Services;
+
             applicationBuilder.Services.AddSingleton<IPackedServiceCollection>(_ => packedServiceInfos);
+            applicationBuilder.Services.AddSingleton(_ => services);
             applicationBuilder.Services.AddLogging(ConfigureLogging);
             applicationBuilder.Services.AddSingleton<SettingsService>();
 
@@ -71,6 +77,13 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 applicationBuilder.Services.AddSingleton(info.ServiceProviderType);
             }
+
+            foreach (var desc in GetInjectedServiceDescriptors())
+            {
+                applicationBuilder.Services.Add(desc);
+            }
+
+            applicationBuilder.Services.AddSingleton<NodePackageProvider>();
 
             ConfigureService(applicationBuilder.Services);
             return applicationBuilder;
@@ -88,6 +101,29 @@ namespace LuaSTGEditorSharpV2.Core
         protected abstract void ConfigureLogging(ILoggingBuilder loggingBuilder);
         protected virtual void ConfigurePackedServiceInfos(PackedServiceCollection collection) { }
         protected virtual void ConfigureService(IServiceCollection services) { }
-        protected virtual string[]? OverridePackages() => null;
+        protected virtual IReadOnlyCollection<string>? OverridePackages() => null;
+
+        private static IEnumerable<ServiceDescriptor> GetInjectedServiceDescriptors()
+        {
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                LoadEditorDependencyRecursively(a);
+            }
+            var arr = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes(), (a, t) => t.GetCustomAttribute<InjectAttribute>()?.ToDescriptor(t))
+                .OfType<ServiceDescriptor>().ToArray();
+            return arr;
+        }
+
+        private static void LoadEditorDependencyRecursively(Assembly assembly)
+        {
+            foreach (var an in assembly.GetReferencedAssemblies())
+            {
+                if (an.Name?.StartsWith("LuaSTGEditorSharpV2") ?? false)
+                {
+                    LoadEditorDependencyRecursively(Assembly.Load(an));
+                }
+            }
+        }
     }
 }

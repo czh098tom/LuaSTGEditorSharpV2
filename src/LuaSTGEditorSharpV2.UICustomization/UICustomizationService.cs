@@ -6,12 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Settings;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
 namespace LuaSTGEditorSharpV2.UICustomization
 {
+    [Inject(lifetime: ServiceLifetime.Singleton)]
     public class UICustomizationService : ISettingsProvider
     {
         internal static readonly string uri = "pack://application:,,,/LuaSTGEditorSharpV2.UICustomization;component/UICustomizationStyles.xaml";
