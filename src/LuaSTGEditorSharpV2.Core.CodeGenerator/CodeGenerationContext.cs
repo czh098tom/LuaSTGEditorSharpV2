@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
@@ -40,8 +42,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             }
         }
 
-        private static CodeGeneratorServiceProvider CodeGeneratorServiceProvider =>
-            HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>();
+        private CodeGeneratorServiceProvider CodeGeneratorServiceProvider =>
+            ServiceProvider.GetRequiredService<CodeGeneratorServiceProvider>();
 
         private readonly Dictionary<NodeData, Dictionary<string, string>> _contextVariables = new();
         private readonly Stack<LanguageBase?> _languageEnvironment = new();
@@ -50,8 +52,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public int IndentionLevel { get; private set; } = 0;
         public IReadOnlyDictionary<NodeData, Dictionary<string, string>> ContextVariables => _contextVariables;
 
-        public CodeGenerationContext(LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings)
-            : base(localSettings, serviceSettings) { }
+        public CodeGenerationContext(IServiceProvider serviceProvider, LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings)
+            : base(serviceProvider, localSettings, serviceSettings) { }
 
         public IDisposable AcquireContextHandle(NodeData current, int indentionIncrement = 0)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace LuaSTGEditorSharpV2.Core
 {
     [PackagePrimaryKey(nameof(Name))]
-    public class LanguageBase
+    public class LanguageBase(IServiceProvider serviceProvider) : PackedDataBase(serviceProvider)
     {
         public virtual string Name => "Neutral";
 

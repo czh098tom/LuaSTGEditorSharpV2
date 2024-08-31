@@ -9,7 +9,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
 {
-    public class ConfigurableResourceGatheringService : ResourceGatheringServiceBase
+    public class ConfigurableResourceGatheringService(ResourceGatheringServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : ResourceGatheringServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public NodePropertyCapture? PathCapture { get; private set; }
         [JsonProperty] public NodePropertyCapture? TargetNameCapture { get; private set; }
@@ -17,7 +18,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
         public override IEnumerable<GroupedResource> GetResourcesToPackWithContext(NodeData node
             , ResourceGatheringContext context)
         {
-            var token = new NodePropertyAccessToken(node, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, node, context);
             string path = PathCapture?.Capture(token) ?? string.Empty;
             string target = TargetNameCapture?.Capture(token) ?? Path.GetFileName(path);
             if (!string.IsNullOrWhiteSpace(path))
@@ -27,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
                     yield return new GroupedResource(path, target, s);
                 }
             }
-            foreach (var rs in GetServiceProvider().ProceedChildren(node, context))
+            foreach (var rs in GetNodeServiceProvider().ProceedChildren(node, context))
             {
                 yield return rs;
             }

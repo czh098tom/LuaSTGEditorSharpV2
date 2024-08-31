@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.CLI.Plugin;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
@@ -14,9 +16,10 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
 {
+    [Inject(ServiceLifetime.Transient)]
     public class CLIPluginDescriptorProvider : IServiceInstanceProvider<CLIPluginDescriptor>
     {
-        public IReadOnlyCollection<CLIPluginDescriptor> GetServiceInstances()
+        public IReadOnlyCollection<CLIPluginDescriptor> GetServiceInstances(IServiceProvider serviceProvider)
         {
             return
             [
@@ -34,7 +37,8 @@ namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
                         {
                             writer = Console.Out;
 
-                            foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>().GenerateCode(compileRoot, new LocalServiceParam(doc)))
+                            foreach (CodeData codeData in serviceProvider.GetRequiredService<CodeGeneratorServiceProvider>()
+                                .GenerateCode(compileRoot, new LocalServiceParam(doc)))
                             {
                                 await writer.WriteAsync(codeData.Content);
                             }
@@ -45,7 +49,8 @@ namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
                             using StreamWriter sr = new(fs);
                             writer = sr;
 
-                            foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>().GenerateCode(compileRoot, new LocalServiceParam(doc)))
+                            foreach (CodeData codeData in serviceProvider.GetRequiredService<CodeGeneratorServiceProvider>()
+                                .GenerateCode(compileRoot, new LocalServiceParam(doc)))
                             {
                                 await writer.WriteAsync(codeData.Content);
                             }
@@ -55,7 +60,7 @@ namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
                         //Console.WriteLine();
                     }
 
-                }),
+                }, serviceProvider),
                 new CLIPluginDescriptor("formatxml", (param) =>
                 {
                     if (param.InputPath != null)
@@ -79,7 +84,7 @@ namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
                         }
                     }
                     return Task.CompletedTask;
-                }),
+                }, serviceProvider),
                 new CLIPluginDescriptor("build", async (param) =>
                 {
                     if (param.InputPath != null)
@@ -88,14 +93,15 @@ namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
                         if (doc == null) return;
                         NodeData? buildRoot = doc.FindBuildRoot();
                         if (buildRoot == null) return;
-                        var service = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
+                        var service = serviceProvider.GetRequiredService<BuildTaskFactoryServiceProvider>();
                         var tasks = buildRoot.GetLogicalChildren()
                             .Select(n => service.GetWeightedBuildingTaskForNode(n, new LocalServiceParam(doc))?.BuildingTask)
                             .OfType<NamedBuildingTask>()
                             .Where(nbt => nbt.Name == param.TaskName);
                         foreach (var task in tasks)
                         {
-                            using var ctx = new BuildingContext(new LocalServiceParam(doc));
+                            using var ctx = serviceProvider.GetRequiredService<BuildingContextFactory>()
+                                .Create(new LocalServiceParam(doc));
                             try
                             {
                                 await task.Execute(ctx);
@@ -106,7 +112,7 @@ namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
                             }
                         }
                     }
-                }),
+                }, serviceProvider),
             ];
         }
     }

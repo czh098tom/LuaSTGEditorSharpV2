@@ -10,13 +10,14 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable.InputSource
 {
-    public class SourceFromSettingsFactory : BuildTaskFactorySubService<IInputSourceVariable>
+    public class SourceFromSettingsFactory(BuildTaskFactoryServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : BuildTaskFactorySubService<IInputSourceVariable>(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public NodePropertyCapture? SettingsJPathCapture { get; private set; }
 
         public override IInputSourceVariable CreateOutput(NodeData nodeData, BuildTaskFactoryContext context)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
             return new SourceFromSettings(SettingsJPathCapture?.Capture(token) ?? string.Empty);
         }
     }

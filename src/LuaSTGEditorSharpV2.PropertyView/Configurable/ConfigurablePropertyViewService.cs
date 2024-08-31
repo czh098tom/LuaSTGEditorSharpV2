@@ -11,7 +11,8 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public class ConfigurablePropertyViewService : PropertyViewServiceBase
+    public class ConfigurablePropertyViewService(PropertyViewServiceProvider nodeServiceProvider, IServiceProvider serviceProvider)
+        : PropertyViewServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty]
         public PropertyViewTabTermBase[] Tabs { get; private set; } = [];

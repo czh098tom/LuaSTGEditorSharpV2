@@ -11,7 +11,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 {
     [Serializable]
-    public class ConfigurableCodeGeneration : CodeGeneratorServiceBase
+    public class ConfigurableCodeGeneration(CodeGeneratorServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : CodeGeneratorServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = [];
         [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = [];
@@ -30,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 .ApplyIndentedFormat(context.GetIndented(), Head, _captureResult).ToString(), node);
             if (!IgnoreChildren)
             {
-                foreach (var cd in GetServiceProvider().GenerateForChildren(node, context, IndentionIncrement))
+                foreach (var cd in GetNodeServiceProvider().GenerateForChildren(node, context, IndentionIncrement))
                 {
                     yield return cd;
                 }
@@ -51,7 +52,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 
         protected virtual int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
         {
-            var token = new NodePropertyAccessToken(node, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, node, context);
             int n;
             for (n = 0; n < Captures.Length; n++)
             {
@@ -65,7 +66,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                     var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
                     if (contextNode != null)
                     {
-                        var contextNodeToken = new NodePropertyAccessToken(contextNode, context);
+                        var contextNodeToken = new NodePropertyAccessToken(ServiceProvider, contextNode, context);
                         captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNodeToken, context);
                     }
                     else

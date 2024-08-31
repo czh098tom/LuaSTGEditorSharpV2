@@ -8,8 +8,8 @@ using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class PackedDataProviderServiceBase<TData> : IPackedDataProviderService<TData>
-        where TData : class
+    public abstract class PackedDataProviderServiceBase<TData>(IServiceProvider serviceProvider) : IPackedDataProviderService<TData>
+        where TData : PackedDataBase
     {
         private class RegisteredDataProviderServiceHandle(PackedDataProviderServiceBase<TData> providerService, 
             string id, PackageInfo packageInfo, TData data) 
@@ -30,6 +30,8 @@ namespace LuaSTGEditorSharpV2.Core
                 _disposed = true;
             }
         }
+
+        protected IServiceProvider ServiceProvider { get; private set; } = serviceProvider;
 
         private readonly Dictionary<string, PriorityQueue<TData, PackageInfo>> _registered = [];
         private readonly Dictionary<TData, PackageInfo> _data2PackageInfo = [];

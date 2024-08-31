@@ -8,6 +8,6 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public interface IServiceInstanceProvider<out TData>
     {
-        public IReadOnlyCollection<TData> GetServiceInstances();
+        public IReadOnlyCollection<TData> GetServiceInstances(IServiceProvider serviceProvider);
     }
 }

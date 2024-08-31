@@ -9,13 +9,14 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Core.Command
 {
-    public class AddPropertyCommand : CommandBase
+    public class AddPropertyCommand : ConcreteCommand
     {
         public NodeData Node { get; private set; }
         public string PropertyName { get; private set; }
         public string Value { get; private set; }
 
-        public AddPropertyCommand(NodeData node, string propertyName, string value)
+        public AddPropertyCommand(ViewModelProviderServiceProvider service, NodeData node, string propertyName, string value)
+            : base(service)
         {
             Node = node;
             PropertyName = propertyName;
@@ -25,16 +26,14 @@ namespace LuaSTGEditorSharpV2.Core.Command
         protected override void DoExecute(LocalServiceParam param)
         {
             Node.Properties.Add(PropertyName, Value);
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .UpdateViewModelDataRecursive(Node, param);
         }
 
         protected override void RevertExecution(LocalServiceParam param)
         {
             Node.Properties.Remove(PropertyName);
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .UpdateViewModelDataRecursive(Node, param);
         }
     }

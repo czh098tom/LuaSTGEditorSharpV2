@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.Core.Services
 {
-    [Inject(lifetime: ServiceLifetime.Singleton)]
+    [Inject(ServiceLifetime.Singleton)]
     public class LocalizationService(ILogger<LocalizationService> logger)
     {
         ILogger<LocalizationService> _logger = logger;

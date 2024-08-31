@@ -8,7 +8,12 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public class LanguageProviderService : PackedDataProviderServiceBase<LanguageBase>
     {
-        public readonly LanguageBase _default = new();
+        public readonly LanguageBase _default;
+
+        public LanguageProviderService(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _default = new(serviceProvider);
+        }
 
         public LanguageBase? GetLanguage(string name)
         {

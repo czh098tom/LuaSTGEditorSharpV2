@@ -30,9 +30,6 @@
         FocusManager.FocusedElement="{Binding ElementName=RibbonWin}">
     <Window.Resources>
     </Window.Resources>
-    <Window.DataContext>
-        <localvm:MainViewModel/>
-    </Window.DataContext>
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static ApplicationCommands.New}"
                         Executed="ExecuteNewCommand"/>

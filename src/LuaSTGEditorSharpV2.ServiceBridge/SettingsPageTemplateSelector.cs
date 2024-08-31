@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.WPF;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge
 {
-    public class SettingsPageTemplateSelector : MainResourceDictKeySelectorBase<object>
+    [Inject(ServiceLifetime.Transient)]
+    public class SettingsPageTemplateSelector(SettingsDisplayService settingsDisplayService) : MainResourceDictKeySelectorBase<object>
     {
         public override bool HasKeyFromSource(object vm)
         {
@@ -19,7 +22,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge
 
         public override string CreateKey(object vm)
         {
-            var service = HostedApplicationHelper.GetService<SettingsDisplayService>();
+            var service = settingsDisplayService;
             if (service.ViewModelToDescriptor.TryGetValue(vm.GetType(), out var desc))
             {
                 var attr = desc.DisplayAttribute;

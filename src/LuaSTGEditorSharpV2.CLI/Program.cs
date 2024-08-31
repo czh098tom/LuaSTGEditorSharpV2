@@ -19,7 +19,8 @@ namespace LuaSTGEditorSharpV2.CLI
         {
             var host = new CLIApplicationHostBuilder(args)
                 .BuildHost();
-            host.Services.GetRequiredService<NodePackageProvider>().Register(new CLIPluginDescriptorProvider());
+            host.Services.GetRequiredService<NodePackageProvider>().Register(
+                host.Services.GetRequiredService<CLIPluginDescriptorProvider>());
             var param = APIFunctionParameterResolver.ParseFromCommandLineArgs(args);
             try
             {

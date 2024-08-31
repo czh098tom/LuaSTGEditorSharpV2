@@ -13,13 +13,14 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public class CommonPropertyViewTabTerm : PropertyViewTabTermBase
+    public class CommonPropertyViewTabTerm(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewServiceProvider) 
+        : PropertyViewTabTermBase(serviceProvider, propertyViewServiceProvider)
     {
         [JsonProperty] public IPropertyViewTerm[] Mapping { get; set; } = [];
 
         public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
             var mapping = Mapping;
             List<PropertyItemViewModelBase> propertyViewModels = new(mapping.Length);
 

@@ -7,6 +7,8 @@ using System.Reflection;
 
 using Microsoft.Extensions.Logging;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
@@ -18,7 +20,8 @@ using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 {
-    public class SettingsDisplayService(ILogger<SettingsDisplayService> logger) : PackedDataProviderServiceBase<SettingsDisplayDescriptor>
+    public class SettingsDisplayService(ILogger<SettingsDisplayService> logger, IServiceProvider serviceProvider) 
+        : PackedDataProviderServiceBase<SettingsDisplayDescriptor>(serviceProvider)
     {
         private readonly ILogger<SettingsDisplayService> _logger = logger;
 
@@ -30,8 +33,8 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 
         public IReadOnlyList<SettingsPageViewModel> MapViewModel()
         {
-            var settingsService = HostedApplicationHelper.GetService<SettingsService>();
-            var localizationService = HostedApplicationHelper.GetService<LocalizationService>();
+            var settingsService = ServiceProvider.GetRequiredService<SettingsService>();
+            var localizationService = ServiceProvider.GetRequiredService<LocalizationService>();
             List<SettingsPageViewModel> viewModels = new(settingsService.SettingsDescriptors.Count);
             var descriptors = new List<SettingsDescriptor>(settingsService.SettingsDescriptors
                 .OrderBy(desc => _providerToDescriptor.GetValueOrDefault(desc.ServiceProviderType)?.DisplayAttribute?.SortingOrder ?? 0));
@@ -77,7 +80,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Services
                     var providerType = desc.ProviderType;
                     try
                     {
-                        if (HostedApplicationHelper.GetService(providerType) is ISettingsProvider provider)
+                        if (ServiceProvider.GetRequiredService(providerType) is ISettingsProvider provider)
                         {
                             provider.Settings = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(pageItem),
                                 provider.Settings.GetType()) ?? throw new InvalidOperationException();

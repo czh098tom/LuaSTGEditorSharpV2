@@ -18,30 +18,31 @@ namespace LuaSTGEditorSharpV2.Core
     /// <typeparam name="TService"> The service itself. </typeparam>
     /// <typeparam name="TContext"> The context that preserves frequently used data for this service. </typeparam>
     /// <typeparam name="TSettings"> The singleton settings used by this service during the lifecycle of the application. </typeparam>
-    public abstract class CompactNodeService<TServiceProvider, TService, TContext, TSettings>
-        : NodeServiceBase
-        where TServiceProvider : CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
-        where TService : CompactNodeService<TServiceProvider, TService, TContext, TSettings>
+    public abstract class CompactNodeService<TNodeServiceProvider, TService, TContext, TSettings>(TNodeServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) : NodeServiceBase(serviceProvider)
+        where TNodeServiceProvider : CompactNodeServiceProvider<TNodeServiceProvider, TService, TContext, TSettings>
+        where TService : CompactNodeService<TNodeServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContextWithSettings<TSettings>
         where TSettings : class, new()
     {
-        // TODO[*] optimize by removing these static methods
-        protected static TServiceProvider GetServiceProvider()
+        [JsonIgnore]
+        protected TNodeServiceProvider NodeServiceProvider { get; private set; } = nodeServiceProvider;
+
+        protected TNodeServiceProvider GetNodeServiceProvider()
         {
-            return HostedApplicationHelper.GetService<TServiceProvider>();
+            return NodeServiceProvider;
         }
 
-        protected static TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
+        protected TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
         {
-            var service = GetServiceProvider().GetServiceInstanceOfTypeUID(node.TypeUID);
+            var service = GetNodeServiceProvider().GetServiceInstanceOfTypeUID(node.TypeUID);
             return service.BuildContextForNode(node, localParam, serviceSettings);
         }
 
-        protected static TService GetServiceOfTypeID(string typeUID)
-            => GetServiceProvider().GetServiceInstanceOfTypeUID(typeUID);
+        protected TService GetServiceOfTypeID(string typeUID)
+            => GetNodeServiceProvider().GetServiceInstanceOfTypeUID(typeUID);
 
-        protected static TService GetServiceOfNode(NodeData node)
-            => GetServiceProvider().GetServiceOfNode(node);
+        protected TService GetServiceOfNode(NodeData node)
+            => GetNodeServiceProvider().GetServiceOfNode(node);
 
         /// <summary>
         /// When overridden in derived class, obtain an empty context object.
@@ -81,5 +82,8 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeService : CompactNodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase> { }
+    internal class DefaultNodeService(DefaultNodeServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : CompactNodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase>(nodeServiceProvider, serviceProvider)
+    {
+    }
 }

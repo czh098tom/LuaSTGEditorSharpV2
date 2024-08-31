@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Debugging.ViewModel
 {
-    public class DebugOutputPageViewModel : AnchorableViewModelBase
+    public class DebugOutputPageViewModel(IServiceProvider serviceProvider) : AnchorableViewModelBase(serviceProvider)
     {
         public override string I18NTitleKey => "panel_output_title";
     }

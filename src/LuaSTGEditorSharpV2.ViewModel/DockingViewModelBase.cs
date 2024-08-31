@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
     /// <summary>
     /// Base viewmodel for any docking panels
     /// </summary>
-    public abstract class DockingViewModelBase : ViewModelBase
+    public abstract class DockingViewModelBase(IServiceProvider serviceProvider) : InjectableViewModel(serviceProvider)
     {
         public class PublishCommandEventArgs : EventArgs
         {
@@ -63,6 +63,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         }
 
         private bool _isActive;
+
         public bool IsActive
         {
             get => _isActive;

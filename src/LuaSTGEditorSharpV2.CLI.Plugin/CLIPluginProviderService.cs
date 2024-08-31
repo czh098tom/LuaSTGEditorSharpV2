@@ -9,11 +9,11 @@ using LuaSTGEditorSharpV2.Core;
 namespace LuaSTGEditorSharpV2.CLI.Plugin
 {
     [ServiceName("CLIPluginProvider")]
-    public class CLIPluginProviderService : PackedDataProviderServiceBase<CLIPluginDescriptor>
+    public class CLIPluginProviderService(IServiceProvider serviceProvider) : PackedDataProviderServiceBase<CLIPluginDescriptor>(serviceProvider)
     {
         public async Task FindAndExecute(string name, APIFunctionParameter param)
         {
-            await (GetDataOfID(name)?.Execute(param) ?? Task.CompletedTask);
+            await (GetDataOfID(name)?.Execute(ServiceProvider, param) ?? Task.CompletedTask);
         }
     }
 }

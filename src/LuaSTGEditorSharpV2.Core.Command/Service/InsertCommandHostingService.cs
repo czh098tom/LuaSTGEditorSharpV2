@@ -9,9 +9,9 @@ using LuaSTGEditorSharpV2.Core.Command.Factory;
 
 namespace LuaSTGEditorSharpV2.Core.Command.Service
 {
-    [Inject(lifetime: ServiceLifetime.Singleton)]
-    public class InsertCommandHostingService
+    [Inject(ServiceLifetime.Singleton)]
+    public class InsertCommandHostingService(InsertAfterFactory insertAfterFactory)
     {
-        public IInsertCommandFactory InsertCommandFactory { get; set; } = new InsertAfterFactory();
+        public IInsertCommandFactory InsertCommandFactory { get; set; } = insertAfterFactory;
     }
 }

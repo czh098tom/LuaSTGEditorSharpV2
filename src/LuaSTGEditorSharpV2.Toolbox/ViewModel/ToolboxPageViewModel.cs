@@ -8,6 +8,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.Input;
 
@@ -37,7 +39,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             }
         }
 
-        public ToolboxPageViewModel()
+        public ToolboxPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             LoadFromLoadedPackage();
         }
@@ -45,7 +47,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
         public void LoadFromLoadedPackage()
         {
             _toolboxItems.Clear();
-            var service = HostedApplicationHelper.GetService<ToolboxProviderService>();
+            var service = ServiceProvider.GetRequiredService<ToolboxProviderService>();
             var list = service.CreateTree();
             for (int i = 0; i < list.Count; i++)
             {
@@ -83,7 +85,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             if (SourceDocument == null) return;
             if (e.CreatedData.Length > 0)
             {
-                var insCommandHost = HostedApplicationHelper.GetService<InsertCommandHostingService>();
+                var insCommandHost = ServiceProvider.GetRequiredService<InsertCommandHostingService>();
                 PublishCommand(SourceNodes.SelectCommand(ori => e.CreatedData
                     .SelectCommand(toIns => insCommandHost.InsertCommandFactory.CreateInsertCommand(ori, toIns)))
                     , SourceDocument, SourceNodes);
@@ -99,7 +101,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             };
             if (inputDialog.ShowDialog() == true)
             {
-                var insCommandHost = HostedApplicationHelper.GetService<InsertCommandHostingService>();
+                var insCommandHost = ServiceProvider.GetRequiredService<InsertCommandHostingService>();
                 PublishCommand(SourceNodes.SelectCommand(n => insCommandHost.InsertCommandFactory
                     .CreateInsertCommand(n, new NodeData(inputDialog.ViewModel.Text))), SourceDocument, SourceNodes);
             }

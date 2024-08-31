@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
@@ -11,7 +13,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public class ChildPropertyTerm : IPropertyViewTerm
+    [Inject(ServiceLifetime.Transient)]
+    public class ChildPropertyTerm(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewServiceProvider) : IPropertyViewTerm
     {
         [JsonProperty] public NodePropertyCapture? FindProperty { get; private set; }
         [JsonProperty] public HashSet<string?>? OfName { get; private set; }
@@ -23,14 +26,14 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 
         public PropertyTabWrapperItemViewModel GetViewModelImpl(NodeData nodeData, PropertyViewContext context)
         {
-            var service = HostedApplicationHelper.GetService<PropertyViewServiceProvider>();
+            var service = propertyViewServiceProvider;
 
             using var _ = context.AcquireContextLevelHandle(nodeData);
             var pairs = service.GetServicesPairForLogicalChildrenOfType<PropertyViewServiceBase>(
                 nodeData)
                 .Where(p =>
                 {
-                    var token = new NodePropertyAccessToken(p.NodeData, context);
+                    var token = new NodePropertyAccessToken(serviceProvider, p.NodeData, context);
                     return OfName?.Contains(FindProperty?.Capture(token)) ?? true;
                 });
 

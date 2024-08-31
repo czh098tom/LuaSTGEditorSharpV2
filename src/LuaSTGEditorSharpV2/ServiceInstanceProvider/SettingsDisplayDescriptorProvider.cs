@@ -17,13 +17,13 @@ namespace LuaSTGEditorSharpV2.ServiceInstanceProvider
 {
     public class SettingsDisplayDescriptorProvider : IServiceInstanceProvider<SettingsDisplayDescriptor>
     {
-        public IReadOnlyCollection<SettingsDisplayDescriptor> GetServiceInstances()
+        public IReadOnlyCollection<SettingsDisplayDescriptor> GetServiceInstances(IServiceProvider serviceProvider)
         {
             List<SettingsDisplayDescriptor> arr = 
             [
-                new SettingsDisplayDescriptor(typeof(CodeGeneratorServiceProvider), typeof(CodeGenerationServiceSettingsViewModel)),
-                new SettingsDisplayDescriptor(typeof(UICustomizationService), typeof(UICustomizationServiceSettingsViewModel)),
-                new SettingsDisplayDescriptor(typeof(BuildTaskFactoryServiceProvider), typeof(BuildTaskFactoryServiceSettingsViewModel)),
+                new SettingsDisplayDescriptor(typeof(CodeGeneratorServiceProvider), typeof(CodeGenerationServiceSettingsViewModel), serviceProvider),
+                new SettingsDisplayDescriptor(typeof(UICustomizationService), typeof(UICustomizationServiceSettingsViewModel), serviceProvider),
+                new SettingsDisplayDescriptor(typeof(BuildTaskFactoryServiceProvider), typeof(BuildTaskFactoryServiceSettingsViewModel), serviceProvider),
             ];
             return arr;
         }

@@ -8,8 +8,8 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory
 {
     public class BuildTaskFactoryContext : NodeContextWithSettings<BuildTaskFactoryServiceSettings>
     {
-        public BuildTaskFactoryContext(LocalServiceParam localParam, BuildTaskFactoryServiceSettings serviceSettings) 
-            : base(localParam, serviceSettings)
+        public BuildTaskFactoryContext(IServiceProvider serviceProvider, LocalServiceParam localParam, BuildTaskFactoryServiceSettings serviceSettings)
+            : base(serviceProvider, localParam, serviceSettings)
         {
         }
     }

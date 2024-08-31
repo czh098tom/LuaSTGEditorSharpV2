@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace LuaSTGEditorSharpV2.Core
 {
     [PackagePrimaryKey(nameof(TypeUID))]
-    public class NodeServiceBase
+    public class NodeServiceBase(IServiceProvider serviceProvider) : PackedDataBase(serviceProvider)
     {
         [JsonProperty]
         public string TypeUID { get; protected set; } = string.Empty;

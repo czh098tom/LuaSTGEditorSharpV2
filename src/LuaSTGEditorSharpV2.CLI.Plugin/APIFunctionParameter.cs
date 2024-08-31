@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -29,20 +31,10 @@ namespace LuaSTGEditorSharpV2.CLI.Plugin
             ServiceSettings = serviceSettings;
         }
 
-        public void UsePackages()
-        {
-            if (Packages == null) return;
-            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
-            foreach (var p in Packages)
-            {
-                //nodePackageProvider.LoadPackage(p);
-            }
-        }
-
-        public void ReassignSettings()
+        public void ReassignSettings(IServiceProvider serviceProvider)
         {
             if (ServiceSettings == null) return;
-            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
+            var nodePackageProvider = serviceProvider.GetRequiredService<NodePackageProvider>();
             foreach (var kvp in ServiceSettings)
             {
                 nodePackageProvider.ReplaceSettingsForServiceShortNameIfValid(kvp.Key, kvp.Value);

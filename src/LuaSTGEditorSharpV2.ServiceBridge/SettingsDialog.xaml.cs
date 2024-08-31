@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
@@ -23,18 +25,27 @@ namespace LuaSTGEditorSharpV2.ServiceBridge
     /// <summary>
     /// SettingsDialog.xaml 的交互逻辑
     /// </summary>
+    [Inject(ServiceLifetime.Transient)]
     public partial class SettingsDialog : OKCancelWindow
     {
-        public SettingsDialog()
+        public SettingsDialog(IServiceProvider serviceProvider)
         {
             InitializeComponent();
+
+            var ctx = serviceProvider.GetRequiredService<SettingsDialogViewModel>();
+
+            // TODO: optimize this
+            var selector = serviceProvider.GetRequiredService<SettingsPageTemplateSelector>();
+            selector.Default = Resources["SettingsPageTemplateSelectorDefault"] as DataTemplate;
+            Resources["SettingsPageTemplateSelector"] = selector;
+
+            DataContext = ctx;
+
             Confirmed += (o, e) =>
             {
-                var ctx = DataContext as SettingsDialogViewModel;
                 if (ctx == null) return;
-                HostedApplicationHelper.GetService<SettingsDisplayService>()
-                    .WriteViewModelBack(ctx.SettingsPages);
-                HostedApplicationHelper.GetService<SettingsService>().SaveSettings();
+                serviceProvider.GetRequiredService<SettingsDisplayService>().WriteViewModelBack(ctx.SettingsPages);
+                serviceProvider.GetRequiredService<SettingsService>().SaveSettings();
             };
         }
     }

@@ -16,8 +16,9 @@ using LuaSTGEditorSharpV2.Core.Command.Factory;
 
 namespace LuaSTGEditorSharpV2.Services
 {
-    [Inject(lifetime: ServiceLifetime.Singleton)]
-    public class ActiveDocumentService(ILogger<ActiveDocumentService> logger) : ISettingsProvider
+    [Inject(ServiceLifetime.Singleton)]
+    public class ActiveDocumentService(ILogger<ActiveDocumentService> logger, LocalizationService localizationService) 
+        : ISettingsProvider
     {
         private readonly ILogger<ActiveDocumentService> _logger = logger;
 
@@ -91,8 +92,7 @@ namespace LuaSTGEditorSharpV2.Services
         {
             if (string.IsNullOrEmpty(_settings.CustomizedUntitledName))
             {
-                var str = HostedApplicationHelper.GetService<LocalizationService>()
-                    .GetString("untitled_file_default_name", typeof(ActiveDocumentService).Assembly);
+                var str = localizationService.GetString("untitled_file_default_name", typeof(ActiveDocumentService).Assembly);
                 return $"{str} {index}";
             }
             else

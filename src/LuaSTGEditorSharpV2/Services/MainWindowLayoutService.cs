@@ -16,8 +16,8 @@ using LuaSTGEditorSharpV2.Core.Services;
 
 namespace LuaSTGEditorSharpV2.Services
 {
-    [Inject(lifetime: ServiceLifetime.Singleton)]
-    public class MainWindowLayoutService : ISettingsProvider, ISettingsSavedOnClose
+    [Inject(ServiceLifetime.Singleton)]
+    public class MainWindowLayoutService(SettingsService settingsService) : ISettingsProvider, ISettingsSavedOnClose
     {
         private MainWindowLayoutSettings _settings = new();
 
@@ -86,7 +86,7 @@ namespace LuaSTGEditorSharpV2.Services
                     using MemoryStream ms = new();
                     serializer.Serialize(ms);
                     _settings.LayoutXML = Encoding.GetEncoding("UTF-8").GetString(ms.ToArray());
-                    HostedApplicationHelper.GetService<SettingsService>().SaveSettings(this);
+                    settingsService.SaveSettings(this);
                 }
                 catch (Exception) { }
             }

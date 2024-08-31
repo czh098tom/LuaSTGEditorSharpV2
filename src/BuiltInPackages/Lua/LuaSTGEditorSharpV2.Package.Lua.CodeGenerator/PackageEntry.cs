@@ -11,9 +11,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator
 {
     public class PackageEntry : IServiceInstanceProvider<LanguageBase>
     {
-        public IReadOnlyCollection<LanguageBase> GetServiceInstances()
+        public IReadOnlyCollection<LanguageBase> GetServiceInstances(IServiceProvider serviceProvider)
         {
-            return [new LuaLanguage()];
+            return [new LuaLanguage(serviceProvider)];
         }
     }
 }

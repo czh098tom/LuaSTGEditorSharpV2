@@ -17,6 +17,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel;
 using System.Diagnostics;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Microsoft.Xaml.Behaviors.Core;
 
 using Newtonsoft.Json;
@@ -44,17 +46,22 @@ namespace LuaSTGEditorSharpV2
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Inject(ServiceLifetime.Transient)]
     public partial class MainWindow : RibbonWindow, IMainWindow
     {
         private readonly MainViewModel _viewModel;
+        private readonly IServiceProvider _serviceProvider;
 
-        public MainWindow()
+        public MainWindow(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
-            _viewModel = (DataContext as MainViewModel)!;
+            DataContext = serviceProvider.GetRequiredService<MainViewModel>();
 
-            var layout = HostedApplicationHelper.GetService<MainWindowLayoutService>();
+            _viewModel = (DataContext as MainViewModel)!;
+            _serviceProvider = serviceProvider;
+
+            var layout = _serviceProvider.GetRequiredService<MainWindowLayoutService>();
             layout.LayoutSerializationCallback += HandleLayoutSerializationCallback;
             layout.RefreshSettings();
 
@@ -69,7 +76,7 @@ namespace LuaSTGEditorSharpV2
             if (string.IsNullOrEmpty(e.Model.ContentId)) return;
             var type = Type.GetType(e.Model.ContentId);
             if (type == null) return;
-            if (Activator.CreateInstance(type) is not AnchorableViewModelBase anc) return;
+            if (_serviceProvider.GetRequiredService(type) is not AnchorableViewModelBase anc) return;
             _viewModel.WorkSpace.AddPage(anc);
             e.Content = anc;
             e.Cancel = false;
@@ -91,7 +98,7 @@ namespace LuaSTGEditorSharpV2
 
         private void ExecuteOpenCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            var dialog = HostedApplicationHelper.GetService<FileDialogService>();
+            var dialog = _serviceProvider.GetRequiredService<FileDialogService>();
             foreach (var item in dialog.ShowOpenFileCommandDialog())
             {
                 _viewModel.OpenFile(item);
@@ -220,7 +227,7 @@ namespace LuaSTGEditorSharpV2
         private void CanPaste(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = (_viewModel?.WorkSpace?.HaveSelected ?? false) &&
-                HostedApplicationHelper.GetService<ClipboardService>().CheckHaveNodes();
+                _serviceProvider.GetRequiredService<ClipboardService>().CheckHaveNodes();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -231,7 +238,7 @@ namespace LuaSTGEditorSharpV2
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            foreach (var s in HostedApplicationHelper.GetServices<ISettingsSavedOnClose>())
+            foreach (var s in _serviceProvider.GetServicesWithInheritance<ISettingsSavedOnClose>())
             {
                 s.SaveSettings();
             }
@@ -245,7 +252,8 @@ namespace LuaSTGEditorSharpV2
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingsDialog dialog = new() { Owner = this };
+            var dialog = _serviceProvider.GetRequiredService<SettingsDialog>();
+            dialog.Owner = this;
             dialog.ShowDialog();
         }
 

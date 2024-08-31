@@ -7,11 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core.Services;
 
-using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
 using LuaSTGEditorSharpV2.ServiceInstanceProvider;
 using LuaSTGEditorSharpV2.Core;
 
@@ -22,6 +22,8 @@ namespace LuaSTGEditorSharpV2
     /// </summary>
     public partial class App : Application
     {
+        private IHost? host;
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -31,7 +33,7 @@ namespace LuaSTGEditorSharpV2
 
             await Task.Run(async () =>
             {
-                var host = new WPFApplicationHostBuilder(e.Args)
+                host = new WPFApplicationHostBuilder(e.Args)
                     .BuildHost();
                 await host.StartAsync();
                 host.Services.GetRequiredService<LocalizationService>().OnCultureChanged += (o, e) =>
@@ -41,14 +43,14 @@ namespace LuaSTGEditorSharpV2
                     .Register(new SettingsDisplayDescriptorProvider());
             });
 
-            MainWindow mw = new();
+            MainWindow mw = host!.Services.GetRequiredService<MainWindow>();
             mw.Show();
             splash.Close();
         }
 
         protected override async void OnExit(ExitEventArgs e)
         {
-            await ExitApplicationAsync();
+            await (host?.StopAsync() ?? Task.CompletedTask);
             base.OnExit(e);
         }
     }

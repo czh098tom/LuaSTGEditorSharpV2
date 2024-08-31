@@ -14,7 +14,8 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
 {
-    public class DefaultLuaSTGBuildingTaskFactory : BuildTaskFactoryServiceBase
+    public class DefaultLuaSTGBuildingTaskFactory(BuildTaskFactoryServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : BuildTaskFactoryServiceBase(nodeServiceProvider, serviceProvider)
     {
         protected static readonly string _defaultOutputNameIfNotConfiguredForService = "Output";
         protected static readonly string _defaultTaskNameIfNotConfiguredForService = "Default";
@@ -36,7 +37,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
 
         public override WeightedBuildingTask? CreateBuildingTask(NodeData nodeData, BuildTaskFactoryContext context)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
 
             var outputName = OutputNameCapture?.Capture(token) ?? _defaultOutputNameIfNotConfiguredForService;
             var taskName = TaskNameCapture?.Capture(token) ?? _defaultTaskNameIfNotConfiguredForService;

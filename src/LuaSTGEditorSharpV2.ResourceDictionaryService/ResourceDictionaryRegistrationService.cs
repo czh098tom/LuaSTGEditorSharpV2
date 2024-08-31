@@ -10,9 +10,11 @@ using LuaSTGEditorSharpV2.Core;
 namespace LuaSTGEditorSharpV2.ResourceDictionaryService
 {
     [ServiceShortName("resource")]
-    public class ResourceDictionaryRegistrationService : PackedDataProviderServiceBase<ResourceDictionaryDescriptor>
+    public class ResourceDictionaryRegistrationService(IServiceProvider serviceProvider) 
+        : PackedDataProviderServiceBase<ResourceDictionaryDescriptor>(serviceProvider)
     {
         private readonly Dictionary<string, ResourceDictionary> _resourceDictionarys = [];
+
         public IReadOnlyDictionary<string, ResourceDictionary> ResourceDictionarys => _resourceDictionarys;
 
         protected override void OnActiveServiceAdded(ResourceDictionaryDescriptor newValue)

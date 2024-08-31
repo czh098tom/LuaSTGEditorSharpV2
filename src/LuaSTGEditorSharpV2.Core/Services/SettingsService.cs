@@ -14,7 +14,7 @@ using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core.Services
 {
-    public class SettingsService(ILogger<SettingsService> logger, IServiceCollection serviceDescriptors)
+    public class SettingsService(ILogger<SettingsService> logger, IServiceProvider serviceProviders)
     {
         private static readonly List<SettingsDescriptor> _empty = [];
 
@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.Core.Services
         public void LoadSettings()
         {
             string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), _appendDir);
-            var settingsProviders = serviceDescriptors.GetServices<ISettingsProvider>();
+            var settingsProviders = serviceProviders.GetServicesWithInheritance<ISettingsProvider>();
             List<SettingsDescriptor> settings = [];
             foreach (var provider in settingsProviders)
             {

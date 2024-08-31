@@ -110,7 +110,9 @@ namespace LuaSTGEditorSharpV2.Core
                 LoadEditorDependencyRecursively(a);
             }
             var arr = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes(), (a, t) => t.GetCustomAttribute<InjectAttribute>()?.ToDescriptor(t))
+                .SelectMany(a => a.GetTypes())
+                .Where(t => !t.IsAbstract)
+                .Select(t => t.GetCustomAttribute<InjectAttribute>()?.ToDescriptor(t))
                 .OfType<ServiceDescriptor>().ToArray();
             return arr;
         }

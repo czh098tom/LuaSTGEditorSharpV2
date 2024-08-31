@@ -18,7 +18,7 @@ using LuaSTGEditorSharpV2.Toolbox.Service;
 namespace LuaSTGEditorSharpV2.Toolbox.Model
 {
     [PackagePrimaryKey(nameof(Path))]
-    public class ToolboxItemModelBase
+    public class ToolboxItemModelBase(IServiceProvider serviceProvider) : PackedDataBase(serviceProvider)
     {
         public static readonly string invalidPath = @"/\/\/\INVALID_PATH/\/\/\";
 

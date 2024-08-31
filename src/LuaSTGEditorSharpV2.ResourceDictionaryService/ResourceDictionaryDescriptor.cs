@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core;
 namespace LuaSTGEditorSharpV2.ResourceDictionaryService
 {
     [PackagePrimaryKey(nameof(Name))]
-    public class ResourceDictionaryDescriptor
+    public class ResourceDictionaryDescriptor(IServiceProvider serviceProvider) : PackedDataBase(serviceProvider)
     {
         public string Name { get; set; } = string.Empty;
         public string?[]? Uris { get; set; } = [];

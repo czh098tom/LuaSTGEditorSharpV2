@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
@@ -12,7 +14,12 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
     public class CodeGeneratorServiceProvider
         : CompactNodeServiceProvider<CodeGeneratorServiceProvider, CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
     {
-        private static readonly CodeGeneratorServiceBase _defaultService = new();
+        private readonly CodeGeneratorServiceBase _defaultService;
+
+        public CodeGeneratorServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _defaultService = new(this, serviceProvider);
+        }
 
         protected override CodeGeneratorServiceBase DefaultService => _defaultService;
 
@@ -56,7 +63,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 
         public LanguageBase? GetLanguageOfNode(NodeData nodeData)
         {
-            return HostedApplicationHelper.GetService<LanguageProviderService>()
+            return ServiceProvider.GetRequiredService<LanguageProviderService>()
                 .GetLanguage(GetServiceOfNode(nodeData).Language);
         }
     }

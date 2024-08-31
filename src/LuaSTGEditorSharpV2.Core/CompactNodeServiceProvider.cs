@@ -11,8 +11,8 @@ using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
-        : NodeServiceProvider<TService>, ISettingsProvider<TSettings>
+    public abstract class CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings>(IServiceProvider serviceProvider)
+        : NodeServiceProvider<TService>(serviceProvider), ISettingsProvider<TSettings>
         where TServiceProvider : CompactNodeServiceProvider<TServiceProvider, TService, TContext, TSettings>
         where TService : CompactNodeService<TServiceProvider, TService, TContext, TSettings>
         where TContext : NodeContextWithSettings<TSettings>
@@ -61,8 +61,13 @@ namespace LuaSTGEditorSharpV2.Core
 
     internal class DefaultNodeServiceProvider : CompactNodeServiceProvider<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase>
     {
-        private static readonly DefaultNodeService _default = new();
+        private readonly DefaultNodeService _default;
 
         protected override DefaultNodeService DefaultService => _default;
+
+        public DefaultNodeServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _default = new(this, serviceProvider);
+        }
     }
 }

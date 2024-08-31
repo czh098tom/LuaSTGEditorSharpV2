@@ -10,7 +10,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public class DefaultValueService : NodeServiceBase
+    public class DefaultValueService(IServiceProvider serviceProvider) : NodeServiceBase(serviceProvider)
     {
         [JsonProperty("DefaultValue")]
         private Dictionary<string, string> _defaultValues = [];

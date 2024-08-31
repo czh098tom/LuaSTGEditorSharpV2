@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Building.ResourceGathering;
-using System.Xml.XPath;
 
 namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
 {
@@ -50,7 +51,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
                 if (doc == null) continue;
                 NodeData root = doc.Root;
 
-                var files = HostedApplicationHelper.GetService<ResourceGatheringServiceProvider>()
+                var files = context.ServiceProvider.GetRequiredService<ResourceGatheringServiceProvider>()
                     .GetResourcesToPack(root, context.LocalParam)
                     .Where(groupFilter);
                 resourcePath.AddRange(files.Select(gr => gr.Path));

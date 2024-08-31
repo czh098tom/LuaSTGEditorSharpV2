@@ -10,13 +10,14 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable.Mapper
 {
-    public class CombinePathMapperFactory : BuildTaskFactorySubService<Func<string, string>>
+    public class CombinePathMapperFactory(BuildTaskFactoryServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : BuildTaskFactorySubService<Func<string, string>>(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public NodePropertyCapture? ToAppendCapture { get; private set; }
 
         public override Func<string, string> CreateOutput(NodeData nodeData, BuildTaskFactoryContext context)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
             var arg = ToAppendCapture?.Capture(token) ?? string.Empty;
             return s => Path.Combine(s, arg);
         }

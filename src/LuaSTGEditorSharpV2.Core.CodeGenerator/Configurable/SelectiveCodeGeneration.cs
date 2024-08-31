@@ -12,7 +12,8 @@ using LuaSTGEditorSharpV2.Core.Configurable;
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 {
     [Serializable]
-    public class SelectiveCodeGeneration : CodeGeneratorServiceBase
+    public class SelectiveCodeGeneration(CodeGeneratorServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : CodeGeneratorServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public CaptureWithMacroOption[] Captures { get; private set; } = [];
         [JsonProperty] public ContextCapture[] ContextCaptures { get; private set; } = [];
@@ -25,7 +26,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 
         internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
-            var token = new NodePropertyAccessToken(node, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, node, context);
             _captureResult ??= new string[GetCaptureCacheLength()];
             int n;
             for (n = 0; n < Captures.Length; n++)
@@ -62,7 +63,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             }
             if (!IgnoreChildren)
             {
-                foreach (var cd in GetServiceProvider().GenerateForChildren(node, context, IndentionIncrement))
+                foreach (var cd in GetNodeServiceProvider().GenerateForChildren(node, context, IndentionIncrement))
                 {
                     yield return cd;
                 }

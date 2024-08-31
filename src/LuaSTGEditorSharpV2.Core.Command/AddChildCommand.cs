@@ -9,13 +9,14 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Core.Command
 {
-    public class AddChildCommand : CommandBase
+    public class AddChildCommand : ConcreteCommand
     {
         public NodeData Parent { get; private set; }
         public NodeData Child { get; private set; }
         public int Position { get; private set; }
 
-        public AddChildCommand(NodeData parent, int position, NodeData child)
+        public AddChildCommand(ViewModelProviderServiceProvider service, NodeData parent, int position, NodeData child)
+            : base(service)
         {
             Parent = parent;
             Child = child.DeepClone();
@@ -24,15 +25,13 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute(LocalServiceParam param)
         {
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .InsertNodeAt(Parent, Position, Child, param);
         }
 
         protected override void RevertExecution(LocalServiceParam param)
         {
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .RemoveNodeAt(Parent, Position);
         }
     }

@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator
         public override string Name => "Lua";
 
         // TODO: Serialize
-        internal LuaLanguage()
+        internal LuaLanguage(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             MacroTemplate = "\\b{0}\\b"
             + @"(?<=^([^""]*((?<!(^|[^\\])(\\\\)*\\)""([^""]|((?<=(^|[^\\])(\\\\)*\\)""))*(?<!(^|[^\\])(\\\\)*\\)"")+)*[^""]*.)"

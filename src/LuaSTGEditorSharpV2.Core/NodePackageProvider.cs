@@ -7,6 +7,8 @@ using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -18,23 +20,34 @@ using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public class NodePackageProvider(ILogger<NodePackageProvider> logger, IPackedServiceCollection packedServiceInfos)
+    public class NodePackageProvider
     {
         public static readonly string CORE_PACKAGE_NAME = "Core";
 
         private static readonly string _packageBasePath = "package";
 
-        private static readonly JsonConverter _versionConverter = new VersionConverter();
+        private readonly JsonSerializerSettings _serviceDeserializationSettings;
+        private readonly IServiceProvider _serviceProvider;
 
-        private static readonly JsonSerializerSettings _serviceDeserializationSettings = new()
-        {
-            TypeNameHandling = TypeNameHandling.Objects,
-            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-        };
-
-        private readonly ILogger<NodePackageProvider> _logger = logger;
+        private readonly ILogger<NodePackageProvider> _logger;
+        private readonly IPackedServiceCollection _packedServiceInfos;
 
         private readonly HashSet<string> _loadedPackageName = [];
+
+        public NodePackageProvider(ILogger<NodePackageProvider> logger,
+            IPackedServiceCollection packedServiceInfos,
+            IServiceProvider serviceProvider)
+        {
+            _logger = logger;
+            _packedServiceInfos = packedServiceInfos;
+            _serviceProvider = serviceProvider;
+            _serviceDeserializationSettings = new()
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
+                ContractResolver = new ServiceProviderContractResolver(serviceProvider),
+            };
+        }
 
         public PackageDescriptor LoadPackage(PackageAssemblyDescriptor desc)
         {
@@ -59,12 +72,12 @@ namespace LuaSTGEditorSharpV2.Core
             // Enumerate all infos and register all instances
             object?[] param = new object?[4];
             param[2] = new PackageInfo(packageManifest, basePath);
-            foreach (var info in packedServiceInfos)
+            foreach (var info in _packedServiceInfos)
             {
                 Type serviceType = info.ServiceInstanceType;
                 Type serviceProviderType = info.ServiceProviderType;
                 Delegate registerFunc = info.RegisterFunction;
-                param[0] = HostedApplicationHelper.GetService(serviceProviderType);
+                param[0] = _serviceProvider.GetRequiredService(serviceProviderType);
                 string serviceShortName = info.ShortName;
                 foreach (var fileName in Directory.EnumerateFiles(basePath
                     , $"*.{serviceShortName}", SearchOption.AllDirectories))
@@ -103,7 +116,7 @@ namespace LuaSTGEditorSharpV2.Core
                         .Select(t => Activator.CreateInstance(t) as IServiceInstanceProvider<object>);
                     foreach (var provider in instanceProviders ?? [])
                     {
-                        foreach (var instance in provider?.GetServiceInstances() ?? [])
+                        foreach (var instance in provider?.GetServiceInstances(_serviceProvider) ?? [])
                         {
                             if (instance != null && instance.GetType().IsAnyDerivedTypeOf(serviceType))
                             {
@@ -122,35 +135,15 @@ namespace LuaSTGEditorSharpV2.Core
             return new PackageDescriptor(serviceDisposeHandles, desc.Assemblies);
         }
 
-        private PackageManifest GetManifest(string path)
-        {
-            string manifestString;
-            try
-            {
-                using (FileStream fs = new(path, FileMode.Open, FileAccess.Read))
-                {
-                    using StreamReader sr = new(fs);
-                    manifestString = sr.ReadToEnd();
-                }
-                return JsonConvert.DeserializeObject<PackageManifest>(manifestString, _versionConverter)
-                    ?? throw new PackageLoadingException($"Failed to deserialize package manifest at {path} .");
-            }
-            catch (System.Exception e)
-            {
-                _logger.LogException(e);
-                throw new PackageLoadingException($"Failed to load package manifest at {path} .", e);
-            }
-        }
-
         public void LoadLocalNodeService(LocalNodeServices services)
         {
             object?[] param = new object?[4];
             param[2] = services.PackageInfo;
             foreach (var tup in services.Services)
             {
-                Type serviceProviderType = packedServiceInfos.ShortName2Info[tup.Item2].ServiceProviderType;
-                param[0] = HostedApplicationHelper.GetService(serviceProviderType);
-                var info = packedServiceInfos.ServicesProviderType2Info[serviceProviderType];
+                Type serviceProviderType = _packedServiceInfos.ShortName2Info[tup.Item2].ServiceProviderType;
+                param[0] = _serviceProvider.GetRequiredService(serviceProviderType);
+                var info = _packedServiceInfos.ServicesProviderType2Info[serviceProviderType];
                 param[1] = serviceProviderType.GetProperty(info.ServiceInstancePrimaryKeyName)!.GetValue(tup.Item1);
                 param[3] = tup.Item1;
                 info.RegisterFunction.DynamicInvoke(param);
@@ -159,12 +152,12 @@ namespace LuaSTGEditorSharpV2.Core
 
         public void ReplaceSettingsForServiceIfValid(Type serviceProviderType, JObject settings)
         {
-            if (packedServiceInfos.ServicesProviderType2Info.TryGetValue(serviceProviderType, out var serviceInfo))
+            if (_packedServiceInfos.ServicesProviderType2Info.TryGetValue(serviceProviderType, out var serviceInfo))
             {
                 if (serviceInfo.HasSettings)
                 {
                     var assign = serviceInfo.SettingsReplacementFunction;
-                    var serviceProvider = HostedApplicationHelper.GetService(serviceProviderType) as ISettingsProvider;
+                    var serviceProvider = _serviceProvider.GetRequiredService(serviceProviderType) as ISettingsProvider;
                     if (serviceProvider?.Settings != null)
                     {
                         var settingsClone = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(serviceProvider.Settings),
@@ -172,7 +165,7 @@ namespace LuaSTGEditorSharpV2.Core
                         if (settingsClone != null)
                         {
                             JsonConvert.PopulateObject(settings.ToString(), settingsClone);
-                            assign.DynamicInvoke(HostedApplicationHelper.GetService(serviceProviderType), settingsClone);
+                            assign.DynamicInvoke(_serviceProvider.GetRequiredService(serviceProviderType), settingsClone);
                         }
                     }
                 }
@@ -181,7 +174,7 @@ namespace LuaSTGEditorSharpV2.Core
 
         public void ReplaceSettingsForServiceShortNameIfValid(string serviceShortName, JObject settings)
         {
-            if (packedServiceInfos.ShortName2Info.TryGetValue(serviceShortName, out var info))
+            if (_packedServiceInfos.ShortName2Info.TryGetValue(serviceShortName, out var info))
             {
                 ReplaceSettingsForServiceIfValid(info.ServiceProviderType, settings);
             }
@@ -190,9 +183,9 @@ namespace LuaSTGEditorSharpV2.Core
         public IReadOnlyDictionary<string, object> GetServiceShortName2SettingsDict()
         {
             var dictionary = new Dictionary<string, object>();
-            foreach (var info in packedServiceInfos)
+            foreach (var info in _packedServiceInfos)
             {
-                if (HostedApplicationHelper.GetService(info.ServiceProviderType) is ISettingsProvider isp)
+                if (_serviceProvider.GetRequiredService(info.ServiceProviderType) is ISettingsProvider isp)
                 {
                     dictionary.Add(info.ShortName, isp.Settings);
                 }
@@ -210,10 +203,10 @@ namespace LuaSTGEditorSharpV2.Core
                 ?? throw new InvalidOperationException(), _packageBasePath, CORE_PACKAGE_NAME);
             param[2] = new PackageInfo(PackageManifest.CORE, basePath);
             Type serviceInstanceType = typeof(T);
-            var info = packedServiceInfos.ServicesInstanceType2Info[serviceInstanceType];
+            var info = _packedServiceInfos.ServicesInstanceType2Info[serviceInstanceType];
             Type serviceProviderType = info.ServiceProviderType;
-            param[0] = HostedApplicationHelper.GetService(serviceProviderType);
-            foreach (var instance in instanceProvider.GetServiceInstances())
+            param[0] = _serviceProvider.GetRequiredService(serviceProviderType);
+            foreach (var instance in instanceProvider.GetServiceInstances(_serviceProvider))
             {
                 if (instance != null && instance.GetType().IsAnyDerivedTypeOf(serviceInstanceType))
                 {

@@ -14,8 +14,8 @@ using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
 namespace LuaSTGEditorSharpV2.UICustomization
 {
-    [Inject(lifetime: ServiceLifetime.Singleton)]
-    public class UICustomizationService : ISettingsProvider
+    [Inject(ServiceLifetime.Singleton)]
+    public class UICustomizationService(ResourceDictionaryRegistrationService resourceDictionaryRegistrationService) : ISettingsProvider
     {
         internal static readonly string uri = "pack://application:,,,/LuaSTGEditorSharpV2.UICustomization;component/UICustomizationStyles.xaml";
 
@@ -51,7 +51,7 @@ namespace LuaSTGEditorSharpV2.UICustomization
             var properties = settings.GetType()
                 .BaseTypes()
                 .SelectMany(t => t.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
-            var service = HostedApplicationHelper.GetService<ResourceDictionaryRegistrationService>();
+            var service = resourceDictionaryRegistrationService;
             var dict = service.ResourceDictionarys[currentUri];
             if (dict == null) return;
             foreach (var field in fields)
@@ -76,7 +76,7 @@ namespace LuaSTGEditorSharpV2.UICustomization
         {
             if (uri != currentUri)
             {
-                var service = HostedApplicationHelper.GetService<ResourceDictionaryRegistrationService>();
+                var service = resourceDictionaryRegistrationService;
                 service.Remove(currentUri);
                 currentUri = uri;
                 _resourceDictUris[0] = uri;

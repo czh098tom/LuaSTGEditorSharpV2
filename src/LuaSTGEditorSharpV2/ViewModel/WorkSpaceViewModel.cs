@@ -9,6 +9,10 @@ using System.Windows;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 
+using System.Reactive.Disposables;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
@@ -23,11 +27,10 @@ using LuaSTGEditorSharpV2.Dialog;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
 using LuaSTGEditorSharpV2.Core.Building;
-using System.Reactive.Disposables;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class WorkSpaceViewModel : ViewModelBase
+    public class WorkSpaceViewModel : InjectableViewModel
     {
         private readonly WorkSpaceCollection<AnchorableViewModelBase> _invisibleAnchorables = [];
         public WorkSpaceCollection<AnchorableViewModelBase> Anchorables { get; private set; } = [];
@@ -56,7 +59,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public event EventHandler<OnEnableHandleRequestedEventArgs>? EnableRequesting;
 
-        public WorkSpaceViewModel()
+        public WorkSpaceViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             IsEnabledHandle = new(this, nameof(IsEnabled));
         }
@@ -133,7 +136,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             var doc = editingDocumentModel;
             if (doc == null) return;
-            var dvm = new DocumentViewModel(doc);
+            var dvm = ServiceProvider.GetRequiredService<DocumentViewModelFactory>().Create(doc);
             _documents.Add(dvm);
             _documentMapping.Add(doc, dvm);
             dvm.OnClose += (o, e) => CloseDocument(dvm);
@@ -199,7 +202,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
             AddCommandToDocument(SelectedNodes.SelectCommand(n =>
             {
                 if (n.PhysicalParent == null) return null;
-                return new RemoveChildCommand(n.PhysicalParent, n.PhysicalParent.PhysicalChildren.FindIndex(n));
+                return new RemoveChildCommand(ServiceProvider.GetRequiredService<ViewModelProviderServiceProvider>(),
+                    n.PhysicalParent, n.PhysicalParent.PhysicalChildren.FindIndex(n));
             }), _activeDocument.DocumentModel, [], true);
         }
 
@@ -207,7 +211,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             if (!HaveSelected) throw new InvalidOperationException();
             var nodes = _activeDocument.DocumentModel.Root.FindPhysicalMinForestContaining(SelectedNodes);
-            HostedApplicationHelper.GetService<ClipboardService>().CopyNode(nodes);
+            ServiceProvider.GetRequiredService<ClipboardService>().CopyNode(nodes);
         }
 
         public void CutSelectedNode()
@@ -218,10 +222,10 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void PasteToSelectedNode()
         {
-            var clipBoard = HostedApplicationHelper.GetService<ClipboardService>();
+            var clipBoard = ServiceProvider.GetRequiredService<ClipboardService>();
             if (!clipBoard.CheckHaveNodes()) throw new InvalidOperationException();
             if (!HaveSelected) throw new InvalidOperationException();
-            var insCommandHost = HostedApplicationHelper.GetService<InsertCommandHostingService>();
+            var insCommandHost = ServiceProvider.GetRequiredService<InsertCommandHostingService>();
 
             var clipBoardContent = clipBoard.GetNodes();
 
@@ -266,9 +270,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             var selectedDoc = _activeDocument.SourceDocument;
 
-            var taskFactoryService = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
+            var taskFactoryService = ServiceProvider.GetRequiredService<BuildTaskFactoryServiceProvider>();
             var param = new LocalServiceParam(selectedDoc);
-            var buildingContext = new BuildingContext(param);
+            var buildingContext = ServiceProvider.GetRequiredService<BuildingContextFactory>().Create(param);
 
             using var _ = new CompositeDisposable(RaiseEnableRequestingEvent());
             await Task.WhenAll(SelectedNodes
@@ -294,7 +298,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 throw new InvalidOperationException();
             }
             var root = SelectedNodes[0];
-            foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>()
+            foreach (CodeData codeData in ServiceProvider.GetRequiredService<CodeGeneratorServiceProvider>()
                 .GenerateCode(root, new LocalServiceParam(_activeDocument.SourceDocument)))
             {
                 yield return codeData;
@@ -305,7 +309,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             if (_activeDocument == null) return false;
             if (_activeDocument.SourceDocument == null) return false;
-            var taskFactoryService = HostedApplicationHelper.GetService<BuildTaskFactoryServiceProvider>();
+            var taskFactoryService = ServiceProvider.GetRequiredService<BuildTaskFactoryServiceProvider>();
             var selectedDoc = _activeDocument.SourceDocument;
             var param = new LocalServiceParam(selectedDoc);
             return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)
