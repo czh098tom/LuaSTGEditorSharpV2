@@ -9,6 +9,7 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.ResourceDictionaryService
 {
+    [PackedServiceProvider]
     [ServiceShortName("resource")]
     public class ResourceDictionaryRegistrationService(IServiceProvider serviceProvider) 
         : PackedDataProviderServiceBase<ResourceDictionaryDescriptor>(serviceProvider)

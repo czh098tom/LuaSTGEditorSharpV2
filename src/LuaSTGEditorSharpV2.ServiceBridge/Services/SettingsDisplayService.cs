@@ -20,6 +20,7 @@ using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.Services
 {
+    [PackedServiceProvider]
     public class SettingsDisplayService(ILogger<SettingsDisplayService> logger, IServiceProvider serviceProvider) 
         : PackedDataProviderServiceBase<SettingsDisplayDescriptor>(serviceProvider)
     {

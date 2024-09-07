@@ -9,6 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
+    [PackedServiceProvider]
     [ServiceName("ViewModel"), ServiceShortName("vm")]
     public class ViewModelProviderServiceProvider
         : CompactNodeServiceProvider<ViewModelProviderServiceProvider, ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>

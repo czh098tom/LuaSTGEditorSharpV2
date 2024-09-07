@@ -22,21 +22,6 @@ namespace LuaSTGEditorSharpV2.CLI
             loggingBuilder.AddConsole();
         }
 
-        protected override void ConfigurePackedServiceInfos(PackedServiceCollection collection)
-        {
-            collection.Add<DefaultValueServiceProvider>();
-            collection.Add<CodeGeneratorServiceProvider>();
-            collection.Add<BuildTaskFactoryServiceProvider>();
-            collection.Add<ResourceGatheringServiceProvider>();
-            collection.Add<CLIPluginProviderService>();
-            collection.Add<LanguageProviderService>();
-        }
-
-        protected override void ConfigureService(IServiceCollection services)
-        {
-            base.ConfigureService(services);
-        }
-
         protected override IReadOnlyCollection<string>? OverridePackages()
         {
             return APIFunctionParameterResolver.ParseFromCommandLineArgs(_args).Packages;

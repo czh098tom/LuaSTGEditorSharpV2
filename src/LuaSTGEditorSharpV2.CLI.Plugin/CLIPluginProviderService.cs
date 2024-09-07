@@ -8,6 +8,7 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.CLI.Plugin
 {
+    [PackedServiceProvider]
     [ServiceName("CLIPluginProvider")]
     public class CLIPluginProviderService(IServiceProvider serviceProvider) : PackedDataProviderServiceBase<CLIPluginDescriptor>(serviceProvider)
     {

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
+    [PackedServiceProvider]
     [ServiceName("PropertyView"), ServiceShortName("prop")]
     public class PropertyViewServiceProvider
         : CompactNodeServiceProvider<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>

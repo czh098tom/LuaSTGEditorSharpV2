@@ -10,6 +10,7 @@ using LuaSTGEditorSharpV2.Toolbox.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Toolbox.Service
 {
+    [PackedServiceProvider]
     [ServiceName("Toolbox"), ServiceShortName("tool")]
     public class ToolboxProviderService(IServiceProvider serviceProvider)
         : PackedDataProviderServiceBase<ToolboxItemModelBase>(serviceProvider)

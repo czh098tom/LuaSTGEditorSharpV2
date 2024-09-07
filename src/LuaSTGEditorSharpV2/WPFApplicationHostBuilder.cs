@@ -31,34 +31,5 @@ namespace LuaSTGEditorSharpV2
         {
             loggingBuilder.AddNLog();
         }
-
-        protected override void ConfigurePackedServiceInfos(PackedServiceCollection collection)
-        {
-            base.ConfigurePackedServiceInfos(collection);
-
-            collection.Add<CodeGeneratorServiceProvider>();
-            collection.Add<ViewModelProviderServiceProvider>();
-            collection.Add<ResourceGatheringServiceProvider>();
-            collection.Add<BuildTaskFactoryServiceProvider>();
-            collection.Add<PropertyViewServiceProvider>();
-            collection.Add<DefaultValueServiceProvider>();
-            collection.Add<ToolboxProviderService>();
-            collection.Add<ResourceDictionaryRegistrationService>();
-            collection.Add<LanguageProviderService>();
-            collection.Add<SettingsDisplayService>();
-        }
-
-        protected override void ConfigureService(IServiceCollection services)
-        {
-            base.ConfigureService(services);
-
-            //services.AddSingleton<ActiveDocumentService>();
-            //services.AddSingleton<InsertCommandHostingService>();
-            //services.AddSingleton<LocalizationService>();
-            //services.AddSingleton<UICustomizationService>();
-            //services.AddSingleton<MainWindowLayoutService>();
-            //services.AddSingleton<FileDialogService>();
-            //services.AddSingleton<ClipboardService>();
-        }
     }
 }

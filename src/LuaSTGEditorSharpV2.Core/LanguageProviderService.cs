@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
+    [PackedServiceProvider]
     public class LanguageProviderService : PackedDataProviderServiceBase<LanguageBase>
     {
         public readonly LanguageBase _default;

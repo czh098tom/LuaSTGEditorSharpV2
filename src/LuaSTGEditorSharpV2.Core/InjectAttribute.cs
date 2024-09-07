@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace LuaSTGEditorSharpV2.Core
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class InjectAttribute(ServiceLifetime lifetime = ServiceLifetime.Transient, Type? serviceType = null) 
+    public class InjectAttribute(ServiceLifetime lifetime, Type? serviceType = null) 
         : Attribute
     {
         public ServiceDescriptor ToDescriptor(Type implementationType)

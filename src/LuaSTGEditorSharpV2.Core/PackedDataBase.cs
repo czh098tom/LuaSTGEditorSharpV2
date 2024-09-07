@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    [Inject(Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient)]
+    [Inject(ServiceLifetime.Transient)]
     public class PackedDataBase(IServiceProvider serviceProvider)
     {
         [JsonIgnore]

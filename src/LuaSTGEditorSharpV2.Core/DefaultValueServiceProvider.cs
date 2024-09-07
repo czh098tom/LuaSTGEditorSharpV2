@@ -8,6 +8,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
+    [PackedServiceProvider]
     [ServiceName("DefaultValue"), ServiceShortName("default")]
     public partial class DefaultValueServiceProvider : NodeServiceProvider<DefaultValueService>
     {

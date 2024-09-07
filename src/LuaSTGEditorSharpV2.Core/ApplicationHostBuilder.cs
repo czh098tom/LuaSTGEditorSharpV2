@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using LuaSTGEditorSharpV2.Core.Services;
 
 using Microsoft.Extensions.Hosting;
-using System.Runtime.Loader;
 
 namespace LuaSTGEditorSharpV2.Core
 {
@@ -41,6 +40,13 @@ namespace LuaSTGEditorSharpV2.Core
         private PackedServiceCollection CreatePackedServiceDescriptors()
         {
             var packedServiceInfos = new PackedServiceCollection();
+            LoadAssemblies();
+            foreach (var service in AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => !t.IsAbstract && t.GetCustomAttribute<PackedServiceProviderAttribute>() != null))
+            {
+                packedServiceInfos.Add(service);
+            }
             ConfigurePackedServiceInfos(packedServiceInfos);
             return packedServiceInfos;
         }
@@ -105,16 +111,21 @@ namespace LuaSTGEditorSharpV2.Core
 
         private static IEnumerable<ServiceDescriptor> GetInjectedServiceDescriptors()
         {
-            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                LoadEditorDependencyRecursively(a);
-            }
+            LoadAssemblies();
             var arr = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => !t.IsAbstract)
                 .Select(t => t.GetCustomAttribute<InjectAttribute>()?.ToDescriptor(t))
                 .OfType<ServiceDescriptor>().ToArray();
             return arr;
+        }
+
+        private static void LoadAssemblies()
+        {
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                LoadEditorDependencyRecursively(a);
+            }
         }
 
         private static void LoadEditorDependencyRecursively(Assembly assembly)

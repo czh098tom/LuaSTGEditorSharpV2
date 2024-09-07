@@ -10,6 +10,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 {
+    [PackedServiceProvider]
     [ServiceName("CodeGenerator"), ServiceShortName("cgen")]
     public class CodeGeneratorServiceProvider
         : CompactNodeServiceProvider<CodeGeneratorServiceProvider, CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
