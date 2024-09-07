@@ -8,10 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.CLI.Plugin;
-using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
-using LuaSTGEditorSharpV2.Core.Building.ResourceGathering;
-using LuaSTGEditorSharpV2.Core.CodeGenerator;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
