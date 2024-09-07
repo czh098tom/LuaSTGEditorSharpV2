@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Model;
+
 using Newtonsoft.Json.Serialization;
+
+using LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Model;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 {

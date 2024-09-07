@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Runtime.Loader;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -17,7 +18,6 @@ namespace LuaSTGEditorSharpV2.Core
     public abstract class ApplicationHostBuilder(string[] args)
     {
         protected string[] _args = args;
-        public static IServiceProvider ServiceProvider { get; private set; } = new ServiceCollection().BuildServiceProvider();
 
         public IHost BuildHost()
         {
@@ -26,7 +26,6 @@ namespace LuaSTGEditorSharpV2.Core
             HostApplicationBuilder applicationBuilder = CreateApplicationBuilder(_args, CreatePackedServiceDescriptors());
 
             var host = applicationBuilder.Build();
-            ServiceProvider = host.Services;
 
             host.Services.GetRequiredService<SettingsService>().LoadSettings();
 
@@ -122,17 +121,31 @@ namespace LuaSTGEditorSharpV2.Core
         {
             foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
             {
-                LoadEditorDependencyRecursively(a);
+                if (a.GetName().Name?.StartsWith("LuaSTGEditorSharpV2") ?? false)
+                {
+                    LoadEditorDependencyRecursively(a);
+                }
             }
         }
 
         private static void LoadEditorDependencyRecursively(Assembly assembly)
         {
+            var resolver = new AssemblyDependencyResolver(assembly.Location);
             foreach (var an in assembly.GetReferencedAssemblies())
             {
                 if (an.Name?.StartsWith("LuaSTGEditorSharpV2") ?? false)
                 {
-                    LoadEditorDependencyRecursively(Assembly.Load(an));
+                    Assembly loaded;
+                    var path = resolver.ResolveAssemblyToPath(an);
+                    if (path != null)
+                    {
+                        loaded = Assembly.LoadFrom(path);
+                    }
+                    else
+                    {
+                        loaded = Assembly.Load(an);
+                    }
+                    LoadEditorDependencyRecursively(loaded);
                 }
             }
         }

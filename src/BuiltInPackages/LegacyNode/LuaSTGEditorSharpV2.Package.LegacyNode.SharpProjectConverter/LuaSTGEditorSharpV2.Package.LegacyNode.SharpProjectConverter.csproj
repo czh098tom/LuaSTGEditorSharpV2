@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.CLI.Plugin\LuaSTGEditorSharpV2.CLI.Plugin.csproj" />
     <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
   </ItemGroup>
 

@@ -16,6 +16,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             {
                 TypeNameHandling = TypeNameHandling.Auto,
                 DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+                MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
                 SerializationBinder = new SharpTypeBinder()
             };
 

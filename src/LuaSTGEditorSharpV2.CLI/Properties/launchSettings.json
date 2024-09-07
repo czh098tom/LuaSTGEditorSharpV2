@@ -19,6 +19,10 @@
     "CLI build test": {
       "commandName": "Project",
       "commandLineArgs": "build \"../../test/test.lstgxml\" -t \"test\" -pkg Core Lua LegacyNode -cgen --line_obfuscated --indention_string \"\""
+    },
+    "CLI sharpconv test": {
+      "commandName": "Project",
+      "commandLineArgs": "sharpconv \"E:\\luastg\\lstgsharptest\\weekend\\Merged_NightBird.lstges\" -o \"E:\\luastg\\lstgsharptest\\test.lstgxml\" -pkg Core LegacyNode"
     }
   }
 }

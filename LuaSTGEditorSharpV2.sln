@@ -93,7 +93,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.CLI.Plugin", "src\LuaSTGEditorSharpV2.CLI.Plugin\LuaSTGEditorSharpV2.CLI.Plugin.csproj", "{62A82DB2-6FC5-4917-AFF6-93C263D3CCC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter\LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.csproj", "{47658A4B-EAA1-4686-A764-2FB2F3653C6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter\LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.csproj", "{47658A4B-EAA1-4686-A764-2FB2F3653C6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Package.LegacyNode.CLIPluginProvider", "src\BuiltInPackages\LegacyNode\LuaSTGEditorSharpV2.Package.LegacyNode.CLIPluginProvider\LuaSTGEditorSharpV2.Package.LegacyNode.CLIPluginProvider.csproj", "{7C5615FF-0298-4AAA-AD7B-96BE89457823}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -253,6 +255,10 @@ Global
 		{47658A4B-EAA1-4686-A764-2FB2F3653C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47658A4B-EAA1-4686-A764-2FB2F3653C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47658A4B-EAA1-4686-A764-2FB2F3653C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5615FF-0298-4AAA-AD7B-96BE89457823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5615FF-0298-4AAA-AD7B-96BE89457823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5615FF-0298-4AAA-AD7B-96BE89457823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5615FF-0298-4AAA-AD7B-96BE89457823}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -300,6 +306,7 @@ Global
 		{31A0ED1B-36BB-4E92-B244-B3528E042976} = {4FFE30D3-7F9B-4C24-B199-7542F56A2987}
 		{62A82DB2-6FC5-4917-AFF6-93C263D3CCC9} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{47658A4B-EAA1-4686-A764-2FB2F3653C6F} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
+		{7C5615FF-0298-4AAA-AD7B-96BE89457823} = {07D7D3CA-8712-4F32-9496-586DFD34564A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A88633F9-126D-4418-B464-61038BFEB74C}

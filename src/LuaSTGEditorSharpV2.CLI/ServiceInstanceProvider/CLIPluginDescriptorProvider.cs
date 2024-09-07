@@ -16,7 +16,6 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
 {
-    [Inject(ServiceLifetime.Transient)]
     public class CLIPluginDescriptorProvider : IServiceInstanceProvider<CLIPluginDescriptor>
     {
         public IReadOnlyCollection<CLIPluginDescriptor> GetServiceInstances(IServiceProvider serviceProvider)
