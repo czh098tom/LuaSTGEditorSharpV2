@@ -21,11 +21,9 @@ namespace LuaSTGEditorSharpV2.Core
 
         public IHost BuildHost()
         {
-            var packedServiceInfos = CreatePackedServiceDescriptors();
+            var assemblyDescs = CreatePackageDependentAssemblyDescriptor(CreatePackedServiceDescriptors());
 
-            var assemblyDescs = CreatePackageDependentAssemblyDescriptor(packedServiceInfos);
-
-            HostApplicationBuilder applicationBuilder = CreateApplicationBuilder(_args, packedServiceInfos);
+            HostApplicationBuilder applicationBuilder = CreateApplicationBuilder(_args, CreatePackedServiceDescriptors());
 
             var host = applicationBuilder.Build();
             ServiceProvider = host.Services;
