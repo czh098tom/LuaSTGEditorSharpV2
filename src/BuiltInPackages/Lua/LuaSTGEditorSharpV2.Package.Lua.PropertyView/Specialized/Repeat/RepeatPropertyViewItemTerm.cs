@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Command;
@@ -11,10 +13,13 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
+using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
-    public class RepeatPropertyViewItemTerm : IMultipleFieldPropertyViewItemTerm<RepeatVariableDefinition>
+    [Inject(ServiceLifetime.Transient)]
+    public class RepeatPropertyViewItemTerm(IServiceProvider serviceProvider, ViewModelProviderServiceProvider viewModelProviderServiceProvider) 
+        : IMultipleFieldPropertyViewItemTerm<RepeatVariableDefinition>
     {
         [JsonProperty] public NodePropertyCapture? NameRule { get; set; }
         [JsonProperty] public NodePropertyCapture? InitRule { get; set; }
@@ -23,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, PropertyViewContext context, int count)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(serviceProvider, nodeData, context);
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {
@@ -45,9 +50,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             var commands = new List<CommandBase>();
             if (NameRule == null || InitRule == null || IncrementRule == null) return null;
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, string.Format(InitRule.Key, idx), intermediateModel.Init);
-            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, string.Format(IncrementRule.Key, idx), intermediateModel.Increment);
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, nodeData, string.Format(InitRule.Key, idx), intermediateModel.Init);
+            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, nodeData, string.Format(IncrementRule.Key, idx), intermediateModel.Increment);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             if (editIncrement != null) commands.Add(editIncrement);

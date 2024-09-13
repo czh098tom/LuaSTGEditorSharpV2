@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
@@ -32,7 +34,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public override string I18NTitleKey => "panel_property_title";
 
-        public PropertyPageViewModel()
+        public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
                 (vm => vm.OnItemValueUpdated += Tab_OnItemValueUpdated);
@@ -53,7 +55,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         private void Tab_OnItemValueUpdatedImpl(IReadOnlyList<PropertyTabViewModel>? tabs, ItemValueUpdatedEventArgs e)
         {
-            var propertyViewService = HostedApplicationHelper.GetService<PropertyViewServiceProvider>();
+            var propertyViewService = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>();
             var editResult = propertyViewService.GetCommandOfEditingNode(
                 e.Args.Args.NodeData,
                 e.Args.Args.LocalServiceParam, tabs, e.Index,
@@ -71,13 +73,13 @@ namespace LuaSTGEditorSharpV2.PropertyView
             var param = new LocalServiceParam(SourceDocument ?? DocumentModel.Empty);
             if (SourceNodes.Length == 1)
             {
-                var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>()
+                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
                     .GetPropertyViewModelOfNode(SourceNodes[0], param);
                 LoadProperties(list);
             }
             else
             {
-                var list = HostedApplicationHelper.GetService<PropertyViewServiceProvider>()
+                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
                     .GetPropertyViewModelOfNode(NodeData.Empty, param);
                 LoadProperties(list);
             }

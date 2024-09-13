@@ -18,7 +18,7 @@ namespace LuaSTGEditorSharpV2.Core.Model
         private static readonly Predicate<NodeData> _logical = n => n.IsActive;
 
         [JsonProperty]
-        public string TypeUID { get; private set; } = string.Empty;
+        public string TypeUID { get; set; } = string.Empty;
         [JsonProperty]
         public bool IsActive { get; set; } = true;
         [JsonProperty]
@@ -77,6 +77,12 @@ namespace LuaSTGEditorSharpV2.Core.Model
             n.PhysicalParent = null;
             _physicalChildren.RemoveAt(position);
             return n;
+        }
+
+        public void Replace(int position, NodeData node)
+        {
+            Remove(position);
+            Insert(position, node);
         }
 
         public IEnumerable<NodeData> PerformBFS() => PerformBFS(_default);

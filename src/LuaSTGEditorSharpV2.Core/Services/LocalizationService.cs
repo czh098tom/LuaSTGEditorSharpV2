@@ -8,9 +8,11 @@ using System.Resources;
 using System.Globalization;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.Core.Services
 {
+    [Inject(ServiceLifetime.Singleton)]
     public class LocalizationService(ILogger<LocalizationService> logger)
     {
         ILogger<LocalizationService> _logger = logger;

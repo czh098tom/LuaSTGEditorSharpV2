@@ -4,18 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Runtime.InteropServices;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.Services
 {
+    [Inject(ServiceLifetime.Singleton)]
     public class ClipboardService
     {
-        public void CopyNode(IReadOnlyList<NodeData> nodes)
+        private static readonly int RETRY_COUNT = 100;
+
+        public async void CopyNode(IReadOnlyList<NodeData> nodes)
         {
-            Clipboard.SetText(JsonConvert.SerializeObject(nodes.ToArray()));
+            var nodesStr = JsonConvert.SerializeObject(nodes.ToArray());
+            int i = 0;
+            bool finished = false;
+            while (i < RETRY_COUNT && !finished)
+            {
+                try
+                {
+                    Clipboard.SetText(nodesStr);
+                    finished = true;
+                }
+                catch (COMException) 
+                {
+                    await Task.Delay(10);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                i++;
+            }
         }
 
         public IReadOnlyList<NodeData> GetNodes()

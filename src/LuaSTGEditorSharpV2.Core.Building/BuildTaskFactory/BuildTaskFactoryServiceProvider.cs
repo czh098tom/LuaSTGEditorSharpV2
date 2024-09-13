@@ -3,15 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory
 {
+    [PackedServiceProvider]
     [ServiceShortName("build"), ServiceName("BuildTaskFactory")]
     public class BuildTaskFactoryServiceProvider
         : CompactNodeServiceProvider<BuildTaskFactoryServiceProvider, BuildTaskFactoryServiceBase, BuildTaskFactoryContext, BuildTaskFactoryServiceSettings>
     {
-        private BuildTaskFactoryServiceBase _default = new();
+        private readonly BuildTaskFactoryServiceBase _default;
+
+        public BuildTaskFactoryServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _default = new(this, serviceProvider);
+        }
+
         protected override BuildTaskFactoryServiceBase DefaultService => _default;
 
         public WeightedBuildingTask? GetWeightedBuildingTaskForNode(NodeData nodeData,

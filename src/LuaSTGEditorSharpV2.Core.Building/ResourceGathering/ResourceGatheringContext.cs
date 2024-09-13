@@ -10,8 +10,8 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
     {
         private Stack<string> _resourceGroup = new();
 
-        public ResourceGatheringContext(LocalServiceParam localSettings, ResourceGatheringServiceSettings serviceSettings)
-            : base(localSettings, serviceSettings)
+        public ResourceGatheringContext(IServiceProvider serviceProvider, LocalServiceParam localSettings, ResourceGatheringServiceSettings serviceSettings)
+            : base(serviceProvider, localSettings, serviceSettings)
         {
         }
 

@@ -10,7 +10,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
 {
-    public class ConfigurableResourceGroupService : ResourceGatheringServiceBase
+    public class ConfigurableResourceGroupService(ResourceGatheringServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : ResourceGatheringServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public string GroupCapture { get; private set; } = string.Empty;
 
@@ -18,7 +19,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
             , ResourceGatheringContext context)
         {
             context.PushResourceGroup(node.GetProperty(GroupCapture));
-            foreach(var gs in GetServiceProvider().ProceedChildren(node, context))
+            foreach(var gs in GetNodeServiceProvider().ProceedChildren(node, context))
             {
                 yield return gs;
             }

@@ -5,23 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.WPF;
-using System.Windows;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Command.Service;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class DocumentViewModel : DockingViewModelBase
     {
+        private readonly EditingDocumentModel _editingDocumentModel;
+
         public ObservableCollection<NodeViewModel> Tree { get; private set; } = [];
 
-        private readonly EditingDocumentModel _editingDocumentModel;
         public IDocument DocumentModel => _editingDocumentModel;
 
         private string _rawTitle = string.Empty;
@@ -34,11 +36,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public bool CanUndo => _editingDocumentModel.CanUndo;
         public bool CanRedo => _editingDocumentModel.CanRedo;
 
-        public DocumentViewModel(EditingDocumentModel documentModel)
+        public DocumentViewModel(IServiceProvider serviceProvider, EditingDocumentModel documentModel) : base(serviceProvider)
         {
             _editingDocumentModel = documentModel;
             _rawTitle = documentModel.FileName;
-            Tree.Add(HostedApplicationHelper.GetService<ViewModelProviderServiceProvider>()
+            Tree.Add(serviceProvider.GetRequiredService<ViewModelProviderServiceProvider>()
                 .CreateViewModelRecursive(documentModel.Root, new LocalServiceParam(documentModel)));
         }
 
@@ -76,7 +78,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         /// </returns>
         public bool SaveAs()
         {
-            var fileDialog = HostedApplicationHelper.GetService<FileDialogService>();
+            var fileDialog = ServiceProvider.GetRequiredService<FileDialogService>();
             string? path = fileDialog.ShowSaveAsFileCommandDialog(DocumentModel.FileName);
             if (path == null) return false;
             DocumentModel.SaveAs(path);
@@ -86,7 +88,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void AskSaveBeforeClose()
         {
-            var localization = HostedApplicationHelper.GetService<LocalizationService>();
+            var localization = ServiceProvider.GetRequiredService<LocalizationService>();
             var messageBoxResult =
                 MessageBox.Show(
                     string.Format(localization.GetString("messageBox_saveBeforClose_message",
@@ -104,7 +106,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void CloseActiveDocument()
         {
-            var activeDocService = HostedApplicationHelper.GetService<ActiveDocumentService>();
+            var activeDocService = ServiceProvider.GetRequiredService<ActiveDocumentService>();
             activeDocService.Close(_editingDocumentModel);
             activeDocService.MarkAsSaved(_editingDocumentModel);
         }
@@ -126,5 +128,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _editingDocumentModel.Redo();
             RaisePropertyChanged(nameof(Title));
         }
+    }
+
+    [Inject(ServiceLifetime.Singleton)]
+    public class DocumentViewModelFactory(IServiceProvider serviceProvider)
+    {
+        public DocumentViewModel Create(EditingDocumentModel documentModel)
+            => new(serviceProvider, documentModel);
     }
 }

@@ -11,9 +11,10 @@ using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
 
 namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable
 {
-    public class ConfigurableBuildTaskFactory : BuildTaskFactoryServiceBase
+    public class ConfigurableBuildTaskFactory(BuildTaskFactoryServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : BuildTaskFactoryServiceBase(nodeServiceProvider, serviceProvider)
     {
-        protected static TOutput? GetPropertyInChildren<TOutput>(NodeData nodeData,
+        protected TOutput? GetPropertyInChildren<TOutput>(NodeData nodeData,
             BuildTaskFactoryContext context,
             string variableName,
             IEnumerable<NodeServiceProvider<BuildTaskFactoryServiceBase>.NodeServicePair<BuildTaskPropertySubService>> properties)
@@ -24,7 +25,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable
             if (sourcePropertyPair.NodeData != null)
             {
                 using var sourcePropertyLevel = context.AcquireContextLevelHandle(sourcePropertyPair.NodeData);
-                var sources = GetServiceProvider()
+                var sources = GetNodeServiceProvider()
                     .GetServicesPairForLogicalChildrenOfType<BuildTaskFactorySubService<TOutput>>(sourcePropertyPair.NodeData);
                 var sourcePair = sources.FirstOrDefault();
                 if (sourcePair.NodeData != null)
@@ -51,7 +52,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable
 
         public override WeightedBuildingTask? CreateBuildingTask(NodeData nodeData, BuildTaskFactoryContext context)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
             float? weight = null;
             if (float.TryParse(WeightCapture?.Capture(token), out var result))
             {

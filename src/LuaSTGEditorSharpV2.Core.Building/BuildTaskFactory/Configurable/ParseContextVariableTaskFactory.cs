@@ -11,7 +11,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable
 {
-    public class ParseContextVariableTaskFactory : ConfigurableBuildTaskFactory
+    public class ParseContextVariableTaskFactory(BuildTaskFactoryServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : ConfigurableBuildTaskFactory(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public NodePropertyCapture? SourceCapture { get; private set; }
         [JsonProperty] public string SourceVariableName { get; private set; } = string.Empty;
@@ -22,14 +23,14 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable
 
         public override WeightedBuildingTask? CreateBuildingTask(NodeData nodeData, BuildTaskFactoryContext context)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
             IInputSourceVariable? sourceVariable = null;
             IOutputTargetVariable? targetVariable = null;
             Func<string, string>? mapper = null;
             float weight = GetWeight(token);
             using (var variablesLevel = context.AcquireContextLevelHandle(nodeData))
             {
-                var properties = GetServiceProvider()
+                var properties = GetNodeServiceProvider()
                     .GetServicesPairForLogicalChildrenOfType<BuildTaskPropertySubService>(nodeData);
                 sourceVariable = GetPropertyInChildren<IInputSourceVariable>(
                     nodeData, context, SourceVariableName, properties);

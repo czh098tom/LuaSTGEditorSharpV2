@@ -12,7 +12,12 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
     public class StructuralValidationServiceProvider 
         : CompactNodeServiceProvider<StructuralValidationServiceProvider, StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
     {
-        private static readonly StructuralValidationServiceBase _defaultService = new();
+        private readonly StructuralValidationServiceBase _defaultService;
+
+        public StructuralValidationServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _defaultService = new(this, serviceProvider);
+        }
 
         protected override StructuralValidationServiceBase DefaultService => _defaultService;
 

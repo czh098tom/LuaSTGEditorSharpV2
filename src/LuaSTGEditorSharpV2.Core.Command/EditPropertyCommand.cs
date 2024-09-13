@@ -10,9 +10,9 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Core.Command
 {
-    public class EditPropertyCommand : CommandBase
+    public class EditPropertyCommand : ConcreteCommand
     {
-        public static CommandBase? CreateEditCommandOnDemand(NodeData node, string? propertyName, string afterEdit)
+        public static CommandBase? CreateEditCommandOnDemand(ViewModelProviderServiceProvider service, NodeData node, string? propertyName, string afterEdit)
         {
             if (string.IsNullOrEmpty(propertyName))
             {
@@ -22,11 +22,11 @@ namespace LuaSTGEditorSharpV2.Core.Command
             {
                 if (node.HasProperty(propertyName))
                 {
-                    return new EditPropertyCommand(node, propertyName, afterEdit);
+                    return new EditPropertyCommand(service, node, propertyName, afterEdit);
                 }
                 else
                 {
-                    return new AddPropertyCommand(node, propertyName, afterEdit);
+                    return new AddPropertyCommand(service, node, propertyName, afterEdit);
                 }
             }
         }
@@ -37,7 +37,8 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         string? _beforeEdit;
 
-        public EditPropertyCommand(NodeData node, string propertyName, string afterEdit)
+        public EditPropertyCommand(ViewModelProviderServiceProvider service, NodeData node, string propertyName, string afterEdit)
+            :base(service)
         {
             Node = node;
             PropertyName = propertyName;
@@ -48,8 +49,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
         {
             _beforeEdit = Node.Properties[PropertyName];
             Node.Properties[PropertyName] = AfterEdit;
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .UpdateViewModelDataRecursive(Node, param);
         }
 
@@ -57,8 +57,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
         {
             if (_beforeEdit == null) throw new InvalidOperationException("Command has not been executed yet.");
             Node.Properties[PropertyName] = _beforeEdit;
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .UpdateViewModelDataRecursive(Node, param);
         }
     }

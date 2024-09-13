@@ -8,7 +8,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory
 {
-    public abstract class BuildTaskFactorySubService<TOutput> : BuildTaskFactoryServiceBase,
+    public abstract class BuildTaskFactorySubService<TOutput>(BuildTaskFactoryServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : BuildTaskFactoryServiceBase(nodeServiceProvider, serviceProvider),
         ISubNodeService<TOutput, BuildTaskFactoryContext>
     {
         public abstract TOutput CreateOutput(NodeData nodeData, BuildTaskFactoryContext context);

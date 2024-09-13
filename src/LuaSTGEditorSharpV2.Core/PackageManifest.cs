@@ -15,5 +15,10 @@ namespace LuaSTGEditorSharpV2.Core
         float Priority,
         string? LibraryPath)
     {
+        public static readonly PackageManifest CORE = new PackageManifest(
+            NodePackageProvider.CORE_PACKAGE_NAME, 
+            new Version("1.0"), 
+            0f, 
+            null);
     }
 }

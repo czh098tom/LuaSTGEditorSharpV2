@@ -14,7 +14,7 @@ using LuaSTGEditorSharpV2.WPF;
 
 namespace LuaSTGEditorSharpV2.Toolbox.Model
 {
-    public class InputTypeUIDItem : ToolboxItemModelBase
+    public class InputTypeUIDItem(IServiceProvider serviceProvider) : ToolboxItemModelBase(serviceProvider)
     {
         public override ToolboxItemViewModel CreateViewModel()
         {

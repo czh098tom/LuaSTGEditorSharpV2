@@ -6,21 +6,19 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public class LanguageProviderService
+    [PackedServiceProvider]
+    public class LanguageProviderService : PackedDataProviderServiceBase<LanguageBase>
     {
-        public readonly LanguageBase _default = new();
+        public readonly LanguageBase _default;
 
-        private readonly Dictionary<string, LanguageBase> _cachedLanguages = new();
-
-        public void RegisterLanguage(string name, LanguageBase language)
+        public LanguageProviderService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            _cachedLanguages.Add(name, language);
+            _default = new(serviceProvider);
         }
 
         public LanguageBase? GetLanguage(string name)
         {
-            if (_cachedLanguages.TryGetValue(name, out var language)) return language;
-            return null;
+            return GetDataOfID(name);
         }
     }
 }

@@ -6,9 +6,10 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 using LuaSTGEditorSharpV2.Core.Building.ResourceGathering;
-
-using static LuaSTGEditorSharpV2.Core.HostedApplicationHelper;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.CLI.Plugin;
+
+using LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
@@ -16,22 +17,18 @@ namespace LuaSTGEditorSharpV2.CLI
     {
         static void Main(string[] args)
         {
-            AddPackedDataProvider(typeof(DefaultValueServiceProvider));
-            AddPackedDataProvider(typeof(CodeGeneratorServiceProvider));
-            AddPackedDataProvider(typeof(BuildTaskFactoryServiceProvider));
-            AddPackedDataProvider(typeof(ResourceGatheringServiceProvider));
-            AddApplicationSingletonService<SettingsService>();
-            AddApplicationSingletonService(typeof(LanguageProviderService));
-            SetUpHost(() =>
+            var host = new CLIApplicationHostBuilder(args)
+                .BuildHost();
+            host.Services.GetRequiredService<NodePackageProvider>().Register(new CLIPluginDescriptorProvider());
+            var param = APIFunctionParameterResolver.ParseFromCommandLineArgs(args);
+            try
             {
-                HostApplicationBuilder applicationBuilder = Host.CreateApplicationBuilder(args);
-
-                applicationBuilder.Services.AddLogging(builder => builder.AddConsole());
-                applicationBuilder.Services.AddHostedService<MainWorker>();
-                return applicationBuilder;
-            }, args);
-
-            WaitForShutdown();
+                host.Services.GetRequiredService<CLIPluginProviderService>().FindAndExecute(args[0], param).Wait();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

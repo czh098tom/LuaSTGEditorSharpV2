@@ -4,20 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using LuaSTGEditorSharpV2.Core;
 
-namespace LuaSTGEditorSharpV2.CLI
+namespace LuaSTGEditorSharpV2.CLI.Plugin
 {
     public class APIFunctionParameter
     {
-        public static APIFunctionParameter ParseFromCommandLineArgs(string[] args)
-        {
-            return new APIFunctionParameterResolver().Resolve(args);
-        }
-
         public IReadOnlyList<string>? Packages { get; private set; }
         public string? InputPath { get; private set; }
         public string? OutputPath { get; private set; }
@@ -34,20 +31,10 @@ namespace LuaSTGEditorSharpV2.CLI
             ServiceSettings = serviceSettings;
         }
 
-        public void UsePackages()
-        {
-            if (Packages == null) return;
-            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
-            foreach (var p in Packages)
-            {
-                nodePackageProvider.LoadPackage(p);
-            }
-        }
-
-        public void ReassignSettings()
+        public void ReassignSettings(IServiceProvider serviceProvider)
         {
             if (ServiceSettings == null) return;
-            var nodePackageProvider = HostedApplicationHelper.GetService<NodePackageProvider>();
+            var nodePackageProvider = serviceProvider.GetRequiredService<NodePackageProvider>();
             foreach (var kvp in ServiceSettings)
             {
                 nodePackageProvider.ReplaceSettingsForServiceShortNameIfValid(kvp.Key, kvp.Value);

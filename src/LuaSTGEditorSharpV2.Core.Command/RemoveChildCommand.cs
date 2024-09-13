@@ -9,14 +9,14 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Core.Command
 {
-    public class RemoveChildCommand : CommandBase
+    public class RemoveChildCommand : ConcreteCommand
     {
         public NodeData Parent { get; private set; }
         public int Position { get; private set; }
 
         private NodeData? child;
 
-        public RemoveChildCommand(NodeData parent, int position)
+        public RemoveChildCommand(ViewModelProviderServiceProvider service, NodeData parent, int position) : base(service)
         {
             Parent = parent;
             Position = position;
@@ -25,16 +25,14 @@ namespace LuaSTGEditorSharpV2.Core.Command
         protected override void DoExecute(LocalServiceParam param)
         {
             child = Parent.PhysicalChildren[Position];
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .RemoveNodeAt(Parent, Position);
         }
 
         protected override void RevertExecution(LocalServiceParam param)
         {
             if (child == null) throw new InvalidOperationException("Command has not been executed yet.");
-            HostedApplicationHelper
-                .GetService<ViewModelProviderServiceProvider>()
+            ViewModelProviderServiceProvider
                 .InsertNodeAt(Parent, Position, child, param);
         }
     }

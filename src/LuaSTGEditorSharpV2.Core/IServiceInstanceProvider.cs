@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public interface IPackageEntry
+    public interface IServiceInstanceProvider<out TData>
     {
-        void InitializePackage();
+        public IReadOnlyCollection<TData> GetServiceInstances(IServiceProvider serviceProvider);
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -15,21 +17,23 @@ namespace LuaSTGEditorSharpV2.Core.Building
 
         public BuildingContexturalTemporaryFiles TempFiles { get; private set; } = new ();
         public LocalServiceParam LocalParam { get; private set; }
+        public IServiceProvider ServiceProvider { get; private set; }
 
         private JObject _serviceSettings = [];
         private IReadOnlyDictionary<string, object> _serviceShortName2SettingsDict;
 
         public BuildingContext(BuildingContext source)
-            : this(source.LocalParam, source._serviceShortName2SettingsDict)
+            : this(source.ServiceProvider, source.LocalParam, source._serviceShortName2SettingsDict)
         {
         }
 
-        public BuildingContext(LocalServiceParam serviceParam, 
+        public BuildingContext(IServiceProvider serviceProvider, LocalServiceParam serviceParam, 
             IReadOnlyDictionary<string, object>? serviceShortName2SettingsDict = null) 
         {
             LocalParam = serviceParam;
-            serviceShortName2SettingsDict ??= HostedApplicationHelper
-                .GetService<NodePackageProvider>().GetServiceShortName2SettingsDict();
+            ServiceProvider = serviceProvider;
+            serviceShortName2SettingsDict ??= ServiceProvider
+                .GetRequiredService<NodePackageProvider>().GetServiceShortName2SettingsDict();
             _serviceShortName2SettingsDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
                 JsonConvert.SerializeObject(serviceShortName2SettingsDict))!;
             _serviceSettings = JsonConvert.DeserializeObject<JObject>(
@@ -50,6 +54,16 @@ namespace LuaSTGEditorSharpV2.Core.Building
         public void Dispose()
         {
             TempFiles.Dispose();
+        }
+    }
+
+    [Inject(ServiceLifetime.Singleton)]
+    public class BuildingContextFactory(IServiceProvider serviceProvider)
+    {
+        public BuildingContext Create(LocalServiceParam serviceParam,
+            IReadOnlyDictionary<string, object>? serviceShortName2SettingsDict = null)
+        {
+            return new BuildingContext(serviceProvider, serviceParam, serviceShortName2SettingsDict);
         }
     }
 }

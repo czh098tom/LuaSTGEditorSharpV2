@@ -5,29 +5,34 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
     /// <summary>
     /// Provide functionality of presenting and manipulating <see cref="NodeData"/> properties.
     /// </summary>
-    public class PropertyViewServiceBase 
-        : CompactNodeService<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
+    public class PropertyViewServiceBase(PropertyViewServiceProvider nodeServiceProvider, IServiceProvider serviceProvider)
+        : CompactNodeService<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>(nodeServiceProvider, serviceProvider)
     {
         public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings
             , PropertyViewServiceSettings serviceSettings)
         {
-            return new PropertyViewContext(localSettings, serviceSettings);
+            return new PropertyViewContext(ServiceProvider, localSettings, serviceSettings);
         }
 
-        internal protected static EditResult ResolveNativeEditing(NodeData nodeData,
+        internal protected EditResult ResolveNativeEditing(NodeData nodeData,
             IReadOnlyList<PropertyItemViewModelBase> propertyList,
             int itemIndex, string edited)
         {
-            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(
+                ServiceProvider.GetRequiredService<ViewModelProviderServiceProvider>(),
+                nodeData,
                 (propertyList[itemIndex] as BasicPropertyItemViewModel)?.Name, edited));
         }
 

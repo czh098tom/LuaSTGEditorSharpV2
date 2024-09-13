@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public class NodeContext
+    public class NodeContext(IServiceProvider serviceProvider, LocalServiceParam localParam)
     {
         protected class ContextHandle(NodeContext context) : IDisposable
         {
@@ -62,17 +62,14 @@ namespace LuaSTGEditorSharpV2.Core
             }
         }
 
-        public LocalServiceParam LocalParam { get; private set; }
+        public LocalServiceParam LocalParam { get; private set; } = localParam;
+
+        protected IServiceProvider ServiceProvider { get; private set; } = serviceProvider;
 
         private readonly Dictionary<string, Stack<NodeData>> _contextData = [];
         private readonly Stack<NodeData> _top = new();
 
         protected readonly object _lock = new();
-
-        public NodeContext(LocalServiceParam localParam)
-        {
-            LocalParam = localParam;
-        }
 
         public virtual IDisposable AcquireContextLevelHandle(NodeData current)
         {
@@ -167,8 +164,8 @@ namespace LuaSTGEditorSharpV2.Core
     {
         protected TSettings ServiceSettings { get; private set; }
 
-        public NodeContextWithSettings(LocalServiceParam localParam, TSettings serviceSettings)
-            : base(localParam)
+        public NodeContextWithSettings(IServiceProvider serviceProvider, LocalServiceParam localParam, TSettings serviceSettings)
+            : base(serviceProvider, localParam)
         {
             ServiceSettings = serviceSettings;
         }
@@ -176,7 +173,7 @@ namespace LuaSTGEditorSharpV2.Core
 
     internal class DefaultNodeContext : NodeContextWithSettings<ServiceExtraSettingsBase>
     {
-        internal DefaultNodeContext(LocalServiceParam localParam, ServiceExtraSettingsBase serviceSettings)
-            : base(localParam, serviceSettings) { }
+        internal DefaultNodeContext(IServiceProvider serviceProvider, LocalServiceParam localParam, ServiceExtraSettingsBase serviceSettings)
+            : base(serviceProvider, localParam, serviceSettings) { }
     }
 }

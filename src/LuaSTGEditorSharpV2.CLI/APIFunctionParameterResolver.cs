@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.CLI.Plugin;
 
 namespace LuaSTGEditorSharpV2.CLI
 {
     public class APIFunctionParameterResolver
     {
+        public static APIFunctionParameter ParseFromCommandLineArgs(string[] args)
+        {
+            return new APIFunctionParameterResolver().Resolve(args);
+        }
+
         public static readonly string packageKey = "pkg";
         public static readonly string outputKey = "o";
         public static readonly string taskKey = "t";

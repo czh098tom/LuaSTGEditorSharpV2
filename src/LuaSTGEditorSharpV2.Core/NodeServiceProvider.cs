@@ -9,7 +9,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class NodeServiceProvider<TService> : PackedDataProviderServiceBase<TService>, INodeServiceProvider
+    public abstract class NodeServiceProvider<TService>(IServiceProvider serviceProvider) 
+        : PackedDataProviderServiceBase<TService>(serviceProvider)
         where TService : NodeServiceBase
     {
         public record struct NodeServicePair<UService>(UService Service, NodeData NodeData)
@@ -30,6 +31,4 @@ namespace LuaSTGEditorSharpV2.Core
             return GetServiceInstanceOfTypeUID(node.TypeUID);
         }
     }
-
-    public interface INodeServiceProvider { }
 }

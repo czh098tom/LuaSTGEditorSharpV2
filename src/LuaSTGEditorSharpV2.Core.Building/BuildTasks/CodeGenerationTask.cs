@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -49,7 +49,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
             using (FileStream fs = new(targetName, FileMode.Create, FileAccess.Write))
             {
                 using StreamWriter sw = new(fs, Encoding.UTF8);
-                foreach (CodeData codeData in HostedApplicationHelper.GetService<CodeGeneratorServiceProvider>()
+                foreach (CodeData codeData in context.ServiceProvider.GetRequiredService<CodeGeneratorServiceProvider>()
                     .GenerateCode(compileRoot, context.LocalParam))
                 {
                     sw.Write(codeData.Content);

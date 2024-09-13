@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.Core.Settings;
@@ -15,7 +17,9 @@ using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 
 namespace LuaSTGEditorSharpV2.Services
 {
-    public class FileDialogService : ISettingsProvider, ISettingsSavedOnClose
+    [Inject(ServiceLifetime.Singleton)]
+    public class FileDialogService(SettingsService settingsService, LocalizationService localization) 
+        : ISettingsProvider, ISettingsSavedOnClose
     {
         private static OpenFileDialog? ShowOpenFileDialog(string filter, Property<string> filePath)
         {
@@ -62,13 +66,12 @@ namespace LuaSTGEditorSharpV2.Services
 
         public void SaveSettings()
         {
-            HostedApplicationHelper.GetService<SettingsService>().SaveSettings(this);
+            settingsService.SaveSettings(this);
         }
 
         public IReadOnlyList<string> ShowOpenFileCommandDialog()
         {
-            var local = HostedApplicationHelper.GetService<LocalizationService>();
-            if (ShowOpenFileDialog(local.GetString("fileDialog_openFileExtension", typeof(FileDialogService).Assembly), 
+            if (ShowOpenFileDialog(localization.GetString("fileDialog_openFileExtension", typeof(FileDialogService).Assembly), 
                 new Property<string>(() => _settings.OpenFilePath, v => _settings.OpenFilePath = v)) 
                 is OpenFileDialog dialog)
             {
@@ -79,9 +82,8 @@ namespace LuaSTGEditorSharpV2.Services
 
         public string? ShowSaveAsFileCommandDialog(string fileName)
         {
-            var local = HostedApplicationHelper.GetService<LocalizationService>();
             if (ShowSaveFileDialog(fileName,
-                local.GetString("fileDialog_saveFileExtension", typeof(FileDialogService).Assembly),
+                localization.GetString("fileDialog_saveFileExtension", typeof(FileDialogService).Assembly),
                 new Property<string>(() => _settings.SaveFilePath, v => _settings.SaveFilePath = v))
                 is SaveFileDialog dialog)
             {

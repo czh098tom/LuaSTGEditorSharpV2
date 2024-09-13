@@ -12,7 +12,8 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 {
-    public class SingleListViewModelProvider : ConfigurableViewModelProvider
+    public class SingleListViewModelProvider(ViewModelProviderServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : ConfigurableViewModelProvider(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public NodePropertyCapture? CountCapture { get; set; }
         [JsonProperty] public NodePropertyCapture?[]? SubCaptureRule { get; set; }

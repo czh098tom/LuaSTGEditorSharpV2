@@ -15,8 +15,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
     /// <summary>
     /// Provide functionality of generating code from <see cref="NodeData"/>.
     /// </summary>
-    public class CodeGeneratorServiceBase 
-        : CompactNodeService<CodeGeneratorServiceProvider, CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
+    public class CodeGeneratorServiceBase(CodeGeneratorServiceProvider nodeServiceProvider, IServiceProvider serviceProvider)
+        : CompactNodeService<CodeGeneratorServiceProvider, CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty("Language")]
         public string Language { get; private set; } = string.Empty;
@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public override sealed CodeGenerationContext GetEmptyContext(LocalServiceParam localSettings
             , CodeGenerationServiceSettings serviceSettings)
         {
-            return new CodeGenerationContext(localSettings, serviceSettings);
+            return new CodeGenerationContext(ServiceProvider, localSettings, serviceSettings);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         /// <returns> <see cref="IEnumerable{T}"/> for enumerating <see cref="CodeData"/> generated. </returns>
         internal protected virtual IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
-            return GetServiceProvider().GenerateForChildren(node, context, 0);
+            return GetNodeServiceProvider().GenerateForChildren(node, context, 0);
         }
     }
 }

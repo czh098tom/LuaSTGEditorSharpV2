@@ -9,11 +9,12 @@ using Newtonsoft.Json;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public abstract record class Localizable<T>(
-        T? Neutral = null,
-        Dictionary<string, T>? Localized = null)
+    public abstract class Localizable<T>
         where T : class
     {
+        [JsonProperty] public T? Neutral { get; private set; } = null;
+        [JsonProperty] public Dictionary<string, T>? Localized { get; private set; } = null;
+
         [JsonIgnore] public abstract T Default { get; }
 
         public T GetLocalized(T? @default = null)
@@ -32,12 +33,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
         }
     }
 
-    public record class LocalizableString : Localizable<string>
+    public class LocalizableString
+        : Localizable<string>
     {
         public override string Default => string.Empty;
     }
 
-    public record class LocalizableArray<T> : Localizable<T[]>
+    public class LocalizableArray<T>
+        : Localizable<T[]>
     {
         public override T[] Default => Array.Empty<T>();
     }

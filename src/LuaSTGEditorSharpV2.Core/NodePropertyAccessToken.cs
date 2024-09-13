@@ -1,4 +1,7 @@
-﻿using LuaSTGEditorSharpV2.Core.Model;
+﻿
+using Microsoft.Extensions.DependencyInjection;
+
+using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core
 {
@@ -8,12 +11,12 @@ namespace LuaSTGEditorSharpV2.Core
         public readonly NodeContext Context { get; }
         private readonly DefaultValueService _service;
 
-        public NodePropertyAccessToken(NodeData nodeData, NodeContext context)
+        public NodePropertyAccessToken(IServiceProvider serviceProvider, NodeData nodeData, NodeContext context)
         {
             NodeData = nodeData;
             Context = context;
-            _service = HostedApplicationHelper
-                .GetService<DefaultValueServiceProvider>()
+            _service = serviceProvider
+                .GetRequiredService<DefaultValueServiceProvider>()
                 .GetServiceOfNode(nodeData);
         }
 

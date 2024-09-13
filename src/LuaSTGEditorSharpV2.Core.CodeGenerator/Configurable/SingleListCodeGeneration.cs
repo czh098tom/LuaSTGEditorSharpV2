@@ -11,7 +11,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 {
-    public class SingleListCodeGeneration : ConfigurableCodeGeneration
+    public class SingleListCodeGeneration(CodeGeneratorServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) : ConfigurableCodeGeneration(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public NodePropertyCapture? CountCapture { get; set; }
         [JsonProperty] public CaptureWithMacroOption?[]? SubCaptureRule { get; set; }
@@ -28,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 
         protected override int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
         {
-            var token = new NodePropertyAccessToken(node, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, node, context);
             int n = base.WriteCaptureResult(captureResult, node, context);
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {

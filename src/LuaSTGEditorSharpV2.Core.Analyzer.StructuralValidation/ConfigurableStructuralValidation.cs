@@ -11,7 +11,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
     [Serializable]
-    public class ConfigurableStructuralValidation : StructuralValidationServiceBase
+    public class ConfigurableStructuralValidation(StructuralValidationServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) : StructuralValidationServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public HashSet<string> RequireParent { get; private set; } = new();
         [JsonProperty] public HashSet<string> RequireAncestor { get; private set; } = new();

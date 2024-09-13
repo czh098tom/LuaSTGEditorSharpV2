@@ -13,7 +13,8 @@ using LuaSTGEditorSharpV2.Core;
 namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 {
     [Serializable]
-    public class ConfigurableViewModelProvider : ViewModelProviderServiceBase
+    public class ConfigurableViewModelProvider(ViewModelProviderServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : ViewModelProviderServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public NodePropertyCapture?[] Captures { get; private set; } = [];
         [JsonProperty] public string Icon { get; private set; } = "";
@@ -23,7 +24,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
 
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
-            var token = new NodePropertyAccessToken(dataSource, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, dataSource, context);
             _captureResult ??= new string[GetCaptureCacheLength()];
             WriteCaptureResult(token, _captureResult);
             string text = GetLocalizedTextIfExists();

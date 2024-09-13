@@ -9,7 +9,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Specialized
 {
     [Serializable]
-    public class Code : CodeGeneratorServiceBase
+    public class Code(CodeGeneratorServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : CodeGeneratorServiceBase(nodeServiceProvider, serviceProvider)
     {
         internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {

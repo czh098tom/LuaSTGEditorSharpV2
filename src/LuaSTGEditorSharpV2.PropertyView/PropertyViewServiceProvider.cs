@@ -8,24 +8,31 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
+    [PackedServiceProvider]
     [ServiceName("PropertyView"), ServiceShortName("prop")]
     public class PropertyViewServiceProvider
         : CompactNodeServiceProvider<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
     {
-        private static PropertyViewServiceBase _defaultService = new();
-
         private static readonly string _nativeViewI18NKey = "native_view";
         private static readonly string _defaultViewI18NKey = "default_view";
 
-        public static string NativeViewI18NCaption => HostedApplicationHelper
-            .GetService<LocalizationService>()
+        public string NativeViewI18NCaption => ServiceProvider
+            .GetRequiredService<LocalizationService>()
             .GetString(_nativeViewI18NKey, typeof(PropertyViewServiceBase).Assembly);
-        public static string DefaultViewI18NCaption => HostedApplicationHelper
-            .GetService<LocalizationService>()
+        public string DefaultViewI18NCaption => ServiceProvider
+            .GetRequiredService<LocalizationService>()
             .GetString(_defaultViewI18NKey, typeof(PropertyViewServiceBase).Assembly);
+
+        private readonly PropertyViewServiceBase _defaultService;
+
+        public PropertyViewServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _defaultService = new(this, serviceProvider);
+        }
 
         protected override PropertyViewServiceBase DefaultService => _defaultService;
 
@@ -80,7 +87,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             string edited)
         {
             if (propertyList != null && tabIndex == propertyList.Count - 1)
-                return PropertyViewServiceBase.ResolveNativeEditing(nodeData, propertyList[^1].Properties,
+                return DefaultService.ResolveNativeEditing(nodeData, propertyList[^1].Properties,
                     itemIndex, edited);
             return GetServiceOfNode(nodeData).ResolveCommandOfEditingNode(nodeData,
                 GetContextOfNode(nodeData, localParams, serviceSettings),

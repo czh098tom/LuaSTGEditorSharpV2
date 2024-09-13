@@ -9,11 +9,11 @@ using LuaSTGEditorSharpV2.Core.CodeGenerator;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator
 {
-    public class PackageEntry : IPackageEntry
+    public class PackageEntry : IServiceInstanceProvider<LanguageBase>
     {
-        public void InitializePackage()
+        public IReadOnlyCollection<LanguageBase> GetServiceInstances(IServiceProvider serviceProvider)
         {
-            HostedApplicationHelper.GetService<LanguageProviderService>().RegisterLanguage("Lua", new LuaLanguage());
+            return [new LuaLanguage(serviceProvider)];
         }
     }
 }

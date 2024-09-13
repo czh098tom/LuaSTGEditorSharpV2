@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
 {
-    public class SettingsDialogViewModel : ViewModelBase
+    public class SettingsDialogViewModel : InjectableViewModel
     {
         public List<SettingsPageViewModel> SettingsPages { get; private set; } = [];
 
@@ -44,11 +46,11 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.ViewModel
             }
         }
 
-        public SettingsDialogViewModel()
+        public SettingsDialogViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             try
             {
-                var disp = HostedApplicationHelper.GetService<SettingsDisplayService>();
+                var disp = serviceProvider.GetRequiredService<SettingsDisplayService>();
                 foreach (var page in disp.MapViewModel())
                 {
                     SettingsTitles.Add(page.Title);

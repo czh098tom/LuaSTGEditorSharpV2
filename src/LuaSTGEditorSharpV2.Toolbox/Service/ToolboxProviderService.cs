@@ -10,8 +10,10 @@ using LuaSTGEditorSharpV2.Toolbox.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Toolbox.Service
 {
+    [PackedServiceProvider]
     [ServiceName("Toolbox"), ServiceShortName("tool")]
-    public class ToolboxProviderService : PackedDataProviderServiceBase<ToolboxItemModelBase>
+    public class ToolboxProviderService(IServiceProvider serviceProvider)
+        : PackedDataProviderServiceBase<ToolboxItemModelBase>(serviceProvider)
     {
         public static readonly char seperator = '/';
         public static readonly int orderUndefined = int.MaxValue - 1;

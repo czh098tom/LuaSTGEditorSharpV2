@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Analyzer.ViewModel
 {
-    public class ErrorListPageViewModel : AnchorableViewModelBase
+    public class ErrorListPageViewModel(IServiceProvider serviceProvider) : AnchorableViewModelBase(serviceProvider)
     {
         public override string I18NTitleKey => "panel_error_title";
     }

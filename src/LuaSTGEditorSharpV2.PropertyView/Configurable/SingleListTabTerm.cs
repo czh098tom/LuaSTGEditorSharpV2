@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Command;
@@ -12,7 +14,9 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public class SingleListTabTerm<TTermVariable, TIntermediateModel> : PropertyViewTabTermBase
+    [Inject(ServiceLifetime.Transient)]
+    public class SingleListTabTerm<TTermVariable, TIntermediateModel>(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewProvider) 
+        : PropertyViewTabTermBase(serviceProvider, propertyViewProvider)
         where TTermVariable : class, IMultipleFieldPropertyViewItemTerm<TIntermediateModel>
         where TIntermediateModel : class
     {
@@ -22,7 +26,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 
         public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)
         {
-            var token = new NodePropertyAccessToken(nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < ImmutableProperty.Length; i++)
             {

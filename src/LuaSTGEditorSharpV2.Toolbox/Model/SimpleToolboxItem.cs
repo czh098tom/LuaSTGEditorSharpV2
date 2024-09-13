@@ -13,7 +13,7 @@ using LuaSTGEditorSharpV2.Toolbox.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Toolbox.Model
 { 
-    public class SimpleToolboxItem : ToolboxItemModelBase
+    public class SimpleToolboxItem(IServiceProvider serviceProvider) : ToolboxItemModelBase(serviceProvider)
     {
         [JsonProperty] public NodeData[] NodeTemplate = [];
 

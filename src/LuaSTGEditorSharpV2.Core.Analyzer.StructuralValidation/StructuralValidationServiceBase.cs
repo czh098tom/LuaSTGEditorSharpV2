@@ -11,8 +11,8 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
     /// <summary>
     /// Provide functionality of making parent or children legitimacy validation from <see cref="NodeData"/>.
     /// </summary>
-    public class StructuralValidationServiceBase
-        : CompactNodeService<StructuralValidationServiceProvider, StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
+    public class StructuralValidationServiceBase(StructuralValidationServiceProvider nodeServiceProvider, IServiceProvider serviceProvider)
+        : CompactNodeService<StructuralValidationServiceProvider, StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>(nodeServiceProvider, serviceProvider)
     {
         public virtual bool IsInvisible() => true;
         public virtual bool IsLeaf() => false;
@@ -20,7 +20,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         public override sealed StructuralValidationContext GetEmptyContext(LocalServiceParam localParam
             , StructuralValidationServiceSettings settings)
         {
-            return new StructuralValidationContext(localParam, settings);
+            return new StructuralValidationContext(ServiceProvider, localParam, settings);
         }
 
         public bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam

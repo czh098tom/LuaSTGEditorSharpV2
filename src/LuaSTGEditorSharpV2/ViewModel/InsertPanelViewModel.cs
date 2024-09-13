@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command.Factory;
 using LuaSTGEditorSharpV2.Core.Command.Service;
@@ -11,13 +13,8 @@ using LuaSTGEditorSharpV2.Services;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class InsertPanelViewModel : ViewModelBase
+    public class InsertPanelViewModel(IServiceProvider serviceProvider) : InjectableViewModel(serviceProvider)
     {
-        private static void SetCommandFactory(IInsertCommandFactory commandFactory)
-        {
-            HostedApplicationHelper.GetService<InsertCommandHostingService>().InsertCommandFactory = commandFactory;
-        }
-
         private bool _isInsertUp = false;
         private bool _isInsertDown = true;
         private bool _isInsertAsChild = false;
@@ -29,7 +26,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             set
             {
                 _isInsertUp = value;
-                if (value) SetCommandFactory(new InsertBeforeFactory());
+                if (value) SetCommandFactory(ServiceProvider.GetRequiredService<InsertBeforeFactory>());
                 RaiseAllButtonChanged();
             }
         }
@@ -40,7 +37,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             set
             {
                 _isInsertDown = value;
-                if (value) SetCommandFactory(new InsertAfterFactory());
+                if (value) SetCommandFactory(ServiceProvider.GetRequiredService<InsertAfterFactory>());
                 RaiseAllButtonChanged();
             }
         }
@@ -51,7 +48,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             set
             {
                 _isInsertAsChild = value;
-                if (value) SetCommandFactory(new InsertAsChildFactory());
+                if (value) SetCommandFactory(ServiceProvider.GetRequiredService<InsertAsChildFactory>());
                 RaiseAllButtonChanged();
             }
         }
@@ -62,7 +59,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             set
             {
                 _isInsertAsParent = value;
-                if (value) SetCommandFactory(new InsertAsParentFactory());
+                if (value) SetCommandFactory(ServiceProvider.GetRequiredService<InsertAsParentFactory>());
                 RaiseAllButtonChanged();
             }
         }
@@ -73,6 +70,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
             RaisePropertyChanged(nameof(IsInsertDown));
             RaisePropertyChanged(nameof(IsInsertAsChild));
             RaisePropertyChanged(nameof(IsInsertAsParent));
+        }
+
+        private void SetCommandFactory(IInsertCommandFactory commandFactory)
+        {
+            ServiceProvider.GetRequiredService<InsertCommandHostingService>().InsertCommandFactory = commandFactory;
         }
     }
 }

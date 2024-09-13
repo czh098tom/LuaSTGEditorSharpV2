@@ -16,17 +16,10 @@
                    Height="600" Width="800"
                    FocusManager.FocusedElement="{Binding ElementName=_listTitles}">
     <Window.Resources>
-        <local:SettingsPageTemplateSelector x:Key="SettingsPageTemplateSelector">
-            <local:SettingsPageTemplateSelector.Default>
-                <DataTemplate>
-                    <xctk:PropertyGrid SelectedObject="{Binding .}"/>
-                </DataTemplate>
-            </local:SettingsPageTemplateSelector.Default>
-        </local:SettingsPageTemplateSelector>
+        <DataTemplate x:Key="SettingsPageTemplateSelectorDefault">
+            <xctk:PropertyGrid SelectedObject="{Binding .}"/>
+        </DataTemplate>
     </Window.Resources>
-    <Window.DataContext>
-        <localvm:SettingsDialogViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -53,7 +46,7 @@
         </ListBox>
         <ScrollViewer Grid.Row="1" Grid.Column="3">
             <ItemsControl ItemsControl.ItemsSource="{Binding SelectedItem}"
-                          ItemTemplateSelector="{StaticResource ResourceKey=SettingsPageTemplateSelector}"/>
+                          ItemTemplateSelector="{DynamicResource ResourceKey=SettingsPageTemplateSelector}"/>
         </ScrollViewer>
         <Grid Grid.Row="3" Grid.Column="3">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

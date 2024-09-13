@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LuaSTGEditorSharpV2.Core.Model;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Settings;
 using LuaSTGEditorSharpV2.Core.Services;
@@ -14,7 +16,9 @@ using LuaSTGEditorSharpV2.Core.Command.Factory;
 
 namespace LuaSTGEditorSharpV2.Services
 {
-    public class ActiveDocumentService(ILogger<ActiveDocumentService> logger) : ISettingsProvider
+    [Inject(ServiceLifetime.Singleton)]
+    public class ActiveDocumentService(ILogger<ActiveDocumentService> logger, LocalizationService localizationService) 
+        : ISettingsProvider
     {
         private readonly ILogger<ActiveDocumentService> _logger = logger;
 
@@ -88,8 +92,7 @@ namespace LuaSTGEditorSharpV2.Services
         {
             if (string.IsNullOrEmpty(_settings.CustomizedUntitledName))
             {
-                var str = HostedApplicationHelper.GetService<LocalizationService>()
-                    .GetString("untitled_file_default_name", typeof(ActiveDocumentService).Assembly);
+                var str = localizationService.GetString("untitled_file_default_name", typeof(ActiveDocumentService).Assembly);
                 return $"{str} {index}";
             }
             else

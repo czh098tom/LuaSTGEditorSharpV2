@@ -13,8 +13,8 @@ namespace LuaSTGEditorSharpV2.Core
         {
             if (other == null) return 1;
             var priorityCmp = Manifest.Priority.CompareTo(other.Manifest.Priority);
-            var versionCmp = Manifest.Priority.CompareTo(other.Manifest.Version);
-            return priorityCmp == 0 ? Manifest.Version.CompareTo(other.Manifest.Version) : versionCmp;
+            var versionCmp = Manifest.Version.CompareTo(other.Manifest.Version);
+            return priorityCmp == 0 ? versionCmp : priorityCmp;
         }
     }
 }

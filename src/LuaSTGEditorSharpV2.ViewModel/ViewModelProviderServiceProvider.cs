@@ -9,15 +9,21 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
+    [PackedServiceProvider]
     [ServiceName("ViewModel"), ServiceShortName("vm")]
     public class ViewModelProviderServiceProvider
         : CompactNodeServiceProvider<ViewModelProviderServiceProvider, ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
     {
-        private static readonly ViewModelProviderServiceBase _defaultService = new DefaultViewModelProviderService();
-
         protected override ViewModelProviderServiceBase DefaultService => _defaultService;
 
+        private readonly ViewModelProviderServiceBase _defaultService;
+
         private Dictionary<NodeData, NodeViewModel> _mapping = [];
+
+        public ViewModelProviderServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _defaultService = new DefaultViewModelProviderService(this, serviceProvider);
+        }
 
         /// <summary>
         /// Unload the internal mapping from <see cref="NodeData"/> to <see cref="NodeViewModel"/> 

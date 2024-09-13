@@ -13,7 +13,8 @@ using LuaSTGEditorSharpV2.ViewModel;
 namespace LuaSTGEditorSharpV2.ViewModel.Specialized
 {
     [Serializable]
-    public class Code : ViewModelProviderServiceBase
+    public class Code(ViewModelProviderServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
+        : ViewModelProviderServiceBase(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty] public string Icon { get; private set; } = "";
 
