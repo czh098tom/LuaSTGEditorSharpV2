@@ -1,0 +1,17 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineBoss",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "difficulty" },
+		{ "Key": "name" },
+		{ "Key": "background" },
+		{ "Key": "bgm" }
+	],
+	"Text": {
+		"Neutral": "Define boss\"{0}\" with name\"{2}\" for {1} rank(s)",
+		"Localized": {
+			"zh": "在{1}难度定义Boss\"{2}\""
+		}
+	}
+}

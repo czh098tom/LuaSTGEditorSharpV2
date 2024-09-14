@@ -24,38 +24,38 @@
 				"Text": "create simple bullet in {0} with {1} at {2},velocity={3},rotation={4}"
 			},
 			{
-				"Text": ",aim to player",
-				"ConditionOn": "aim"
+				"Text": ", aim to player",
+				"ConditionOn": "5"
 			},
 			{
-				"Text": ",stay on create",
-				"ConditionOn": "stay"
+				"Text": ", stay on create",
+				"ConditionOn": "7"
 			},
 			{
-				"Text": ",indestructible",
-				"ConditionOn": "destroyable",
-				"Inversed": "true"
+				"Text": ", indestructible",
+				"ConditionOn": "8",
+				"Inversed": true
 			},
 			{
 				"Text": ",delay {9} frames before creation",
-				"ConditionOn": "delay",
-				"UseExistanceInsteadOfBoolValue": "true"
+				"ConditionOn": "9",
+				"UseExistanceInsteadOfBoolValue": true
 			},
 			{
 				"Text": ",accel speed={11},accel angle={12}"
 			},
 			{
 				"Text": ",rebound",
-				"ConditionOn": "rebound"
+				"ConditionOn": "10"
 			},
 			{
 				"Text": ",shuttle",
-				"ConditionOn": "shuttle"
+				"ConditionOn": "14"
 			},
 			{
 				"Text": ",maximum speed of {13}",
-				"ConditionOn": "max_speed",
-				"UseExistanceInsteadOfBoolValue": "true"
+				"ConditionOn": "13",
+				"UseExistanceInsteadOfBoolValue": true
 			}
 		],
 		"Localized": {
@@ -65,37 +65,37 @@
 				},
 				{
 					"Text": ", 瞄准自机",
-					"ConditionOn": "aim"
+					"ConditionOn": "5"
 				},
 				{
 					"Text": ", 生成时停滞",
-					"ConditionOn": "stay"
+					"ConditionOn": "7"
 				},
 				{
 					"Text": ", 不可消除",
-					"ConditionOn": "destroyable",
-					"Inversed": "true"
+					"ConditionOn": "8",
+					"Inversed": true
 				},
 				{
 					"Text": ", 延迟生成{9}帧",
-					"ConditionOn": "delay",
-					"UseExistanceInsteadOfBoolValue": "true"
+					"ConditionOn": "9",
+					"UseExistanceInsteadOfBoolValue": true
 				},
 				{
 					"Text": ", 加速度{11}, 加速度方向{12}"
 				},
 				{
 					"Text": ", 反弹",
-					"ConditionOn": "rebound"
+					"ConditionOn": "10"
 				},
 				{
 					"Text": ", 穿屏",
-					"ConditionOn": "shuttle"
+					"ConditionOn": "14"
 				},
 				{
 					"Text": ", 最大速度{13}",
-					"ConditionOn": "max_speed",
-					"UseExistanceInsteadOfBoolValue": "true"
+					"ConditionOn": "13",
+					"UseExistanceInsteadOfBoolValue": true
 				}
 			]
 		}
