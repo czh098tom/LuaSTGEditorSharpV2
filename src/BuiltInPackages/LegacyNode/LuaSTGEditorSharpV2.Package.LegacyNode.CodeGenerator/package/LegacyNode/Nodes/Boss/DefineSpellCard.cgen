@@ -11,7 +11,7 @@
 		{ "Key": "faith_amount" },
 		{ "Key": "point_amount" },
 		{ "Key": "bomb_immunity" },
-		{ "Key": "opening_uperformance" }
+		{ "Key": "opening_performance" }
 	],
 	"ContextCaptures": [
 		{

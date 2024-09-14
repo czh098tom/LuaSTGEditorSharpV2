@@ -17,7 +17,7 @@
 			"ConditionOn": 2,
 			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
-		},
+		}
 	],
 	"Tail": [
 		{ "Text": "end" }
