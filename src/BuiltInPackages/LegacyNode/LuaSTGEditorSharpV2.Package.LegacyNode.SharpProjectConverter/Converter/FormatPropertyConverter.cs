@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Humanizer;
-
+using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 
-namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
+namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter
 {
-    public class FormattedPropertyConverter : ISharpNodeFormatConverter
+    [JsonTypeShortName(typeof(ISharpNodeFormatConverter), "FormatProperty")]
+    public class FormatPropertyConverter : ISharpNodeFormatConverter
     {
         public NodeData Convert(NodeData source, SharpNodeFormattingContext context)
         {
