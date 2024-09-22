@@ -46,6 +46,7 @@ namespace LuaSTGEditorSharpV2.Core
                 TypeNameHandling = TypeNameHandling.Objects,
                 TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
                 ContractResolver = new ServiceProviderContractResolver(serviceProvider),
+                Converters = [serviceProvider.GetRequiredService<SerializationTypeBindingService>()]
             };
         }
 

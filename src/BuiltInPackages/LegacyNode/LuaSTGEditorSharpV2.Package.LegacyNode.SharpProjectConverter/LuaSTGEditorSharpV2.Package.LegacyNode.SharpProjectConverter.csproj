@@ -4,11 +4,31 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <BuildProjectReferences>false</BuildProjectReferences>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LegacyNode\</OutputPath>
+
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.CLI.Plugin\LuaSTGEditorSharpV2.CLI.Plugin.csproj" />
-    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <ExcludeAssets>manifest</ExcludeAssets>
+      <Private>false</Private>
+    </ProjectReference>
   </ItemGroup>
+
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\..\..\bin\$(Configuration)\package</YourDestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

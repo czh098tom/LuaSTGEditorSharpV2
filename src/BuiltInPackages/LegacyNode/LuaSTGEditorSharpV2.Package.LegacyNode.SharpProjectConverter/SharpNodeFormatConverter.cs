@@ -21,8 +21,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
         [JsonProperty]
         public ISharpNodeFormatConverter?[]? Converters { get; private set; } = 
         [
-            new StripNamespaceInTypeConverter(),
-            new FormattedPropertyConverter(),
+            new DefaultSharpNodeFormatConverter()
         ];
 
         public void Convert(NodeData source, SharpNodeFormattingContext context)

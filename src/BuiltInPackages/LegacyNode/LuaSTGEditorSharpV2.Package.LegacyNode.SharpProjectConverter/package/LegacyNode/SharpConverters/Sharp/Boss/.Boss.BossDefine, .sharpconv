@@ -1,0 +1,25 @@
+﻿{
+  "SharpName": ".Boss.BossDefine, ",
+  "Converters": [
+    { "$type": "Default" },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "DefineBoss"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "identifier"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "displayed_name",
+      "NewKey": "name"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "background_music",
+      "NewKey": "bgm"
+    }
+  ]
+}

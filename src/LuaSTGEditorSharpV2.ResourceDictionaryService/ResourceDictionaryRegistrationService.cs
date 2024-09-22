@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.ResourceDictionaryService
 {
     [PackedServiceProvider]
     [ServiceShortName("resource")]
-    public class ResourceDictionaryRegistrationService(IServiceProvider serviceProvider) 
+    public class ResourceDictionaryRegistrationService(IServiceProvider serviceProvider)
         : PackedDataProviderServiceBase<ResourceDictionaryDescriptor>(serviceProvider)
     {
         private readonly Dictionary<string, ResourceDictionary> _resourceDictionarys = [];
@@ -27,7 +27,10 @@ namespace LuaSTGEditorSharpV2.ResourceDictionaryService
                 {
                     if (!string.IsNullOrEmpty(uri))
                     {
-                        Add(uri);
+                        Add(uri, new()
+                        {
+                            Source = new Uri(uri)
+                        });
                     }
                 }
             }
@@ -48,22 +51,18 @@ namespace LuaSTGEditorSharpV2.ResourceDictionaryService
             }
         }
 
-        public void Add(string uri)
+        public void Add(string key, ResourceDictionary resourceDictionary)
         {
-            if (_resourceDictionarys.ContainsKey(uri)) return;
-            ResourceDictionary dictionary = new()
-            {
-                Source = new Uri(uri)
-            };
-            _resourceDictionarys.Add(uri, dictionary);
-            Application.Current.Resources.MergedDictionaries.Add(dictionary);
+            if (_resourceDictionarys.ContainsKey(key)) return;
+            _resourceDictionarys.Add(key, resourceDictionary);
+            Application.Current.Resources.MergedDictionaries.Add(resourceDictionary);
         }
 
-        public void Remove(string uri)
+        public void Remove(string key)
         {
-            if (!_resourceDictionarys.ContainsKey(uri)) return;
-            var dict = _resourceDictionarys[uri];
-            _resourceDictionarys.Remove(uri);
+            if (!_resourceDictionarys.ContainsKey(key)) return;
+            var dict = _resourceDictionarys[key];
+            _resourceDictionarys.Remove(key);
             Application.Current.Resources.MergedDictionaries.Remove(dict);
         }
     }
