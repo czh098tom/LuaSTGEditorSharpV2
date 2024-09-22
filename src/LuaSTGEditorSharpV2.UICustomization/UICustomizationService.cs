@@ -18,6 +18,7 @@ namespace LuaSTGEditorSharpV2.UICustomization
     public class UICustomizationService(ResourceDictionaryRegistrationService resourceDictionaryRegistrationService) : ISettingsProvider
     {
         internal static readonly string uri = "pack://application:,,,/LuaSTGEditorSharpV2.UICustomization;component/UICustomizationStyles.xaml";
+        private static readonly string themeKey = "__THEME__";
 
         public UICustomizationServiceSettings ServiceSettings { get; set; } = new();
         public object Settings
@@ -30,11 +31,8 @@ namespace LuaSTGEditorSharpV2.UICustomization
             }
         }
 
-        public IReadOnlyList<string> ResourceDictUris => _resourceDictUris;
-
-        private readonly List<string> _resourceDictUris = [string.Empty];
-
-        private string currentUri = string.Empty;
+        private string _currentUri = string.Empty;
+        private readonly ResourceDictionary _resourceDictionary = [];
 
         public void RefreshSettings()
         {
@@ -43,23 +41,27 @@ namespace LuaSTGEditorSharpV2.UICustomization
 
         private void Update()
         {
-            SetSource(ServiceSettings.Uri);
             var settings = ServiceSettings;
+            if (settings.Uri != _currentUri)
+            {
+                _currentUri = settings.Uri;
+                _resourceDictionary.Source = new Uri(settings.Uri);
+            }
+
             var fields = settings.GetType()
                 .BaseTypes()
                 .SelectMany(t => t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
             var properties = settings.GetType()
                 .BaseTypes()
                 .SelectMany(t => t.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
-            var service = resourceDictionaryRegistrationService;
-            var dict = service.ResourceDictionarys[currentUri];
-            if (dict == null) return;
+
             foreach (var field in fields)
             {
                 var key = field.GetCustomAttribute<ResourceDictionaryKeyAttribute>()?.Key;
                 if (!string.IsNullOrEmpty(key))
                 {
-                    dict[key] = field.GetValue(settings);
+                    _resourceDictionary.Remove(key);
+                    _resourceDictionary.Add(key, field.GetValue(settings));
                 }
             }
             foreach (var prop in properties)
@@ -67,21 +69,12 @@ namespace LuaSTGEditorSharpV2.UICustomization
                 var key = prop.GetCustomAttribute<ResourceDictionaryKeyAttribute>()?.Key;
                 if (!string.IsNullOrEmpty(key))
                 {
-                    dict[key] = prop.GetValue(settings);
+                    _resourceDictionary.Remove(key);
+                    _resourceDictionary.Add(key, prop.GetValue(settings));
                 }
             }
-        }
 
-        private void SetSource(string uri)
-        {
-            if (uri != currentUri)
-            {
-                var service = resourceDictionaryRegistrationService;
-                service.Remove(currentUri);
-                currentUri = uri;
-                _resourceDictUris[0] = uri;
-                service.Add(uri);
-            }
+            resourceDictionaryRegistrationService.Add(themeKey, _resourceDictionary);
         }
     }
 }
