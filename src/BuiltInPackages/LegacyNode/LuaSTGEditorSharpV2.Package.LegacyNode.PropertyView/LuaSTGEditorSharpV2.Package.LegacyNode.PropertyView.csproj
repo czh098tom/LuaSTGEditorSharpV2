@@ -31,6 +31,7 @@
       <ExcludeAssets>**\*.prop</ExcludeAssets>
       <Private>false</Private>
     </ProjectReference>
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared\LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared.csproj" />
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
