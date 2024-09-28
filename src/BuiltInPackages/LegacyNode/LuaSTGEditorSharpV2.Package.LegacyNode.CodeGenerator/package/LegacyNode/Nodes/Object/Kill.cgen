@@ -1,9 +1,0 @@
-{
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "Kill",
-	"Captures":[
-		{"Key":"target"},
-		{"Key":"trigger_event"}
-	],
-	"Head": "_kill({1}, {2})"
-  }
