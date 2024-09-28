@@ -1,0 +1,31 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "Del",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/unitdel.png",
+  "Captures": [
+    { "Key": "target" },
+    { "Key": "trigger_event" }
+  ],
+  "Text": {
+    "Neutral": [
+      {
+        "Text": "delete {0}"
+      },
+      {
+        "Text": ", and call del function of the object",
+        "ConditionOn": 1
+      }
+    ],
+    "Localized": {
+      "zh": [
+        {
+          "Text": "delete {0}"
+        },
+        {
+          "Text": ", and call del function of the object",
+          "ConditionOn": 1
+        }
+      ]
+    }
+  }
+}

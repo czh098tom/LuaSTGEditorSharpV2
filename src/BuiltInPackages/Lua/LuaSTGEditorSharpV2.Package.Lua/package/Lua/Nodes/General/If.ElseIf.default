@@ -1,0 +1,6 @@
+{
+  "TypeUID": "If.ElseIf",
+  "DefaultValue": {
+    "condition": "true"
+  }
+}

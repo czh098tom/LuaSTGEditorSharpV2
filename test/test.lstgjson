@@ -1,0 +1,113 @@
+{
+  "Properties": {
+    "name": "test"
+  },
+  "Children": [
+    {
+      "TypeUID": "DefinitionRoot",
+      "Children": [
+        {
+          "TypeUID": "ServiceDefinition",
+          "Properties": {
+            "serviceShortName": "vm",
+            "serviceDeclaration": "{ \"$type\":\"LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\", \"TypeUID\":\"test\", \"Captures\":[ \"name\" ], \"Icon\":\"pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png\", \"Text\":\"test: {0}\", \"LocalizedText\": { \"zh\": \"测试：{0}\" } }"
+          }
+        }
+      ]
+    },
+    {
+      "TypeUID": "BuildRoot"
+    },
+    {
+      "TypeUID": "CompileRoot",
+      "Children": [
+        {
+          "TypeUID": "UseResourceGroup",
+          "Properties": {
+            "name": "1"
+          },
+          "Children": [
+            {
+              "TypeUID": "Include",
+              "Properties": {
+                "path": "test.lua"
+              },
+              "Children": []
+            }
+          ]
+        },
+        {
+          "TypeUID": "Task",
+          "Children": [
+            {
+              "TypeUID": "Task",
+              "Children": [
+                {
+                  "TypeUID": "CodeBlock",
+                  "Properties": {
+                    "name": "bb"
+                  },
+                  "Children": []
+                },
+                {
+                  "TypeUID": "Code",
+                  "Properties": {
+                    "code": "do\u000Aend\u000A"
+                  },
+                  "Children": []
+                },
+                {
+                  "TypeUID": "If",
+                  "Properties": {
+                    "condition": "1 == 1"
+                  },
+                  "Children": [
+                    {
+                      "TypeUID": "If.Then",
+                      "Children": [
+                        {
+                          "TypeUID": "Test",
+                          "Properties": {
+                            "code": "AAAAAAA"
+                          },
+                          "Children": []
+                        }
+                      ]
+                    },
+                    {
+                      "TypeUID": "If.ElseIf",
+                      "Properties": {
+                        "condition": "nmsl ~= nil"
+                      },
+                      "Children": [
+                        {
+                          "TypeUID": "Code",
+                          "Properties": {
+                            "code": "do\u000Aend\u000A"
+                          },
+                          "Children": []
+                        }
+                      ]
+                    },
+                    {
+                      "TypeUID": "If.Else",
+                      "Children": [
+                        {
+                          "TypeUID": "Code",
+                          "Properties": {
+                            "code": "do\u000Aend\u000A"
+                          },
+                          "Children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+﻿{
+  "Name": "LegacyNode",
+  "Version": "1.0",
+  "Priority": 2.0,
+  "LibraryPath": "LuaSTGEditorSharpV2.Package.LegacyNode.dll"
+}

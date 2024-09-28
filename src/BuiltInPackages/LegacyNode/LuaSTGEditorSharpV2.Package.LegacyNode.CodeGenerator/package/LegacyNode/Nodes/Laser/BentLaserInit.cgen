@@ -1,0 +1,29 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BentLaserInit",
+	"Captures": [
+		{ "Key": "parameters" },
+		{ "Key": "color" },
+		{ "Key": "length" },
+		{ "Key": "width" },
+		{ "Key": "sampling" },
+		{ "Key": "node_size" }
+	],
+	"Head": [
+		{
+			"Text": "function _temporary_class:init(self, _x, _y, {1})",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true"
+		},
+		{
+			"Text": "function _temporary_class:init(self, _x, _y)",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true",
+			"Inversed": "true"
+		},
+		{ "Text": "{0}laser_bent.init(self, {2}, _x, _y, 0, {4}, {5}, {6}, {7}, {8}, {9})" }
+	],
+	"Tail": [
+		{ "Text": "end" }
+	]
+}

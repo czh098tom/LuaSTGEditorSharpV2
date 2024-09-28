@@ -1,0 +1,23 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineBoss",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "difficulty" },
+		{ "Key": "name" },
+		{ "Key": "background" },
+		{ "Key": "bgm" }
+	],
+	"Head": [
+		{ "Text": "local _temporary_class = Class(boss)" },
+		{ "Text": "_temporary_class.cards = {{}}" },
+		{ "Text": "_temporary_class.name = '{3}'" },
+		{ "Text": "_temporary_class.bgm = {5}" },
+		{ "Text": "_temporary_class._bg = {4}" },
+		{ "Text": "_temporary_class.difficulty = {2}" }
+	],
+	"Tail": [
+		{ "Text": "_editor_class['{1}'] = _temporary_class" }
+	],
+	"IndentionIncrement": 0
+}

@@ -1,0 +1,21 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "StageGroup",
+	"Captures": [
+		{ "Key": "name" },
+		{ "Key": "initial_life" },
+		{ "Key": "initial_power" },
+		{ "Key": "initial_faith" },
+		{ "Key": "initial_bomb" },
+		{ "Key": "allow_practice" },
+		{ "Key": "difficulty_value" }
+	],
+	"Head": [
+		{ "Text": "stage.group.New('menu', {{}}, '{1}', {{" },
+		{ "Text": "{0}lifeleft = {2}," },
+		{ "Text": "{0}power = {3}," },
+		{ "Text": "{0}faith = {4}," },
+		{ "Text": "{0}bomb = {5}" },
+		{ "Text": "}}, {6}, {7})" }
+	]
+  }

@@ -1,0 +1,12 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "Include",
+  "Captures": [ { "Key": "path" } ],
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/patch.png",
+  "Text": {
+    "Neutral": "Include lua script: {0}",
+    "Localized": {
+      "zh": "载入Lua脚本：{0}"
+    }
+  }
+}

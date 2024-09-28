@@ -1,0 +1,21 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "If",
+  "Tabs": [
+    {
+      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyViewTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "Mapping": [
+        {
+          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "Mapping": { "Key": "condition" },
+          "Caption": {
+            "Neutral": "Condition",
+            "Localized": {
+              "zh": "条件"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
