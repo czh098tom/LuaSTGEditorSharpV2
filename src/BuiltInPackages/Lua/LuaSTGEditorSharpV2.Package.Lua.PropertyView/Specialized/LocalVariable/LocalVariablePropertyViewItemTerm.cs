@@ -18,7 +18,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     [Inject(ServiceLifetime.Transient)]
-    public class LocalVariablePropertyViewItemTerm(IServiceProvider serviceProvider, ViewModelProviderServiceProvider viewModelProviderServiceProvider) 
+    public class LocalVariablePropertyViewItemTerm(IServiceProvider serviceProvider, ViewModelProviderServiceProvider viewModelProviderServiceProvider)
         : IMultipleFieldPropertyViewItemTerm<VariableDefinition>
     {
         [JsonProperty] public NodePropertyCapture? NameRule { get; set; }
@@ -32,13 +32,12 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             for (int i = 0; i < count; i++)
             {
                 object idx = i;
-                properties.Add(new VariableDefinitionPropertyItemViewModel(
-                    NameRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    ValueRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    nodeData, context.LocalParam)
-                {
-                    Type = NameValueEditor
-                });
+                var vm = serviceProvider.GetRequiredService<VariableDefinitionPropertyItemViewModelFactory>()
+                    .Create(this, i, nodeData, context.LocalParam);
+                vm.Type = NameValueEditor;
+                vm.SetProxy(NameRule?.CaptureByFormat(token, idx) ?? string.Empty,
+                    ValueRule?.CaptureByFormat(token, idx) ?? string.Empty);
+                properties.Add(vm);
             }
             return properties;
         }

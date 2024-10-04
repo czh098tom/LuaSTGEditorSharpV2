@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.PropertyView;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
+using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
-    public class RepeatVariableDefinitionPropertyItemViewModel
-        : JsonProxiedPropertyItemViewModel<RepeatVariableDefinition>
+    public class RepeatVariableDefinitionPropertyItemViewModel(ViewModelProviderServiceProvider viewModelProviderServiceProvider,
+        RepeatPropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam)
+        : JsonProxiedPropertyItemViewModel<RepeatVariableDefinition>(nodeData, localServiceParam)
     {
         private string _propName = string.Empty;
         private string _propInit = string.Empty;
@@ -50,13 +56,43 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             }
         }
 
-        public RepeatVariableDefinitionPropertyItemViewModel(string propName, string propValue, string propIncrement,
-            NodeData nodeData, LocalServiceParam localServiceParam)
-            : base(new RepeatVariableDefinition(propName, propValue, propIncrement), nodeData, localServiceParam)
+        public void SetProxy(string propName, string propInit, string propIncrement)
         {
+            var def = new RepeatVariableDefinition(propName, propInit, propIncrement);
+            ProxyValue = def;
             _propName = propName;
-            _propInit = propValue;
+            _propInit = propInit;
             _propIncrement = propIncrement;
+            RaisePropertyChanged(nameof(PropName));
+            RaisePropertyChanged(nameof(PropInit));
+            RaisePropertyChanged(nameof(PropIncrement));
+        }
+
+        public override CommandBase? ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
+        {
+            var commands = new List<CommandBase>();
+            if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return null;
+            object idx = index;
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, 
+                nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, 
+                nodeData, string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
+            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
+                nodeData, string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
+            if (editName != null) commands.Add(editName);
+            if (editValue != null) commands.Add(editValue);
+            if (editIncrement != null) commands.Add(editIncrement);
+            return commands.Count > 0 ? new CompositeCommand(commands) : null;
+        }
+    }
+
+    [Inject(ServiceLifetime.Singleton)]
+    public class RepeatVariableDefinitionPropertyItemViewModelFactory(ViewModelProviderServiceProvider viewModelProviderServiceProvider)
+    {
+        public RepeatVariableDefinitionPropertyItemViewModel Create(RepeatPropertyViewItemTerm term, int index,
+            NodeData nodeData, LocalServiceParam localServiceParam)
+        {
+            return new RepeatVariableDefinitionPropertyItemViewModel(viewModelProviderServiceProvider, term, index, nodeData, localServiceParam);
         }
     }
 }
