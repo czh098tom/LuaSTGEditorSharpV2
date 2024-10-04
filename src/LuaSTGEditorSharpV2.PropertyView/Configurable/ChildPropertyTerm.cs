@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -45,11 +46,6 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             {
                 Type = new PropertyViewEditorType("childNode")
             };
-        }
-
-        public CommandBase? ResolveCommandOfEditingNode(NodeData nodeData, PropertyViewContext context, string edited)
-        {
-            return null;
         }
     }
 }

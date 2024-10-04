@@ -12,7 +12,5 @@ namespace LuaSTGEditorSharpV2.PropertyView
     public interface IPropertyViewTerm
     {
         public PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context);
-        public CommandBase? ResolveCommandOfEditingNode(NodeData nodeData,
-            PropertyViewContext context, string edited);
     }
 }

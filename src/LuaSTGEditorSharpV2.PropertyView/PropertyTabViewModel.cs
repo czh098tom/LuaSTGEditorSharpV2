@@ -6,12 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 using static LuaSTGEditorSharpV2.PropertyView.PropertyItemViewModelBase;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public class PropertyTabViewModel : ViewModelBase
+    public abstract class PropertyTabViewModel : ViewModelBase
     {
         public class ItemValueUpdatedEventArgs(int index,
             ValueUpdatedEventArgs args) : EventArgs
@@ -56,5 +58,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
         {
             OnItemValueUpdatedRaw?.Invoke(this, e);
         }
+
+        public abstract EditResult ResolveCommandOfEditingNode(NodeData nodeData,
+            LocalServiceParam context, int itemIndex, string edited);
     }
 }

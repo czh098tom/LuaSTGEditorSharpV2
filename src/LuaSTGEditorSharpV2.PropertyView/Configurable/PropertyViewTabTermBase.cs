@@ -24,8 +24,5 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         protected PropertyViewServiceProvider PropertyViewServiceProvider { get; private set; } = propertyViewServiceProvider;
 
         public abstract PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context);
-
-        public abstract EditResult ResolveCommandOfEditingNode(NodeData nodeData,
-            PropertyViewContext context, int itemIndex, string edited);
     }
 }

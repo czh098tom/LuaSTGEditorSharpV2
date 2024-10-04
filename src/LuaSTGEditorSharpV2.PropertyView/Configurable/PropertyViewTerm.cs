@@ -12,11 +12,12 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     [Inject(ServiceLifetime.Transient)]
-    public class PropertyViewTerm(IServiceProvider serviceProvider, ViewModelProviderServiceProvider viewModelProviderServiceProvider) 
+    public class PropertyViewTerm(IServiceProvider serviceProvider)
         : IPropertyViewTerm
     {
         [JsonProperty] public NodePropertyCapture? Mapping { get; private set; }
@@ -27,18 +28,13 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         public PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context)
         {
             var token = new NodePropertyAccessToken(serviceProvider, nodeData, context);
-            return new BasicPropertyItemViewModel(nodeData, context.LocalParam)
-            {
-                Name = Caption.GetLocalized(),
-                Value = Mapping?.Capture(token) ?? string.Empty,
-                Type = Editor,
-                Enabled = Enabled
-            };
-        }
-
-        public CommandBase? ResolveCommandOfEditingNode(NodeData nodeData, PropertyViewContext context, string edited)
-        {
-            return EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, nodeData, Mapping?.Key, edited);
+            var vm = serviceProvider.GetRequiredService<BasicPropertyItemViewModelFactory>()
+                .Create(nodeData, context.LocalParam, Mapping?.Key);
+            vm.Name = Caption.GetLocalized();
+            vm.Value = Mapping?.Capture(token) ?? string.Empty;
+            vm.Type = Editor;
+            vm.Enabled = Enabled;
+            return vm;
         }
     }
 }

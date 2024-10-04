@@ -11,8 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
-using static LuaSTGEditorSharpV2.PropertyView.PropertyItemViewModelBase;
-using static LuaSTGEditorSharpV2.PropertyView.PropertyTabViewModel;
+using LuaSTGEditorSharpV2.Core.Command;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -55,10 +55,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         private void Tab_OnItemValueUpdatedImpl(IReadOnlyList<PropertyTabViewModel>? tabs, ItemValueUpdatedEventArgs e)
         {
-            var propertyViewService = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>();
-            var editResult = propertyViewService.GetCommandOfEditingNode(
+            var editResult = GetCommandOfEditingNode(
                 e.Args.Args.NodeData,
-                e.Args.Args.LocalServiceParam, tabs, e.Index,
+                e.Args.Args.LocalServiceParam, 
+                e.Index,
                 e.Args.Index,
                 e.Args.Args.NewValue);
 
@@ -101,6 +101,35 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 SelectedIndex = index;
             }
+        }
+
+        private EditResult GetCommandOfEditingNode(NodeData nodeData, LocalServiceParam localParams, 
+            int tabIndex, int itemIndex, string edited)
+        {
+            if (Tabs != null && tabIndex == Tabs.Count - 1)
+            {
+                return ResolveNativeEditing(nodeData, Tabs[^1].Properties, itemIndex, edited);
+            }
+            return ResolveCommandOfEditingNode(nodeData, localParams, tabIndex, itemIndex, edited);
+        }
+
+        private protected EditResult ResolveCommandOfEditingNode(NodeData nodeData,
+            LocalServiceParam context,
+            int tabIndex, int itemIndex, string edited)
+        {
+            if (tabIndex < 0 || tabIndex >= Tabs.Count) return EditResult.Empty;
+            return Tabs[tabIndex].ResolveCommandOfEditingNode(nodeData, context, itemIndex, edited);
+        }
+
+        private EditResult ResolveNativeEditing(NodeData nodeData,
+            IReadOnlyList<PropertyItemViewModelBase> propertyList,
+            int itemIndex, string edited)
+        {
+            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(
+                ServiceProvider.GetRequiredService<ViewModelProviderServiceProvider>(),
+                nodeData,
+                (propertyList[itemIndex] as BasicPropertyItemViewModel)?.Name, 
+                edited));
         }
     }
 }

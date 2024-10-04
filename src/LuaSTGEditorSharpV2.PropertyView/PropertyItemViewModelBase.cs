@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public class PropertyItemViewModelBase(NodeData nodeData, LocalServiceParam localServiceParam) : ViewModelBase
+    public abstract class PropertyItemViewModelBase(NodeData nodeData, LocalServiceParam localServiceParam) : ViewModelBase
     {
         public class ValueUpdatedEventArgs(
             string old, 
@@ -69,5 +69,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
         {
             OnItemValueUpdatedRaw?.Invoke(this, e);
         }
+
+        public abstract CommandBase? ResolveEditingNodeCommand(NodeData nodeData,
+            LocalServiceParam context, string edited);
     }
 }

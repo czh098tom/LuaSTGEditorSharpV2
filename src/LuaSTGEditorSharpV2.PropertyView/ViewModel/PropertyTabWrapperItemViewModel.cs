@@ -11,7 +11,7 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 
-namespace LuaSTGEditorSharpV2.PropertyView
+namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
     public class PropertyTabWrapperItemViewModel : PropertyItemViewModelBase
     {
@@ -49,6 +49,11 @@ namespace LuaSTGEditorSharpV2.PropertyView
         private void Tab_OnItemValueUpdatedRaw(object? sender, ItemValueUpdatedEventArgs e)
         {
             RaiseOnItemValueUpdatedRawEvent(e);
+        }
+
+        public override CommandBase? ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
+        {
+            return null;
         }
     }
 }
