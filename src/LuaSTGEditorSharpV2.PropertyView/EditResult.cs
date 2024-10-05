@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public record struct EditResult(
+    public record class EditResult(
         CommandBase? Command,
         bool ShouldRefreshView,
         LocalServiceParam LocalServiceParam)

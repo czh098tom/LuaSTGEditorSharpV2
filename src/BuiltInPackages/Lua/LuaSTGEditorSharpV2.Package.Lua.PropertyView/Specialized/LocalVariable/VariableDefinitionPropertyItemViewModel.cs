@@ -12,6 +12,7 @@ using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
@@ -54,18 +55,18 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             RaisePropertyChanged(nameof(PropValue));
         }
 
-        public override CommandBase? ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
+        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam localServiceParam, string edited)
         {
             var commands = new List<CommandBase>();
-            if (term.NameRule == null || term.ValueRule == null) return null;
+            if (term.NameRule == null || term.ValueRule == null) return new EditResult(localServiceParam);
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, 
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
                 nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, 
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
                 nodeData, string.Format(term.ValueRule.Key, idx), ProxyValue?.Value ?? string.Empty);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
-            return commands.Count > 0 ? new CompositeCommand(commands) : null;
+            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, localServiceParam);
         }
     }
 

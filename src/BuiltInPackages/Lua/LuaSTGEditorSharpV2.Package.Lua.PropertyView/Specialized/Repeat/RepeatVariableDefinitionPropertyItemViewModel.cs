@@ -12,6 +12,7 @@ using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
@@ -68,21 +69,21 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             RaisePropertyChanged(nameof(PropIncrement));
         }
 
-        public override CommandBase? ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
+        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam localServiceParam, string edited)
         {
             var commands = new List<CommandBase>();
-            if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return null;
+            if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return new EditResult(localServiceParam);
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, 
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
                 nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, 
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
                 nodeData, string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
             var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
                 nodeData, string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             if (editIncrement != null) commands.Add(editIncrement);
-            return commands.Count > 0 ? new CompositeCommand(commands) : null;
+            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, localServiceParam);
         }
     }
 
