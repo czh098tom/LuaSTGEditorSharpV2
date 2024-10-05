@@ -45,9 +45,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             RaiseOnEdit(e);
         }
 
-        public override CommandBase? ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
+        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
         {
-            return null;
+            return new EditResult(LocalServiceParam);
         }
     }
 }
