@@ -6,14 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
-using static LuaSTGEditorSharpV2.PropertyView.PropertyItemViewModelBase;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public abstract class PropertyTabViewModel : ViewModelBase
+    public class PropertyTabViewModel : ViewModelBase
     {
         private string caption = string.Empty;
 

@@ -8,10 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -44,7 +42,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                 properties.Add(Count.GetViewModel(nodeData, context));
                 properties.AddRange(VariableProperty.GetViewModel(nodeData, context, count));
             }
-            var tab = new SingleListPropertyTabViewModel<TTermVariable, TIntermediateModel>(this)
+            var tab = new PropertyTabViewModel()
             {
                 Caption = Caption?.GetLocalized() ?? PropertyViewServiceProvider.DefaultViewI18NCaption,
             };

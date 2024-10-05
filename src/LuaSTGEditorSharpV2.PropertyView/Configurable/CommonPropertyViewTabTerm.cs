@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -29,7 +27,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             {
                 propertyViewModels.Add(mapping[j].GetViewModel(nodeData, context));
             }
-            var tab = new BasicPropertyTabViewModel()
+            var tab = new PropertyTabViewModel()
             {
                 Caption = Caption?.GetLocalized() ?? PropertyViewServiceProvider.DefaultViewI18NCaption
             };

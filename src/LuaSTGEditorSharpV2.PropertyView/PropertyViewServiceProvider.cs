@@ -76,7 +76,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 vm.Value = prop.Value;
                 result.Add(vm);
             }
-            BasicPropertyTabViewModel tab = new()
+            PropertyTabViewModel tab = new()
             {
                 Caption = NativeViewI18NCaption
             };
