@@ -32,8 +32,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         {
             _tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>(tab =>
             {
-                tab.OnItemValueUpdatedRaw += Tab_OnItemValueUpdatedRaw;
-                tab.OnItemValueUpdated += Tab_OnItemValueUpdated;
+                tab.OnEdit += Tab_OnEdit;
             });
             foreach (var tab in tabs)
             {
@@ -41,14 +40,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             }
         }
 
-        private void Tab_OnItemValueUpdated(object? sender, PropertyTabViewModel.ItemValueUpdatedEventArgs e)
+        private void Tab_OnEdit(object? sender, EditResult e)
         {
-            RaiseOnItemValueUpdatedRawEvent(new ItemValueUpdatedEventArgs(0, e));
-        }
-
-        private void Tab_OnItemValueUpdatedRaw(object? sender, ItemValueUpdatedEventArgs e)
-        {
-            RaiseOnItemValueUpdatedRawEvent(e);
+            RaiseOnEdit(e);
         }
 
         public override CommandBase? ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)

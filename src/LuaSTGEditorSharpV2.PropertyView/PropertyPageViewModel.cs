@@ -37,35 +37,15 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
-                (vm => vm.OnItemValueUpdated += Tab_OnItemValueUpdated);
-            Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
-                (vm => vm.OnItemValueUpdatedRaw += Tab_OnItemValueUpdated);
+                (vm => vm.OnEdit += Tab_OnEdit);
         }
 
-        private void Tab_OnItemValueUpdated(object? sender, PropertyTabViewModel.ItemValueUpdatedEventArgs e)
+        private void Tab_OnEdit(object? sender, EditResult e)
         {
-            if (sender is not PropertyTabViewModel vm) return;
-            Tab_OnItemValueUpdatedImpl(Tabs, new ItemValueUpdatedEventArgs(Tabs.IndexOf(vm), e));
-        }
-
-        private void Tab_OnItemValueUpdated(object? sender, ItemValueUpdatedEventArgs e)
-        {
-            Tab_OnItemValueUpdatedImpl(null, e);
-        }
-
-        private void Tab_OnItemValueUpdatedImpl(IReadOnlyList<PropertyTabViewModel>? tabs, ItemValueUpdatedEventArgs e)
-        {
-            var editResult = GetCommandOfEditingNode(
-                e.Args.Args.NodeData,
-                e.Args.Args.LocalServiceParam, 
-                e.Index,
-                e.Args.Index,
-                e.Args.Args.NewValue);
-
-            PublishCommand(editResult.Command, 
-                e.Args.Args.LocalServiceParam.Source, 
-                [e.Args.Args.NodeData], 
-                editResult.ShouldRefreshView);
+            PublishCommand(e.Command,
+                e.LocalServiceParam.Source,
+                SourceNodes,
+                e.ShouldRefreshView);
         }
 
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
@@ -101,35 +81,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 SelectedIndex = index;
             }
-        }
-
-        private EditResult GetCommandOfEditingNode(NodeData nodeData, LocalServiceParam localParams, 
-            int tabIndex, int itemIndex, string edited)
-        {
-            if (Tabs != null && tabIndex == Tabs.Count - 1)
-            {
-                return ResolveNativeEditing(nodeData, Tabs[^1].Properties, itemIndex, edited);
-            }
-            return ResolveCommandOfEditingNode(nodeData, localParams, tabIndex, itemIndex, edited);
-        }
-
-        private protected EditResult ResolveCommandOfEditingNode(NodeData nodeData,
-            LocalServiceParam context,
-            int tabIndex, int itemIndex, string edited)
-        {
-            if (tabIndex < 0 || tabIndex >= Tabs.Count) return EditResult.Empty;
-            return Tabs[tabIndex].ResolveCommandOfEditingNode(nodeData, context, itemIndex, edited);
-        }
-
-        private EditResult ResolveNativeEditing(NodeData nodeData,
-            IReadOnlyList<PropertyItemViewModelBase> propertyList,
-            int itemIndex, string edited)
-        {
-            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(
-                ServiceProvider.GetRequiredService<ViewModelProviderServiceProvider>(),
-                nodeData,
-                (propertyList[itemIndex] as BasicPropertyItemViewModel)?.Name, 
-                edited));
         }
     }
 }

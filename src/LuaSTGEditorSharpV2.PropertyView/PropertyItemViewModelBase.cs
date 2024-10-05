@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
@@ -11,18 +12,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public abstract class PropertyItemViewModelBase(NodeData nodeData, LocalServiceParam localServiceParam) : ViewModelBase
     {
-        public class ValueUpdatedEventArgs(
-            string old, 
-            string @new, 
-            NodeData nodeData, 
-            LocalServiceParam localServiceParam) : EventArgs
-        {
-            public string OldValue { get; private set; } = old;
-            public string NewValue { get; private set; } = @new;
-            public NodeData NodeData { get; private set; } = nodeData;
-            public LocalServiceParam LocalServiceParam { get; private set; } = localServiceParam;
-        }
-
         private string _value = string.Empty;
         private PropertyViewEditorType? _type;
 
@@ -34,7 +23,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 var oldValue = _value;
                 _value = value;
                 RaisePropertyChanged();
-                OnValueUpdated?.Invoke(this, new ValueUpdatedEventArgs(oldValue, value, SourceNode, LocalServiceParam));
+                OnEdit?.Invoke(this, 
+                    new EditResult(ResolveEditingNodeCommand(SourceNode, LocalServiceParam, value), 
+                    true, 
+                    LocalServiceParam));
             }
         }
 
@@ -62,12 +54,11 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public NodeData SourceNode { get; private init; } = nodeData;
         public LocalServiceParam LocalServiceParam { get; private init; } = localServiceParam;
 
-        public event EventHandler<ValueUpdatedEventArgs>? OnValueUpdated;
-        public event EventHandler<ItemValueUpdatedEventArgs>? OnItemValueUpdatedRaw;
+        public event EventHandler<EditResult>? OnEdit;
 
-        protected void RaiseOnItemValueUpdatedRawEvent(ItemValueUpdatedEventArgs e)
+        protected void RaiseOnEdit(EditResult editResult)
         {
-            OnItemValueUpdatedRaw?.Invoke(this, e);
+            OnEdit?.Invoke(this, editResult);
         }
 
         public abstract CommandBase? ResolveEditingNodeCommand(NodeData nodeData,

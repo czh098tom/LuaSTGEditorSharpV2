@@ -11,10 +11,5 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
     public class BasicPropertyTabViewModel : PropertyTabViewModel
     {
-        public override EditResult ResolveCommandOfEditingNode(NodeData nodeData, LocalServiceParam context, int itemIndex, string edited)
-        {
-            if (itemIndex < 0 || itemIndex >= Properties.Count) return EditResult.Empty;
-            return new EditResult(Properties[itemIndex].ResolveEditingNodeCommand(nodeData, context, edited), true);
-        }
     }
 }
