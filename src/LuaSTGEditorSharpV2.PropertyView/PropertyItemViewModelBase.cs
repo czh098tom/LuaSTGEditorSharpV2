@@ -23,10 +23,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 var oldValue = _value;
                 _value = value;
                 RaisePropertyChanged();
-                OnEdit?.Invoke(this, 
-                    new EditResult(ResolveEditingNodeCommand(SourceNode, LocalServiceParam, value), 
-                    true, 
-                    LocalServiceParam));
+                OnEdit?.Invoke(this, ResolveEditingNodeCommand(SourceNode, LocalServiceParam, value));
             }
         }
 
@@ -61,7 +58,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             OnEdit?.Invoke(this, editResult);
         }
 
-        public abstract CommandBase? ResolveEditingNodeCommand(NodeData nodeData,
+        public abstract EditResult ResolveEditingNodeCommand(NodeData nodeData,
             LocalServiceParam context, string edited);
     }
 }
