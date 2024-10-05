@@ -10,11 +10,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public record struct EditResult(
         CommandBase? Command,
-        bool ShouldRefreshView)
+        bool ShouldRefreshView,
+        LocalServiceParam LocalServiceParam)
     {
-        public static readonly EditResult Empty = new();
-
-        public EditResult() : this(null, false) { }
-        public EditResult(CommandBase? command) : this(command, false) { }
+        public EditResult(LocalServiceParam localServiceParam) : this(null, false, localServiceParam) { }
+        public EditResult(CommandBase? command, LocalServiceParam localServiceParam) : this(command, false, localServiceParam) { }
     }
 }

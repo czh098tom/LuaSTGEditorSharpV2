@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
 
@@ -49,46 +48,6 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             };
             properties.ForEach(tab.Properties.Add);
             return tab;
-        }
-
-        public override EditResult ResolveCommandOfEditingNode(NodeData nodeData, PropertyViewContext context, int itemIndex, string edited)
-        {
-            int idxCount = ImmutableProperty.Length;
-            if (itemIndex > idxCount)
-            {
-                if (Count != null && VariableProperty != null)
-                {
-                    var idx = itemIndex - idxCount - 1;
-                    TIntermediateModel? variableDef = null;
-                    try
-                    {
-                        variableDef = JsonConvert.DeserializeObject<TIntermediateModel>(edited);
-                    }
-                    catch (Exception) { }
-                    if (variableDef != null)
-                    {
-                        return new EditResult(VariableProperty?.GetCommand(nodeData, variableDef, idx));
-                    }
-                    else
-                    {
-                        return EditResult.Empty;
-                    }
-                }
-                return EditResult.Empty;
-            }
-            else if (itemIndex == idxCount)
-            {
-                if (Count != null && VariableProperty != null)
-                {
-                    return new EditResult(Count.ResolveCommandOfEditingNode(nodeData, context, edited), true);
-                }
-                return EditResult.Empty;
-            }
-            else if (itemIndex < idxCount && itemIndex >= 0)
-            {
-                return new EditResult(ImmutableProperty[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), true);
-            }
-            return EditResult.Empty;
         }
     }
 }

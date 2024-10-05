@@ -9,14 +9,15 @@ using Newtonsoft.Json;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 
-namespace LuaSTGEditorSharpV2.PropertyView
+namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
-    public class JsonProxiedPropertyItemViewModel<T> : PropertyItemViewModelBase
+    public abstract class JsonProxiedPropertyItemViewModel<T>(NodeData nodeData,
+        LocalServiceParam localServiceParam) : PropertyItemViewModelBase(nodeData, localServiceParam)
         where T : class
     {
-        private T _proxyValue;
+        private T? _proxyValue;
 
-        public T ProxyValue
+        public T? ProxyValue
         {
             get => _proxyValue;
             set
@@ -24,12 +25,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 _proxyValue = value;
                 Value = JsonConvert.SerializeObject(_proxyValue);
             }
-        }
-
-        public JsonProxiedPropertyItemViewModel(T proxyValue, NodeData nodeData, 
-            LocalServiceParam localServiceParam) : base(nodeData, localServiceParam)
-        {
-            _proxyValue = proxyValue;
         }
     }
 }

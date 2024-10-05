@@ -11,8 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
-using static LuaSTGEditorSharpV2.PropertyView.PropertyItemViewModelBase;
-using static LuaSTGEditorSharpV2.PropertyView.PropertyTabViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -37,35 +35,15 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
-                (vm => vm.OnItemValueUpdated += Tab_OnItemValueUpdated);
-            Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
-                (vm => vm.OnItemValueUpdatedRaw += Tab_OnItemValueUpdated);
+                (vm => vm.OnEdit += Tab_OnEdit);
         }
 
-        private void Tab_OnItemValueUpdated(object? sender, PropertyTabViewModel.ItemValueUpdatedEventArgs e)
+        private void Tab_OnEdit(object? sender, EditResult e)
         {
-            if (sender is not PropertyTabViewModel vm) return;
-            Tab_OnItemValueUpdatedImpl(Tabs, new ItemValueUpdatedEventArgs(Tabs.IndexOf(vm), e));
-        }
-
-        private void Tab_OnItemValueUpdated(object? sender, ItemValueUpdatedEventArgs e)
-        {
-            Tab_OnItemValueUpdatedImpl(null, e);
-        }
-
-        private void Tab_OnItemValueUpdatedImpl(IReadOnlyList<PropertyTabViewModel>? tabs, ItemValueUpdatedEventArgs e)
-        {
-            var propertyViewService = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>();
-            var editResult = propertyViewService.GetCommandOfEditingNode(
-                e.Args.Args.NodeData,
-                e.Args.Args.LocalServiceParam, tabs, e.Index,
-                e.Args.Index,
-                e.Args.Args.NewValue);
-
-            PublishCommand(editResult.Command, 
-                e.Args.Args.LocalServiceParam.Source, 
-                [e.Args.Args.NodeData], 
-                editResult.ShouldRefreshView);
+            PublishCommand(e.Command,
+                e.LocalServiceParam.Source,
+                SourceNodes,
+                e.ShouldRefreshView);
         }
 
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)

@@ -12,7 +12,5 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         where TIntermediateModel : class
     {
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, PropertyViewContext context, int count);
-
-        public CommandBase? GetCommand(NodeData nodeData, TIntermediateModel intermediateModel, int index);
     }
 }

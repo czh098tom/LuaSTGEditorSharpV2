@@ -11,7 +11,7 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 
-namespace LuaSTGEditorSharpV2.PropertyView
+namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
     public class PropertyTabWrapperItemViewModel : PropertyItemViewModelBase
     {
@@ -32,8 +32,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         {
             _tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>(tab =>
             {
-                tab.OnItemValueUpdatedRaw += Tab_OnItemValueUpdatedRaw;
-                tab.OnItemValueUpdated += Tab_OnItemValueUpdated;
+                tab.OnEdit += Tab_OnEdit;
             });
             foreach (var tab in tabs)
             {
@@ -41,14 +40,14 @@ namespace LuaSTGEditorSharpV2.PropertyView
             }
         }
 
-        private void Tab_OnItemValueUpdated(object? sender, PropertyTabViewModel.ItemValueUpdatedEventArgs e)
+        private void Tab_OnEdit(object? sender, EditResult e)
         {
-            RaiseOnItemValueUpdatedRawEvent(new ItemValueUpdatedEventArgs(0, e));
+            RaiseOnEdit(e);
         }
 
-        private void Tab_OnItemValueUpdatedRaw(object? sender, ItemValueUpdatedEventArgs e)
+        public override CommandBase? ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
         {
-            RaiseOnItemValueUpdatedRawEvent(e);
+            return null;
         }
     }
 }

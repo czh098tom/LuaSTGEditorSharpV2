@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
@@ -34,13 +33,6 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             };
             propertyViewModels.ForEach(tab.Properties.Add);
             return tab;
-        }
-
-        public override EditResult ResolveCommandOfEditingNode(NodeData nodeData,
-            PropertyViewContext context, int itemIndex, string edited)
-        {
-            if (itemIndex < 0 || itemIndex >= Mapping.Length) return EditResult.Empty;
-            return new EditResult(Mapping[itemIndex].ResolveCommandOfEditingNode(nodeData, context, edited), true);
         }
     }
 }

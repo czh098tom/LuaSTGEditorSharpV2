@@ -7,19 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.ViewModel;
-using static LuaSTGEditorSharpV2.PropertyView.PropertyItemViewModelBase;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyTabViewModel : ViewModelBase
     {
-        public class ItemValueUpdatedEventArgs(int index,
-            ValueUpdatedEventArgs args) : EventArgs
-        {
-            public int Index { get; private set; } = index;
-            public ValueUpdatedEventArgs Args { get; private set; } = args;
-        }
-
         private string caption = string.Empty;
 
         public ObservableCollection<PropertyItemViewModelBase> Properties { get; private set; } = new();
@@ -34,27 +26,17 @@ namespace LuaSTGEditorSharpV2.PropertyView
             }
         }
 
-        public event EventHandler<ItemValueUpdatedEventArgs>? OnItemValueUpdated;
-
-        public event EventHandler<PropertyView.ItemValueUpdatedEventArgs>? OnItemValueUpdatedRaw;
+        public event EventHandler<EditResult>? OnEdit;
 
         public PropertyTabViewModel()
         {
             Properties.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyItemViewModelBase>
-                (vm => vm.OnValueUpdated += Item_OnValueUpdated);
-            Properties.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyItemViewModelBase>
-                (vm => vm.OnItemValueUpdatedRaw += Item_OnValueUpdated);
+                (vm => vm.OnEdit += Item_OnEdit);
         }
 
-        private void Item_OnValueUpdated(object? sender, ValueUpdatedEventArgs e)
+        private void Item_OnEdit(object? sender, EditResult e)
         {
-            if (sender is not PropertyItemViewModelBase vm) return;
-            OnItemValueUpdated?.Invoke(this, new ItemValueUpdatedEventArgs(Properties.IndexOf(vm), e));
-        }
-
-        private void Item_OnValueUpdated(object? sender, PropertyView.ItemValueUpdatedEventArgs e)
-        {
-            OnItemValueUpdatedRaw?.Invoke(this, e);
+            OnEdit?.Invoke(this, e);
         }
     }
 }

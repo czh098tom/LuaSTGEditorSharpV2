@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
@@ -24,26 +26,10 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return model;
         }
 
-        public CommandBase? ResolveCommandOfEditingNode(NodeData nodeData, PropertyViewContext context, string edited)
-        {
-            if (Candidate == null) return CreateDefaultCommand(nodeData, context, edited);
-            var model = Candidate.GetViewModelImpl(nodeData, context);
-            if (model.Tabs.Count <= 0) return CreateDefaultCommand(nodeData, context, edited);
-            return null;
-        }
-
         private PropertyItemViewModelBase CreateDefaultModel(NodeData nodeData, PropertyViewContext context)
         {
-            return IfEmpty?.GetViewModel(nodeData, context)
-                ?? new PropertyItemViewModelBase(nodeData, context.LocalParam)
-                {
-                    Value = ""
-                };
-        }
-
-        private CommandBase? CreateDefaultCommand(NodeData nodeData, PropertyViewContext context, string edited)
-        {
-            return IfEmpty?.ResolveCommandOfEditingNode(nodeData, context, edited);
+            return IfEmpty?.GetViewModel(nodeData, context) 
+                ?? throw new InvalidOperationException($"{nameof(Candidate)} and {nameof(IfEmpty)} cannot be both empty.");
         }
     }
 }
