@@ -7,16 +7,7 @@
     <DataTemplate x:Key="property:default">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" />
-            <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-            <Button Grid.Column="2" Height="16" Content="...">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction PassEventArgsToCommand="True"
-                                Command="{Binding ShowEditWindow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                                />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
+            <TextBox Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
         </lsv:PropertyItemGrid>
     </DataTemplate>
     <DataTemplate x:Key="property:childNode">
@@ -91,6 +82,21 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <DataTemplate x:Key="property:collectionCount">
+        <lsv:PropertyItemGrid>
+            <TextBlock Text="{Binding Name}"/>
+            <Grid Grid.Column="1" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="36"/>
+                    <ColumnDefinition Width="36"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <Button Grid.Column="1" Content="+" Command="{Binding Increase}"/>
+                <Button Grid.Column="2" Content="-" Command="{Binding Decrease}"/>
+            </Grid>
         </lsv:PropertyItemGrid>
     </DataTemplate>
 </ResourceDictionary>

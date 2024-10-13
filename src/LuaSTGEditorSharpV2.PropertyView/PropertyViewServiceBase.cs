@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         : CompactNodeService<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty]
-        public PropertyViewTabTermBase[] Tabs { get; private set; } = [];
+        public PropertyTabTermBase[] Tabs { get; private set; } = [];
 
         public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings
             , PropertyViewServiceSettings serviceSettings)

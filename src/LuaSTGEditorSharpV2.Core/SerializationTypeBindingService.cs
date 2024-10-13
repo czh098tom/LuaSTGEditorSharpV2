@@ -88,7 +88,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 if (!_isDefined.TryGetValue(objectType, out bool value))
                 {
-                    value = objectType.GetCustomAttribute<JsonShortNamingAttribute>() != null;
+                    value = objectType.GetCustomAttribute<JsonUseShortNamingAttribute>() != null;
                     _isDefined.Add(objectType, value);
                 }
                 return value;
@@ -104,10 +104,13 @@ namespace LuaSTGEditorSharpV2.Core
                 {
                     if (type.IsAssignableTo(baseType))
                     {
-                        var attr = type.GetCustomAttribute<JsonTypeShortNameAttribute>();
-                        if (attr != null && attr.SourceType == baseType)
+                        var attrs = type.GetCustomAttributes<JsonTypeShortNameAttribute>();
+                        foreach (var attr in attrs ?? [])
                         {
-                            descriptor.Add(new SerializationTypeBinderDescriptor(type, attr.Name));
+                            if (attr.BaseType == baseType)
+                            {
+                                descriptor.Add(new SerializationTypeBinderDescriptor(type, attr.Name));
+                            }
                         }
                     }
                 }

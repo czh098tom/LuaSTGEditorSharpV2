@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class JsonTypeShortNameAttribute(Type sourceType, string name) : Attribute
+    /// <summary>
+    /// Identify when deserialize to a base type, using the given name for $type field is also supported.
+    /// </summary>
+    /// <param name="baseType"> Base type, can be a class or an interface. Must have <see cref="JsonUseShortNamingAttribute"/>. </param>
+    /// <param name="name"> The given name, must not be duplicated among all derived types. </param>
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
+    public class JsonTypeShortNameAttribute(Type baseType, string name) : Attribute
     {
-        public Type SourceType { get; } = sourceType;
+        public Type BaseType { get; } = baseType;
         public string Name { get; } = name;
     }
 }

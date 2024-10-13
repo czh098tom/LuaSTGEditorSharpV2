@@ -9,7 +9,8 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public interface IPropertyViewTerm
+    [JsonUseShortNaming]
+    public interface IPropertyItemTerm
     {
         public PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context);
     }
