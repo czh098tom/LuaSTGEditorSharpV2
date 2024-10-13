@@ -15,6 +15,7 @@ using LuaSTGEditorSharpV2.Core;
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     [Inject(ServiceLifetime.Transient)]
+    [JsonUseShortNaming]
     public abstract class PropertyTabTermBase(IServiceProvider serviceProvider, 
         PropertyViewServiceProvider propertyViewServiceProvider)
     {

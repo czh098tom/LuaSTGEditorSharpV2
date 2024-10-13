@@ -3,10 +3,10 @@
   "TypeUID": "CopyTask",
   "Tabs": [
     {
-      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyViewTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "$type": "Default",
       "Mapping": [
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "$type": "Default",
           "Mapping": { "Key": "taskName" },
           "Caption": {
             "Neutral": "Task Name",
@@ -16,7 +16,7 @@
           }
         },
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "$type": "Default",
           "Mapping": { "Key": "taskWeight" },
           "Caption": {
             "Neutral": "Task Weight",
@@ -26,14 +26,13 @@
           }
         },
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PorpertyTermSelector, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "$type": "Selector",
           "Candidate": {
-            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "FindProperty": { "Key": "propertyName" },
             "OfName": [ "source" ]
           },
           "IfEmpty": {
-            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "$type": "Default",
             "Mapping": { "Key": "source" },
             "Caption": {
               "Neutral": "Copy Source (Constant)",
@@ -44,14 +43,13 @@
           }
         },
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PorpertyTermSelector, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "$type": "Selector",
           "Candidate": {
-            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "FindProperty": { "Key": "propertyName" },
             "OfName": [ "targetArchivePath" ]
           },
           "IfEmpty": {
-            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "$type": "Default",
             "Mapping": { "Key": "targetArchivePath" },
             "Caption": {
               "Neutral": "Copy Target Base Path (Constant)",
@@ -62,14 +60,13 @@
           }
         },
         {
-          "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PorpertyTermSelector, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "$type": "Selector",
           "Candidate": {
-            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ChildPropertyTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "FindProperty": { "Key": "propertyName" },
             "OfName": [ "targetName" ]
           },
           "IfEmpty": {
-            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.PropertyViewTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "$type": "Default",
             "Mapping": { "Key": "targetName" },
             "Caption": {
               "Neutral": "Copy Target Name (Constant)",
