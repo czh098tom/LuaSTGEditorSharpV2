@@ -3,7 +3,7 @@
   "TypeUID": "Code",
   "Tabs": [
     {
-      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.CommonPropertyTabTerm, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "$type": "Default",
       "Mapping": [
         {
           "$type": "Default",
