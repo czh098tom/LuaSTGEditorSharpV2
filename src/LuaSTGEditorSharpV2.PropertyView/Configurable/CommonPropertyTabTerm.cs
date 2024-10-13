@@ -12,6 +12,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
+    [JsonTypeShortName(typeof(PropertyTabTermBase), "Default")]
     public class CommonPropertyTabTerm(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewServiceProvider) 
         : PropertyTabTermBase(serviceProvider, propertyViewServiceProvider)
     {
