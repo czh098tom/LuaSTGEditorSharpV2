@@ -19,7 +19,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
     [Inject(ServiceLifetime.Transient)]
     public class RepeatPropertyViewItemTerm(IServiceProvider serviceProvider) 
-        : IMultipleFieldPropertyViewItemTerm<RepeatVariableDefinition>
+        : IMultipleFieldPropertyItemTerm<RepeatVariableDefinition>
     {
         [JsonProperty] public NodePropertyCapture? NameRule { get; set; }
         [JsonProperty] public NodePropertyCapture? InitRule { get; set; }

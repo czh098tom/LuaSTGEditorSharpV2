@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 {
-    [JsonShortNaming]
+    [JsonUseShortNaming]
     public interface ISharpNodeFormatConverter
     {
         NodeData Convert(NodeData source, SharpNodeFormattingContext context);

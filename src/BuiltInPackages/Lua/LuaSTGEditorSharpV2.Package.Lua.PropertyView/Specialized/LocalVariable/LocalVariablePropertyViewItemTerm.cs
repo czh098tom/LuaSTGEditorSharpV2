@@ -19,7 +19,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     [Inject(ServiceLifetime.Transient)]
     public class LocalVariablePropertyViewItemTerm(IServiceProvider serviceProvider, ViewModelProviderServiceProvider viewModelProviderServiceProvider)
-        : IMultipleFieldPropertyViewItemTerm<VariableDefinition>
+        : IMultipleFieldPropertyItemTerm<VariableDefinition>
     {
         [JsonProperty] public NodePropertyCapture? NameRule { get; set; }
         [JsonProperty] public NodePropertyCapture? ValueRule { get; set; }
