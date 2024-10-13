@@ -13,10 +13,11 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public class PorpertyTermSelector : IPropertyViewTerm
+    [JsonTypeShortName(typeof(IPropertyItemTerm), "Selector")]
+    public class PorpertyTermSelector : IPropertyItemTerm
     {
         [JsonProperty] public ChildPropertyTerm? Candidate { get; private set; }
-        [JsonProperty] public IPropertyViewTerm? IfEmpty { get; private set; }
+        [JsonProperty] public IPropertyItemTerm? IfEmpty { get; private set; }
 
         public PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context)
         {

@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
-    public interface IMultipleFieldPropertyViewItemTerm<TIntermediateModel>
+    public interface IMultipleFieldPropertyItemTerm<TIntermediateModel>
         where TIntermediateModel : class
     {
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, PropertyViewContext context, int count);

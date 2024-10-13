@@ -15,7 +15,7 @@ using LuaSTGEditorSharpV2.Core;
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     [Inject(ServiceLifetime.Transient)]
-    public abstract class PropertyViewTabTermBase(IServiceProvider serviceProvider, 
+    public abstract class PropertyTabTermBase(IServiceProvider serviceProvider, 
         PropertyViewServiceProvider propertyViewServiceProvider)
     {
         [JsonProperty] public LocalizableString? Caption { get; private set; }

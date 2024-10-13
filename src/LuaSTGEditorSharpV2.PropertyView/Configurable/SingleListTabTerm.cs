@@ -15,12 +15,12 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     [Inject(ServiceLifetime.Transient)]
     public class SingleListTabTerm<TTermVariable, TIntermediateModel>(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewProvider) 
-        : PropertyViewTabTermBase(serviceProvider, propertyViewProvider)
-        where TTermVariable : class, IMultipleFieldPropertyViewItemTerm<TIntermediateModel>
+        : PropertyTabTermBase(serviceProvider, propertyViewProvider)
+        where TTermVariable : class, IMultipleFieldPropertyItemTerm<TIntermediateModel>
         where TIntermediateModel : class
     {
-        [JsonProperty] public IPropertyViewTerm[] ImmutableProperty { get; private set; } = [];
-        [JsonProperty] public PropertyViewTerm? Count { get; private set; } = null;
+        [JsonProperty] public IPropertyItemTerm[] ImmutableProperty { get; private set; } = [];
+        [JsonProperty] public PropertyItemTerm? Count { get; private set; } = null;
         [JsonProperty] public TTermVariable? VariableProperty { get; private set; } = null;
 
         public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)

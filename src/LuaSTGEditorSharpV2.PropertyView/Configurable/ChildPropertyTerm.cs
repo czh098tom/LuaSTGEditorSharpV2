@@ -15,7 +15,8 @@ using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     [Inject(ServiceLifetime.Transient)]
-    public class ChildPropertyTerm(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewServiceProvider) : IPropertyViewTerm
+    [JsonTypeShortName(typeof(IPropertyItemTerm), "ChildProperty")]
+    public class ChildPropertyTerm(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewServiceProvider) : IPropertyItemTerm
     {
         [JsonProperty] public NodePropertyCapture? FindProperty { get; private set; }
         [JsonProperty] public HashSet<string?>? OfName { get; private set; }

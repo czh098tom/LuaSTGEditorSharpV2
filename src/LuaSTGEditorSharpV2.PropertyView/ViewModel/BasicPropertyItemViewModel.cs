@@ -36,7 +36,8 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class BasicPropertyItemViewModelFactory(ViewModelProviderServiceProvider viewModelProviderServiceProvider)
+    public class BasicPropertyItemViewModelFactory(ViewModelProviderServiceProvider viewModelProviderServiceProvider) 
+        : IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>
     {
         public BasicPropertyItemViewModel Create(NodeData nodeData, LocalServiceParam localServiceParam, string? key)
         {
