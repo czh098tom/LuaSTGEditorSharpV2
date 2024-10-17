@@ -1,0 +1,11 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BezierMoveToEx",
+	"Captures": [
+		{ "Key": "duration" },
+		{ "Key": "type" },
+		{ "Key": "mode" },
+		{ "Key": "point_set" }
+	],
+	"Head": "task.{2}MoveToEx({1},{3},{4})"
+}

@@ -1,0 +1,32 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SingleListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SmoothSetValueTo",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "delay" },
+		{ "Key": "duration" }
+	],
+	"CountCapture": { "Key": "count" },
+	"SubCaptureRule": [
+		{
+			"Key": "variable{0}_name",
+			"DefaultValue": "\"_speed\""
+		},
+		{
+			"Key": "target_value{0}",
+			"DefaultValue": 1
+		},
+		{
+			"Key": "interpolation_mode{0}",
+			"DefaultValue": "MOVE_NORMAL"
+		},
+		{
+			"Key": "modification_mode{0}",
+			"DefaultValue": "MODE_SET"
+		}
+	],
+	"SubCaptureFormat": [
+		{ "Text": "lasttask = task.New({1},function()ex.SmoothSetValueTo({4},{5},{3},{6},nil,{2},{7})end)" }
+	],
+	"Head": "{4}"
+}

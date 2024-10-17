@@ -1,0 +1,10 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "MoveToEx",
+	"Captures": [
+		{ "Key": "destination" },
+		{ "Key": "duration" },
+		{ "Key": "mode" }
+	],
+	"Head": "task.MoveToEx({1},{2},{3})"
+}
