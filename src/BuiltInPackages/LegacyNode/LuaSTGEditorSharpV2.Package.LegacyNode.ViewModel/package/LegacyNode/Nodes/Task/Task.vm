@@ -1,6 +1,6 @@
 ﻿{
   "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "AttachedTask",
+  "TypeUID": "Task",
   "Captures": [
     { "Key": "target" }
   ],

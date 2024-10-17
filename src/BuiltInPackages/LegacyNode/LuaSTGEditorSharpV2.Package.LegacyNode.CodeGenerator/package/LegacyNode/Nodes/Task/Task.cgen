@@ -1,0 +1,18 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Task",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "redirect_self_to_target" }
+	],
+	"Head": [
+		{ "Text": "lasttask = task.New({1}, function()" },
+		{
+			"Text": "{0}local self = task.GetSelf()",
+			"ConditionOn": "2"
+		}
+	],
+	"Tail": [
+		{ "Text": "end)"}
+	]
+}
