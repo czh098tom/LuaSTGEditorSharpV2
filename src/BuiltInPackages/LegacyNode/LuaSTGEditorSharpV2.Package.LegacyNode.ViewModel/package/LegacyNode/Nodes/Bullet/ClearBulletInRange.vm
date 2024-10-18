@@ -1,0 +1,49 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ClearBulletInRange",
+	"Captures": [
+		{ "Key": "position" },
+		{ "Key": "radius" },
+		{ "Key": "expanding_time" },
+		{ "Key": "clearing_time" },
+		{ "Key": "convert_to_faith" },
+		{ "Key": "include_indestructible" },
+		{ "Key": "vertical_velocity" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "clear bullets within the radius {1} of position {0}, expanding time {2}, clearing time {3}"
+			},
+			{
+				"Text": ", convert to faith",
+				"ConditionOn": 4
+			},
+			{
+				"Text": ", include indestructible bullets",
+				"ConditionOn": 5
+			},
+			{
+				"Text": ", vertical velocity {6}"
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "在位置{0}清除半径{1}内的子弹，，扩展时间{2}，清除时间{3}"
+				},
+				{
+					"Text": ", 转换为信仰",
+					"ConditionOn": 4
+				},
+				{
+					"Text": ", 包含不可消除的子弹",
+					"ConditionOn": 5
+				},
+				{
+					"Text": ", 垂直速度{6}"
+				}
+			]
+		}
+	}
+}

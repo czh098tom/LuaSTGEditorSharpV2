@@ -1,0 +1,13 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineBullet",
+	"Captures": [
+		{ "Key": "identifier" }
+	],
+	"Text": {
+		"Neutral": "define bullet class as {0}",
+		"Localized": {
+			"zh": "定义子弹类为 {0}"
+		}
+	}
+}

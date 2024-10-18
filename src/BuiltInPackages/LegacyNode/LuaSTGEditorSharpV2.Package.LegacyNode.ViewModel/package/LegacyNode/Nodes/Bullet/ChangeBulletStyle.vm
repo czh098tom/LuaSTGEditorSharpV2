@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+	"TypeUID": "ChangeBulletStyle",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "style" },
+		{ "Key": "color" }
+	],
+	"Text": {
+		"Neutral": "modify {0}'s style to {1} in {2}",
+		"Localized": {
+			"zh": "修改{0}的弹型为颜色{2}的{1}"
+		}
+	}
+}

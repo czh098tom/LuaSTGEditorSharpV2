@@ -1,0 +1,34 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ClearBullet",
+	"Captures": [
+		{ "Key": "convert_to_faith" },
+		{ "Key": "include_indestructible" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "clear all bullets" },
+			{
+				"Text": ", convert to faith",
+				"ConditionOn": 0
+			},
+			{
+				"Text": ", include indestructible bullets",
+				"ConditionOn": 1
+			}
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "消除所有子弹" },
+				{
+					"Text": ", 转换为信仰",
+					"ConditionOn": 4
+				},
+				{
+					"Text": ", 包含不可消除的子弹",
+					"ConditionOn": 5
+				}
+			]
+		}
+	}
+}

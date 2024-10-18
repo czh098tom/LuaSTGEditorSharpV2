@@ -21,7 +21,7 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "create simple bullet in {0} with {1} at {2},velocity={3},rotation={4}"
+				"Text": "create simple bullet of type {0} with {1} at {2},velocity={3},rotation={4}"
 			},
 			{
 				"Text": ", aim to player",

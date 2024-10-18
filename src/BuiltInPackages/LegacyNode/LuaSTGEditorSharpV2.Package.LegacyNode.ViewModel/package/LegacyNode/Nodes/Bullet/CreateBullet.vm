@@ -1,0 +1,29 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateBullet",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "position" },
+		{ "Key": "parameters" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "create bullet of type {0} at position ({1})" },
+			{
+				"Text": "with parameter {2}",
+				"ConditionOn": 2,
+				"UseExistanceInsteadOfBoolValue": true
+			}
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "在({1})创建类型{0}的子弹" },
+				{
+					"Text": "，传入参数{2}",
+					"ConditionOn": 2,
+					"UseExistanceInsteadOfBoolValue": true
+				}
+			]
+		}
+	}
+}

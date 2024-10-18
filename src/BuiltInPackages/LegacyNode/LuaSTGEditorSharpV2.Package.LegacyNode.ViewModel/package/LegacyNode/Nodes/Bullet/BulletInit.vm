@@ -1,0 +1,43 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BulletInit",
+	"Captures": [
+		{ "Key": "parameters" },
+		{ "Key": "style" },
+		{ "Key": "color" },
+		{ "Key": "stay" },
+		{ "Key": "destroyable" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "initialize bullet of style {1}, color {2}"
+			},
+			{
+				"Text": ", stay on create",
+				"ConditionOn": 3
+			},
+			{
+				"Text": ", indestructible",
+				"ConditionOn": 4,
+				"Inversed": true
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "初始化子弹, 样式 {1}, 颜色 {2}"
+				},
+				{
+					"Text": ", 生成时停滞",
+					"ConditionOn": 3
+				},
+				{
+					"Text": ", 不可消除",
+					"ConditionOn": 4,
+					"Inversed": true
+				}
+			]
+		}
+	}
+}
