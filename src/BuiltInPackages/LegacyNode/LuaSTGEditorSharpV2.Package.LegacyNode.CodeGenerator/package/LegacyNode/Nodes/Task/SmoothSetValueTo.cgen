@@ -9,7 +9,7 @@
 	"CountCapture": { "Key": "count" },
 	"SubCaptureRule": [
 		{
-			"Key": "variable{0}_name",
+			"Key": "variable_name{0}",
 			"DefaultValue": "\"_speed\""
 		},
 		{

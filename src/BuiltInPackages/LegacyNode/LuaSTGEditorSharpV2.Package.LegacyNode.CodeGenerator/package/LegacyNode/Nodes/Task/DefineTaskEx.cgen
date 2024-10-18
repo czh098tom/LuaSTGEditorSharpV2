@@ -1,0 +1,10 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineTaskEx",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "parameters" }
+	],
+	"Head": "_editor_tasks[{1}] = function({2})\n{0}return function()\n{0}{0}local self = task.GetSelf()",
+	"Tail": "{0}end\nend"
+}
