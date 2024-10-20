@@ -36,7 +36,8 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             {
                 var subCaptureFormat = SubCaptureFormat.GetLocalized();
                 var countStr = CountCapture.Capture(token) ?? string.Empty;
-                var subCaptureResult = new string[SubCaptureRule.Length];
+                var subCaptureResult = new string[n + SubCaptureRule.Length];
+                Array.Copy(captureResult, subCaptureResult, n);
                 StringBuilder[] captureResultBuilder = new StringBuilder[subCaptureFormat.Length];
                 for (int i = 0; i < subCaptureFormat.Length; i++)
                 {
@@ -50,7 +51,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
                         object idx = i;
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(token, idx) ?? string.Empty;
+                            subCaptureResult[n + j] = SubCaptureRule[j]?.CaptureByFormat(token, idx) ?? string.Empty;
                         }
                         for (int j = 0; j < subCaptureFormat.Length; j++)
                         {

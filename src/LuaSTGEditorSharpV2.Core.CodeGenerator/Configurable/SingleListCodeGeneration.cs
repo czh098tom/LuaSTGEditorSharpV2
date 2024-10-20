@@ -33,8 +33,9 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
             {
                 var countStr = CountCapture.Capture(token) ?? string.Empty;
-                var subCaptureResult = new string[SubCaptureRule.Length];
+                var subCaptureResult = new string[n + SubCaptureRule.Length];
                 StringBuilder[] captureResultBuilder = new StringBuilder[SubCaptureFormat.Length];
+                Array.Copy(captureResult, subCaptureResult, n);
                 for (int i = 0; i < SubCaptureFormat.Length; i++)
                 {
                     captureResult[n + i] = string.Empty;
@@ -47,7 +48,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                         object idx = i;
                         for (int j = 0; j < SubCaptureRule.Length; j++)
                         {
-                            subCaptureResult[j] = SubCaptureRule[j]?.CaptureByFormat(token, idx) ?? string.Empty;
+                            subCaptureResult[n + j] = SubCaptureRule[j]?.CaptureByFormat(token, idx) ?? string.Empty;
                         }
                         for (int j = 0; j < SubCaptureFormat.Length; j++)
                         {
