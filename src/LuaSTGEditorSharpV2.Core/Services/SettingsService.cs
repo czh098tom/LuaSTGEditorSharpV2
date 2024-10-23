@@ -33,6 +33,10 @@ namespace LuaSTGEditorSharpV2.Core.Services
         public void LoadSettings()
         {
             string baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), _appendDir);
+            if (!Directory.Exists(baseDir))
+            {
+                Directory.CreateDirectory(baseDir);
+            }
             var settingsProviders = serviceProviders.GetServicesWithInheritance<ISettingsProvider>();
             List<SettingsDescriptor> settings = [];
             foreach (var provider in settingsProviders)
