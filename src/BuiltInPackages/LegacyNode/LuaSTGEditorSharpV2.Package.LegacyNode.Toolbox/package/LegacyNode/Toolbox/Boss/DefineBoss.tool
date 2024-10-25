@@ -1,7 +1,8 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Toolbox.Model.SimpleToolboxItem, LuaSTGEditorSharpV2.Toolbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"Path": "Boss/DefineBoss",
-	"Order":1,
+	"IconSource": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bossdefine.png",
+	"Order": 1,
 	"NodeTemplate": [
 		{
 			"TypeUID": "DefineBoss",
@@ -42,9 +43,10 @@
 							"TypeUID": "SpellCardStart",
 							"Children": [
 								{
-									"TypeUID": "AttachTask",
+									"TypeUID": "Task",
 									"Properties": {
-										"target": "self"
+										"target": "self",
+										"redirect_to_self": false
 									}
 								}
 							]
