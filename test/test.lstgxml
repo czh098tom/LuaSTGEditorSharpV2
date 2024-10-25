@@ -86,6 +86,27 @@
     </CompositeTask>
   </BuildRoot>
   <CompileRoot>
+    <DefineBoss identifier="Boss" difficulty="All" name="Boss" background="" bgm="">
+      <BossInit position="240,384" scbg="" />
+      <DefineSpellCard spellcard_name="" protect_time="2" resist_time="5" total_time="30" hp="900" power_amount="0" faith_amount="0" point_amount="0" bomb_immunity="false" opening_performance="false">
+        <SpellCardBeforeStart />
+        <SpellCardStart>
+          <AttachTask target="self" />
+        </SpellCardStart>
+        <SpellCardBeforeFinish />
+        <SpellCardFinish />
+        <SpellCardAfterFinish />
+      </DefineSpellCard>
+      <DefineSpellCard spellcard_name="爱丽丝、鲍勃与第三者" protect_time="2" resist_time="5" total_time="30" hp="900" power_amount="0" faith_amount="0" point_amount="0" bomb_immunity="false" opening_performance="false">
+        <SpellCardBeforeStart />
+        <SpellCardStart>
+          <AttachTask target="self" />
+        </SpellCardStart>
+        <SpellCardBeforeFinish />
+        <SpellCardFinish />
+        <SpellCardAfterFinish />
+      </DefineSpellCard>
+    </DefineBoss>
     <DefineBullet identifier="test_bullet">
       <BulletInit parameters="what did genshin do with you!?" style="grain_a" color="COLOR_RED" stay="true" destroyable="false" />
     </DefineBullet>
