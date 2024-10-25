@@ -1,0 +1,69 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineSpellCard",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bossspellcard.png",
+	"Captures": [
+		{ "Key": "spellcard_name" },
+		{ "Key": "protect_time" },
+		{ "Key": "resist_time" },
+		{ "Key": "total_time" },
+		{ "Key": "hp" },
+		{ "Key": "power_amount" },
+		{ "Key": "faith_amount" },
+		{ "Key": "point_amount" },
+		{ "Key": "bomb_immunity" },
+		{ "Key": "opening_performance" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "Non-spell card",
+				"ConditionOn": 0,
+				"UseExistanceInsteadOfBoolValue": true,
+				"Inversed": true
+			},
+			{
+				"Text": "SpellCard\"{0}\"",
+				"ConditionOn": 0,
+				"UseExistanceInsteadOfBoolValue": true
+			},
+			{
+				"Text": ", time(protected:{1}(s), resist:{2}(s), total:{3}(s)), hp: {4}, bonus {5} power, {6} faith, {7} points"
+			},
+			{
+				"Text": ", immune to bomb",
+				"ConditionOn": 8
+			},
+			{
+				"Text": ", redirect entrance of scprac to previous phase",
+				"ConditionOn": 9
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "非符",
+					"ConditionOn": 0,
+					"UseExistanceInsteadOfBoolValue": true,
+					"Inversed": true
+				},
+				{
+					"Text": "符卡\"{0}\"",
+					"ConditionOn": 0,
+					"UseExistanceInsteadOfBoolValue": true
+				},
+				{
+					"Text": ", 无敌{1}秒, 减伤{2}秒, 总共{3}秒, 血量{4}, 击破奖励{5}灵力, {6}信仰, {7}点数"
+				},
+				{
+					"Text": ", 免疫Bomb",
+					"ConditionOn": 8
+				},
+				{
+					"Text": ", 将符卡练习入口重定向至上一阶段",
+					"ConditionOn": 9
+				}
+			]
+		}
+	}
+}
