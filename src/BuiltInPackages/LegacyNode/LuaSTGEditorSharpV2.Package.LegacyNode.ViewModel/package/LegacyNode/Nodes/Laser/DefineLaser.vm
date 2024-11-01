@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfiguableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineLaser",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/laserdefine.png",
+	"Captures": [
+		{ "Key": "identifier" }
+	],
+	"Text": {
+		"Neutral": "define laser class of name {0}",
+		"Localized": {
+			"zh": "定义激光类型 {0}"
+		}
+	}
+}

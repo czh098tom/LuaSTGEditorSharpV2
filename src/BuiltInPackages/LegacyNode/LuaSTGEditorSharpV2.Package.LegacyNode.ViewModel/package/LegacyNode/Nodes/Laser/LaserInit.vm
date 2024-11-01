@@ -1,0 +1,30 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LaserInit",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/laserinit.png",
+	"Captures": [
+		{ "Key": "parameters" },
+		{ "Key": "color" },
+		{ "Key": "style" },
+		{ "Key": "head_length" },
+		{ "Key": "body_length" },
+		{ "Key": "tail_length" },
+		{ "Key": "width" },
+		{ "Key": "node_size" },
+		{ "Key": "head_size" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "initialize laser of color {1}, style {2}, length {3}+{4}+{5}, width {6}, head size{8}, tail size {7}"
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "初始化激光, 颜色{1}, 样式{2}, 长度{3}+{4}+{5}, 宽度{3}, 激光头节点大小{8}, 激光尾节点大小{7}"
+				}
+			]
+		}
+	}
+}

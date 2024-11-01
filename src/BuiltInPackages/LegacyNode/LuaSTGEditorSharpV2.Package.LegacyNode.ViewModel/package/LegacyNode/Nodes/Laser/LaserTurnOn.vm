@@ -1,0 +1,41 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LaserTurnOn",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/laserturnon.png",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "time" },
+		{ "Key": "play_sound_effect" },
+		{ "Key": "wait" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "turn laser {0} on in {1} frame(s)"
+			},
+			{
+				"Text": ", play sound effect",
+				"ConditionOn": 2
+			},
+			{
+				"Text": ", block current task",
+				"ConditionOn": 3
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "在{1}帧内{0}打开激光"
+				},
+				{
+					"Text": ", 播放音效",
+					"ConditionOn": 2
+				},
+				{
+					"Text": ", 阻塞当前任务",
+					"ConditionOn": 3
+				}
+			]
+		}
+	}
+}

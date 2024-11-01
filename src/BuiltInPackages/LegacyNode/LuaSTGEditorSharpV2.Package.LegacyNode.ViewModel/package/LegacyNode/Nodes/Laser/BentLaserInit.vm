@@ -1,0 +1,27 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BentLaserInit",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/laserbentinit.png",
+	"Captures": [
+		{ "Key": "parameters" },
+		{ "Key": "color" },
+		{ "Key": "length" },
+		{ "Key": "width" },
+		{ "Key": "sampling" },
+		{ "Key": "node_size" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "initialize bent laser of color {1}, length {2}, width {3}, node size {5}"
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "初始化曲光, 颜色{1}, 长度{2}, 宽度{3}, 激光头大小{5}"
+				}
+			]
+		}
+	}
+}

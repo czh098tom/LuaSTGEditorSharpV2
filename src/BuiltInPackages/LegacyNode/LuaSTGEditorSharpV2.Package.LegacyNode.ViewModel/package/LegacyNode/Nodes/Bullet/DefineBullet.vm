@@ -6,9 +6,9 @@
 		{ "Key": "identifier" }
 	],
 	"Text": {
-		"Neutral": "define bullet class as {0}",
+		"Neutral": "define bullet class of name {0}",
 		"Localized": {
-			"zh": "定义子弹类为 {0}"
+			"zh": "定义子弹类型 {0}"
 		}
 	}
 }
