@@ -8,9 +8,9 @@
 		{ "Key": "color" }
 	],
 	"Text": {
-		"Neutral": "modify {0}'s style to {1} in {2}",
+		"Neutral": "modify {1}'s style to {2} in {3}",
 		"Localized": {
-			"zh": "修改{0}的弹型为颜色{2}的{1}"
+			"zh": "修改{1}的弹型为颜色{3}的{2}"
 		}
 	}
 }

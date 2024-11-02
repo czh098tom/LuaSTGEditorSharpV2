@@ -4,9 +4,9 @@
   "Captures": [ { "Key": "condition" } ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/if.png",
   "Text": {
-    "Neutral": "if ({0})",
+    "Neutral": "if ({1})",
     "Localized": {
-      "zh": "如果 ({0})"
+      "zh": "如果 ({1})"
     }
   }
 }

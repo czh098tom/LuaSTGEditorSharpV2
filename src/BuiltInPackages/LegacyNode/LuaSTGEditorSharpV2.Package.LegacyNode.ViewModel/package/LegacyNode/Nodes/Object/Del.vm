@@ -9,7 +9,7 @@
   "Text": {
     "Neutral": [
       {
-        "Text": "delete {0}"
+        "Text": "delete {1}"
       },
       {
         "Text": ", and call del function of the object",
@@ -19,7 +19,7 @@
     "Localized": {
       "zh": [
         {
-          "Text": "delete {0}"
+          "Text": "delete {1}"
         },
         {
           "Text": ", and call del function of the object",

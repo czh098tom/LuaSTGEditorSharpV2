@@ -6,9 +6,9 @@
 		{ "Key": "time" }
 	],
 	"Text": {
-		"Neutral": "Wait {0} frames",
+		"Neutral": "Wait {1} frames",
 		"Localized": {
-			"zh": "等待 {0} 帧"
+			"zh": "等待 {1} 帧"
 		}
 	}
 }

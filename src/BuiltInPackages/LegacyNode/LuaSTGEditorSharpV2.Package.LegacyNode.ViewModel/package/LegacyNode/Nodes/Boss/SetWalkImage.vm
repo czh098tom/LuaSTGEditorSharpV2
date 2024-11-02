@@ -11,9 +11,9 @@
 		{ "Key": "collision_size" }
 	],
 	"Text": {
-		"Neutral": "Set image from path {0} as sprite, animation interval {4}, collision box {5}",
+		"Neutral": "Set image from path {1} as sprite, animation interval {5}, collision box {6}",
 		"Localized": {
-			"zh": "设置行走图为{0}，动画间隔{4}，碰撞箱({5})"
+			"zh": "设置行走图为{1}，动画间隔{5}，碰撞箱({6})"
 		}
 	}
 }

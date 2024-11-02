@@ -22,7 +22,7 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "create simple bullet of type {0} with {1} at {2},velocity={3},rotation={4}"
+				"Text": "create simple bullet of type {1} with {2} at {3},velocity={4},rotation={5}"
 			},
 			{
 				"Text": ", aim to player",
@@ -38,12 +38,12 @@
 				"Inversed": true
 			},
 			{
-				"Text": ",delay {9} frames before creation",
+				"Text": ",delay {10} frames before creation",
 				"ConditionOn": "9",
 				"UseExistanceInsteadOfBoolValue": true
 			},
 			{
-				"Text": ",accel speed={11},accel angle={12}"
+				"Text": ",accel speed={12},accel angle={13}"
 			},
 			{
 				"Text": ",rebound",
@@ -54,7 +54,7 @@
 				"ConditionOn": "14"
 			},
 			{
-				"Text": ",maximum speed of {13}",
+				"Text": ",maximum speed of {14}",
 				"ConditionOn": "13",
 				"UseExistanceInsteadOfBoolValue": true
 			}
@@ -62,7 +62,7 @@
 		"Localized": {
 			"zh": [
 				{
-					"Text": "在{2}以样式{1}, 颜色{2}生成简单子弹, 其速度{3}, 方向{4}"
+					"Text": "在{3}以样式{2}, 颜色{3}生成简单子弹, 其速度{4}, 方向{5}"
 				},
 				{
 					"Text": ", 瞄准自机",
@@ -78,12 +78,12 @@
 					"Inversed": true
 				},
 				{
-					"Text": ", 延迟生成{9}帧",
+					"Text": ", 延迟生成{10}帧",
 					"ConditionOn": "9",
 					"UseExistanceInsteadOfBoolValue": true
 				},
 				{
-					"Text": ", 加速度{11}, 加速度方向{12}"
+					"Text": ", 加速度{12}, 加速度方向{13}"
 				},
 				{
 					"Text": ", 反弹",
@@ -94,7 +94,7 @@
 					"ConditionOn": "14"
 				},
 				{
-					"Text": ", 最大速度{13}",
+					"Text": ", 最大速度{14}",
 					"ConditionOn": "13",
 					"UseExistanceInsteadOfBoolValue": true
 				}

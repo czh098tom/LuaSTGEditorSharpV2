@@ -4,9 +4,9 @@
   "Captures": [ { "Key": "condition" } ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/elseif.png",
   "Text": {
-    "Neutral": "elseif ({0}) then",
+    "Neutral": "elseif ({1}) then",
     "Localized": {
-      "zh": "否则如果 ({0}) 则"
+      "zh": "否则如果 ({1}) 则"
     }
   }
 }

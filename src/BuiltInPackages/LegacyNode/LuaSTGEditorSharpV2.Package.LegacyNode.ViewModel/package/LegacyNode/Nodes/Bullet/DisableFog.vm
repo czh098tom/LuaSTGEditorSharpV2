@@ -5,9 +5,9 @@
     { "Key": "target" }
   ],
   "Text": {
-    "Neutral": "disable fog when generating {0}",
+    "Neutral": "disable fog when generating {1}",
     "Localized": {
-      "zh": "取消 {0} 的弹雾"
+      "zh": "取消 {1} 的弹雾"
     }
   }
 }

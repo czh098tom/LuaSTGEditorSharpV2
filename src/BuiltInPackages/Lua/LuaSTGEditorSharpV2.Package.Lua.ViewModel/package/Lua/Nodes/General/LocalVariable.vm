@@ -9,12 +9,12 @@
 	"SubCaptureFormat": {
 		"Neutral": [
 			{
-				"Text": "\u000Avariable {0} = {1}",
+				"Text": "\u000Avariable {1} = {2}",
 				"ConditionOn": 1,
 				"UseExistanceInsteadOfBoolValue": true
 			},
 			{
-				"Text": "\u000Avariable {0}",
+				"Text": "\u000Avariable {1}",
 				"ConditionOn": 1,
 				"UseExistanceInsteadOfBoolValue": true,
 				"Inversed": true
@@ -23,12 +23,12 @@
 		"Localized": {
 			"zh": [
 				{
-					"Text": "\u000A变量 {0} = {1}",
+					"Text": "\u000A变量 {1} = {2}",
 					"ConditionOn": 1,
 					"UseExistanceInsteadOfBoolValue": true
 				},
 				{
-					"Text": "\u000A变量 {0}",
+					"Text": "\u000A变量 {1}",
 					"ConditionOn": 1,
 					"UseExistanceInsteadOfBoolValue": true,
 					"Inversed": true
@@ -37,9 +37,9 @@
 		}
 	},
 	"Text": {
-		"Neutral": "define:{0}{1}",
+		"Neutral": "define:{1}{2}",
 		"Localized": {
-			"zh": "定义：{0}{1}"
+			"zh": "定义：{1}{2}"
 		}
 	}
 }

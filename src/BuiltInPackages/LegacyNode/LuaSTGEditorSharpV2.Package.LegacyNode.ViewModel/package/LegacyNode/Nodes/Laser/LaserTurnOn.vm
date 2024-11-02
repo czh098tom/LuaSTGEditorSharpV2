@@ -11,7 +11,7 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "turn laser {0} on in {1} frame(s)"
+				"Text": "turn laser {1} on in {2} frame(s)"
 			},
 			{
 				"Text": ", play sound effect",
@@ -25,7 +25,7 @@
 		"Localized": {
 			"zh": [
 				{
-					"Text": "在{1}帧内{0}打开激光"
+					"Text": "在{2}帧内{1}打开激光"
 				},
 				{
 					"Text": ", 播放音效",

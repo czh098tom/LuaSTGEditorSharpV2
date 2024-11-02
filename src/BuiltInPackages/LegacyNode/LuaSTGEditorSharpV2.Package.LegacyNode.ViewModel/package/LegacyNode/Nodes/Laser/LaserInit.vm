@@ -16,13 +16,13 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "initialize laser of color {1}, style {2}, length {3}+{4}+{5}, width {6}, head size{8}, tail size {7}"
+				"Text": "initialize laser of color {2}, style {3}, length {4}+{5}+{6}, width {7}, head size{9}, tail size {8}"
 			}
 		],
 		"Localized": {
 			"zh": [
 				{
-					"Text": "初始化激光, 颜色{1}, 样式{2}, 长度{3}+{4}+{5}, 宽度{3}, 激光头节点大小{8}, 激光尾节点大小{7}"
+					"Text": "初始化激光, 颜色{2}, 样式{3}, 长度{4}+{5}+{6}, 宽度{4}, 激光头节点大小{9}, 激光尾节点大小{8}"
 				}
 			]
 		}

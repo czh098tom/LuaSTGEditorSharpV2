@@ -13,13 +13,13 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "initialize bent laser of color {1}, length {2}, width {3}, node size {5}"
+				"Text": "initialize bent laser of color {2}, length {3}, width {4}, node size {6}"
 			}
 		],
 		"Localized": {
 			"zh": [
 				{
-					"Text": "初始化曲光, 颜色{1}, 长度{2}, 宽度{3}, 激光头大小{5}"
+					"Text": "初始化曲光, 颜色{2}, 长度{3}, 宽度{4}, 激光头大小{6}"
 				}
 			]
 		}

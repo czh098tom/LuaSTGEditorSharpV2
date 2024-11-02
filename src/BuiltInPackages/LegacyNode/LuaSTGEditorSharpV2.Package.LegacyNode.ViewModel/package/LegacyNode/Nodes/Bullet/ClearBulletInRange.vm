@@ -14,7 +14,7 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "clear bullets within the radius {1} of position {0}, expanding time {2}, clearing time {3}"
+				"Text": "clear bullets within the radius {2} of position {1}, expanding time {3}, clearing time {4}"
 			},
 			{
 				"Text": ", convert to faith",
@@ -25,13 +25,13 @@
 				"ConditionOn": 5
 			},
 			{
-				"Text": ", vertical velocity {6}"
+				"Text": ", vertical velocity {7}"
 			}
 		],
 		"Localized": {
 			"zh": [
 				{
-					"Text": "在位置{0}清除半径{1}内的子弹，，扩展时间{2}，清除时间{3}"
+					"Text": "在位置{1}清除半径{2}内的子弹，，扩展时间{3}，清除时间{4}"
 				},
 				{
 					"Text": ", 转换为信仰",
@@ -42,7 +42,7 @@
 					"ConditionOn": 5
 				},
 				{
-					"Text": ", 垂直速度{6}"
+					"Text": ", 垂直速度{7}"
 				}
 			]
 		}

@@ -11,7 +11,7 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "grow laser {0} in {1} frame(s)"
+				"Text": "grow laser {1} in {2} frame(s)"
 			},
 			{
 				"Text": ", play sound effect",
@@ -25,7 +25,7 @@
 		"Localized": {
 			"zh": [
 				{
-					"Text": "在{1}帧内{0}伸长激光"
+					"Text": "在{2}帧内{1}伸长激光"
 				},
 				{
 					"Text": ", 播放音效",

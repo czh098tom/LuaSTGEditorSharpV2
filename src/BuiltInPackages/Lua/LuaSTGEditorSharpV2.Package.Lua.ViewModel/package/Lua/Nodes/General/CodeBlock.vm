@@ -4,9 +4,9 @@
   "Captures": [ { "Key": "name" } ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
   "Text": {
-    "Neutral": "Code Block: {0}",
+    "Neutral": "Code Block: {1}",
     "Localized": {
-      "zh": "代码块：{0}"
+      "zh": "代码块：{1}"
     }
   }
 }

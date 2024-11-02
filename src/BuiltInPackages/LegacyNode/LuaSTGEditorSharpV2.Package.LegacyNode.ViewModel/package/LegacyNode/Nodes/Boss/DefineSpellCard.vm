@@ -23,12 +23,12 @@
 				"Inversed": true
 			},
 			{
-				"Text": "SpellCard\"{0}\"",
+				"Text": "SpellCard\"{1}\"",
 				"ConditionOn": 0,
 				"UseExistanceInsteadOfBoolValue": true
 			},
 			{
-				"Text": ", time(protected:{1}(s), resist:{2}(s), total:{3}(s)), hp: {4}, bonus {5} power, {6} faith, {7} points"
+				"Text": ", time(protected:{2}(s), resist:{3}(s), total:{4}(s)), hp: {5}, bonus {6} power, {7} faith, {8} points"
 			},
 			{
 				"Text": ", immune to bomb",
@@ -48,12 +48,12 @@
 					"Inversed": true
 				},
 				{
-					"Text": "符卡\"{0}\"",
+					"Text": "符卡\"{1}\"",
 					"ConditionOn": 0,
 					"UseExistanceInsteadOfBoolValue": true
 				},
 				{
-					"Text": ", 无敌{1}秒, 减伤{2}秒, 总共{3}秒, 血量{4}, 击破奖励{5}灵力, {6}信仰, {7}点数"
+					"Text": ", 无敌{2}秒, 减伤{3}秒, 总共{4}秒, 血量{5}, 击破奖励{6}灵力, {7}信仰, {8}点数"
 				},
 				{
 					"Text": ", 免疫Bomb",

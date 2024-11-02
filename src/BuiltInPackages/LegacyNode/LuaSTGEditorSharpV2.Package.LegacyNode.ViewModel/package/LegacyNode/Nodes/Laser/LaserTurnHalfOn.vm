@@ -10,7 +10,7 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "turn laser {0} half on in {1} frame(s)"
+				"Text": "turn laser {1} half on in {2} frame(s)"
 			},
 			{
 				"Text": ", block current task",
@@ -20,7 +20,7 @@
 		"Localized": {
 			"zh": [
 				{
-					"Text": "在{1}帧内{0}使激光半开"
+					"Text": "在{2}帧内{1}使激光半开"
 				},
 				{
 					"Text": ", 阻塞当前任务",

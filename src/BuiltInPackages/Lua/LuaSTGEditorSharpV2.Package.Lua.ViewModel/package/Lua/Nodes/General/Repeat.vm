@@ -12,16 +12,16 @@
 	"SubCaptureFormat": {
 		"Neutral": [
 			{
-				"Text": ", ({0} = {1}, +({2}))",
+				"Text": ", ({1} = {2}, +({3}))",
 				"ConditionOn": 1,
 				"UseExistanceInsteadOfBoolValue": true
 			}
 		]
 	},
 	"Text": {
-		"Neutral": "repeat {0} times{1}",
+		"Neutral": "repeat {1} times{2}",
 		"Localized": {
-			"zh": "循环{0}次{1}"
+			"zh": "循环{1}次{2}"
 		}
 	}
 }

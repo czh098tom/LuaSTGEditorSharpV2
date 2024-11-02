@@ -8,7 +8,7 @@
     ],
     "Text": {
         "Neutral": [
-            { "Text": "Create task for {0}" },
+            { "Text": "Create task for {1}" },
             {
                 "Text": ", redirect self to target",
                 "ConditionOn": 1
@@ -16,7 +16,7 @@
         ],
         "Localized": {
             "zh": [
-                { "Text": "为 {0} 创建任务" },
+                { "Text": "为 {1} 创建任务" },
                 {
                     "Text": ", 重定向self至目标",
                     "ConditionOn": 1
