@@ -4,9 +4,9 @@
   "Captures": [ { "Key": "name" } ],
   "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/codeblock.png",
   "Text": {
-    "Neutral": "Resource group: {0}",
+    "Neutral": "Resource group: {1}",
     "Localized": {
-      "zh": "资源组：{0}"
+      "zh": "资源组：{1}"
     }
   }
 }

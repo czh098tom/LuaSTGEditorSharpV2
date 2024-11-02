@@ -61,7 +61,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Resources {
         }
         
         /// <summary>
-        ///   查找类似 [{0}] (Unknown) 的本地化字符串。
+        ///   查找类似 [{1}] (Unknown) 的本地化字符串。
         /// </summary>
         internal static string unknown_format {
             get {

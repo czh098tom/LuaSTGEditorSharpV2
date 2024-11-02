@@ -35,12 +35,12 @@ namespace LuaSTGEditorSharpV2.ViewModel.Specialized
                 var type = nodePackageProvider.ShortName2Info[shortName].ServiceInstanceType;
                 var obj = JsonConvert.DeserializeObject(jsonDecl, type);
                 string? uid = type.BaseType?.GetProperty("TypeUID")?.GetValue(obj) as string;
-                viewModel.Text = string.Format(Text?.GetLocalized() ?? string.Empty
+                viewModel.Text = context.Format(Text?.GetLocalized() ?? string.Empty
                     , shortName, uid ?? throw new NullReferenceException());
             }
             catch
             {
-                viewModel.Text = string.Format(ErrorText?.GetLocalized() ?? string.Empty
+                viewModel.Text = context.Format(ErrorText?.GetLocalized() ?? string.Empty
                     , shortName);
             }
             viewModel.Icon = Icon;

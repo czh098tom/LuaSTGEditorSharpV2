@@ -55,7 +55,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                             var sel = SubCaptureFormat[j];
                             if (sel.ShouldAppend(subCaptureResult))
                             {
-                                captureResultBuilder[j].Append(context.ApplyFormat(sel.Text, subCaptureResult));
+                                captureResultBuilder[j].Append(context.ApplyIndentedFormat(sel.Text, subCaptureResult));
                             }
                         }
                     }

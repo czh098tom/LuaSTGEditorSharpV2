@@ -5,15 +5,15 @@
   "DeclarationCaputure": { "Key": "serviceDeclaration" },
   "ShortNameCaputure": { "Key": "serviceShortName" },
   "Text": {
-    "Neutral": "define node service of type {0} to node type {1}",
+    "Neutral": "define node service of type {1} to node type {2}",
     "Localized": {
-      "zh": "针对节点类型{1}定义节点服务{0}"
+      "zh": "针对节点类型{2}定义节点服务{1}"
     }
   },
   "ErrorText": {
-    "Neutral": "define node service of type {0}",
+    "Neutral": "define node service of type {1}",
     "Localized": {
-      "zh": "定义节点服务：{0}"
+      "zh": "定义节点服务：{1}"
     }
   }
 }

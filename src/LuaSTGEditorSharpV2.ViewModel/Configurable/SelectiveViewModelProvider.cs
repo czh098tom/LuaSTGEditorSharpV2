@@ -38,7 +38,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             {
                 if (text[i].ShouldAppend(_captureResult))
                 {
-                    sb.AppendFormat(text[i].Text ?? string.Empty, _captureResult);
+                    sb.Append(context.Format(text[i].Text ?? string.Empty, _captureResult));
                 }
             }
             viewModel.Text = sb.ToString();

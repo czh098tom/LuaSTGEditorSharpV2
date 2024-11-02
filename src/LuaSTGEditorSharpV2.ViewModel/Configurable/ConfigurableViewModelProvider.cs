@@ -26,9 +26,9 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
         {
             var token = new NodePropertyAccessToken(ServiceProvider, dataSource, context);
             _captureResult ??= new string[GetCaptureCacheLength()];
-            WriteCaptureResult(token, _captureResult);
+            WriteCaptureResult(context, token, _captureResult);
             string text = GetLocalizedTextIfExists();
-            viewModel.Text = string.Format(text, _captureResult);
+            viewModel.Text = context.Format(text, _captureResult);
             viewModel.Icon = Icon;
         }
 
@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.ViewModel.Configurable
             return l;
         }
 
-        protected virtual int WriteCaptureResult(NodePropertyAccessToken token, string?[] captureResult)
+        protected virtual int WriteCaptureResult(NodeViewModelContext context, NodePropertyAccessToken token, string?[] captureResult)
         {
             int n;
             for (n = 0; n < Captures.Length; n++)

@@ -21,7 +21,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         internal protected override void UpdateViewModelData(NodeViewModel viewModel, NodeData dataSource, NodeViewModelContext context)
         {
-            viewModel.Text = string.Format(ServiceProvider.GetRequiredService<LocalizationService>()
+            viewModel.Text = context.Format(ServiceProvider.GetRequiredService<LocalizationService>()
                 .GetString(unknownFormatKey, typeof(DefaultViewModelProviderService).Assembly), dataSource.TypeUID);
         }
     }

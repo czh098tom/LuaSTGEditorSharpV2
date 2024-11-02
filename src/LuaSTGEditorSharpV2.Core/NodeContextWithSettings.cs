@@ -71,6 +71,8 @@ namespace LuaSTGEditorSharpV2.Core
 
         protected readonly object _lock = new();
 
+        protected ContextFormatter? Formatter { private get; init; }
+
         public virtual IDisposable AcquireContextLevelHandle(NodeData current)
         {
             var handle = new ContextHandle(this);
@@ -156,6 +158,11 @@ namespace LuaSTGEditorSharpV2.Core
                 return _contextData[type].Reverse();
             }
             return [];
+        }
+
+        public string Format(string toAppend, params object?[] source)
+        {
+            return (Formatter ?? ContextFormatter.Instance).ApplyFormat(toAppend, source);
         }
     }
 

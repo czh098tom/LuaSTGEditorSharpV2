@@ -42,6 +42,18 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             }
         }
 
+        protected class CodeGenerationContextFormatter(CodeGenerationContext context) : ContextFormatter
+        {
+            protected override string GetToken(string? format, IFormatProvider formatProvider)
+            {
+                return format switch
+                {
+                    "IND" => context.ServiceSettings.IndentionString,
+                    _ => string.Empty,
+                };
+            }
+        }
+
         private CodeGeneratorServiceProvider CodeGeneratorServiceProvider =>
             ServiceProvider.GetRequiredService<CodeGeneratorServiceProvider>();
 
@@ -53,7 +65,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public IReadOnlyDictionary<NodeData, Dictionary<string, string>> ContextVariables => _contextVariables;
 
         public CodeGenerationContext(IServiceProvider serviceProvider, LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings)
-            : base(serviceProvider, localSettings, serviceSettings) { }
+            : base(serviceProvider, localSettings, serviceSettings)
+        {
+            Formatter = new CodeGenerationContextFormatter(this);
+        }
 
         public IDisposable AcquireContextHandle(NodeData current, int indentionIncrement = 0)
         {
@@ -162,23 +177,9 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             return builder;
         }
 
-        public StringBuilder ApplyIndentedFormat(StringBuilder indention
-            , string toAppend, params object?[] source)
+        public StringBuilder ApplyIndentedFormat(string toAppend, params object?[] source)
         {
-            return ApplyIndented(indention, string.Format(toAppend, MergeParam(source)));
-        }
-
-        public string ApplyFormat(string toAppend, params object?[] source)
-        {
-            return string.Format(toAppend, MergeParam(source));
-        }
-
-        private object?[] MergeParam(params object?[] source)
-        {
-            object?[] fullParams = new object[source.Length + 1];
-            fullParams[0] = ServiceSettings.IndentionString;
-            Array.Copy(source, 0, fullParams, 1, source.Length);
-            return fullParams;
+            return ApplyIndented(GetIndented(), Format(toAppend, source));
         }
     }
 }
