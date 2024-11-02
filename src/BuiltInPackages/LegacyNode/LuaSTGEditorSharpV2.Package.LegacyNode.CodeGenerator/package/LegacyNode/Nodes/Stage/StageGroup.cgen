@@ -12,10 +12,10 @@
 	],
 	"Head": [
 		{ "Text": "stage.group.New('menu', {{}}, '{1}', {{" },
-		{ "Text": "{0}lifeleft = {2}," },
-		{ "Text": "{0}power = {3}," },
-		{ "Text": "{0}faith = {4}," },
-		{ "Text": "{0}bomb = {5}" },
+		{ "Text": "{0:IND}lifeleft = {2}," },
+		{ "Text": "{0:IND}power = {3}," },
+		{ "Text": "{0:IND}faith = {4}," },
+		{ "Text": "{0:IND}bomb = {5}" },
 		{ "Text": "}}, {6}, {7})" }
 	]
   }

@@ -20,7 +20,7 @@
 			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
 		},
-		{ "Text": "{0}self.x, self.y = _x, _y" }
+		{ "Text": "{0:IND}self.x, self.y = _x, _y" }
 	],
 	"Tail": [
 		{ "Text": "end" }

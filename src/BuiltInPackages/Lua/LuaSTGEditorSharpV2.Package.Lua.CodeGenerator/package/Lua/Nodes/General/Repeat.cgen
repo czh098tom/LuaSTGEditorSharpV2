@@ -19,17 +19,17 @@
 	],
 	"SubCaptureFormat": [
 		{
-			"Text": "{0}local {2} = {3} local _d_{2} = {4}\n",
+			"Text": "{0:IND}local {2} = {3} local _d_{2} = {4}\n",
 			"ConditionOn": 1,
 			"UseExistanceInsteadOfBoolValue": true
 		},
 		{
-			"Text": "{0}{2} = {2} + _d_{2}\n",
+			"Text": "{0:IND}{2} = {2} + _d_{2}\n",
 			"ConditionOn": 1,
 			"UseExistanceInsteadOfBoolValue": true
 		}
 	],
-	"Head": "for _ = 1, {1} do\n{2}{0}do",
-	"Tail": "{0}end\n{3}end",
+	"Head": "for _ = 1, {1} do\n{2}{0:IND}do",
+	"Tail": "{0:IND}end\n{3}end",
 	"IndentionIncrement": 2
 }

@@ -8,7 +8,7 @@
 	"Head": [
 		{ "Text": "lasttask = task.New({1}, function()" },
 		{
-			"Text": "{0}local self = task.GetSelf()",
+			"Text": "{0:IND}local self = task.GetSelf()",
 			"ConditionOn": "2"
 		}
 	],
