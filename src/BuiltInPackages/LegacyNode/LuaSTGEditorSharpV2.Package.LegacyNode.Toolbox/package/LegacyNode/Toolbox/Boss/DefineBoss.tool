@@ -24,7 +24,7 @@
 				{
 					"TypeUID": "DefineSpellCard",
 					"Properties": {
-						"spellcard_name": "",
+						"spellcard_name": "\"\"",
 						"protect_time": 2,
 						"resist_time": 5,
 						"total_time": 30,

@@ -17,7 +17,7 @@
 		{
 			"TypeUID": "DefineBoss",
 			"Property": [
-				{ "Key": "identifier"}
+				{ "Key": "identifier" }
 			]
 		}
 	],
