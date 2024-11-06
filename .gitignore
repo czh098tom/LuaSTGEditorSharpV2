@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Test output
 test/output/
+/src/LuaSTGEditorSharpV2.CLI/Properties/launchSettings.json
