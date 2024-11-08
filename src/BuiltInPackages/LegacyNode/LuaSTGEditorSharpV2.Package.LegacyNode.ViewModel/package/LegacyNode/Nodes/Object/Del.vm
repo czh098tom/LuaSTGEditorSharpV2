@@ -19,10 +19,10 @@
     "Localized": {
       "zh": [
         {
-          "Text": "delete {1}"
+          "Text": "删除 {1}"
         },
         {
-          "Text": ", and call del function of the object",
+          "Text": " 并触发del回调",
           "ConditionOn": 1
         }
       ]

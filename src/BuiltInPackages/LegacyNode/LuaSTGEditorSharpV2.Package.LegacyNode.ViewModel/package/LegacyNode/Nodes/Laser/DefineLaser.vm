@@ -6,7 +6,7 @@
 		{ "Key": "identifier" }
 	],
 	"Text": {
-		"Neutral": "define laser class of name {1}",
+		"Neutral": "define laser {1}",
 		"Localized": {
 			"zh": "定义激光类型 {1}"
 		}

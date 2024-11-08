@@ -6,7 +6,7 @@
 		{ "Key": "identifier" }
 	],
 	"Text": {
-		"Neutral": "define bent laser class of name {1}",
+		"Neutral": "define bent laser {1}",
 		"Localized": {
 			"zh": "定义曲光类型 {1}"
 		}
