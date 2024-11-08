@@ -1,0 +1,30 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateObject",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/objectcreate.png",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "position" },
+		{ "Key": "parameters" }
+	],
+	"Text": {
+		"Neutral":[
+			{ "Text": "create object {1} at ({2})" },
+			{
+				"Text": " with params {3}",
+				"ConditionOn": 3,
+				"UseExistanceInsteadOfBoolValue": true
+			}
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "在({2})创建物体{1}" },
+				{
+					"Text": ", 传入参数{3}",
+					"ConditionOn": 3,
+					"UseExistanceInsteadOfBoolValue": true
+				}
+			]
+		}
+	}
+}

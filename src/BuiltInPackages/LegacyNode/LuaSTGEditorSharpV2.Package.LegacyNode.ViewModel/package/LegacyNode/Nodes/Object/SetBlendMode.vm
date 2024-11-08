@@ -1,0 +1,16 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetBlendMode",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/setcolor.png",
+	"Captures":[
+		{"Key":"target"},
+		{"Key":"blend_mode"},
+		{"Key":"argb"}
+	],
+	"Text": {
+		"Neutral": "set blend mode of {1} to {2} with color {3}",
+		"Localized": {
+			"zh": "设置{1}的混合模式为{2}，颜色为{3}"
+		}
+	}
+}

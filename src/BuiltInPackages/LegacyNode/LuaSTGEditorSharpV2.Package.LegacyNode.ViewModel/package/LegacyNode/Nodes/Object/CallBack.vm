@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/callback.png",
+	"Captures": [
+		{ "Key": "type" }
+	],
+	"Text": {
+		"Neutral": "on {1}",
+		"Localized": {
+			"zh": "{1}时"
+		}
+	}
+}

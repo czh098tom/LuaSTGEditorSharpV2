@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetPosition",
+	"Captures":[
+		{"Key":"target"},
+		{"Key":"position"}
+	],
+	"Text": {
+		"Neutral": "set position of {1} to {2}",
+		"Localized": {
+			"zh": "设置{1}的位置为{2}"
+		}
+	}
+}

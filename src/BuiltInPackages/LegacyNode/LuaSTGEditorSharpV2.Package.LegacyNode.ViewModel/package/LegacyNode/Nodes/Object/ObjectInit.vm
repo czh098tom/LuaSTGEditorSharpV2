@@ -1,0 +1,48 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ObjectInit",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/objectinit.png",
+	"Captures": [
+		{ "Key": "parameters" },
+		{ "Key": "image" },
+		{ "Key": "layer" },
+		{ "Key": "group" },
+		{ "Key": "hide" },
+		{ "Key": "bound" },
+		{ "Key": "navigate" },
+		{ "Key": "hp" },
+		{ "Key": "collision" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "initialize object with image {2} in collision group {4}, rendering priority {3}, hp {8}"
+			},
+			{
+				"Text": ", disable render",
+				"ConditionOn": 5
+			},
+			{
+				"Text": "disable collision",
+				"ConditionOn": 9,
+				"Inversed": true
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "初始化物体, 图像{2}, 碰撞组{4}, 渲染优先级{3}, 血量{8}"
+				},
+				{
+					"Text": ", 禁用渲染",
+					"ConditionOn": 5
+				},
+				{
+					"Text": "禁用碰撞",
+					"ConditionOn": 9,
+					"Inversed": true
+				}
+			]
+		}
+	}
+}

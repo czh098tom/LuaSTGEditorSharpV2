@@ -1,0 +1,29 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetAcceleration",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/setaccel.png",
+	"Captures":[
+		{"Key":"target"},
+		{"Key":"acceleration_velocity"},
+		{"Key":"acceleration_angle"},
+		{"Key":"aim"}
+	],
+	"Text": {
+		"Neutral": [
+			{"Text":"set {1}'s acceleration velocity to {2}, angle to {3}"},
+			{
+				"Text": "(relative to player direction)",
+				"ConditionOn": 4
+			}
+		],
+		"Localized": {
+			"zh": [
+				{"Text":"设置{1}的加速度速度为{2}，角度为{3}"},
+				{
+					"Text": "(相对于自机方向)",
+					"ConditionOn": 4
+				}
+			]
+		}
+	}
+}
