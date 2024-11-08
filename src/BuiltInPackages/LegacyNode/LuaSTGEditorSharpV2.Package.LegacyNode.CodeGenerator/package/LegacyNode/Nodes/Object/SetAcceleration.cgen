@@ -3,8 +3,8 @@
 	"TypeUID": "SetAcceleration",
 	"Captures":[
 		{"Key":"target"},
-		{"Key":"acceleration"},
-		{"Key":"accel_angle"},
+		{"Key":"acceleration_velocity"},
+		{"Key":"acceleration_angle"},
 		{"Key":"aim"}
 	],
 	"Head": "_set_a({1}, {2}, {3}, {4})"
