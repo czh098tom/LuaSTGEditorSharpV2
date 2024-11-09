@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="panel_toolBox_title" xml:space="preserve">
-    <value>Toolbox</value>
+  <data name="panel_nodeProfile_title" xml:space="preserve">
+    <value>Node Profile</value>
   </data>
-  <data name="ribbon_button_toolBox" xml:space="preserve">
-    <value>Toolbox</value>
+  <data name="ribbon_button_nodeProfile" xml:space="preserve">
+    <value>Node Profile</value>
   </data>
 </root>
