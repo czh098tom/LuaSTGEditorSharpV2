@@ -25,29 +25,9 @@
 		{ "Text": "{0:IND}bomb = {5}" },
 		{ "Text": "}}, {6})" },
 		{ "Text": "stage.group.DefStageFunc('{1}@{7}', 'init', function(self)" },
-		{ "Text": "{0:IND}_init_item(self)" },
-		{ "Text": "{0:IND}difficulty = self.group.difficulty" },
-		{ "Text": "{0:IND}New(mask_fader, 'open')" },
-		{ "Text": "{0:IND}New(_G[lstg.var.player_name])" }
+		{ "Text": "{0:IND}stage.group.initTask(self, function()"}
 	],
 	"Tail": [
-		{ "Text": "{0:IND}task.New(self, function()" },
-		{ "Text": "{0:IND}{0:IND}while coroutine.status(self.task[1])~='dead' do task.Wait() end" },
-		{ "Text": "{0:IND}{0:IND}stage.group.FinishReplay()" },
-		{ "Text": "{0:IND}{0:IND}New(mask_fader, 'close')" },
-		{ "Text": "{0:IND}{0:IND}task.New(self, function()" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}local _, bgm = EnumRes('bgm')" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}for i = 1, 30 do" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}{0:IND}for _, v in pairs(bgm) do" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}{0:IND}{0:IND}if GetMusicState(v) == 'playing' then" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}{0:IND}{0:IND}{0:IND}SetBGMVolume(v, 1 - i / 30)" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}{0:IND}{0:IND}end" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}{0:IND}end" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}{0:IND}task.Wait()" },
-		{ "Text": "{0:IND}{0:IND}{0:IND}end" },
-		{ "Text": "{0:IND}{0:IND}end)" },
-		{ "Text": "{0:IND}{0:IND}task.Wait(30)" },
-		{ "Text": "{0:IND}{0:IND}stage.group.FinishStage()" },
 		{ "Text": "{0:IND}end)" },
 		{ "Text": "end)" }
 	]
