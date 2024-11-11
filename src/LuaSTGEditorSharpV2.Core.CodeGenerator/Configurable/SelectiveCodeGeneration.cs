@@ -28,27 +28,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
         {
             var token = new NodePropertyAccessToken(ServiceProvider, node, context);
             _captureResult ??= new string[GetCaptureCacheLength()];
-            int n;
-            for (n = 0; n < Captures.Length; n++)
-            {
-                _captureResult[n] = Captures[n].ApplyMacro(token, context);
-            }
-            for (int i = 0; i < ContextCaptures.Length; i++)
-            {
-                for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
-                {
-                    var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
-                    if (contextNode != null)
-                    {
-                        _captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(token, context);
-                    }
-                    else
-                    {
-                        _captureResult[n] = string.Empty;
-                    }
-                    n++;
-                }
-            }
+            WriteCaptureResult(_captureResult, node, context);
             if (Head != null)
             {
                 StringBuilder sb = new();
@@ -90,6 +70,36 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 l += ContextCaptures[i].Property.Length;
             }
             return l;
-        }
-    }
+		}
+
+		protected virtual int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
+		{
+			var token = new NodePropertyAccessToken(ServiceProvider, node, context);
+			int n;
+			for (n = 0; n < Captures.Length; n++)
+			{
+				captureResult[n] = Captures[n].ApplyMacro(token, context);
+			}
+
+			for (int i = 0; i < ContextCaptures.Length; i++)
+			{
+				for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
+				{
+					var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
+					if (contextNode != null)
+					{
+						var contextNodeToken = new NodePropertyAccessToken(ServiceProvider, contextNode, context);
+						captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNodeToken, context);
+					}
+					else
+					{
+						captureResult[n] = string.Empty;
+					}
+					n++;
+				}
+			}
+
+			return n;
+		}
+	}
 }
