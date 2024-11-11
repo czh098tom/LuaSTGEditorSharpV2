@@ -1,0 +1,31 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Stage",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/stage.png",
+	"Captures": [
+		{ "Key": "name" },
+		{ "Key": "initial_life" },
+		{ "Key": "initial_power" },
+		{ "Key": "initial_faith" },
+		{ "Key": "initial_bomb" },
+		{ "Key": "allow_practice" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "add stage {1} to current stage group with initial life {2}, power {3}, faith {4}, bomb {5}" },
+			{
+				"Text": ", allow practice",
+				"CondtionOn": 6
+			}
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "将关卡 {1} 添加到当前关卡组, 初始生命 {2}, 灵力 {3}, 信仰 {4}, Bomb {5}" },
+				{
+					"Text": ", 允许练习",
+					"CondtionOn": 6
+				}
+			]
+		}
+	}
+}

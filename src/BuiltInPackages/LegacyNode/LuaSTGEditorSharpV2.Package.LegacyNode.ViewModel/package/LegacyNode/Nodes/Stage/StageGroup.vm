@@ -1,0 +1,32 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "StageGroup",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/stagegroup.png",
+	"Captures": [
+		{ "Key": "name" },
+		{ "Key": "initial_life" },
+		{ "Key": "initial_power" },
+		{ "Key": "initial_faith" },
+		{ "Key": "initial_bomb" },
+		{ "Key": "allow_practice" },
+		{ "Key": "difficulty_value" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "define stage group {1} with initial life {2}, power {3}, faith {4}, bomb {5}" },
+			{
+				"Text": ", allow practice {6}",
+				"ConditionOn": 6
+			}
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "定义关卡组 {1}，初始生命 {2}，得点 {3}，信仰 {4}，符卡 {5}" },
+				{
+					"Text": "，允许练习 {6}",
+					"ConditionOn": 6
+				}
+			]
+		}
+	}
+}
