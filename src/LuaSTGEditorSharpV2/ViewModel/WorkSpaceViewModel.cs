@@ -97,7 +97,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData[] nodeData)
         {
-            if(documentModel == null)
+            if (documentModel == null)
             {
                 _activeDocument = null;
             }
@@ -139,6 +139,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var dvm = ServiceProvider.GetRequiredService<DocumentViewModelFactory>().Create(doc);
             _documents.Add(dvm);
             _documentMapping.Add(doc, dvm);
+            dvm.SelectedNodeChanged += BroadcastSelectedNodeChanged;
             dvm.OnClose += (o, e) => CloseDocument(dvm);
             dvm.OnCommandPublishing += HandleAddCommandEvent;
         }
@@ -242,7 +243,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public async void ExportCode()
         {
-            if(_activeDocument?.SourceDocument == null) throw new InvalidOperationException();
+            if (_activeDocument?.SourceDocument == null) throw new InvalidOperationException();
             var dialog = new SaveFileDialog()
             {
                 CheckPathExists = true,

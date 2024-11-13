@@ -1,16 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <BaseOutputPath>$(MSBuildProjectDirectory)..\..\..\bin\</BaseOutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
-    <ProjectReference Include="..\LuaSTGEditorSharpV2.DockingWindows\LuaSTGEditorSharpV2.DockingWindows.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.WPF\LuaSTGEditorSharpV2.WPF.csproj" />
   </ItemGroup>
 

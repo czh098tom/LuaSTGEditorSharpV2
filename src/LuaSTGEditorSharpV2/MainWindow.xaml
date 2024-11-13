@@ -219,55 +219,6 @@
                             <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
                         </Style>
                     </xcad:DockingManager.LayoutItemContainerStyle>
-                    <xcad:DockingManager.LayoutItemTemplateSelector>
-                        <util:TypedResourceDictionaryKeySelector>
-                            <util:TypedResourceDictionaryKeySelector.Default>
-                                <DataTemplate/>
-                            </util:TypedResourceDictionaryKeySelector.Default>
-                            <util:TypedResourceDictionaryKeySelector.ResourceDictionary>
-                                <DataTemplate x:Key="PropertyPageViewModel">
-                                    <Grid>
-                                        <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
-                                                SelectedIndex="{Binding SelectedIndex}" >
-                                            <TabControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Caption}"/>
-                                                </DataTemplate>
-                                            </TabControl.ItemTemplate>
-                                            <TabControl.ContentTemplate>
-                                                <DataTemplate>
-                                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                                                              VerticalScrollBarVisibility="Visible"
-                                                              Margin="5">
-                                                        <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
-                                                                  Grid.IsSharedSizeScope="True"
-                                                                  ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
-                                                            <ItemsControl.ItemTemplateSelector>
-                                                                <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey=property:default}"/>
-                                                            </ItemsControl.ItemTemplateSelector>
-                                                        </ItemsControl>
-                                                    </ScrollViewer>
-                                                </DataTemplate>
-                                            </TabControl.ContentTemplate>
-                                        </TabControl>
-                                    </Grid>
-                                </DataTemplate>
-                                <DataTemplate x:Key="ToolboxPageViewModel">
-                                    <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" 
-                                                 VirtualizingPanel.IsVirtualizing="True"/>
-                                </DataTemplate>
-                                <DataTemplate x:Key="ErrorListPageViewModel">
-                                    <DataGrid/>
-                                </DataTemplate>
-                                <DataTemplate x:Key="DebugOutputPageViewModel">
-                                    <TextBox/>
-                                </DataTemplate>
-                                <DataTemplate x:Key="DocumentViewModel">
-                                    <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
-                                </DataTemplate>
-                            </util:TypedResourceDictionaryKeySelector.ResourceDictionary>
-                        </util:TypedResourceDictionaryKeySelector>
-                    </xcad:DockingManager.LayoutItemTemplateSelector>
                     <xcad:DockingManager.LayoutUpdateStrategy>
                         <util:LayoutUpdateStrategy/>
                     </xcad:DockingManager.LayoutUpdateStrategy>

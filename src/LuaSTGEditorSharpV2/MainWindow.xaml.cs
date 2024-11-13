@@ -38,8 +38,8 @@ using LuaSTGEditorSharpV2.Dialog.ViewModel;
 using LuaSTGEditorSharpV2.ServiceBridge;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.Services;
-
-using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+using LuaSTGEditorSharpV2.DockingWindows;
+using Xceed.Wpf.AvalonDock;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -60,6 +60,14 @@ namespace LuaSTGEditorSharpV2
 
             _viewModel = (DataContext as MainViewModel)!;
             _serviceProvider = serviceProvider;
+
+            dockingManager.LayoutItemTemplateSelector = _serviceProvider
+                .GetRequiredService<DockingWindowRegistrationService>()
+                .GetDataTemplateSelector();
+            //dockingManager.LayoutItemTemplateSelector = new DataTemplateSelector();
+            //var selector = _serviceProvider
+            //    .GetRequiredService<DockingWindowRegistrationService>()
+            //    .GetDataTemplateSelector();
 
             var layout = _serviceProvider.GetRequiredService<MainWindowLayoutService>();
             layout.LayoutSerializationCallback += HandleLayoutSerializationCallback;

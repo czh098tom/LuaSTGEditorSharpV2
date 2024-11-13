@@ -39,8 +39,9 @@ namespace LuaSTGEditorSharpV2
                 host.Services.GetRequiredService<LocalizationService>().OnCultureChanged += (o, e) =>
                     WPFLocalizeExtension.Engine.LocalizeDictionary.Instance.Culture = e.CultureInfo;
 
-                host.Services.GetRequiredService<NodePackageProvider>()
-                    .Register(new SettingsDisplayDescriptorProvider());
+                var packageProvider = host!.Services.GetRequiredService<NodePackageProvider>();
+                packageProvider.Register(new SettingsDisplayDescriptorProvider());
+                packageProvider.Register(new DockingTemplateRegisterer());
             });
 
             MainWindow mw = host!.Services.GetRequiredService<MainWindow>();
