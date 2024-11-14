@@ -5,6 +5,6 @@
 		{ "Key": "identifier" }
 	],
 	"Head": "local _temporary_class = Class(laser_bent)",
-	"Tail": "_editor_class[\"{1}\"] = _temporary_class",
+	"Tail": "_editor_class[{1}] = _temporary_class",
 	"IndentionIncrement": "0"
 }
