@@ -8,12 +8,12 @@
 	],
 	"Head": [
 		{
-			"Text": "last = New(_editor_class[\"{1}\"], {2}, {3})",
+			"Text": "last = New(_editor_class[{1}], {2}, {3})",
 			"ConditionOn": 3,
 			"UseExistanceInsteadOfBoolValue": "true"
 		},
 		{
-			"Text": "last = New(_editor_class[\"{1}\"], {2})",
+			"Text": "last = New(_editor_class[{1}], {2})",
 			"ConditionOn": 3,
 			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
