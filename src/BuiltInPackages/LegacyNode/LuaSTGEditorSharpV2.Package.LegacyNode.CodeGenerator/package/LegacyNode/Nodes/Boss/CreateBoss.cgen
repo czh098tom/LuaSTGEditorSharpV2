@@ -1,0 +1,16 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateBoss",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "wait" }
+	],
+	"Head": [
+		{ "Text": "last = New(_editor_class[{1}], _editor_class[{1}].cards)" },
+		{ "Text": "local _ref = last" },
+		{
+			"Text": "while(IsValid(_ref))do task.Wait() end",
+			"Condition": 2
+		}
+	]
+}

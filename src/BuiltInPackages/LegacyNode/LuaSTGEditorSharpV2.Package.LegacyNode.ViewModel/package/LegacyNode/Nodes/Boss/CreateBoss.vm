@@ -1,0 +1,27 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateBoss",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bosscreate.png",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "wait" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "create boss {1}" },
+			{
+				"Text": "block current task",
+				"ConditionOn": 2
+			}
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "创建boss {1}" },
+				{
+					"Text": ", 阻塞当前任务",
+					"ConditionOn": 2
+				}
+			]
+		}
+	}
+}
