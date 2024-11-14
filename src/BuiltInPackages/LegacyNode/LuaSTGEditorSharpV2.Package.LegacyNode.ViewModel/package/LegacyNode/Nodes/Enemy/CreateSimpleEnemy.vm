@@ -1,0 +1,33 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateSimpleEnemy",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/enemysimple.png",
+	"Captures": [
+		{ "Key": "style" },
+		{ "Key": "hp" },
+		{ "Key": "position" },
+		{ "Key": "power_amount" },
+		{ "Key": "faith_amount" },
+		{ "Key": "point_amount" },
+		{ "Key": "potect_time" },
+		{ "Key": "clear_bullet_when_killed" },
+		{ "Key": "bound" },
+		{ "Key": "collision_damage" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "create simple enemy with style {1}, hp {2}, position {3}, bonus {4} power, {5} faith, {6} point, protect time {7}" },
+			{ "Text": ", clear bullet when killed", "ConditionOn": 8 },
+			{ "Text": ", removed when off screen", "ConditionOn": 9 },
+			{ "Text": ", miss when collision", "ConditionOn": 10 }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "创建简单敌机, 样式 {1}, 血量 {2}, 位置 {3}, 奖励 {4} 力量, {5} 信仰, {6} 分数, 保护时间 {7}" },
+				{ "Text": ", 死亡时清除子弹", "ConditionOn": 8 },
+				{ "Text": ", 离开屏幕时移除", "ConditionOn": 9 },
+				{ "Text": ", 碰撞时Miss", "ConditionOn": 10 }
+			]
+		}
+	}
+}

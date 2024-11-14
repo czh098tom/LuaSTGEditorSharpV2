@@ -1,0 +1,18 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "EnemyWander",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskbosswander.png",
+	"Captures": [
+		{ "Key": "duration" },
+		{ "Key": "range" },
+		{ "Key": "amplitude" },
+		{ "Key": "move_mode" },
+		{ "Key": "direction_mode" }
+	],
+	"Text": {
+		"Neutral": "wander in range {2} with movement amplitude {3} for {1} frames, move mode {4}, direction mode {5}",
+		"Localized": {
+			"zh": "在范围 {2} 内漫游, 振幅 {3}, 持续 {1} 帧, 移动模式 {4}, 方向模式 {5}"
+		}
+	}
+}

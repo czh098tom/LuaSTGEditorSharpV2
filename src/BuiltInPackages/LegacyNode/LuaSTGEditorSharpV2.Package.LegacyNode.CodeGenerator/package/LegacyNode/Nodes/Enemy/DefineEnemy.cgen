@@ -1,0 +1,10 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineEnemy",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "difficulty" }
+	],
+	"Head": "_temporary_class = Class(enemy)",
+	"Tail": "_editor_class[{1}..'@'..{2}] = _temporary_class"
+}

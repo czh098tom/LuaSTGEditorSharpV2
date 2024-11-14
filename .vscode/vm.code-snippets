@@ -80,5 +80,10 @@
 			"\t}",
 			"}"
 		]
+	},
+	"CaptureKey": {
+		"scope": "json",
+		"prefix": "cap",
+		"body": "{ \"Key\": \"$0\" },"
 	}
 }

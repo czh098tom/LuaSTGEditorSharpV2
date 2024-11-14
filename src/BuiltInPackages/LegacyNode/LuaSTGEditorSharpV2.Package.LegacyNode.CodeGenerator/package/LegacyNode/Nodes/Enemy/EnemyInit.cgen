@@ -1,0 +1,36 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "EnemyInit",
+	"Captures": [
+		{ "Key": "parameters" },
+		{ "Key": "style" },
+		{ "Key": "hp" },
+		{ "Key": "power_amount" },
+		{ "Key": "faith_amount" },
+		{ "Key": "point_amount" },
+		{ "Key": "potect_time" },
+		{ "Key": "clear_bullet_when_killed" },
+		{ "Key": "bound" },
+		{ "Key": "collision_damage" }
+	],
+	"Head": [
+		{
+			"Text": "function _temporary_class:init(self, _x, _y, {1})",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true"
+		},
+		{
+			"Text": "function _temporary_class:init(self, _x, _y)",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true",
+			"Inversed": "true"
+		},
+		{ "Text": "{0:IND}enemy.init(self, {2}, {3}, {8}, {9}, {10})"},
+		{ "Text": "{0:IND}self.x, self.y = _x, _y" },
+		{ "Text": "{0:IND}self.drop = {{{4}, {5}, {6}}}" },
+		{ "Text": "{0:IND}task.New(self, function() self.protect = true task.Wait({7}) self.protect = false end)" }
+	],
+	"Tail": [
+		{ "Text": "end" }
+	]
+}
