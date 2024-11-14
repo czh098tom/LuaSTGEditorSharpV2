@@ -17,7 +17,7 @@
 		{ "Text": "_temporary_class.difficulty = {2}" }
 	],
 	"Tail": [
-		{ "Text": "_editor_class[{1}] = _temporary_class" }
+		{ "Text": "_editor_class[{1}..'@'..{2}] = _temporary_class" }
 	],
 	"IndentionIncrement": 0
 }

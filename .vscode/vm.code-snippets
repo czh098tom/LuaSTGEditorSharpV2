@@ -15,6 +15,36 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
+	"SelectiveCodeGeneration":{
+		"scope": "json",
+		"prefix": "ln.selcgen",
+		"body": [
+			"{",
+			"\t\"\\$type\": \"LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\",",
+			"\t\"TypeUID\": \"$0\",",
+			"\t\"Captures\": [",
+			"\t],",
+			"\t\"Head\": [",
+			"\t],",
+			"\t\"Tail\": [",
+			"\t]",
+			"}"
+		]
+	},
+	"ConfigurableCodeGeneration":{
+		"scope": "json",
+		"prefix": "ln.confcgen",
+		"body": [
+			"{",
+			"\t\"\\$type\": \"LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\",",
+			"\t\"TypeUID\": \"$0\",",
+			"\t\"Captures\": [",
+			"\t],",
+			"\t\"Head\": \"\",",
+			"\t\"Tail\": \"\"",
+			"}"
+		]
+	},
 	"SelectiveViewModelProvider":{
 		"scope": "json",
 		"prefix": "ln.selvm",

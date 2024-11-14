@@ -3,12 +3,13 @@
 	"TypeUID": "DefineBentLaser",
 	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/laserbentdefine.png",
 	"Captures": [
-		{ "Key": "identifier" }
+		{ "Key": "identifier" },
+		{ "Key": "difficulty" }
 	],
 	"Text": {
-		"Neutral": "define bent laser {1}",
+		"Neutral": "define bent laser {1} for difficulty {2}",
 		"Localized": {
-			"zh": "定义曲光类型 {1}"
+			"zh": "定义曲光类型 {1} 难度 {2}"
 		}
 	}
 }

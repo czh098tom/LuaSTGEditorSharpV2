@@ -2,9 +2,10 @@
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineBentLaser",
 	"Captures": [
-		{ "Key": "identifier" }
+		{ "Key": "identifier" },
+		{ "Key": "difficulty" }
 	],
 	"Head": "local _temporary_class = Class(laser_bent)",
-	"Tail": "_editor_class[{1}] = _temporary_class",
+	"Tail": "_editor_class[{1}..'@'..{2}] = _temporary_class",
 	"IndentionIncrement": "0"
 }
