@@ -1,31 +1,37 @@
 {
-	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "Kill",
-	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/unitkill.png",
-	"Captures": [
-	  { "Key": "target" },
-	  { "Key": "trigger_event" }
-	],
-	"Text": {
-	  "Neutral": [
-		{
-		  "Text": "kill {1}"
-		},
-		{
-		  "Text": ", and call kill function of the object",
-		  "ConditionOn": 1
-		}
-	  ],
-	  "Localized": {
-		"zh": [
-		  {
-			"Text": "杀死 {1}"
-		  },
-		  {
-			"Text": " 并触发kill回调",
-			"ConditionOn": 1
-		  }
-		]
-	  }
-	}
-  }
+    "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "TypeUID": "Kill",
+    "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/unitkill.png",
+    "Captures": [
+        {
+            "Key": "target"
+        },
+        {
+            "Key": "trigger_event"
+        }
+    ],
+    "Text": {
+        "Neutral": [
+            {
+                "Text": "kill {1}"
+            },
+            {
+                "Text": " without triggering kill callback",
+                "ConditionOn": 1,
+                "Inversed": "true"
+            }
+        ],
+        "Localized": {
+            "zh": [
+                {
+                    "Text": "杀死 {1}"
+                },
+                {
+                    "Text": " 且不触发kill回调",
+                    "ConditionOn": 1,
+                    "Inversed": "true"
+                }
+            ]
+        }
+    }
+}
