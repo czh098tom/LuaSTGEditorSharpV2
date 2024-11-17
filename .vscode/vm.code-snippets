@@ -15,7 +15,7 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
-	"SelectiveCodeGeneration":{
+	"SelectiveCodeGeneration": {
 		"scope": "json",
 		"prefix": "ln.selcgen",
 		"body": [
@@ -31,7 +31,7 @@
 			"}"
 		]
 	},
-	"ConfigurableCodeGeneration":{
+	"ConfigurableCodeGeneration": {
 		"scope": "json",
 		"prefix": "ln.confcgen",
 		"body": [
@@ -45,7 +45,7 @@
 			"}"
 		]
 	},
-	"SelectiveViewModelProvider":{
+	"SelectiveViewModelProvider": {
 		"scope": "json",
 		"prefix": "ln.selvm",
 		"body": [
@@ -64,7 +64,7 @@
 			"}"
 		]
 	},
-	"ConfigurableViewModelProvider":{
+	"ConfigurableViewModelProvider": {
 		"scope": "json",
 		"prefix": "ln.confvm",
 		"body": [
@@ -85,5 +85,16 @@
 		"scope": "json",
 		"prefix": "cap",
 		"body": "{ \"Key\": \"$0\" },"
+	},
+	"SharpConv": {
+		"scope": "json",
+		"prefix": "ln.sharpconv",
+		"body": [
+			"{",
+			"\t\"SharpName\": \"$0\",",
+			"\t\"Converters\": [",
+			"\t]",
+			"}"
+		]
 	}
 }

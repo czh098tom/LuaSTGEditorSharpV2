@@ -1,0 +1,6 @@
+{
+	"SharpName": ".Boss.BossInit, ",
+	"Converters": [
+		{ "$type":"Default" }
+	]
+}

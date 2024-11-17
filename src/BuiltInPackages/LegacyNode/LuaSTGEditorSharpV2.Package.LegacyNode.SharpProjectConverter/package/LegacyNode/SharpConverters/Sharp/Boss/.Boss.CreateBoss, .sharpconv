@@ -1,0 +1,11 @@
+{
+	"SharpName": ".Boss.CreateBoss, ",
+	"Converters": [
+		{ "$type": "Default" },
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "name",
+			"NewKey": "identifier"
+		}
+	]
+}
