@@ -17,13 +17,13 @@
 	"Text": {
 		"Neutral": [
 			{
-				"Text": "Non-spell card",
+				"Text": "Non-spellcard",
 				"ConditionOn": 0,
 				"UseExistanceInsteadOfBoolValue": true,
 				"Inversed": true
 			},
 			{
-				"Text": "SpellCard\"{1}\"",
+				"Text": "SpellCard {1} ",
 				"ConditionOn": 0,
 				"UseExistanceInsteadOfBoolValue": true
 			},
@@ -48,7 +48,7 @@
 					"Inversed": true
 				},
 				{
-					"Text": "符卡\"{1}\"",
+					"Text": "符卡 {1} ",
 					"ConditionOn": 0,
 					"UseExistanceInsteadOfBoolValue": true
 				},
