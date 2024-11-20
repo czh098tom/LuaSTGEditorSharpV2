@@ -96,5 +96,25 @@
 			"\t]",
 			"}"
 		]
+	},
+	"Toolbox": {
+		"scope": "json",
+		"prefix": "simptool",
+		"body": [
+			"{",
+			"\t\"\\$type\": \"LuaSTGEditorSharpV2.Toolbox.Model.SimpleToolboxItem, LuaSTGEditorSharpV2.Toolbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\",",
+			"\t\"Path\": \"$0\",",
+			"\t\"IconSource\": \"pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/$1.png\",",
+			"\t\"Order\": 1,",
+			"\t\"NodeTemplate\": [",
+			"\t],",
+			"\t\"Caption\": {",
+			"\t\t\"Neutral\": \"\",",
+			"\t\t\"Localized\": {",
+			"\t\t\t\"zh\": \"\"",
+			"\t\t}",
+			"\t}",
+			"}"
+		]
 	}
 }
