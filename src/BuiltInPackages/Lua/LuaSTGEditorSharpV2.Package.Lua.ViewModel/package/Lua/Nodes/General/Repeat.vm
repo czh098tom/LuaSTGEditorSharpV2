@@ -12,7 +12,7 @@
 	"SubCaptureFormat": {
 		"Neutral": [
 			{
-				"Text": ", ({1} = {2}, +({3}))",
+				"Text": ", ({2} = {3}, +({4}))",
 				"ConditionOn": 1,
 				"UseExistanceInsteadOfBoolValue": true
 			}
