@@ -1,13 +1,13 @@
 {
   "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "DisableFog",
+  "TypeUID": "DisableBulletFog",
   "Captures": [
     { "Key": "target" }
   ],
   "Text": {
-    "Neutral": "disable fog when generating {1}",
+    "Neutral": "disable {1}'s bullet fog and adjust its layer according to \"size\"",
     "Localized": {
-      "zh": "取消 {1} 的弹雾"
+      "zh": "取消 {1} 的弹雾并根据其\"size\"调整图层"
     }
   }
 }
