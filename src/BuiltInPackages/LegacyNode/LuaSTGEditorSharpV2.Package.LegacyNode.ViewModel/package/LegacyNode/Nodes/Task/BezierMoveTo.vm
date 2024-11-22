@@ -1,0 +1,17 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BezierMoveTo",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskBeziermoveto.png",
+	"Captures": [
+		{ "Key": "duration" },
+		{ "Key": "type" },
+		{ "Key": "mode" },
+		{ "Key": "point_set" }
+	],
+	"Text": {
+		"Neutral": "move through points ({4}) in curve type {2} within {1} frame(s), {3}",
+		"Localized": {
+			"zh": "在 {1} 帧内以 ({2}) 曲线类型通过点集 ({4}), {3}"
+		}
+	}
+}

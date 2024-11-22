@@ -1,0 +1,44 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SingleListViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SmoothSetValueTo",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "delay" },
+		{ "Key": "duration" }
+	],
+	"CountCapture": { "Key": "count" },
+	"SubCaptureRule": [
+		{
+			"Key": "variable_name{0}",
+			"DefaultValue": "\"_speed\""
+		},
+		{
+			"Key": "target_value{0}",
+			"DefaultValue": 1
+		},
+		{
+			"Key": "interpolation_mode{0}",
+			"DefaultValue": "MOVE_NORMAL"
+		},
+		{
+			"Key": "modification_mode{0}",
+			"DefaultValue": "MODE_SET"
+		}
+	],
+	"SubCaptureFormat": {
+		"Neutral": [
+			{ "Text": "{4} to {5} in {6} by {7}" }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "{4} 到 {5}, 以模式 {6}, {7}" }
+			]
+		}
+	},
+	"Text": {
+		"Neutral": "delay {2} frame(s), in {3} frame(s) smoothly set {1}'s member variables:",
+		"Localized": {
+			"zh": "延迟 {2} 帧, 在 {3} 帧内平滑地设置 {1} 的成员变量:"
+		}
+	}
+}

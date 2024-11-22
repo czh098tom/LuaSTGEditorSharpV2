@@ -1,0 +1,29 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineTaskEx",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskdefine.png",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "parameters" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "define taskex {1}" },
+			{
+				"Text": "with parameters {2}",
+				"ConditionOn": 2,
+				"UseExistanceInsteadOfBoolValue": true
+			}
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "定义任务 {1}" },
+				{
+					"Text": "带参数 {2}",
+					"ConditionOn": 2,
+					"UseExistanceInsteadOfBoolValue": true
+				}
+			]
+		}
+	}
+}

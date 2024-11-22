@@ -1,0 +1,11 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "TerminateCurrentTask",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskreturn.png",
+	"Text": {
+		"Neutral": "terminate current task",
+		"Localized": {
+			"zh": "终止当前任务"
+		}
+	}
+}
