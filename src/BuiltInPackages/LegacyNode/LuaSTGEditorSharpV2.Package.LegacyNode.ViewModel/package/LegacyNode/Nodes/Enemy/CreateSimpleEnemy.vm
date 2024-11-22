@@ -9,7 +9,7 @@
 		{ "Key": "power_amount" },
 		{ "Key": "faith_amount" },
 		{ "Key": "point_amount" },
-		{ "Key": "potect_time" },
+		{ "Key": "protect_time" },
 		{ "Key": "clear_bullet_when_killed" },
 		{ "Key": "bound" },
 		{ "Key": "collision_damage" }
