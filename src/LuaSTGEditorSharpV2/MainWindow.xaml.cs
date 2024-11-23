@@ -83,10 +83,6 @@ namespace LuaSTGEditorSharpV2
             var layout = _serviceProvider.GetRequiredService<MainWindowLayoutService>();
             layout.LayoutSerializationCallback += HandleLayoutSerializationCallback;
             layout.RefreshSettings();
-
-            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test", "test.lstgxml");
-
-            //vm.OpenFile(testPath);
         }
 
         private void HandleLayoutSerializationCallback(object? sender, LayoutSerializationCallbackEventArgs e)
@@ -97,6 +93,7 @@ namespace LuaSTGEditorSharpV2
             if (type == null) return;
             if (_viewModel.WorkSpace.AddOrActivatePage(type) is AnchorableViewModelBase anc)
             {
+                anc.IsActive = (e.Model as LayoutAnchorable)?.IsVisible ?? false;
                 e.Content = anc;
                 e.Cancel = false;
             }

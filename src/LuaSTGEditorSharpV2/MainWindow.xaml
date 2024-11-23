@@ -202,25 +202,39 @@
                     <TextBlock Text="Test mode"/>
                 </StatusBarItem>
             </StatusBar>
-            <Grid DataContext="{Binding WorkSpace}" IsEnabled="{Binding IsEnabled}">
+            <Grid IsEnabled="{Binding IsEnabled}">
                 <xcad:DockingManager Name="dockingManager" 
-                                 DocumentsSource="{Binding Documents}"
-                                 AnchorablesSource="{Binding Anchorables}"
-                                 ActiveContentChanged="DockingManager_ActiveContentChanged">
+                                      DataContext="{Binding WorkSpace}"
+                                      DocumentsSource="{Binding Documents}"
+                                      AnchorablesSource="{Binding Anchorables}"
+                                      ActiveContentChanged="DockingManager_ActiveContentChanged">
                     <xcad:DockingManager.Theme>
                         <xcad:VS2010Theme/>
                     </xcad:DockingManager.Theme>
                     <xcad:DockingManager.Resources>
                     </xcad:DockingManager.Resources>
-                    <xcad:DockingManager.LayoutItemContainerStyle>
-                        <Style TargetType="{x:Type xcadc:LayoutItem}" >
-                            <Setter Property="Title" Value="{Binding Model.Title}" />
-                            <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
-                            <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
-                            <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
-                            <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
-                        </Style>
-                    </xcad:DockingManager.LayoutItemContainerStyle>
+                    <xcad:DockingManager.LayoutItemContainerStyleSelector>
+                        <util:PanesStyleSelector>
+                            <util:PanesStyleSelector.FileStyle>
+                                <Style TargetType="{x:Type xcadc:LayoutItem}" >
+                                    <Setter Property="Title" Value="{Binding Model.Title}" />
+                                    <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                                    <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+                                    <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
+                                    <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
+                                </Style>
+                            </util:PanesStyleSelector.FileStyle>
+                            <util:PanesStyleSelector.ToolStyle>
+                                <Style TargetType="{x:Type xcadc:LayoutAnchorableItem}" >
+                                    <Setter Property="Title" Value="{Binding Model.Title}" />
+                                    <Setter Property="HideCommand" Value="{Binding Model.CloseCommand}" />
+                                    <Setter Property="CanHide" Value="{Binding Model.CanClose}" />
+                                    <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
+                                    <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
+                                </Style>
+                            </util:PanesStyleSelector.ToolStyle>
+                        </util:PanesStyleSelector>
+                    </xcad:DockingManager.LayoutItemContainerStyleSelector>
                     <xcad:DockingManager.LayoutUpdateStrategy>
                         <util:LayoutUpdateStrategy/>
                     </xcad:DockingManager.LayoutUpdateStrategy>
