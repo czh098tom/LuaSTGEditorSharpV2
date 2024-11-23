@@ -126,4 +126,7 @@
   <data name="panel_property_title" xml:space="preserve">
     <value>Properties</value>
   </data>
+  <data name="ribbon_buttom_property" xml:space="preserve">
+    <value>Properties</value>
+  </data>
 </root>

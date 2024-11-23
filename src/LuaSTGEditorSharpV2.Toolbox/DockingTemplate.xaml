@@ -1,7 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:lto="clr-namespace:LuaSTGEditorSharpV2.Toolbox">
-    <DataTemplate x:Key="ToolboxPageViewModel">
-        <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" VirtualizingPanel.IsVirtualizing="True"/>
-    </DataTemplate>
-</ResourceDictionary>

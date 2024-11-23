@@ -68,5 +68,14 @@ namespace LuaSTGEditorSharpV2.Toolbox.Resources {
                 return ResourceManager.GetString("panel_toolBox_title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Toolbox 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_buttom_toolBox {
+            get {
+                return ResourceManager.GetString("ribbon_buttom_toolBox", resourceCulture);
+            }
+        }
     }
 }

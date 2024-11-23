@@ -42,6 +42,8 @@ namespace LuaSTGEditorSharpV2
                 var packageProvider = host!.Services.GetRequiredService<NodePackageProvider>();
                 packageProvider.Register(new SettingsDisplayDescriptorProvider());
                 packageProvider.Register(new DockingTemplateRegisterer());
+                packageProvider.Register(new DockingButtonRegisterer());
+                packageProvider.Register(new DockingButtonGroupRegisterer());
             });
 
             MainWindow mw = host!.Services.GetRequiredService<MainWindow>();

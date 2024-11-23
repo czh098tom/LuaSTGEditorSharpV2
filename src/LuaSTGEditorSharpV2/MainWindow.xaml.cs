@@ -29,6 +29,8 @@ using Xceed.Wpf.AvalonDock.Layout;
 
 using Fluent;
 
+using WPFLocalizeExtension.Extensions;
+
 using LuaSTGEditorSharpV2.WPF;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -39,7 +41,6 @@ using LuaSTGEditorSharpV2.ServiceBridge;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.DockingWindows;
-using Xceed.Wpf.AvalonDock;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -64,10 +65,20 @@ namespace LuaSTGEditorSharpV2
             dockingManager.LayoutItemTemplateSelector = _serviceProvider
                 .GetRequiredService<DockingWindowRegistrationService>()
                 .GetDataTemplateSelector();
-            //dockingManager.LayoutItemTemplateSelector = new DataTemplateSelector();
-            //var selector = _serviceProvider
-            //    .GetRequiredService<DockingWindowRegistrationService>()
-            //    .GetDataTemplateSelector();
+
+            var groups = serviceProvider.GetRequiredService<DockingWindowRibbonGroupProviderService>()
+                .GetRibbonGroups();
+            foreach (var g in groups)
+            {
+                tabPage.Groups.Add(g);
+                if (g.DataContext is DockingWindowRibbonGroupViewModel dwrgvm)
+                {
+                    dwrgvm.OnShift += (o, e) =>
+                    {
+                        _viewModel.WorkSpace.ChangeActiveState(e);
+                    };
+                }
+            }
 
             var layout = _serviceProvider.GetRequiredService<MainWindowLayoutService>();
             layout.LayoutSerializationCallback += HandleLayoutSerializationCallback;
@@ -84,10 +95,11 @@ namespace LuaSTGEditorSharpV2
             if (string.IsNullOrEmpty(e.Model.ContentId)) return;
             var type = Type.GetType(e.Model.ContentId);
             if (type == null) return;
-            if (_serviceProvider.GetRequiredService(type) is not AnchorableViewModelBase anc) return;
-            _viewModel.WorkSpace.AddPage(anc);
-            e.Content = anc;
-            e.Cancel = false;
+            if (_viewModel.WorkSpace.AddOrActivatePage(type) is AnchorableViewModelBase anc)
+            {
+                e.Content = anc;
+                e.Cancel = false;
+            }
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

@@ -187,6 +187,8 @@
                                            Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/debugstage.png" />
                         </fluent:RibbonGroupBox>
                     </fluent:RibbonTabItem>
+                    <fluent:RibbonTabItem x:Name="tabPage" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_page_title}" KeyTip="P">
+                    </fluent:RibbonTabItem>
                 </fluent:Ribbon>
             </Border>
             <StatusBar DockPanel.Dock="Bottom">

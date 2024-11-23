@@ -64,8 +64,47 @@ namespace LuaSTGEditorSharpV2.ViewModel
             IsEnabledHandle = new(this, nameof(IsEnabled));
         }
 
+        public AnchorableViewModelBase ChangeActiveState(Type type)
+        {
+            if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase visible)
+            {
+                visible.IsActive = false;
+                return visible;
+            }
+            if (_invisibleAnchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase invisible)
+            {
+                invisible.IsActive = true;
+                return invisible;
+            }
+            var result = (AnchorableViewModelBase)ServiceProvider.GetRequiredService(type);
+            AddPage(result);
+            return result;
+        }
+
+        public T AddOrActivatePage<T>() where T : AnchorableViewModelBase
+        {
+            return (T)AddOrActivatePage(typeof(T));
+        }
+
+        public AnchorableViewModelBase AddOrActivatePage(Type type)
+        {
+            if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase visible)
+            {
+                return visible;
+            }
+            if (_invisibleAnchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase invisible)
+            {
+                invisible.IsActive = true;
+                return invisible;
+            }
+            var result = (AnchorableViewModelBase)ServiceProvider.GetRequiredService(type);
+            AddPage(result);
+            return result;
+        }
+
         public void AddPage(AnchorableViewModelBase viewModel)
         {
+            viewModel.IsActive = true;
             viewModel.OnClose += (o, e) => MakeInvisible(o as AnchorableViewModelBase);
             viewModel.OnReopen += (o, e) => MakeVisible(o as AnchorableViewModelBase);
             viewModel.OnCommandPublishing += HandleAddCommandEvent;

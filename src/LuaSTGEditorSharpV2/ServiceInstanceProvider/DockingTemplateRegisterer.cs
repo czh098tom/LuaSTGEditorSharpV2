@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.DockingWindows;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.Toolbox.ViewModel;
 using LuaSTGEditorSharpV2.ViewModel;
 
-namespace LuaSTGEditorSharpV2
+namespace LuaSTGEditorSharpV2.ServiceInstanceProvider
 {
     public class DockingTemplateRegisterer : IServiceInstanceProvider<DockingWindowDescriptor>
     {
@@ -28,19 +27,19 @@ namespace LuaSTGEditorSharpV2
 
         private static void AddDocument(IServiceProvider serviceProvider, List<DockingWindowDescriptor> arr)
         {
-            AddImpl<DocumentViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.View;component/DockingTemplate.xaml", 
+            AddImpl<DocumentViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.View;component/Docking.xaml",
                 serviceProvider, arr);
         }
 
         private static void AddToolbox(IServiceProvider serviceProvider, List<DockingWindowDescriptor> arr)
         {
-            AddImpl<ToolboxPageViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.Toolbox;component/DockingTemplate.xaml",
+            AddImpl<ToolboxPageViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.Toolbox;component/Docking.xaml",
                 serviceProvider, arr);
         }
 
         private static void AddPropertyView(IServiceProvider serviceProvider, List<DockingWindowDescriptor> arr)
         {
-            AddImpl<PropertyPageViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/DockingTemplate.xaml",
+            AddImpl<PropertyPageViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/Docking.xaml",
                 serviceProvider, arr);
         }
 

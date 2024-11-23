@@ -10,11 +10,13 @@ using System.Windows.Controls;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.WPF;
+using LuaSTGEditorSharpV2.WPF.Services;
 
 namespace LuaSTGEditorSharpV2.DockingWindows
 {
     [PackedServiceProvider]
-    public class DockingWindowRegistrationService(IServiceProvider serviceProvider) : PackedDataProviderServiceBase<DockingWindowDescriptor>(serviceProvider)
+    public class DockingWindowRegistrationService(IServiceProvider serviceProvider) 
+        : ResourceService<DockingWindowDescriptor, DataTemplate>(serviceProvider)
     {
         public class TypedResourceDictionaryKeySelector : ResourceDictKeySelector<object>
         {
@@ -22,7 +24,7 @@ namespace LuaSTGEditorSharpV2.DockingWindows
             {
                 var dict = new ResourceDictionary()
                 {
-                    Source = new Uri("pack://application:,,,/LuaSTGEditorSharpV2.DockingWindows;component/DockingTemplate.xaml")
+                    Source = new Uri("pack://application:,,,/LuaSTGEditorSharpV2.DockingWindows;component/Docking.xaml")
                 };
                 Default = dict["Default"] as DataTemplate;
             }
@@ -38,46 +40,7 @@ namespace LuaSTGEditorSharpV2.DockingWindows
             }
         }
 
-        private record Operation
-        {
-            public record Remove(string Key) : Operation;
-            public record Assign(string Key, DockingWindowDescriptor Desc) : Operation
-            {
-                public DataTemplate? Parse()
-                {
-                    var dict = new ResourceDictionary()
-                    {
-                        Source = Desc.DataTemplateResourceDictionaryUri
-                    };
-                    if (dict[Desc.DataTemplateKey] is DataTemplate dataTemplate)
-                    {
-                        return dataTemplate;
-                    }
-                    return null;
-                }
-            }
-        }
-
         private readonly Lazy<TypedResourceDictionaryKeySelector> _selector = new();
-        private ConcurrentQueue<Operation> _operations = [];
-
-        protected override void OnActiveServiceAdded(DockingWindowDescriptor newValue)
-        {
-            base.OnActiveServiceAdded(newValue);
-            _operations.Enqueue(new Operation.Assign(newValue.Key, newValue));
-        }
-
-        protected override void OnActiveServiceRemoved(DockingWindowDescriptor oldValue)
-        {
-            base.OnActiveServiceRemoved(oldValue);
-            _operations.Enqueue(new Operation.Remove(oldValue.Key));
-        }
-
-        protected override void OnActiveServiceChanged(DockingWindowDescriptor oldValue, DockingWindowDescriptor newValue)
-        {
-            base.OnActiveServiceChanged(oldValue, newValue);
-            _operations.Enqueue(new Operation.Assign(newValue.Key, newValue));
-        }
 
         public DataTemplateSelector GetDataTemplateSelector()
         {
