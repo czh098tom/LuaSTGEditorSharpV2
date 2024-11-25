@@ -5,7 +5,7 @@
 	"Text": {
 		"Neutral": "create an individual task object",
 		"Localized": {
-			"zh": "创建独立任务对象"
+			"zh": "创建任务执行器"
 		}
 	}
 }
