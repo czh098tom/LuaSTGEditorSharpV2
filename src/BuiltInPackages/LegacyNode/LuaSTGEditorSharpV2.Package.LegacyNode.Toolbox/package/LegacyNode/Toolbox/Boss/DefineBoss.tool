@@ -7,9 +7,9 @@
 		{
 			"TypeUID": "DefineBoss",
 			"Properties": {
-				"identifier": "Boss",
-				"difficulty": "All",
-				"name": "Boss",
+				"identifier": "\"Boss\"",
+				"difficulty": "\"All\"",
+				"name": "\"Boss\"",
 				"background": "",
 				"bgm": ""
 			},

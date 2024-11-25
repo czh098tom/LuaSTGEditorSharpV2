@@ -7,7 +7,7 @@
 		{
 			"TypeUID": "CreateBullet",
 			"Properties": {
-				"identifier": "",
+				"identifier": "\"\"",
 				"position": "self.x, self.y",
 				"parameters": ""
 			}

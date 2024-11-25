@@ -4,6 +4,13 @@
 	"IconSource": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bosscreate.png",
 	"Order": 1,
 	"NodeTemplate": [
+		{
+			"TypeUID": "CreateBoss",
+			"Properties": {
+				"identifier": "\"\"",
+				"wait": true
+			}
+		}
 	],
 	"Caption": {
 		"Neutral": "Creae boss",

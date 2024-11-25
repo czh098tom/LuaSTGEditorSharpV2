@@ -7,7 +7,7 @@
 		{
 			"TypeUID": "StageGroup",
 			"Properties": {
-				"name": "Extra",
+				"name": "\"Extra\"",
 				"initial_life": 8,
 				"initial_power": 4,
 				"initial_faith": 0,

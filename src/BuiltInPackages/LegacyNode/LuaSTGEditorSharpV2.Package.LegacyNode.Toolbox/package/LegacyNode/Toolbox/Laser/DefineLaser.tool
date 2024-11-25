@@ -7,8 +7,8 @@
 		{
 			"TypeUID": "DefineLaser",
 			"Properties": {
-				"identifier": "",
-				"difficulty": "All"
+				"identifier": "\"\"",
+				"difficulty": "\"All\""
 			},
 			"Children": [
 				{

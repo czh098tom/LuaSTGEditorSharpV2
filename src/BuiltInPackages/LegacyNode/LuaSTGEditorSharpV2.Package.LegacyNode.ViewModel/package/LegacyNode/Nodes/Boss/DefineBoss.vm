@@ -10,9 +10,9 @@
 		{ "Key": "bgm" }
 	],
 	"Text": {
-		"Neutral": "Define boss\"{1}\" with name\"{3}\" for {2} rank(s)",
+		"Neutral": "Define boss\"{1}\" with name {3} for {2} rank(s)",
 		"Localized": {
-			"zh": "在{2}难度定义Boss {3} "
+			"zh": "在{2}难度定义Boss {1} ({3}) "
 		}
 	}
 }

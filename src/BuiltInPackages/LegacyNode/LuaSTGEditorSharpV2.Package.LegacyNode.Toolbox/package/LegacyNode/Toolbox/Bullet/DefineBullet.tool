@@ -7,7 +7,7 @@
 		{
 			"TypeUID": "DefineBullet",
 			"Properties": {
-				"identifier": "",
+				"identifier": "\"\"",
 				"difficulty": "All"
 			},
 			"Children": [

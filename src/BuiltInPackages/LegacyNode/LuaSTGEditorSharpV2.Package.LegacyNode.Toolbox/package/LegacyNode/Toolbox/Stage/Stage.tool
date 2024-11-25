@@ -7,7 +7,7 @@
 		{
 			"TypeUID": "Stage",
 			"Properties": {
-				"name": "Stage1",
+				"name": "\"Stage\"",
 				"initial_life": 8,
 				"initial_power": 4,
 				"initial_faith": 0,

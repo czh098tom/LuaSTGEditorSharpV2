@@ -7,8 +7,8 @@
 		{
 			"TypeUID": "DefineObject",
 			"Properties": {
-				"identifier": "",
-				"difficulty": "All"
+				"identifier": "\"\"",
+				"difficulty": "\"All\""
 			},
 			"Children": [
 				{

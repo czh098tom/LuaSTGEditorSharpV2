@@ -7,7 +7,7 @@
 		{
 			"TypeUID": "AttachTaskEx",
 			"Properties": {
-				"identifier": "",
+				"identifier": "\"\"",
 				"parameters": "",
 				"target": "self"
 			}

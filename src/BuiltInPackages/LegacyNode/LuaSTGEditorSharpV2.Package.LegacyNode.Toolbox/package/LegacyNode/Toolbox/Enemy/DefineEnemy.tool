@@ -7,8 +7,8 @@
 		{
 			"TypeUID": "DefineEnemy",
 			"Properties": {
-				"identifier": "",
-				"difficulty": "All"
+				"identifier": "\"\"",
+				"difficulty": "\"All\""
 			},
 			"Children": [
 				{

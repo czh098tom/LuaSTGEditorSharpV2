@@ -7,7 +7,7 @@
 		{
 			"TypeUID": "DefineTaskEx",
 			"Properties": {
-				"identifier": "",
+				"identifier": "\"\"",
 				"parameters": ""
 			}
 		}
