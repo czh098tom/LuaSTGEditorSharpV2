@@ -15,14 +15,38 @@ using LuaSTGEditorSharpV2.WPF;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Command.Service;
 using Microsoft.Extensions.DependencyInjection;
+using LuaSTGEditorSharpV2.Core.CodeGenerator;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class DocumentViewModel : DockingViewModelBase
     {
+        public delegate void SelectedNodeChangedHandler(DocumentViewModel? dvm, NodeData[] nodeData);
+
         private readonly EditingDocumentModel _editingDocumentModel;
 
         public ObservableCollection<NodeViewModel> Tree { get; private set; } = [];
+
+        private object? _selectedNode;
+        public object? SelectedNode
+        {
+            get => _selectedNode;
+            set
+            {
+                _selectedNode = value;
+                if (_selectedNode is not NodeViewModel nvm)
+                {
+                    SelectedNodeChanged?.Invoke(this, []);
+                }
+                else
+                {
+                    SelectedNodeChanged?.Invoke(this, [nvm.Source]);
+                }
+                RaisePropertyChanged();
+            }
+        }
+
+        public event SelectedNodeChangedHandler? SelectedNodeChanged;
 
         public IDocument DocumentModel => _editingDocumentModel;
 

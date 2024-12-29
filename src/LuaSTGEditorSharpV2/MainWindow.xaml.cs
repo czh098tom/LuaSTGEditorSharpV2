@@ -23,11 +23,13 @@ using Microsoft.Xaml.Behaviors.Core;
 
 using Newtonsoft.Json;
 
-using Xceed.Wpf.AvalonDock.Controls;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Controls;
+using AvalonDock.Layout.Serialization;
+using AvalonDock.Layout;
 
 using Fluent;
+
+using WPFLocalizeExtension.Extensions;
 
 using LuaSTGEditorSharpV2.WPF;
 using LuaSTGEditorSharpV2.Core;
@@ -38,8 +40,7 @@ using LuaSTGEditorSharpV2.Dialog.ViewModel;
 using LuaSTGEditorSharpV2.ServiceBridge;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.Services;
-
-using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+using LuaSTGEditorSharpV2.DockingWindows;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -61,13 +62,27 @@ namespace LuaSTGEditorSharpV2
             _viewModel = (DataContext as MainViewModel)!;
             _serviceProvider = serviceProvider;
 
+            dockingManager.LayoutItemTemplateSelector = _serviceProvider
+                .GetRequiredService<DockingWindowRegistrationService>()
+                .GetDataTemplateSelector();
+
+            var groups = serviceProvider.GetRequiredService<DockingWindowRibbonGroupProviderService>()
+                .GetRibbonGroups();
+            foreach (var g in groups)
+            {
+                tabPage.Groups.Add(g);
+                if (g.DataContext is DockingWindowRibbonGroupViewModel dwrgvm)
+                {
+                    dwrgvm.OnShift += (o, e) =>
+                    {
+                        _viewModel.WorkSpace.ChangeActiveState(e);
+                    };
+                }
+            }
+
             var layout = _serviceProvider.GetRequiredService<MainWindowLayoutService>();
             layout.LayoutSerializationCallback += HandleLayoutSerializationCallback;
             layout.RefreshSettings();
-
-            string testPath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\test", "test.lstgxml");
-
-            //vm.OpenFile(testPath);
         }
 
         private void HandleLayoutSerializationCallback(object? sender, LayoutSerializationCallbackEventArgs e)
@@ -76,10 +91,12 @@ namespace LuaSTGEditorSharpV2
             if (string.IsNullOrEmpty(e.Model.ContentId)) return;
             var type = Type.GetType(e.Model.ContentId);
             if (type == null) return;
-            if (_serviceProvider.GetRequiredService(type) is not AnchorableViewModelBase anc) return;
-            _viewModel.WorkSpace.AddPage(anc);
-            e.Content = anc;
-            e.Cancel = false;
+            if (_viewModel.WorkSpace.AddOrActivatePage(type) is AnchorableViewModelBase anc)
+            {
+                //anc.IsVisible = (e.Model as LayoutAnchorable)?.IsVisible ?? false;
+                e.Content = anc;
+                e.Cancel = false;
+            }
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

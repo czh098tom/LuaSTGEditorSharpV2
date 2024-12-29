@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:lto="clr-namespace:LuaSTGEditorSharpV2.Toolbox"
+                    xmlns:fluent="clr-namespace:Fluent;assembly=Fluent"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com">
+    <DataTemplate x:Key="ToolboxPageViewModel">
+        <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" VirtualizingPanel.IsVirtualizing="True"/>
+    </DataTemplate>
+    <fluent:Button x:Key="button" Header="{lex:Loc LuaSTGEditorSharpV2.Toolbox:Localized:ribbon_buttom_toolBox}"
+                   Command="{Binding Command}"/>
+</ResourceDictionary>

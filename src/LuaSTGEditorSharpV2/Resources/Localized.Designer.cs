@@ -241,6 +241,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         }
         
         /// <summary>
+        ///   查找类似 General 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_group_view_general_title {
+            get {
+                return ResourceManager.GetString("ribbon_group_view_general_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Exit 的本地化字符串。
         /// </summary>
         internal static string ribbon_menuItem_exit_title {
@@ -345,6 +354,15 @@ namespace LuaSTGEditorSharpV2.Resources {
         internal static string ribbon_tab_home_title {
             get {
                 return ResourceManager.GetString("ribbon_tab_home_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Page 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_tab_page_title {
+            get {
+                return ResourceManager.GetString("ribbon_tab_page_title", resourceCulture);
             }
         }
         

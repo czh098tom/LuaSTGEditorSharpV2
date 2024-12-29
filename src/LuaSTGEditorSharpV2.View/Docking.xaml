@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View">
+    <DataTemplate x:Key="DocumentViewModel">
+        <lsv:DocumentTreeView SelectedItem="{Binding SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    </DataTemplate>
+</ResourceDictionary>
