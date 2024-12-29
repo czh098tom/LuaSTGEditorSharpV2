@@ -23,9 +23,9 @@ using Microsoft.Xaml.Behaviors.Core;
 
 using Newtonsoft.Json;
 
-using Xceed.Wpf.AvalonDock.Controls;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
-using Xceed.Wpf.AvalonDock.Layout;
+using AvalonDock.Controls;
+using AvalonDock.Layout.Serialization;
+using AvalonDock.Layout;
 
 using Fluent;
 
@@ -93,7 +93,7 @@ namespace LuaSTGEditorSharpV2
             if (type == null) return;
             if (_viewModel.WorkSpace.AddOrActivatePage(type) is AnchorableViewModelBase anc)
             {
-                anc.IsActive = (e.Model as LayoutAnchorable)?.IsVisible ?? false;
+                //anc.IsVisible = (e.Model as LayoutAnchorable)?.IsVisible ?? false;
                 e.Content = anc;
                 e.Cancel = false;
             }

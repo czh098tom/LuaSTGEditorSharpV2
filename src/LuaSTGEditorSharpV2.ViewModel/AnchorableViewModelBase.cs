@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
     /// <summary>
     /// Base viewmodel for any anchorable pages (excluding document panels)
     /// </summary>
-    public class AnchorableViewModelBase(IServiceProvider serviceProvider) : DockingViewModelBase(serviceProvider)
+    public class AnchorableViewModelBase : DockingViewModelBase
     {
         public override string Title => ServiceProvider.GetRequiredService<LocalizationService>()
             ?.GetString(I18NTitleKey, GetType().Assembly) ?? GetType().Name;
@@ -23,5 +23,25 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public virtual string I18NTitleKey => GetType().Name;
 
         public virtual string ContentID => GetType().AssemblyQualifiedName ?? string.Empty;
+
+        private bool _isVisible = true;
+
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public AnchorableViewModelBase(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            OnClose += (o, e) => IsVisible = false;
+        }
     }
 }

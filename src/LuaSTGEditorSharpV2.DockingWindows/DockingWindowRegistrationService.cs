@@ -18,8 +18,12 @@ namespace LuaSTGEditorSharpV2.DockingWindows
     public class DockingWindowRegistrationService(IServiceProvider serviceProvider) 
         : ResourceService<DockingWindowDescriptor, DataTemplate>(serviceProvider)
     {
-        public class TypedResourceDictionaryKeySelector : ResourceDictKeySelector<object>
+        public class TypedResourceDictionaryKeySelector : DataTemplateSelector
         {
+            public DataTemplate? Default { get; set; }
+
+            public ResourceDictionary? ResourceDictionary { get; set; } = [];
+
             public TypedResourceDictionaryKeySelector()
             {
                 var dict = new ResourceDictionary()
@@ -29,12 +33,41 @@ namespace LuaSTGEditorSharpV2.DockingWindows
                 Default = dict["Default"] as DataTemplate;
             }
 
-            public override string CreateKey(object vm)
+            public override DataTemplate? SelectTemplate(object item, DependencyObject container)
+            {
+                if (item is ContentPresenter) return null;
+                var dataTemplates = GetResourceDictionary();
+                if (Default == null) throw new InvalidOperationException($"{nameof(dataTemplates)} has not been assigned");
+                if (item == null) return Default;
+                if (dataTemplates != null && HasKeyFromSource(item))
+                {
+                    string key = CreateKey(item);
+                    if (dataTemplates.Contains(key))
+                    {
+                        return (DataTemplate)dataTemplates[key];
+                    }
+                    else
+                    {
+                        return Default;
+                    }
+                }
+                else
+                {
+                    return Default;
+                }
+            }
+
+            public ResourceDictionary? GetResourceDictionary()
+            {
+                return ResourceDictionary;
+            }
+
+            public string CreateKey(object vm)
             {
                 return vm.GetType().Name;
             }
 
-            public override bool HasKeyFromSource(object vm)
+            public bool HasKeyFromSource(object vm)
             {
                 return true;
             }

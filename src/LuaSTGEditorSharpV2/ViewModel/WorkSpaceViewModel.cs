@@ -32,7 +32,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class WorkSpaceViewModel : InjectableViewModel
     {
-        private readonly WorkSpaceCollection<AnchorableViewModelBase> _invisibleAnchorables = [];
         public WorkSpaceCollection<AnchorableViewModelBase> Anchorables { get; private set; } = [];
 
         private readonly ObservableCollection<DocumentViewModel> _documents = [];
@@ -64,23 +63,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
             IsEnabledHandle = new(this, nameof(IsEnabled));
         }
 
-        public AnchorableViewModelBase ChangeActiveState(Type type)
-        {
-            if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase visible)
-            {
-                visible.IsActive = false;
-                return visible;
-            }
-            if (_invisibleAnchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase invisible)
-            {
-                invisible.IsActive = true;
-                return invisible;
-            }
-            var result = (AnchorableViewModelBase)ServiceProvider.GetRequiredService(type);
-            AddPage(result);
-            return result;
-        }
-
         public T AddOrActivatePage<T>() where T : AnchorableViewModelBase
         {
             return (T)AddOrActivatePage(typeof(T));
@@ -92,11 +74,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
             {
                 return visible;
             }
-            if (_invisibleAnchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase invisible)
-            {
-                invisible.IsActive = true;
-                return invisible;
-            }
             var result = (AnchorableViewModelBase)ServiceProvider.GetRequiredService(type);
             AddPage(result);
             return result;
@@ -105,28 +82,22 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void AddPage(AnchorableViewModelBase viewModel)
         {
             viewModel.IsActive = true;
-            viewModel.OnClose += (o, e) => MakeInvisible(o as AnchorableViewModelBase);
-            viewModel.OnReopen += (o, e) => MakeVisible(o as AnchorableViewModelBase);
+            //viewModel.OnClose += (o, e) => MakeInvisible(o as AnchorableViewModelBase);
+            //viewModel.OnReopen += (o, e) => MakeVisible(o as AnchorableViewModelBase);
             viewModel.OnCommandPublishing += HandleAddCommandEvent;
             Anchorables.Add(viewModel);
         }
 
-        private void MakeVisible(AnchorableViewModelBase? viewModel)
+        public AnchorableViewModelBase ChangeActiveState(Type type)
         {
-            var index = _invisibleAnchorables.FindIndex(viewModel);
-            if (index < 0) return;
-            var page = _invisibleAnchorables[index];
-            _invisibleAnchorables.RemoveAt(index);
-            Anchorables.Add(page);
-        }
-
-        private void MakeInvisible(AnchorableViewModelBase? viewModel)
-        {
-            var index = Anchorables.FindIndex(viewModel);
-            if (index < 0) return;
-            var page = Anchorables[index];
-            Anchorables.RemoveAt(index);
-            _invisibleAnchorables.Add(page);
+            if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase visible)
+            {
+                visible.IsVisible = !visible.IsVisible;
+                return visible;
+            }
+            var result = (AnchorableViewModelBase)ServiceProvider.GetRequiredService(type);
+            AddPage(result);
+            return result;
         }
 
         public void BroadcastSelectedNodeChanged(DocumentViewModel? dvm, NodeData[] nodeData)
@@ -146,10 +117,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
             SelectedNodes = nodeData;
             foreach (var p in Anchorables)
-            {
-                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
-            }
-            foreach (var p in _invisibleAnchorables)
             {
                 p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
             }
@@ -359,13 +326,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
         private void DisposeOpenedDocument(DocumentViewModel dvm)
         {
             foreach (var p in Anchorables)
-            {
-                if (p.SourceDocument == dvm.DocumentModel)
-                {
-                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = [] });
-                }
-            }
-            foreach (var p in _invisibleAnchorables)
             {
                 if (p.SourceDocument == dvm.DocumentModel)
                 {
