@@ -120,4 +120,7 @@
   <data name="panel_toolBox_title" xml:space="preserve">
     <value>Toolbox</value>
   </data>
+  <data name="ribbon_buttom_toolBox" xml:space="preserve">
+    <value>Toolbox</value>
+  </data>
 </root>

@@ -9,8 +9,9 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:rc="clr-namespace:LuaSTGEditorSharpV2.RoutedCommands"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
-        xmlns:xcadc="clr-namespace:Xceed.Wpf.AvalonDock.Controls;assembly=Xceed.Wpf.AvalonDock.NET5"
+        xmlns:xcad="https://github.com/Dirkster99/AvalonDock"
+        xmlns:xcadt="clr-namespace:AvalonDock.Themes;assembly=AvalonDock.Themes.VS2010"
+	    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:fluent="urn:fluent-ribbon"
         xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
@@ -29,6 +30,9 @@
         Icon="pack://application:,,,/icon.ico"
         FocusManager.FocusedElement="{Binding ElementName=RibbonWin}">
     <Window.Resources>
+        <util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <sys:Boolean x:Key="TRUE">True</sys:Boolean>
+        <sys:Boolean x:Key="FALSE">False</sys:Boolean>
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static ApplicationCommands.New}"
@@ -187,6 +191,8 @@
                                            Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/debugstage.png" />
                         </fluent:RibbonGroupBox>
                     </fluent:RibbonTabItem>
+                    <fluent:RibbonTabItem x:Name="tabPage" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_page_title}" KeyTip="P">
+                    </fluent:RibbonTabItem>
                 </fluent:Ribbon>
             </Border>
             <StatusBar DockPanel.Dock="Bottom">
@@ -200,74 +206,39 @@
                     <TextBlock Text="Test mode"/>
                 </StatusBarItem>
             </StatusBar>
-            <Grid DataContext="{Binding WorkSpace}" IsEnabled="{Binding IsEnabled}">
+            <Grid IsEnabled="{Binding IsEnabled}">
                 <xcad:DockingManager Name="dockingManager" 
-                                 DocumentsSource="{Binding Documents}"
-                                 AnchorablesSource="{Binding Anchorables}"
-                                 ActiveContentChanged="DockingManager_ActiveContentChanged">
+                                      DataContext="{Binding WorkSpace}"
+                                      DocumentsSource="{Binding Documents}"
+                                      AnchorablesSource="{Binding Anchorables}"
+                                      ActiveContentChanged="DockingManager_ActiveContentChanged">
                     <xcad:DockingManager.Theme>
-                        <xcad:VS2010Theme/>
+                        <xcadt:VS2010Theme/>
                     </xcad:DockingManager.Theme>
                     <xcad:DockingManager.Resources>
                     </xcad:DockingManager.Resources>
-                    <xcad:DockingManager.LayoutItemContainerStyle>
-                        <Style TargetType="{x:Type xcadc:LayoutItem}" >
-                            <Setter Property="Title" Value="{Binding Model.Title}" />
-                            <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
-                            <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
-                            <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
-                            <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
-                        </Style>
-                    </xcad:DockingManager.LayoutItemContainerStyle>
-                    <xcad:DockingManager.LayoutItemTemplateSelector>
-                        <util:TypedResourceDictionaryKeySelector>
-                            <util:TypedResourceDictionaryKeySelector.Default>
-                                <DataTemplate/>
-                            </util:TypedResourceDictionaryKeySelector.Default>
-                            <util:TypedResourceDictionaryKeySelector.ResourceDictionary>
-                                <DataTemplate x:Key="PropertyPageViewModel">
-                                    <Grid>
-                                        <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
-                                                SelectedIndex="{Binding SelectedIndex}" >
-                                            <TabControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Caption}"/>
-                                                </DataTemplate>
-                                            </TabControl.ItemTemplate>
-                                            <TabControl.ContentTemplate>
-                                                <DataTemplate>
-                                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                                                              VerticalScrollBarVisibility="Visible"
-                                                              Margin="5">
-                                                        <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
-                                                                  Grid.IsSharedSizeScope="True"
-                                                                  ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
-                                                            <ItemsControl.ItemTemplateSelector>
-                                                                <lpv:PropertyItemTemplateSelector Default="{StaticResource ResourceKey=property:default}"/>
-                                                            </ItemsControl.ItemTemplateSelector>
-                                                        </ItemsControl>
-                                                    </ScrollViewer>
-                                                </DataTemplate>
-                                            </TabControl.ContentTemplate>
-                                        </TabControl>
-                                    </Grid>
-                                </DataTemplate>
-                                <DataTemplate x:Key="ToolboxPageViewModel">
-                                    <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" 
-                                                 VirtualizingPanel.IsVirtualizing="True"/>
-                                </DataTemplate>
-                                <DataTemplate x:Key="ErrorListPageViewModel">
-                                    <DataGrid/>
-                                </DataTemplate>
-                                <DataTemplate x:Key="DebugOutputPageViewModel">
-                                    <TextBox/>
-                                </DataTemplate>
-                                <DataTemplate x:Key="DocumentViewModel">
-                                    <lsv:DocumentTreeView SelectedItemChanged="TreeView_SelectedItemChanged"/>
-                                </DataTemplate>
-                            </util:TypedResourceDictionaryKeySelector.ResourceDictionary>
-                        </util:TypedResourceDictionaryKeySelector>
-                    </xcad:DockingManager.LayoutItemTemplateSelector>
+                    <xcad:DockingManager.LayoutItemContainerStyleSelector>
+                        <util:PanesStyleSelector>
+                            <util:PanesStyleSelector.FileStyle>
+                                <Style TargetType="{x:Type xcad:LayoutItem}" >
+                                    <Setter Property="Title" Value="{Binding Model.Title}" />
+                                    <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
+                                    <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
+                                    <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
+                                    <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
+                                </Style>
+                            </util:PanesStyleSelector.FileStyle>
+                            <util:PanesStyleSelector.ToolStyle>
+                                <Style TargetType="{x:Type xcad:LayoutAnchorableItem}" >
+                                    <Setter Property="Title" Value="{Binding Model.Title}" />
+                                    <Setter Property="HideCommand" Value="{Binding Model.CloseCommand}" />
+                                    <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource FALSE}}" />
+                                    <Setter Property="CanHide" Value="{Binding Model.CanClose}" />
+                                    <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
+                                </Style>
+                            </util:PanesStyleSelector.ToolStyle>
+                        </util:PanesStyleSelector>
+                    </xcad:DockingManager.LayoutItemContainerStyleSelector>
                     <xcad:DockingManager.LayoutUpdateStrategy>
                         <util:LayoutUpdateStrategy/>
                     </xcad:DockingManager.LayoutUpdateStrategy>

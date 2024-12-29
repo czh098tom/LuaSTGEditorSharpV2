@@ -8,7 +8,7 @@ using System.IO;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using AvalonDock.Layout.Serialization;
 
 using LuaSTGEditorSharpV2.Core.Settings;
 using LuaSTGEditorSharpV2.Core;

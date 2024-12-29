@@ -86,5 +86,14 @@ namespace LuaSTGEditorSharpV2.PropertyView.Resources {
                 return ResourceManager.GetString("panel_property_title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Properties 的本地化字符串。
+        /// </summary>
+        internal static string ribbon_buttom_property {
+            get {
+                return ResourceManager.GetString("ribbon_buttom_property", resourceCulture);
+            }
+        }
     }
 }

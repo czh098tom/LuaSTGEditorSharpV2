@@ -177,6 +177,9 @@
   <data name="ribbon_group_navigation_title" xml:space="preserve">
     <value>导航</value>
   </data>
+  <data name="ribbon_group_view_general_title" xml:space="preserve">
+    <value>常规</value>
+  </data>
   <data name="ribbon_menuItem_exit_title" xml:space="preserve">
     <value>退出</value>
   </data>
@@ -212,6 +215,9 @@
   </data>
   <data name="ribbon_tab_home_title" xml:space="preserve">
     <value>开始</value>
+  </data>
+  <data name="ribbon_tab_page_title" xml:space="preserve">
+    <value>页面</value>
   </data>
   <data name="untitled_file_default_name" xml:space="preserve">
     <value>未命名</value>

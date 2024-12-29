@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:fluent="clr-namespace:Fluent;assembly=Fluent"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com">
+    <fluent:RibbonGroupBox x:Key="general" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_view_general_title}"/>
+</ResourceDictionary>
