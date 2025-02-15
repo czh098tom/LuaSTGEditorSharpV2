@@ -79,6 +79,19 @@ namespace LuaSTGEditorSharpV2.ViewModel
             return result;
         }
 
+        public void AddHidedIfNotPresented(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) == null)
+                {
+                    var vm = (AnchorableViewModelBase)ServiceProvider.GetRequiredService(type);
+                    AddPage(vm);
+                    vm.IsVisible = false;
+                }
+            }
+        }
+
         public void AddPage(AnchorableViewModelBase viewModel)
         {
             viewModel.IsActive = true;

@@ -83,6 +83,9 @@ namespace LuaSTGEditorSharpV2
             var layout = _serviceProvider.GetRequiredService<MainWindowLayoutService>();
             layout.LayoutSerializationCallback += HandleLayoutSerializationCallback;
             layout.RefreshSettings();
+            // after refresh, add back all viewmodels that are not presented in layout xml
+            _viewModel.WorkSpace.AddHidedIfNotPresented(_serviceProvider
+                .GetRequiredService<DockingWindowRibbonButtonProviderService>().GetAllAvailableTypes());
         }
 
         private void HandleLayoutSerializationCallback(object? sender, LayoutSerializationCallbackEventArgs e)
