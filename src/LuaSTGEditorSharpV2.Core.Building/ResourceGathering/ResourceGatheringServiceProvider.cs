@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
     [PackedServiceProvider]
     [ServiceShortName("resg"), ServiceName("ResourceGathering")]
     public class ResourceGatheringServiceProvider
-        : CompactNodeServiceProvider<ResourceGatheringServiceProvider, ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
+        : ContextualNodeServiceProvider<ResourceGatheringServiceBase, ResourceGatheringContext, ResourceGatheringServiceSettings>
     {
         private readonly ResourceGatheringServiceBase _defaultService;
 
@@ -21,6 +21,12 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
         }
 
         protected override ResourceGatheringServiceBase DefaultService => _defaultService;
+
+        public override sealed ResourceGatheringContext GetEmptyContext(LocalServiceParam localSettings
+            , ResourceGatheringServiceSettings serviceSettings)
+        {
+            return new ResourceGatheringContext(ServiceProvider, localSettings, serviceSettings);
+        }
 
         public IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalServiceParam localParam)
             => GetResourcesToPack(nodeData, localParam, ServiceSettings);

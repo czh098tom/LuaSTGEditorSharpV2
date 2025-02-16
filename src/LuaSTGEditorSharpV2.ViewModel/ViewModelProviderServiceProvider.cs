@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
     [PackedServiceProvider]
     [ServiceName("ViewModel"), ServiceShortName("vm")]
     public class ViewModelProviderServiceProvider
-        : CompactNodeServiceProvider<ViewModelProviderServiceProvider, ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
+        : ContextualNodeServiceProvider<ViewModelProviderServiceBase, NodeViewModelContext, ViewModelProviderServiceSettings>
     {
         protected override ViewModelProviderServiceBase DefaultService => _defaultService;
 
@@ -23,6 +23,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public ViewModelProviderServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _defaultService = new DefaultViewModelProviderService(this, serviceProvider);
+        }
+
+        public override sealed NodeViewModelContext GetEmptyContext(LocalServiceParam localSettings
+            , ViewModelProviderServiceSettings serviceSettings)
+        {
+            return new NodeViewModelContext(ServiceProvider, localSettings, serviceSettings);
         }
 
         /// <summary>

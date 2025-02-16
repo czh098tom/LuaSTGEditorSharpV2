@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory
     [PackedServiceProvider]
     [ServiceShortName("build"), ServiceName("BuildTaskFactory")]
     public class BuildTaskFactoryServiceProvider
-        : CompactNodeServiceProvider<BuildTaskFactoryServiceProvider, BuildTaskFactoryServiceBase, BuildTaskFactoryContext, BuildTaskFactoryServiceSettings>
+        : ContextualNodeServiceProvider<BuildTaskFactoryServiceBase, BuildTaskFactoryContext, BuildTaskFactoryServiceSettings>
     {
         private readonly BuildTaskFactoryServiceBase _default;
 
@@ -21,6 +21,11 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory
         }
 
         protected override BuildTaskFactoryServiceBase DefaultService => _default;
+
+        public override BuildTaskFactoryContext GetEmptyContext(LocalServiceParam localParam, BuildTaskFactoryServiceSettings serviceSettings)
+        {
+            return new BuildTaskFactoryContext(ServiceProvider, localParam, serviceSettings);
+        }
 
         public WeightedBuildingTask? GetWeightedBuildingTaskForNode(NodeData nodeData,
             LocalServiceParam param) => GetWeightedBuildingTaskForNode(nodeData, param, ServiceSettings);
