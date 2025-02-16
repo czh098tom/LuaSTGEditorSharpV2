@@ -10,7 +10,7 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
 {
     [ServiceShortName("valid"), ServiceName("Analyzer.StructuralValidation")]
     public class StructuralValidationServiceProvider 
-        : CompactNodeServiceProvider<StructuralValidationServiceProvider, StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
+        : ContextualNodeServiceProvider<StructuralValidationServiceBase, StructuralValidationContext, StructuralValidationServiceSettings>
     {
         private readonly StructuralValidationServiceBase _defaultService;
 
@@ -20,6 +20,12 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         }
 
         protected override StructuralValidationServiceBase DefaultService => _defaultService;
+
+        public override sealed StructuralValidationContext GetEmptyContext(LocalServiceParam localParam
+            , StructuralValidationServiceSettings settings)
+        {
+            return new StructuralValidationContext(ServiceProvider, localParam, settings);
+        }
 
         public IEnumerable<NodeData> GetInvalidPositions(NodeData root, LocalServiceParam param)
             => GetInvalidPositions(root, param, ServiceSettings);
@@ -45,6 +51,23 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         public bool CanInactivateFor(NodeData node)
         {
             return GetServiceOfNode(node).CanDeactivate(node);
+        }
+
+        public bool IsLeaf(NodeData node)
+        {
+            return GetServiceOfNode(node).IsLeaf();
+        }
+
+        public bool IsInvisible(NodeData node)
+        {
+            return GetServiceOfNode(node).IsInvisible();
+        }
+
+        public bool CanPlaceAsChildOf(NodeData node, LocalServiceParam localParam
+            , StructuralValidationServiceSettings serviceSettings)
+        {
+            var ctx = GetContextOfNode(node, localParam, serviceSettings);
+            return GetServiceOfNode(node).CanPlaceAsChildOf(node, ctx);
         }
 
         private IEnumerable<NodeData> GetInvalidPositionsRecursive(NodeData root

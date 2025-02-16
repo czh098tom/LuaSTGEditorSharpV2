@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable
             if (sourcePropertyPair.NodeData != null)
             {
                 using var sourcePropertyLevel = context.AcquireContextLevelHandle(sourcePropertyPair.NodeData);
-                var sources = GetNodeServiceProvider()
+                var sources = NodeServiceProvider
                     .GetServicesPairForLogicalChildrenOfType<BuildTaskFactorySubService<TOutput>>(sourcePropertyPair.NodeData);
                 var sourcePair = sources.FirstOrDefault();
                 if (sourcePair.NodeData != null)

@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     [PackedServiceProvider]
     [ServiceName("PropertyView"), ServiceShortName("prop")]
     public class PropertyViewServiceProvider
-        : CompactNodeServiceProvider<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
+        : ContextualNodeServiceProvider<PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>
     {
         private static readonly string _nativeViewI18NKey = "native_view";
         private static readonly string _defaultViewI18NKey = "default_view";
@@ -37,6 +37,12 @@ namespace LuaSTGEditorSharpV2.PropertyView
         }
 
         protected override PropertyViewServiceBase DefaultService => _defaultService;
+
+        public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings
+            , PropertyViewServiceSettings serviceSettings)
+        {
+            return new PropertyViewContext(ServiceProvider, localSettings, serviceSettings);
+        }
 
         public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData
             , LocalServiceParam localParam)

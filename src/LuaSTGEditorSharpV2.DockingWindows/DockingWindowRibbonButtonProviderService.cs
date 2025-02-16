@@ -43,5 +43,10 @@ namespace LuaSTGEditorSharpV2.DockingWindows
                 .OfType<ButtonInstanceDescriptor>()
                 .GroupBy(bd => bd.Group);
         }
+
+        public IEnumerable<Type> GetAllAvailableTypes()
+        {
+            return GetRegisteredAvailableData().Select(d => d.Value.AnchorableViewModelType);
+        }
     }
 }

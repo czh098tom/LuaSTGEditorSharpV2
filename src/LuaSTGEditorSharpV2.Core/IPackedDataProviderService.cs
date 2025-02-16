@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace LuaSTGEditorSharpV2.Core
 {
     public interface IPackedDataProviderService<TData> : IPackedDataProviderService
-        where TData : PackedDataBase
     {
         public IDisposable Register(string id, PackageInfo packageInfo, TData data);
         public PackageInfo GetPackageInfo(TData data);

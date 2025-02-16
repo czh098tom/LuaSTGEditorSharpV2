@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
     [PackedServiceProvider]
     [ServiceName("CodeGenerator"), ServiceShortName("cgen")]
     public class CodeGeneratorServiceProvider
-        : CompactNodeServiceProvider<CodeGeneratorServiceProvider, CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
+        : ContextualNodeServiceProvider<CodeGeneratorServiceBase, CodeGenerationContext, CodeGenerationServiceSettings>
     {
         private readonly CodeGeneratorServiceBase _defaultService;
 
@@ -23,6 +23,12 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         }
 
         protected override CodeGeneratorServiceBase DefaultService => _defaultService;
+
+        public override sealed CodeGenerationContext GetEmptyContext(LocalServiceParam localSettings
+            , CodeGenerationServiceSettings serviceSettings)
+        {
+            return new CodeGenerationContext(ServiceProvider, localSettings, serviceSettings);
+        }
 
         /// <summary>
         /// Generate <see cref="CodeData"/> for the child of given node with 

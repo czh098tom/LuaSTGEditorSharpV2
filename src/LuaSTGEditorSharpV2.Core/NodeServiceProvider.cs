@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public abstract class NodeServiceProvider<TService>(IServiceProvider serviceProvider) 
         : PackedDataProviderServiceBase<TService>(serviceProvider)
-        where TService : NodeServiceBase
+        where TService : class
     {
         public record struct NodeServicePair<UService>(UService Service, NodeData NodeData)
             where UService : TService
