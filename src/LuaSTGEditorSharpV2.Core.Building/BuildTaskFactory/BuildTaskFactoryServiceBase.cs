@@ -19,7 +19,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory
         public virtual WeightedBuildingTask? CreateBuildingTask(NodeData nodeData, 
             BuildTaskFactoryContext context)
         {
-            return GetNodeServiceProvider().ProceedChildren(nodeData, context);
+            return NodeServiceProvider.ProceedChildren(nodeData, context);
         }
     }
 }

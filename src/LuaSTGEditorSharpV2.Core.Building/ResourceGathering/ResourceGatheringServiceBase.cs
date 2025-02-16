@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
         public virtual IEnumerable<GroupedResource> GetResourcesToPackWithContext(NodeData node
             , ResourceGatheringContext context)
         {
-            return GetNodeServiceProvider().ProceedChildren(node, context);
+            return NodeServiceProvider.ProceedChildren(node, context);
         }
     }
 }

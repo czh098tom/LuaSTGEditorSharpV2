@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Exception;
 namespace LuaSTGEditorSharpV2.Core
 {
     public abstract class PackedDataProviderServiceBase<TData>(IServiceProvider serviceProvider) : IPackedDataProviderService<TData>
-        where TData : PackedDataBase
+        where TData : class
     {
         private class RegisteredDataProviderServiceHandle(PackedDataProviderServiceBase<TData> providerService, 
             string id, PackageInfo packageInfo, TData data) 

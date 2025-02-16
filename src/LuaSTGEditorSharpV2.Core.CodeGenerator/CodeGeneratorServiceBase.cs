@@ -35,7 +35,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         /// <returns> <see cref="IEnumerable{T}"/> for enumerating <see cref="CodeData"/> generated. </returns>
         internal protected virtual IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
-            return GetNodeServiceProvider().GenerateForChildren(node, context, 0);
+            return NodeServiceProvider.GenerateForChildren(node, context, 0);
         }
     }
 }

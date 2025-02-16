@@ -27,22 +27,17 @@ namespace LuaSTGEditorSharpV2.Core
         [JsonIgnore]
         protected TNodeServiceProvider NodeServiceProvider { get; private set; } = nodeServiceProvider;
 
-        protected TNodeServiceProvider GetNodeServiceProvider()
-        {
-            return NodeServiceProvider;
-        }
-
         protected TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
         {
-            var service = GetNodeServiceProvider().GetServiceInstanceOfTypeUID(node.TypeUID);
+            var service = NodeServiceProvider.GetServiceInstanceOfTypeUID(node.TypeUID);
             return service.BuildContextForNode(node, localParam, serviceSettings);
         }
 
         protected TService GetServiceOfTypeID(string typeUID)
-            => GetNodeServiceProvider().GetServiceInstanceOfTypeUID(typeUID);
+            => NodeServiceProvider.GetServiceInstanceOfTypeUID(typeUID);
 
         protected TService GetServiceOfNode(NodeData node)
-            => GetNodeServiceProvider().GetServiceOfNode(node);
+            => NodeServiceProvider.GetServiceOfNode(node);
 
         /// <summary>
         /// When overridden in derived class, obtain an empty context object.
