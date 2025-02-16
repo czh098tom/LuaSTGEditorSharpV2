@@ -1,48 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics.CodeAnalysis;
 
-using Newtonsoft.Json;
-
-using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Exception;
+using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Settings;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    /// <summary>
-    /// Base class for all services who observes nodes and do something according to data inside nodes.
-    /// </summary>
-    /// <typeparam name="TService"> The service itself. </typeparam>
-    /// <typeparam name="TContext"> The context that preserves frequently used data for this service. </typeparam>
-    /// <typeparam name="TSettings"> The singleton settings used by this service during the lifecycle of the application. </typeparam>
-    public abstract class CompactNodeService<TNodeServiceProvider, TService, TContext, TSettings>(TNodeServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) : NodeServiceBase(serviceProvider)
-        where TNodeServiceProvider : CompactNodeServiceProvider<TNodeServiceProvider, TService, TContext, TSettings>
-        where TService : CompactNodeService<TNodeServiceProvider, TService, TContext, TSettings>
+    public abstract class ContextualNodeServiceProvider<TService, TContext, TSettings>(IServiceProvider serviceProvider)
+        : NodeServiceProvider<TService>(serviceProvider), ISettingsProvider<TSettings>
+        where TService : class
         where TContext : NodeContextWithSettings<TSettings>
         where TSettings : class, new()
     {
-        [JsonIgnore]
-        protected TNodeServiceProvider NodeServiceProvider { get; private set; } = nodeServiceProvider;
+        protected TSettings ServiceSettings { get; set; } = new();
 
-        protected TNodeServiceProvider GetNodeServiceProvider()
+        public object Settings
         {
-            return NodeServiceProvider;
+            get => ServiceSettings ?? new();
+            set
+            {
+                ServiceSettings = (value as TSettings) ?? ServiceSettings;
+            }
         }
 
-        protected TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
+        public virtual void RefreshSettings() { }
+
+        public void LoadSettings(TSettings settings)
         {
-            var service = GetNodeServiceProvider().GetServiceInstanceOfTypeUID(node.TypeUID);
-            return service.BuildContextForNode(node, localParam, serviceSettings);
+            ServiceSettings = settings;
+        }
+
+        internal protected TContext GetContextOfNode(NodeData node, LocalServiceParam localParam)
+            => GetContextOfNode(node, localParam, ServiceSettings);
+
+        internal protected TContext GetContextOfNode(NodeData node, LocalServiceParam localParam, TSettings serviceSettings)
+        {
+            return BuildContextForNode(node, localParam, serviceSettings);
+        }
+
+        public IEnumerable<NodeServicePair<UService>> GetServicesPairForLogicalChildrenOfType<UService>(NodeData nodeData)
+            where UService : TService
+        {
+            foreach (var n in nodeData.GetLogicalChildren())
+            {
+                var s = GetServiceOfNode(n);
+                if (s is UService service)
+                {
+                    yield return new NodeServicePair<UService>(service, n);
+                }
+            }
         }
 
         protected TService GetServiceOfTypeID(string typeUID)
-            => GetNodeServiceProvider().GetServiceInstanceOfTypeUID(typeUID);
-
-        protected TService GetServiceOfNode(NodeData node)
-            => GetNodeServiceProvider().GetServiceOfNode(node);
+            => GetServiceInstanceOfTypeUID(typeUID);
 
         /// <summary>
         /// When overridden in derived class, obtain an empty context object.
@@ -82,8 +97,15 @@ namespace LuaSTGEditorSharpV2.Core
         }
     }
 
-    internal class DefaultNodeService(DefaultNodeServiceProvider nodeServiceProvider, IServiceProvider serviceProvider) 
-        : CompactNodeService<DefaultNodeServiceProvider, DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase>(nodeServiceProvider, serviceProvider)
+    internal class DefaultNodeServiceProvider : ContextualNodeServiceProvider<DefaultNodeService, DefaultNodeContext, ServiceExtraSettingsBase>
     {
+        private readonly DefaultNodeService _default;
+
+        protected override DefaultNodeService DefaultService => _default;
+
+        public DefaultNodeServiceProvider(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            _default = new(this, serviceProvider);
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable
             float weight = GetWeight(token);
             using (var variablesLevel = context.AcquireContextLevelHandle(nodeData))
             {
-                var properties = GetNodeServiceProvider()
+                var properties = NodeServiceProvider
                     .GetServicesPairForLogicalChildrenOfType<BuildTaskPropertySubService>(nodeData);
                 sourceVariable = GetPropertyInChildren<IInputSourceVariable>(
                     nodeData, context, SourceVariableName, properties);

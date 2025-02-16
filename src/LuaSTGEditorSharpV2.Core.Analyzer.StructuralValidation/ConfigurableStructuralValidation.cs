@@ -42,8 +42,8 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         {
             foreach (var ancestor in context.EnumerateFromNearest())
             {
-                if (GetServiceOfNode(ancestor).IsLeaf()) return false;
-                if (!GetServiceOfNode(ancestor).IsInvisible())
+                if (NodeServiceProvider.IsLeaf(ancestor)) return false;
+                if (!NodeServiceProvider.IsInvisible(ancestor))
                 {
                     if (RequireParent.Contains(ancestor.TypeUID))
                     {
@@ -62,8 +62,8 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
         {
             foreach (var ancestor in context.EnumerateFromNearest())
             {
-                if (GetServiceOfNode(ancestor).IsLeaf()) return false;
-                if (!GetServiceOfNode(ancestor).IsInvisible())
+                if (NodeServiceProvider.IsLeaf(ancestor)) return false;
+                if (!NodeServiceProvider.IsInvisible(ancestor))
                 {
                     if (RequireAncestor.Contains(ancestor.TypeUID))
                     {
@@ -80,8 +80,8 @@ namespace LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation
             {
                 foreach (var ancestor in context.EnumerateFromNearest())
                 {
-                    if (GetServiceOfNode(ancestor).IsLeaf()) return false;
-                    if (!GetServiceOfNode(ancestor).IsInvisible()) return false;
+                    if (NodeServiceProvider.IsLeaf(ancestor)) return false;
+                    if (!NodeServiceProvider.IsInvisible(ancestor)) return false;
                 }
                 return true;
             }

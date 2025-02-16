@@ -22,16 +22,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
     /// Provide functionality of presenting and manipulating <see cref="NodeData"/> properties.
     /// </summary>
     public class PropertyViewServiceBase(PropertyViewServiceProvider nodeServiceProvider, IServiceProvider serviceProvider)
-        : CompactNodeService<PropertyViewServiceProvider, PropertyViewServiceBase, PropertyViewContext, PropertyViewServiceSettings>(nodeServiceProvider, serviceProvider)
+        : ProviderCachedNodeServiceBase<PropertyViewServiceProvider>(nodeServiceProvider, serviceProvider)
     {
         [JsonProperty]
         public PropertyTabTermBase[] Tabs { get; private set; } = [];
-
-        public override sealed PropertyViewContext GetEmptyContext(LocalServiceParam localSettings
-            , PropertyViewServiceSettings serviceSettings)
-        {
-            return new PropertyViewContext(ServiceProvider, localSettings, serviceSettings);
-        }
 
         /// <summary>
         /// Obtain a list of <see cref="PropertyTabViewModel"/> according to data source with 
