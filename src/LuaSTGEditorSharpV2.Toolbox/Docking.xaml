@@ -6,6 +6,6 @@
     <DataTemplate x:Key="ToolboxPageViewModel">
         <lto:ToolboxTree ItemsSource="{Binding ToolboxItems}" VirtualizingPanel.IsVirtualizing="True"/>
     </DataTemplate>
-    <fluent:Button x:Key="button" Header="{lex:Loc LuaSTGEditorSharpV2.Toolbox:Localized:ribbon_buttom_toolBox}"
+    <fluent:Button x:Key="button" Header="{lex:Loc LuaSTGEditorSharpV2.Toolbox:Localized:ribbon_button_toolBox}"
                    Command="{Binding Command}"/>
 </ResourceDictionary>

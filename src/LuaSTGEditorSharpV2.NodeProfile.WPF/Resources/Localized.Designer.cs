@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LuaSTGEditorSharpV2.Toolbox.Resources {
+namespace LuaSTGEditorSharpV2.NodeProfile.WPF.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.Toolbox.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.Toolbox.Resources.Localized", typeof(Localized).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.NodeProfile.WPF.Resources.Localized", typeof(Localized).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace LuaSTGEditorSharpV2.Toolbox.Resources {
         }
         
         /// <summary>
-        ///   查找类似 Toolbox 的本地化字符串。
+        ///   查找类似 Node Profile 的本地化字符串。
         /// </summary>
-        internal static string panel_toolBox_title {
+        internal static string panel_nodeProfile_title {
             get {
-                return ResourceManager.GetString("panel_toolBox_title", resourceCulture);
+                return ResourceManager.GetString("panel_nodeProfile_title", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 Toolbox 的本地化字符串。
+        ///   查找类似 Node Profile 的本地化字符串。
         /// </summary>
-        internal static string ribbon_button_toolBox {
+        internal static string ribbon_button_nodeProfile {
             get {
-                return ResourceManager.GetString("ribbon_button_toolBox", resourceCulture);
+                return ResourceManager.GetString("ribbon_button_nodeProfile", resourceCulture);
             }
         }
     }

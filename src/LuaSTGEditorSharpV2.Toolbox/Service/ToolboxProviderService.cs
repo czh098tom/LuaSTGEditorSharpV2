@@ -40,8 +40,8 @@ namespace LuaSTGEditorSharpV2.Toolbox.Service
             var data = GetRegisteredAvailableData();
             foreach (var kvp in data)
             {
-                created.Add(kvp.Key, kvp.Value.CreateViewModel());
-                createdOrder.Add(created[kvp.Key], kvp.Value.Order);
+                created.Add(kvp.Key, kvp.Value.data.CreateViewModel());
+                createdOrder.Add(created[kvp.Key], kvp.Value.data.Order);
             }
 
             // add suppliementary viewmodels
