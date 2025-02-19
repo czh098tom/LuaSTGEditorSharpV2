@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.Docking
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.NodeProfile", "src\LuaSTGEditorSharpV2.NodeProfile\LuaSTGEditorSharpV2.NodeProfile.csproj", "{2083983C-7A74-48A4-A310-C30CD668CBF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.NodeProfile.WPF", "src\LuaSTGEditorSharpV2.NodeProfile.WPF\LuaSTGEditorSharpV2.NodeProfile.WPF.csproj", "{E6D7730D-7282-4B75-91AB-0C3AFF30D19B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.NodeProfile.WPF", "src\LuaSTGEditorSharpV2.NodeProfile.WPF\LuaSTGEditorSharpV2.NodeProfile.WPF.csproj", "{E6D7730D-7282-4B75-91AB-0C3AFF30D19B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
