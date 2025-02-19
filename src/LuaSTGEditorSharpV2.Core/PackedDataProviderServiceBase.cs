@@ -8,11 +8,12 @@ using LuaSTGEditorSharpV2.Core.Exception;
 
 namespace LuaSTGEditorSharpV2.Core
 {
-    public abstract class PackedDataProviderServiceBase<TData>(IServiceProvider serviceProvider) : IPackedDataProviderService<TData>
+    public abstract class PackedDataProviderServiceBase<TData>(IServiceProvider serviceProvider) 
+    	: IPackedDataProviderService<TData>, IPackedServiceInstanceCollection
         where TData : class
     {
-        private class RegisteredDataProviderServiceHandle(PackedDataProviderServiceBase<TData> providerService, 
-            string id, PackageInfo packageInfo, TData data) 
+        private class RegisteredDataProviderServiceHandle(PackedDataProviderServiceBase<TData> providerService,
+            string id, PackageInfo packageInfo, TData data)
             : IDisposable
         {
             private readonly string _id = id;
@@ -125,14 +126,50 @@ namespace LuaSTGEditorSharpV2.Core
             return null;
         }
 
-        internal protected IReadOnlyDictionary<string, TData> GetRegisteredAvailableData()
+        public IReadOnlyDictionary<string, (TData data, PackageInfo packageInfo)> GetRegisteredAvailableData()
         {
-            var dict = new Dictionary<string, TData>();
+            var dict = new Dictionary<string, (TData data, PackageInfo packageInfo)>();
             foreach (var kvp in _registered)
             {
-                dict.Add(kvp.Key, kvp.Value.Peek());
+                if(kvp.Value.TryPeek(out var element, out var priority))
+                {
+                    dict.Add(kvp.Key, (element, priority));
+                }
             }
             return dict;
+        }
+
+        IReadOnlyDictionary<string, (object data, PackageInfo packageInfo)> IPackedServiceInstanceCollection.GetRegisteredAvailableData()
+        {
+            var dict = new Dictionary<string, (object, PackageInfo packageInfo)>();
+            foreach (var kvp in _registered)
+            {
+                if (kvp.Value.TryPeek(out var element, out var priority))
+                {
+                    dict.Add(kvp.Key, (element, priority));
+                }
+            }
+            return dict;
+        }
+
+        public IReadOnlyDictionary<string, IEnumerable<(TData data, PackageInfo packageInfo)>> GetAllRegistered()
+        {
+            Dictionary<string, IEnumerable<(TData data, PackageInfo packageInfo)>> result = [];
+            foreach (var kvp in _registered)
+            {
+                result.Add(kvp.Key, kvp.Value.UnorderedItems);
+            }
+            return result;
+        }
+
+        IReadOnlyDictionary<string, IEnumerable<(object data, PackageInfo packageInfo)>> IPackedServiceInstanceCollection.GetAllRegistered()
+        {
+            Dictionary<string, IEnumerable<(object data, PackageInfo packageInfo)>> result = [];
+            foreach (var kvp in _registered)
+            {
+                result.Add(kvp.Key, kvp.Value.UnorderedItems.Select(t => ((object)t.Element, t.Priority)));
+            }
+            return result;
         }
     }
 }

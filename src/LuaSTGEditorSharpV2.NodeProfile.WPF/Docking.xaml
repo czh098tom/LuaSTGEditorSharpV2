@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:fluent="clr-namespace:Fluent;assembly=Fluent"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF">
+    <DataTemplate x:Key="NodeProfilePageViewModel">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="100"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+            <lw:TreeViewEx Grid.Column="0" ItemsSource="{Binding Tree}" SelectedItemEx="{Binding Current, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Icon}" Width="16" Height="16"/>
+                            <TextBlock Text="{Binding Title}"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </lw:TreeViewEx>
+            <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+            <Grid Grid.Column="2" DataContext="{Binding Content}">
+                <TextBox Text="{Binding Description}" 
+                         AcceptsReturn="True" 
+                         IsReadOnly="True" 
+                         HorizontalScrollBarVisibility="Auto"
+                         VerticalScrollBarVisibility="Auto"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+    <fluent:Button x:Key="button" 
+                   Header="{lex:Loc LuaSTGEditorSharpV2.NodeProfile.WPF:Localized:ribbon_button_nodeProfile}"
+                   LargeIcon="pack://application:,,,/LuaSTGEditorSharpV2.NodeProfile.WPF;component/images/bricks.png"
+                   Command="{Binding Command}"/>
+</ResourceDictionary>

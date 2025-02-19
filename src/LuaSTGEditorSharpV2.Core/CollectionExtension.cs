@@ -45,5 +45,17 @@ namespace LuaSTGEditorSharpV2.Core
             }
             return -1;
         }
+
+        public static TValue GetOrAdd<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
+            where TKey : notnull
+            where TValue : new()
+        {
+            if (!dict.TryGetValue(key, out var value))
+            {
+                value = new TValue();
+                dict[key] = value;
+            }
+            return value;
+        }
     }
 }

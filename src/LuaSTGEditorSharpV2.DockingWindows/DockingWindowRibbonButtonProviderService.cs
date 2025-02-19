@@ -46,7 +46,7 @@ namespace LuaSTGEditorSharpV2.DockingWindows
 
         public IEnumerable<Type> GetAllAvailableTypes()
         {
-            return GetRegisteredAvailableData().Select(d => d.Value.AnchorableViewModelType);
+            return GetRegisteredAvailableData().Select(d => d.Value.data.AnchorableViewModelType);
         }
     }
 }

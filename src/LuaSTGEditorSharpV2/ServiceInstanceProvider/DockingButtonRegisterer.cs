@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.DockingWindows;
+using LuaSTGEditorSharpV2.NodeProfile.WPF.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.Toolbox.ViewModel;
 
@@ -21,7 +23,10 @@ namespace LuaSTGEditorSharpV2.ServiceInstanceProvider
                     "button", "general", typeof(ToolboxPageViewModel), serviceProvider),
                 new("property",
                     new Uri("pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/Docking.xaml"),
-                    "button", "general", typeof(PropertyPageViewModel), serviceProvider)
+                    "button", "general", typeof(PropertyPageViewModel), serviceProvider),
+                new("nodeProfile",
+                    new Uri("pack://application:,,,/LuaSTGEditorSharpV2.NodeProfile.WPF;component/Docking.xaml"),
+                    "button", "general", typeof(NodeProfilePageViewModel), serviceProvider)
             };
 
             return arr;
