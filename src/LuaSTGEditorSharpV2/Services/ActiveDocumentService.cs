@@ -13,11 +13,12 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Settings;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.Core.Command.Factory;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Services
 {
     [Inject(ServiceLifetime.Singleton)]
-    public class ActiveDocumentService(ILogger<ActiveDocumentService> logger, LocalizationService localizationService) 
+    public class ActiveDocumentService(ILogger<ActiveDocumentService> logger, LocalizationService localizationService, EditorNodeFactory editorNodeFactory) 
         : ISettingsProvider
     {
         private readonly ILogger<ActiveDocumentService> _logger = logger;
@@ -29,20 +30,20 @@ namespace LuaSTGEditorSharpV2.Services
             set => _settings = (value as ActiveDocumentServiceSettings) ?? _settings;
         }
 
-        private readonly List<EditingDocumentModel> _activeDocuments = [];
-        public IReadOnlyList<EditingDocumentModel> ActiveDocuments => _activeDocuments;
+        private readonly List<EditorDocument> _activeDocuments = [];
+        public IReadOnlyList<EditorDocument> ActiveDocuments => _activeDocuments;
 
-        private readonly List<EditingDocumentModel?> _unsavedUntitledDocuments = [];
+        private readonly List<EditorDocument?> _unsavedUntitledDocuments = [];
 
         public void RefreshSettings() { }
 
-        public EditingDocumentModel? Open(string path)
+        public EditorDocument? Open(string path)
         {
             try
             {
                 var plainDoc = DocumentModel.CreateFromFile(path);
                 if (plainDoc == null) return null;
-                var doc = new EditingDocumentModel(plainDoc);
+                var doc = new EditorDocument(plainDoc, editorNodeFactory);
                 _activeDocuments.Add(doc);
                 return doc;
             }
@@ -54,29 +55,29 @@ namespace LuaSTGEditorSharpV2.Services
             return null;
         }
 
-        public EditingDocumentModel CreateBlank()
+        public EditorDocument CreateBlank()
         {
             var idx = FindUnoccupiedUntitledFileIndex();
             var plainDoc = DocumentModel.CreateEmpty(GetUntitledFileName(idx));
-            var doc = new EditingDocumentModel(plainDoc);
+            var doc = new EditorDocument(plainDoc, editorNodeFactory);
             _activeDocuments.Add(doc);
             InsertUntitledFile(doc, idx);
             return doc;
         }
 
-        public void MarkAsSaved(EditingDocumentModel document)
+        public void MarkAsSaved(EditorDocument document)
         {
             var idx = _unsavedUntitledDocuments.FindIndex(m => m == document);
             if (idx < 0) return;
             _unsavedUntitledDocuments[idx] = null;
         }
 
-        public void Close(EditingDocumentModel document)
+        public void Close(EditorDocument document)
         {
             _activeDocuments.Remove(document);
         }
 
-        private void InsertUntitledFile(EditingDocumentModel document, int index)
+        private void InsertUntitledFile(EditorDocument document, int index)
         {
             if (index >= _unsavedUntitledDocuments.Count)
             {

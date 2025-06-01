@@ -8,18 +8,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Core.Command.Factory
 {
     [Inject(ServiceLifetime.Singleton)]
-    public class InsertAfterFactory(ViewModelProviderServiceProvider viewModelProviderService) : IInsertCommandFactory
+    public class InsertAfterFactory(EditorNodeFactory editorNodeFactory) : IInsertCommandFactory
     {
         public CommandBase? CreateInsertCommand(NodeData origin, NodeData toAppend)
         {
             if (origin.PhysicalParent == null) return null;
             int idx = origin.PhysicalParent.PhysicalChildren.FindIndex(origin);
             if (idx < 0) return null;
-            return new AddChildCommand(viewModelProviderService, origin.PhysicalParent, idx + 1, toAppend);
+            return new AddChildCommand(editorNodeFactory, origin.PhysicalParent, idx + 1, toAppend);
         }
     }
 }

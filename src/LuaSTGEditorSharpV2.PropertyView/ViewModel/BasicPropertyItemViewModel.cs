@@ -10,11 +10,12 @@ using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
     public class BasicPropertyItemViewModel(NodeData nodeData, LocalServiceParam localServiceParam,
-        string? key, ViewModelProviderServiceProvider viewModelProviderServiceProvider)
+        string? key, EditorNodeFactory editorNodeFactory)
         : PropertyItemViewModelBase(nodeData, localServiceParam)
     {
         private string _name = string.Empty;
@@ -31,17 +32,17 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 
         public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
         {
-            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, nodeData, key, edited), LocalServiceParam);
+            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(editorNodeFactory, nodeData, key, edited), false, LocalServiceParam);
         }
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class BasicPropertyItemViewModelFactory(ViewModelProviderServiceProvider viewModelProviderServiceProvider) 
+    public class BasicPropertyItemViewModelFactory(EditorNodeFactory editorNodeFactory) 
         : IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>
     {
         public BasicPropertyItemViewModel Create(NodeData nodeData, LocalServiceParam localServiceParam, string? key)
         {
-            return new BasicPropertyItemViewModel(nodeData, localServiceParam, key, viewModelProviderServiceProvider);
+            return new BasicPropertyItemViewModel(nodeData, localServiceParam, key, editorNodeFactory);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 
@@ -16,24 +16,24 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         private NodeData? child;
 
-        public RemoveChildCommand(ViewModelProviderServiceProvider service, NodeData parent, int position) : base(service)
+        public RemoveChildCommand(EditorNodeFactory factory, NodeData parent, int position) 
+            : base(factory)
         {
             Parent = parent;
             Position = position;
         }
 
-        protected override void DoExecute(LocalServiceParam param)
+        protected override void DoExecute(EditorDocument editorDocument)
         {
-            child = Parent.PhysicalChildren[Position];
-            ViewModelProviderServiceProvider
-                .RemoveNodeAt(Parent, Position);
+            var node = EditorNodeFactory.GetOrCreate(Parent, editorDocument);
+            child = node.RemoveAt(Position);
         }
 
-        protected override void RevertExecution(LocalServiceParam param)
+        protected override void RevertExecution(EditorDocument editorDocument)
         {
             if (child == null) throw new InvalidOperationException("Command has not been executed yet.");
-            ViewModelProviderServiceProvider
-                .InsertNodeAt(Parent, Position, child, param);
+            var node = EditorNodeFactory.GetOrCreate(Parent, editorDocument);
+            node.Insert(Position, child);
         }
     }
 }
