@@ -199,12 +199,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             if (!HaveActiveDocument) throw new InvalidOperationException();
             _activeDocument.Undo();
+            BroadcastSelectedNodeChanged(_activeDocument, SelectedNodes);
         }
 
         public void RedoActiveDocument()
         {
             if (!HaveActiveDocument) throw new InvalidOperationException();
             _activeDocument.Redo();
+            BroadcastSelectedNodeChanged(_activeDocument, SelectedNodes);
         }
 
         public bool CanPerformUndoActivateDocument()

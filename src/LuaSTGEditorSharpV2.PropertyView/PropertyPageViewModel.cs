@@ -32,6 +32,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public override string I18NTitleKey => "panel_property_title";
 
+        private NodeData? editing = null;
+
         public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
@@ -51,16 +53,20 @@ namespace LuaSTGEditorSharpV2.PropertyView
             var param = new LocalServiceParam(SourceDocument ?? DocumentModel.Empty);
             if (SourceNodes.Length == 1)
             {
-                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
-                    .GetPropertyViewModelOfNode(SourceNodes[0], param);
-                LoadProperties(list);
+                editing = SourceNodes[0];
             }
             else
             {
-                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
-                    .GetPropertyViewModelOfNode(NodeData.Empty, param);
-                LoadProperties(list);
+                editing = null;
             }
+            LoadNodeData(param, editing ?? NodeData.Empty);
+        }
+
+        private void LoadNodeData(LocalServiceParam param, NodeData nodeData)
+        {
+            var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
+                .GetPropertyViewModelOfNode(nodeData, param);
+            LoadProperties(list);
         }
 
         private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels)
