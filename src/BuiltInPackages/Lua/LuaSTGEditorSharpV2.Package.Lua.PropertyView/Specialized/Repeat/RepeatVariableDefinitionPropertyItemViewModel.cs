@@ -84,7 +84,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             if (editIncrement != null) commands.Add(editIncrement);
-            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, localServiceParam);
+            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, false, localServiceParam);
         }
     }
 

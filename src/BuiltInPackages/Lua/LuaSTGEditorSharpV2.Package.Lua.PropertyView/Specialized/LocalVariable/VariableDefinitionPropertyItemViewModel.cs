@@ -67,7 +67,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
                 nodeData, string.Format(term.ValueRule.Key, idx), ProxyValue?.Value ?? string.Empty);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
-            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, localServiceParam);
+            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, false, localServiceParam);
         }
     }
 
