@@ -27,6 +27,7 @@ using LuaSTGEditorSharpV2.Dialog;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
 using LuaSTGEditorSharpV2.Core.Building;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -151,7 +152,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
-        public void AddDocument(EditingDocumentModel editingDocumentModel)
+        public void AddDocument(EditorDocument editingDocumentModel)
         {
             var doc = editingDocumentModel;
             if (doc == null) return;

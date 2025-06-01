@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 
-namespace LuaSTGEditorSharpV2
+namespace LuaSTGEditorSharpV2.Core.Editor
 {
-    public class EditingDocumentModel : IDocument
+    public class EditorDocument : IDocument, IDisposable
     {
         public DocumentModel Target { get; private set; }
+        public EditorNode RootEditorNode { get; }
 
         private readonly CommandBuffer _commandBuffer = new();
 
-        public EditingDocumentModel(DocumentModel target)
+        private bool disposed;
+
+        public EditorDocument(DocumentModel target, EditorNodeFactory editorNodeFactory)
         {
             Target = target;
+            RootEditorNode = editorNodeFactory.GetOrCreate(target.Root);
         }
 
         public string? FilePath => Target.FilePath;
@@ -55,6 +56,30 @@ namespace LuaSTGEditorSharpV2
         public void Redo()
         {
             _commandBuffer.Redo(new LocalServiceParam(this));
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    RootEditorNode.Dispose();
+                }
+
+                disposed = true;
+            }
+        }
+
+        ~EditorDocument()
+        {
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

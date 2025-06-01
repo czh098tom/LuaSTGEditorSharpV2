@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using LuaSTGEditorSharpV2.Core.Services;
 
 using Microsoft.Extensions.Hosting;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Core
 {
@@ -24,6 +25,11 @@ namespace LuaSTGEditorSharpV2.Core
             var assemblyDescs = CreatePackageDependentAssemblyDescriptor(CreatePackedServiceDescriptors());
 
             HostApplicationBuilder applicationBuilder = CreateApplicationBuilder(_args, CreatePackedServiceDescriptors());
+
+            applicationBuilder.Services.AddSingleton<EditorNodeFactory>();
+            applicationBuilder.Services.AddKeyedScoped(ScopeKey.EditorNode, (provider, _) => provider
+                .GetRequiredService<EditorNodeFactory>()
+                .GetFromProvider(provider));
 
             var host = applicationBuilder.Build();
 

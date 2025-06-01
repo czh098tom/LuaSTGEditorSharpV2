@@ -16,6 +16,7 @@ using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Command.Service;
 using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -23,7 +24,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
     {
         public delegate void SelectedNodeChangedHandler(DocumentViewModel? dvm, NodeData[] nodeData);
 
-        private readonly EditingDocumentModel _editingDocumentModel;
+        private readonly EditorDocument _editingDocumentModel;
 
         public ObservableCollection<NodeViewModel> Tree { get; private set; } = [];
 
@@ -60,7 +61,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public bool CanUndo => _editingDocumentModel.CanUndo;
         public bool CanRedo => _editingDocumentModel.CanRedo;
 
-        public DocumentViewModel(IServiceProvider serviceProvider, EditingDocumentModel documentModel) : base(serviceProvider)
+        public DocumentViewModel(IServiceProvider serviceProvider, EditorDocument documentModel) : base(serviceProvider)
         {
             _editingDocumentModel = documentModel;
             _rawTitle = documentModel.FileName;
@@ -157,7 +158,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
     [Inject(ServiceLifetime.Singleton)]
     public class DocumentViewModelFactory(IServiceProvider serviceProvider)
     {
-        public DocumentViewModel Create(EditingDocumentModel documentModel)
+        public DocumentViewModel Create(EditorDocument documentModel)
             => new(serviceProvider, documentModel);
     }
 }
