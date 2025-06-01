@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
@@ -24,8 +24,8 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         public ICommand Decrease => _decrease;
 
         public CollectionCountPropertyItemViewModel(NodeData nodeData, LocalServiceParam localServiceParam,
-            string? key, ViewModelProviderServiceProvider viewModelProviderServiceProvider)
-            : base(nodeData, localServiceParam, key, viewModelProviderServiceProvider)
+            string? key, EditorNodeFactory editorNodeFactory)
+            : base(nodeData, localServiceParam, key, editorNodeFactory)
         {
             _increase = new RelayCommand(() =>
             {
@@ -45,12 +45,12 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class CollectionCountPropertyItemViewModelFactory(ViewModelProviderServiceProvider viewModelProviderServiceProvider) 
+    public class CollectionCountPropertyItemViewModelFactory(EditorNodeFactory editorNodeFactory) 
         : IBasicPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel>
     {
         public CollectionCountPropertyItemViewModel Create(NodeData nodeData, LocalServiceParam localServiceParam, string? key)
         {
-            return new CollectionCountPropertyItemViewModel(nodeData, localServiceParam, key, viewModelProviderServiceProvider);
+            return new CollectionCountPropertyItemViewModel(nodeData, localServiceParam, key, editorNodeFactory);
         }
     }
 }

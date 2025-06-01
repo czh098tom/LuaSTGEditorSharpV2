@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LuaSTGEditorSharpV2.Core.Editor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,19 +26,19 @@ namespace LuaSTGEditorSharpV2.Core
             ShouldUnpack = shouldUnpack;
         }
 
-        protected override void DoExecute(LocalServiceParam param)
+        protected override void DoExecute(EditorDocument editorDocument)
         {
             for (int i = 0; i < _innerCommands.Count; i++)
             {
-                _innerCommands[i].Execute(param);
+                _innerCommands[i].Execute(editorDocument);
             }
         }
 
-        protected override void RevertExecution(LocalServiceParam param)
+        protected override void RevertExecution(EditorDocument editorDocument)
         {
             for (int i = _innerCommands.Count - 1; i >= 0; i--)
             {
-                _innerCommands[i].Revert(param);
+                _innerCommands[i].Revert(editorDocument);
             }
         }
 

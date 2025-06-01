@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LuaSTGEditorSharpV2.Core.Editor;
+
 namespace LuaSTGEditorSharpV2.Core
 {
-    public class CommandBuffer
+    public class CommandBuffer(EditorDocument editorDocument)
     {
         private readonly List<CommandBase> _commands = [];
         private int _currentCount = 0;
@@ -16,13 +18,13 @@ namespace LuaSTGEditorSharpV2.Core
         public bool CanRedo => _currentCount != _commands.Count;
         public bool IsModified => _currentCount != _savedCount;
 
-        public void Execute(CommandBase command, LocalServiceParam param)
+        public void Execute(CommandBase command)
         {
             while (_commands.Count > _currentCount)
             {
                 _commands.RemoveAt(_currentCount);
             }
-            command.Execute(param);
+            command.Execute(editorDocument);
             if (_commands.Count == _currentCount)
             {
                 if (command is CompositeCommand cc && cc.ShouldUnpack)
@@ -37,15 +39,15 @@ namespace LuaSTGEditorSharpV2.Core
             _currentCount = _commands.Count;
         }
 
-        public void Undo(LocalServiceParam param)
+        public void Undo()
         {
             _currentCount--;
-            _commands[_currentCount].Revert(param);
+            _commands[_currentCount].Revert(editorDocument);
         }
 
-        public void Redo(LocalServiceParam param)
+        public void Redo()
         {
-            _commands[_currentCount].Execute(param);
+            _commands[_currentCount].Execute(editorDocument);
             _currentCount++;
         }
 

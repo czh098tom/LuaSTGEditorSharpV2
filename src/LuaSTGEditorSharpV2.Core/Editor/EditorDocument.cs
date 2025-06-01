@@ -12,14 +12,15 @@ namespace LuaSTGEditorSharpV2.Core.Editor
         public DocumentModel Target { get; private set; }
         public EditorNode RootEditorNode { get; }
 
-        private readonly CommandBuffer _commandBuffer = new();
+        private readonly CommandBuffer _commandBuffer;
 
         private bool disposed;
 
         public EditorDocument(DocumentModel target, EditorNodeFactory editorNodeFactory)
         {
             Target = target;
-            RootEditorNode = editorNodeFactory.GetOrCreate(target.Root);
+            _commandBuffer = new(this);
+            RootEditorNode = editorNodeFactory.GetOrCreate(target.Root, this);
         }
 
         public string? FilePath => Target.FilePath;
@@ -45,17 +46,17 @@ namespace LuaSTGEditorSharpV2.Core.Editor
 
         public void ExecuteCommand(CommandBase command)
         {
-            _commandBuffer.Execute(command, new LocalServiceParam(this));
+            _commandBuffer.Execute(command);
         }
 
         public void Undo()
         {
-            _commandBuffer.Undo(new LocalServiceParam(this));
+            _commandBuffer.Undo();
         }
 
         public void Redo()
         {
-            _commandBuffer.Redo(new LocalServiceParam(this));
+            _commandBuffer.Redo();
         }
 
         protected virtual void Dispose(bool disposing)

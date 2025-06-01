@@ -17,6 +17,7 @@ using LuaSTGEditorSharpV2.Core.Command.Service;
 using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.Core.Editor.Extension;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -65,8 +66,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             _editingDocumentModel = documentModel;
             _rawTitle = documentModel.FileName;
-            Tree.Add(serviceProvider.GetRequiredService<ViewModelProviderServiceProvider>()
-                .CreateViewModelRecursive(documentModel.Root, new LocalServiceParam(documentModel)));
+            var vm = documentModel.RootEditorNode.GetRequiredNodeService<NodeViewModel>();
+            Tree.Add(vm);
         }
 
         /// <summary>

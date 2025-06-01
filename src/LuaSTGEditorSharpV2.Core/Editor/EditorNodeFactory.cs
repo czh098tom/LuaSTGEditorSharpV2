@@ -14,15 +14,21 @@ namespace LuaSTGEditorSharpV2.Core.Editor
         private readonly Dictionary<NodeData, EditorNode> _node2Instances = [];
         private readonly Dictionary<IServiceProvider, EditorNode> _provider2Instances = [];
 
-        public EditorNode GetOrCreate(NodeData source)
+        public EditorNode GetOrCreate(NodeData source, EditorDocument document)
         {
             if (!_node2Instances.TryGetValue(source, out var node))
             {
-                var scope = serviceProvider.CreateScope();
-                node = new EditorNode(scope, source, this);
-                _node2Instances.Add(source, node);
-                _provider2Instances.Add(scope.ServiceProvider, node);
+                node = CreateEditorNode(source, document);
             }
+            return node;
+        }
+
+        private EditorNode CreateEditorNode(NodeData source, EditorDocument document)
+        {
+            var scope = serviceProvider.CreateScope();
+            EditorNode node = new(scope, source, document, this);
+            _node2Instances.Add(source, node);
+            _provider2Instances.Add(scope.ServiceProvider, node);
             return node;
         }
 
@@ -34,7 +40,7 @@ namespace LuaSTGEditorSharpV2.Core.Editor
         internal void Free(EditorNode editorNode)
         {
             _node2Instances.Remove(editorNode.Source);
-            _provider2Instances.Remove(editorNode.Scope.ServiceProvider);
+            _provider2Instances.Remove(editorNode.ServiceProvider);
         }
     }
 }

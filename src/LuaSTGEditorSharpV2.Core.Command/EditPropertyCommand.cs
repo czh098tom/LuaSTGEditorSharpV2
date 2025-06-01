@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 
@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class EditPropertyCommand : ConcreteCommand
     {
-        public static CommandBase? CreateEditCommandOnDemand(ViewModelProviderServiceProvider service, NodeData node, string? propertyName, string afterEdit)
+        public static CommandBase? CreateEditCommandOnDemand(EditorNodeFactory factory, NodeData node, string? propertyName, string afterEdit)
         {
             if (string.IsNullOrEmpty(propertyName))
             {
@@ -22,11 +22,11 @@ namespace LuaSTGEditorSharpV2.Core.Command
             {
                 if (node.HasProperty(propertyName))
                 {
-                    return new EditPropertyCommand(service, node, propertyName, afterEdit);
+                    return new EditPropertyCommand(factory, node, propertyName, afterEdit);
                 }
                 else
                 {
-                    return new AddPropertyCommand(service, node, propertyName, afterEdit);
+                    return new AddPropertyCommand(factory, node, propertyName, afterEdit);
                 }
             }
         }
@@ -37,28 +37,26 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         string? _beforeEdit;
 
-        public EditPropertyCommand(ViewModelProviderServiceProvider service, NodeData node, string propertyName, string afterEdit)
-            :base(service)
+        public EditPropertyCommand(EditorNodeFactory factory, NodeData node, string propertyName, string afterEdit)
+            :base(factory)
         {
             Node = node;
             PropertyName = propertyName;
             AfterEdit = afterEdit;
         }
 
-        protected override void DoExecute(LocalServiceParam param)
+        protected override void DoExecute(EditorDocument editorDocument)
         {
             _beforeEdit = Node.Properties[PropertyName];
-            Node.Properties[PropertyName] = AfterEdit;
-            ViewModelProviderServiceProvider
-                .UpdateViewModelDataRecursive(Node, param);
+            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            node.ChangeProperty(PropertyName, AfterEdit);
         }
 
-        protected override void RevertExecution(LocalServiceParam param)
+        protected override void RevertExecution(EditorDocument editorDocument)
         {
             if (_beforeEdit == null) throw new InvalidOperationException("Command has not been executed yet.");
-            Node.Properties[PropertyName] = _beforeEdit;
-            ViewModelProviderServiceProvider
-                .UpdateViewModelDataRecursive(Node, param);
+            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            node.ChangeProperty(PropertyName, _beforeEdit);
         }
     }
 }

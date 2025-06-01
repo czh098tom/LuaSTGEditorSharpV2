@@ -13,33 +13,37 @@ namespace LuaSTGEditorSharpV2.Core.Editor
 {
     public sealed class EditorNode : IDisposable
     {
-        public IServiceScope Scope { get; }
+        public IServiceProvider ServiceProvider => _scope.ServiceProvider;
         public NodeData Source { get; }
+        public EditorDocument Document { get; }
 
         public event NotifyCollectionChangedEventHandler? OnChildrenChanged
         {
-            add => children.CollectionChanged += value;
-            remove => children.CollectionChanged -= value;
+            add => _children.CollectionChanged += value;
+            remove => _children.CollectionChanged -= value;
         }
+
+        public IReadOnlyList<EditorNode> Children => _children;
 
         public event EventHandler<EditorNodePropertyAddedEventArgs>? OnPropertyAdded;
         public event EventHandler<EditorNodePropertyRemovedEventArgs>? OnPropertyRemoved;
         public event EventHandler<EditorNodePropertyChangedEventArgs>? OnPropertyChanged;
 
-        private readonly ObservableCollection<EditorNode> children = [];
-        private readonly EditorNodeFactory factory;
+        private readonly IServiceScope _scope;
+        private readonly ObservableCollection<EditorNode> _children = [];
+        private readonly EditorNodeFactory _factory;
 
-        private bool disposed = false;
+        private bool _disposed = false;
 
-        internal EditorNode(IServiceScope scope, NodeData source, EditorNodeFactory factory)
+        internal EditorNode(IServiceScope scope, NodeData source, EditorDocument document, EditorNodeFactory factory)
         {
-            this.factory = factory;
-            Scope = scope;
+            this._factory = factory;
+            this._scope = scope;
             Source = source;
-
+            Document = document;
             foreach (var en in CreateChildrenRecursive(source))
             {
-                children.Add(en);
+                _children.Add(en);
             }
         }
 
@@ -47,33 +51,33 @@ namespace LuaSTGEditorSharpV2.Core.Editor
         {
             foreach (var n in source.PhysicalChildren)
             {
-                yield return factory.GetOrCreate(n);
+                yield return _factory.GetOrCreate(n, Document);
             }
         }
 
         public void Add(NodeData node)
         {
-            children.Add(factory.GetOrCreate(node));
+            _children.Add(_factory.GetOrCreate(node, Document));
             Source.Add(node);
         }
 
         public void Insert(int position, NodeData node)
         {
-            children.Insert(position, factory.GetOrCreate(node));
+            _children.Insert(position, _factory.GetOrCreate(node, Document));
             Source.Insert(position, node);
         }
 
-        public NodeData Remove(int position)
+        public NodeData RemoveAt(int position)
         {
-            var n = children[position];
-            children.RemoveAt(position);
+            var n = _children[position];
+            _children.RemoveAt(position);
             n.Dispose();
             return Source.Remove(position);
         }
 
         public void Replace(int position, NodeData node)
         {
-            Remove(position);
+            RemoveAt(position);
             Insert(position, node);
         }
 
@@ -111,18 +115,18 @@ namespace LuaSTGEditorSharpV2.Core.Editor
 
         private void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
-                    foreach (var node in children)
+                    foreach (var node in _children)
                     {
                         node.Dispose();
                     }
-                    Scope.Dispose();
-                    factory.Free(this);
+                    _scope.Dispose();
+                    _factory.Free(this);
                 }
-                disposed = true;
+                _disposed = true;
             }
         }
 
