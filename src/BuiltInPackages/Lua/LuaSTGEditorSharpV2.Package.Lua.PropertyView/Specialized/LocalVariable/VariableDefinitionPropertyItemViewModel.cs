@@ -13,10 +13,11 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
-    public class VariableDefinitionPropertyItemViewModel(ViewModelProviderServiceProvider viewModelProviderServiceProvider,
+    public class VariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
         LocalVariablePropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam)
         : JsonProxiedPropertyItemViewModel<VariableDefinition>(nodeData, localServiceParam)
     {
@@ -60,9 +61,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             var commands = new List<CommandBase>();
             if (term.NameRule == null || term.ValueRule == null) return new EditResult(localServiceParam);
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(factory,
                 nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(factory,
                 nodeData, string.Format(term.ValueRule.Key, idx), ProxyValue?.Value ?? string.Empty);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
@@ -71,12 +72,12 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class VariableDefinitionPropertyItemViewModelFactory(ViewModelProviderServiceProvider viewModelProviderServiceProvider)
+    public class VariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory)
     {
         public VariableDefinitionPropertyItemViewModel Create(LocalVariablePropertyViewItemTerm term, int index,
             NodeData nodeData, LocalServiceParam localServiceParam)
         {
-            return new VariableDefinitionPropertyItemViewModel(viewModelProviderServiceProvider, term, index, nodeData, localServiceParam);
+            return new VariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam);
         }
     }
 }

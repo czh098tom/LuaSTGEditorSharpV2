@@ -14,11 +14,12 @@ using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     [Inject(ServiceLifetime.Transient)]
-    public class LocalVariablePropertyViewItemTerm(IServiceProvider serviceProvider, ViewModelProviderServiceProvider viewModelProviderServiceProvider)
+    public class LocalVariablePropertyViewItemTerm(IServiceProvider serviceProvider, EditorNodeFactory factory)
         : IMultipleFieldPropertyItemTerm<VariableDefinition>
     {
         [JsonProperty] public NodePropertyCapture? NameRule { get; set; }
@@ -47,8 +48,8 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             var commands = new List<CommandBase>();
             if (NameRule == null || ValueRule == null) return null;
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider, nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(factory, nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(factory, nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             return commands.Count > 0 ? new CompositeCommand(commands) : null;
