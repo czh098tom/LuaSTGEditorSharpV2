@@ -32,7 +32,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 
         public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
         {
-            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(editorNodeFactory, nodeData, key, edited), LocalServiceParam);
+            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(editorNodeFactory, nodeData, key, edited), false, LocalServiceParam);
         }
     }
 
