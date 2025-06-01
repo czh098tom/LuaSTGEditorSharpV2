@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.Services
             {
                 try
                 {
-                    Clipboard.SetText(nodesStr);
+                    Clipboard.SetDataObject(nodesStr, false);
                     finished = true;
                 }
                 catch (COMException) 

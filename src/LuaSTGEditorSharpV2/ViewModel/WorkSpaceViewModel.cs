@@ -27,6 +27,7 @@ using LuaSTGEditorSharpV2.Dialog;
 using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
 using LuaSTGEditorSharpV2.Core.Building;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -151,7 +152,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
-        public void AddDocument(EditingDocumentModel editingDocumentModel)
+        public void AddDocument(EditorDocument editingDocumentModel)
         {
             var doc = editingDocumentModel;
             if (doc == null) return;
@@ -198,12 +199,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             if (!HaveActiveDocument) throw new InvalidOperationException();
             _activeDocument.Undo();
+            BroadcastSelectedNodeChanged(_activeDocument, SelectedNodes);
         }
 
         public void RedoActiveDocument()
         {
             if (!HaveActiveDocument) throw new InvalidOperationException();
             _activeDocument.Redo();
+            BroadcastSelectedNodeChanged(_activeDocument, SelectedNodes);
         }
 
         public bool CanPerformUndoActivateDocument()
@@ -222,7 +225,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             AddCommandToDocument(SelectedNodes.SelectCommand(n =>
             {
                 if (n.PhysicalParent == null) return null;
-                return new RemoveChildCommand(ServiceProvider.GetRequiredService<ViewModelProviderServiceProvider>(),
+                return new RemoveChildCommand(ServiceProvider.GetRequiredService<EditorNodeFactory>(),
                     n.PhysicalParent, n.PhysicalParent.PhysicalChildren.FindIndex(n));
             }), _activeDocument.DocumentModel, [], true);
         }

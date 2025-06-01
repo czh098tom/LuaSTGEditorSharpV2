@@ -14,12 +14,12 @@ namespace LuaSTGEditorSharpV2.Core
     /// <param name="lifetime"> lifetime of service. </param>
     /// <param name="serviceType"> Declaring type of service. </param>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class InjectAttribute(ServiceLifetime lifetime, Type? serviceType = null) 
+    public class InjectAttribute(ServiceLifetime lifetime, Type? serviceType = null, object? key = null) 
         : Attribute
     {
         public ServiceDescriptor ToDescriptor(Type implementationType)
         {
-            return new ServiceDescriptor(serviceType ?? implementationType, implementationType, lifetime);
+            return new ServiceDescriptor(serviceType ?? implementationType, key, implementationType, lifetime);
         }
     }
 }

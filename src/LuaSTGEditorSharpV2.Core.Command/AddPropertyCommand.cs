@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Core.Command
 {
@@ -15,26 +15,24 @@ namespace LuaSTGEditorSharpV2.Core.Command
         public string PropertyName { get; private set; }
         public string Value { get; private set; }
 
-        public AddPropertyCommand(ViewModelProviderServiceProvider service, NodeData node, string propertyName, string value)
-            : base(service)
+        public AddPropertyCommand(EditorNodeFactory factory, NodeData node, string propertyName, string value)
+            : base(factory)
         {
             Node = node;
             PropertyName = propertyName;
             Value = value;
         }
 
-        protected override void DoExecute(LocalServiceParam param)
+        protected override void DoExecute(EditorDocument editorDocument)
         {
-            Node.Properties.Add(PropertyName, Value);
-            ViewModelProviderServiceProvider
-                .UpdateViewModelDataRecursive(Node, param);
+            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            node.AddProperty(PropertyName, Value);
         }
 
-        protected override void RevertExecution(LocalServiceParam param)
+        protected override void RevertExecution(EditorDocument editorDocument)
         {
-            Node.Properties.Remove(PropertyName);
-            ViewModelProviderServiceProvider
-                .UpdateViewModelDataRecursive(Node, param);
+            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            node.RemoveProperty(PropertyName);
         }
     }
 }

@@ -13,10 +13,11 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
-    public class RepeatVariableDefinitionPropertyItemViewModel(ViewModelProviderServiceProvider viewModelProviderServiceProvider,
+    public class RepeatVariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
         RepeatPropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam)
         : JsonProxiedPropertyItemViewModel<RepeatVariableDefinition>(nodeData, localServiceParam)
     {
@@ -74,26 +75,26 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             var commands = new List<CommandBase>();
             if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return new EditResult(localServiceParam);
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(factory,
                 nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(factory,
                 nodeData, string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
-            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(viewModelProviderServiceProvider,
+            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(factory,
                 nodeData, string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             if (editIncrement != null) commands.Add(editIncrement);
-            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, localServiceParam);
+            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, false, localServiceParam);
         }
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class RepeatVariableDefinitionPropertyItemViewModelFactory(ViewModelProviderServiceProvider viewModelProviderServiceProvider)
+    public class RepeatVariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory)
     {
         public RepeatVariableDefinitionPropertyItemViewModel Create(RepeatPropertyViewItemTerm term, int index,
             NodeData nodeData, LocalServiceParam localServiceParam)
         {
-            return new RepeatVariableDefinitionPropertyItemViewModel(viewModelProviderServiceProvider, term, index, nodeData, localServiceParam);
+            return new RepeatVariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam);
         }
     }
 }
