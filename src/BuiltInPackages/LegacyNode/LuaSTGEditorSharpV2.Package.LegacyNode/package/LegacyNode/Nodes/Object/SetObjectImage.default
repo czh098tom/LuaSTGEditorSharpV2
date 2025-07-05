@@ -1,0 +1,7 @@
+{
+    "TypeUID": "SetObjectImage",
+    "DefaultValue": {
+        "target": "self",
+        "image": "white"
+    }
+}

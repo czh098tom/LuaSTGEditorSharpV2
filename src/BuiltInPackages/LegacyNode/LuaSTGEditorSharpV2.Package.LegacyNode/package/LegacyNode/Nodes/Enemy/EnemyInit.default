@@ -1,0 +1,15 @@
+{
+    "TypeUID": "EnemyInit",
+    "DefaultValue": {
+        "parameters": "",
+        "style": "1",
+        "hp": 10,
+        "power_amount": 0,
+        "faith_amount": 0,
+        "point_amount": 0,
+        "protect_time": 1,
+        "clear_bullet_when_killed": false,
+        "bound": true,
+        "collision_damage": true
+    }
+}

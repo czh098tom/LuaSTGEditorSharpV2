@@ -1,0 +1,8 @@
+{
+    "TypeUID": "BossMoveTo",
+    "DefaultValue": {
+        "position": "0, 120",
+        "time": "60",
+        "mode": "MOVE_DECEL"
+    }
+}

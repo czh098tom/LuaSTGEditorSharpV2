@@ -1,5 +1,5 @@
 {
-    "TypeUID": "Del",
+    "TypeUID": "Kill",
     "DefaultValue": {
         "target": "self",
         "trigger_event": "true"

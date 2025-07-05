@@ -1,0 +1,15 @@
+{
+    "TypeUID": "DefineSpellCard",
+    "DefaultValue": {
+        "spellcard_name": "",
+        "protect_time": "1",
+        "resist_time": "3",
+        "total_time": "30",
+        "hp": "900",
+        "power_amount": "0",
+        "faith_amount": "0",
+        "point_amount": "0",
+        "bomb_immunity": "false",
+        "opening_performance": "false"
+    }
+}

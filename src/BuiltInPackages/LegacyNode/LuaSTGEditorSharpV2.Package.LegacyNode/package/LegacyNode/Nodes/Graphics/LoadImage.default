@@ -1,0 +1,11 @@
+{
+    "TypeUID": "LoadImage",
+    "DefaultValue": {
+        "file_path": "",
+        "resource_name": "",
+        "mipmap": "true",
+        "collision_size": "0,0",
+        "rectangle_collision": "false",
+        "cut_edge": "0"
+    }
+}

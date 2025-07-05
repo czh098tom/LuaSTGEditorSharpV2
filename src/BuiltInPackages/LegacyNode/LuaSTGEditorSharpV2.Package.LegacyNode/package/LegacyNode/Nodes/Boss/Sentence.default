@@ -1,0 +1,10 @@
+{
+    "TypeUID": "Sentence",
+    "DefaultValue": {
+        "image": "\"img_void\"",
+        "image_position": "\"left\"",
+        "text": "",
+        "time": "",
+        "scale": ""
+    }
+}

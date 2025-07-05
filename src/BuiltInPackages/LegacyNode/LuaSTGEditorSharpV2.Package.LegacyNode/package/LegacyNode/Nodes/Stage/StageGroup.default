@@ -1,0 +1,12 @@
+{
+    "TypeUID": "StageGroup",
+    "DefaultValue": {
+        "name": "",
+        "initial_life": 2,
+        "initial_power": 400,
+        "initial_faith": 50000,
+        "initial_bomb": 2,
+        "allow_practice": true,
+        "difficulty_value": 1
+    }
+}

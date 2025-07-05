@@ -1,0 +1,8 @@
+{
+    "TypeUID": "SetXYVelocity",
+    "DefaultValue": {
+        "target": "self",
+        "velocity": "3, 0",
+        "set_rotation": "true"
+    }
+}

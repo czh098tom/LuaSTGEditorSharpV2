@@ -1,0 +1,8 @@
+{
+    "TypeUID": "PlayBGM",
+    "DefaultValue": {
+        "name": "\"\"",
+        "time": "",
+        "set_stage_time": "false"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "TypeUID": "NumericalTrack",
+    "DefaultValue": {
+        "target": "self",
+        "mapping": "",
+        "auto_terminate": "true"
+    }
+}

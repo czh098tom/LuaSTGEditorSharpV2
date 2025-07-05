@@ -1,0 +1,13 @@
+{
+    "TypeUID": "SCBGLayer",
+    "DefaultValue": {
+        "image": "",
+        "is_tile": "false",
+        "position": "0,0",
+        "rotation": "0",
+        "velocity": "0,0",
+        "omega": "0",
+        "blend_mode": "\"\"",
+        "scale": "1,1"
+    }
+}

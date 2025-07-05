@@ -1,0 +1,10 @@
+{
+    "TypeUID": "SetVelocity",
+    "DefaultValue": {
+        "target": "self",
+        "velocity": "3",
+        "angle": "0",
+        "aim": "false",
+        "set_rotation": "true"
+    }
+}

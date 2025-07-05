@@ -1,0 +1,10 @@
+{
+    "TypeUID": "EnemyWander",
+    "DefaultValue": {
+        "duration": "30",
+        "range": "-96,96,112,144",
+        "amplitude": "16,32,8,16",
+        "move_mode": "MOVE_DECEL",
+        "direction_mode": "MOVE_X_TOWARDS_PLAYER"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "TypeUID": "BossCast",
+    "DefaultValue": {
+        "time": "60"
+    }
+}

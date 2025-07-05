@@ -1,0 +1,8 @@
+{
+    "TypeUID": "SetRelativePosition",
+    "DefaultValue": {
+        "position": "0,0",
+        "rotation": "self.rot",
+        "follow_masters_rotation": "false"
+    }
+}

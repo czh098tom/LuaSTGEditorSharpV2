@@ -1,0 +1,20 @@
+{
+    "TypeUID": "CreateSimpleBullet",
+    "DefaultValue": {
+        "style": "arrow_big",
+        "color": "COLOR_RED",
+        "position": "self.x, self.y",
+        "velocity": "3",
+        "rotation": "0",
+        "aim": "false",
+        "omega": "0",
+        "stay": "true",
+        "destroyable": "true",
+        "delay": "0",
+        "rebound": "false",
+        "acceleration": "0",
+        "accel_angle": "0",
+        "max_velocity": "0",
+        "shuttle": "false"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "TypeUID": "LoadFX",
+    "DefaultValue": {
+        "file_path": "",
+        "resource_name": ""
+    }
+}

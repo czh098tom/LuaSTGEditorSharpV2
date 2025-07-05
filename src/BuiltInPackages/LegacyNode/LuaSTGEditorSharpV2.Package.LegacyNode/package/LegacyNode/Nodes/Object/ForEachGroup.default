@@ -1,0 +1,6 @@
+{
+    "TypeUID": "ForEachGroup",
+    "DefaultValue": {
+        "group": "GROUP_INDES"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "TypeUID": "DefineLaser",
+    "DefaultValue": {
+        "identifier": "",
+        "difficulty": "All"
+    }
+}

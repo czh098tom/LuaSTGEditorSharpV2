@@ -1,0 +1,7 @@
+{
+    "TypeUID": "Task",
+    "DefaultValue": {
+        "target": "self",
+        "redirect_self_to_target": "true"
+    }
+}

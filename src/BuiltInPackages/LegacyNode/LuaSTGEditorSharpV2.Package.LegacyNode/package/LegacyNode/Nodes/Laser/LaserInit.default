@@ -1,0 +1,14 @@
+{
+    "TypeUID": "LaserInit",
+    "DefaultValue": {
+        "parameters": "",
+        "color": "COLOR_RED",
+        "style": "1",
+        "head_length": "64",
+        "body_length": "32",
+        "tail_length": "64",
+        "width": "8",
+        "node_size": "0",
+        "head_size": "0"
+    }
+}

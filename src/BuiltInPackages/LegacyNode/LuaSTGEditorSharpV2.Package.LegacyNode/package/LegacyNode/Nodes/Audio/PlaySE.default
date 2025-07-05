@@ -1,0 +1,9 @@
+{
+    "TypeUID": "PlaySE",
+    "DefaultValue": {
+        "name": "\"tan00\"",
+        "volume": "0.1",
+        "pan": "self.x/256",
+        "ignore_default": "false"
+    }
+}

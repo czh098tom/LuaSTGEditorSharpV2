@@ -1,0 +1,9 @@
+{
+    "TypeUID": "NumericalPoint",
+    "DefaultValue": {
+        "time": "0",
+        "value": "0",
+        "interpolation": "",
+        "is_relative": "false"
+    }
+}

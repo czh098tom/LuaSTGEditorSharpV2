@@ -1,0 +1,9 @@
+{
+    "TypeUID": "LaserTurnOn",
+    "DefaultValue": {
+        "target": "self",
+        "time": "30",
+        "play_sound_effect": "true",
+        "wait": "true"
+    }
+}

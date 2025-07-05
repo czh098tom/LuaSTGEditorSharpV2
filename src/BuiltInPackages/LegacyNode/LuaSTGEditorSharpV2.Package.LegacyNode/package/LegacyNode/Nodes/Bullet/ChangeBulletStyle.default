@@ -1,0 +1,8 @@
+{
+    "TypeUID": "ChangeBulletStyle",
+    "DefaultValue": {
+        "target": "self",
+        "style": "arrow_big",
+        "color": "COLOR_RED"
+    }
+}

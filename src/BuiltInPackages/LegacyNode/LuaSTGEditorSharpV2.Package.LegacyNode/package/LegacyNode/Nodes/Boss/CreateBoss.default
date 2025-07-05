@@ -1,0 +1,7 @@
+{
+    "TypeUID": "CreateBoss",
+    "DefaultValue": {
+        "identifier": "",
+        "wait": "true"
+    }
+}

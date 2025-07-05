@@ -1,0 +1,7 @@
+{
+    "TypeUID": "DefineBullet",
+    "DefaultValue": {
+        "identifier": "",
+        "difficulty": "All"
+    }
+}

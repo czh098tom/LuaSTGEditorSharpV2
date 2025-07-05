@@ -1,0 +1,8 @@
+{
+    "TypeUID": "DropItem",
+    "DefaultValue": {
+        "item": "item_extend",
+        "number": "1",
+        "position": "self.x,self.y"
+    }
+}

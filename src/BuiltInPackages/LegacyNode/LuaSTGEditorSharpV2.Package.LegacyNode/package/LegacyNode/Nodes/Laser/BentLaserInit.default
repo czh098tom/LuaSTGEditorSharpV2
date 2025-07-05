@@ -1,0 +1,11 @@
+{
+    "TypeUID": "BentLaserInit",
+    "DefaultValue": {
+        "parameters": "",
+        "color": "COLOR_RED",
+        "length": "32",
+        "width": "8",
+        "sampling": "4",
+        "node_size": "0"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "TypeUID": "ConfigBossUI",
+    "DefaultValue": {
+        "show_hp_circle": true,
+        "show_boss_name": true,
+        "show_time_counter": true,
+        "show_spell_name": true,
+        "show_boss_pointer": true
+    }
+}

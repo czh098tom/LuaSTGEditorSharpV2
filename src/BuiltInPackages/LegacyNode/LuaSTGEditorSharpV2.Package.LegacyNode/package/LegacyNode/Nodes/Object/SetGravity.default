@@ -1,7 +1,7 @@
 {
-    "TypeUID": "Del",
+    "TypeUID": "SetGravity",
     "DefaultValue": {
         "target": "self",
-        "trigger_event": "true"
+        "gravity": "0.05"
     }
 }

@@ -1,0 +1,10 @@
+{
+    "TypeUID": "LoadParticle",
+    "DefaultValue": {
+        "file_path": "",
+        "resource_name": "",
+        "image": "",
+        "collision_size": "0,0",
+        "rectangle_collision": "false"
+    }
+}

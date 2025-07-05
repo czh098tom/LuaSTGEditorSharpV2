@@ -1,0 +1,6 @@
+{
+    "TypeUID": "SetBackground",
+    "DefaultValue": {
+        "background": "temple_background"
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "TypeUID": "SetWalkImage",
+    "DefaultValue": {
+        "path": "",
+        "size": "4,3",
+        "frames_per_line": "4,4,4",
+        "loop_frames_per_line": "1,1",
+        "animation_interval": "6",
+        "collision_size": "16,16"
+    }
+}

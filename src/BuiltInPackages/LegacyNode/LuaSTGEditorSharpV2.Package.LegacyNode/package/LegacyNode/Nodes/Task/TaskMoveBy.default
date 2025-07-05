@@ -1,0 +1,8 @@
+{
+    "TypeUID": "TaskMoveBy",
+    "DefaultValue": {
+        "destination": "0,0",
+        "duration": "60",
+        "mode": "MOVE_NORMAL"
+    }
+}

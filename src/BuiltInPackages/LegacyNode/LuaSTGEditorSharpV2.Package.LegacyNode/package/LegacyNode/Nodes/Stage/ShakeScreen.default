@@ -1,0 +1,7 @@
+{
+    "TypeUID": "ShakeScreen",
+    "DefaultValue": {
+        "time": "240",
+        "amplitude": "3"
+    }
+}

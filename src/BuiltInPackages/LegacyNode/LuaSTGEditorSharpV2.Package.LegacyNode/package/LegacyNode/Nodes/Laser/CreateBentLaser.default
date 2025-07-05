@@ -1,0 +1,8 @@
+{
+    "TypeUID": "CreateBentLaser",
+    "DefaultValue": {
+        "identifier": "",
+        "position": "self.x, self.y",
+        "parameters": ""
+    }
+}

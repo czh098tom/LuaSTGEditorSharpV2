@@ -1,0 +1,7 @@
+{
+    "TypeUID": "NumericalCurve",
+    "DefaultValue": {
+        "offset": "0",
+        "repeat_type": "None"
+    }
+}

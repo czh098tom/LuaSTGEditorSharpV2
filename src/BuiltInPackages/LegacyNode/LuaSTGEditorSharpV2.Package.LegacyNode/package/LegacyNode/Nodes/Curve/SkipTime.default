@@ -1,0 +1,7 @@
+{
+    "TypeUID": "SkipTime",
+    "DefaultValue": {
+        "time": "0",
+        "is_relative": "false"
+    }
+}

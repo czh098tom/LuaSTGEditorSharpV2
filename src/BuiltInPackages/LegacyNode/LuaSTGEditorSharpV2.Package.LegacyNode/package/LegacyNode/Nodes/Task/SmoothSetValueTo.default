@@ -1,0 +1,13 @@
+{
+    "TypeUID": "SmoothSetValueTo",
+    "DefaultValue": {
+        "target": "self",
+        "delay": 0,
+        "duration": 60,
+        "count": 1,
+        "variable_name0": "_speed",
+        "target_value0": 1,
+        "interpolation_mode0": "MOVE_NORMAL",
+        "modification_mode0": "MODE_SET"
+    }
+}

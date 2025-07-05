@@ -1,0 +1,8 @@
+{
+    "TypeUID": "LaserChangeStyle",
+    "DefaultValue": {
+        "target": "self",
+        "color": "COLOR_RED",
+        "style": "1"
+    }
+}

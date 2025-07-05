@@ -1,0 +1,7 @@
+{
+    "TypeUID": "DefineEnemy",
+    "DefaultValue": {
+        "identifier": "",
+        "difficulty": "All"
+    }
+}

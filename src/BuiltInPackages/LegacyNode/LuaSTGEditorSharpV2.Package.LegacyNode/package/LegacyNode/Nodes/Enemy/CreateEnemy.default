@@ -1,0 +1,8 @@
+{
+    "TypeUID": "CreateEnemy",
+    "DefaultValue": {
+        "identifier": "",
+        "position": "self.x, self.y",
+        "parameters": ""
+    }
+}

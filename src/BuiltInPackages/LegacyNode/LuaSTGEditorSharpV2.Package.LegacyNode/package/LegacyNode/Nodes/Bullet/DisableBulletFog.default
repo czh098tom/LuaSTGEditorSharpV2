@@ -1,0 +1,6 @@
+{
+    "TypeUID": "DisableBulletFog",
+    "DefaultValue": {
+        "target": "self"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "TypeUID": "Render4V",
+    "DefaultValue": {
+        "image": "",
+        "upper_left_position": "0,0",
+        "upper_right_position": "0,0",
+        "lower_right_position": "0,0",
+        "lower_left_position": "0,0"
+    }
+}

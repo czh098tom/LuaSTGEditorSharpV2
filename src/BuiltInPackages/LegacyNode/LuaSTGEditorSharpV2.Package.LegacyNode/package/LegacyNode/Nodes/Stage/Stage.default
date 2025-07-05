@@ -1,0 +1,11 @@
+{
+    "TypeUID": "Stage",
+    "DefaultValue": {
+        "name": "",
+        "initial_life": 3,
+        "initial_power": 100,
+        "initial_faith": 0,
+        "initial_bomb": 3,
+        "allow_practice": true
+    }
+}

@@ -1,7 +1,7 @@
 {
-    "TypeUID": "Del",
+    "TypeUID": "SetPosition",
     "DefaultValue": {
         "target": "self",
-        "trigger_event": "true"
+        "position": "0,0"
     }
 }

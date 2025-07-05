@@ -1,0 +1,9 @@
+{
+    "TypeUID": "SetBinding",
+    "DefaultValue": {
+        "master": "self",
+        "servant": "last",
+        "damage_transfer_rate": "0",
+        "connect_death": "true"
+    }
+}

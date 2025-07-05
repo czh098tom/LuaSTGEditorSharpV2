@@ -1,0 +1,9 @@
+{
+    "TypeUID": "TaskCurveMoveTo",
+    "DefaultValue": {
+        "duration": "60",
+        "type": "bezier",
+        "mode": "MODE_NORMAL",
+        "point_set": ""
+    }
+}

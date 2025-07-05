@@ -1,7 +1,7 @@
 {
-    "TypeUID": "Del",
+    "TypeUID": "MakeSmear",
     "DefaultValue": {
         "target": "self",
-        "trigger_event": "true"
+        "interval": "1"
     }
 }

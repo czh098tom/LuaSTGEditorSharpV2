@@ -1,0 +1,7 @@
+{
+    "TypeUID": "Dialog",
+    "DefaultValue": {
+        "can_skip": "true",
+        "suspend_gameplay": "true"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "TypeUID": "SetVelocityLimit",
+    "DefaultValue": {
+        "target": "self",
+        "max_velocity": "",
+        "max_x_velocity": "",
+        "max_y_velocity": ""
+    }
+}

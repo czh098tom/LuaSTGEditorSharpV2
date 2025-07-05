@@ -1,0 +1,10 @@
+{
+    "TypeUID": "BulletInit",
+    "DefaultValue": {
+        "parameters": "",
+        "style": "arrow_big",
+        "color": "COLOR_RED",
+        "stay": "true",
+        "destroyable": "true"
+    }
+}

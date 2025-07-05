@@ -1,0 +1,10 @@
+{
+    "TypeUID": "DefineBoss",
+    "DefaultValue": {
+        "identifier": "",
+        "difficulty": "All",
+        "name": "\"Name\"",
+        "background": "",
+        "bgm": "\"\""
+    }
+}

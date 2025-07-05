@@ -1,0 +1,14 @@
+{
+    "TypeUID": "ObjectInit",
+    "DefaultValue": {
+        "parameters": "",
+        "image": "\"leaf\"",
+        "layer": "LAYER_ENEMY_BULLET",
+        "group": "GROUP_ENEMY_BULLET",
+        "hide": "false",
+        "bound": "true",
+        "navigate": "false",
+        "hp": "100",
+        "collision": "true"
+    }
+}

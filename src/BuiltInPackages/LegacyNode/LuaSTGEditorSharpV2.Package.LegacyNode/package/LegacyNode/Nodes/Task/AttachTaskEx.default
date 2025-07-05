@@ -1,0 +1,8 @@
+{
+    "TypeUID": "AttachTaskEx",
+    "DefaultValue": {
+        "identifier": "",
+        "parameters": "",
+        "target": "self"
+    }
+}

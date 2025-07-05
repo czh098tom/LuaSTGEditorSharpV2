@@ -1,0 +1,7 @@
+{
+    "TypeUID": "RenderTarget",
+    "DefaultValue": {
+        "operation": "Push",
+        "name": ""
+    }
+}

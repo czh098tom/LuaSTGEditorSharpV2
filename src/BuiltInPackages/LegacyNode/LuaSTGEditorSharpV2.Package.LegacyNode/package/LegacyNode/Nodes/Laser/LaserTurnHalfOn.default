@@ -1,0 +1,8 @@
+{
+    "TypeUID": "LaserTurnHalfOn",
+    "DefaultValue": {
+        "target": "self",
+        "time": 30,
+        "wait": true
+    }
+}

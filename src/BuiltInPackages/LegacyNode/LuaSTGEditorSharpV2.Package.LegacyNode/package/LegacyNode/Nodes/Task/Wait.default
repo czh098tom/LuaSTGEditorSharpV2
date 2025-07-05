@@ -1,0 +1,6 @@
+{
+    "TypeUID": "Wait",
+    "DefaultValue": {
+        "time": "60"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "TypeUID": "ClearBullet",
+    "DefaultValue": {
+        "convert_to_faith": "true",
+        "include_indestructible": "false"
+    }
+}

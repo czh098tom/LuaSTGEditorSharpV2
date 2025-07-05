@@ -1,0 +1,8 @@
+{
+    "TypeUID": "LaserTurnOff",
+    "DefaultValue": {
+        "target": "self",
+        "time": "30",
+        "wait": true
+    }
+}

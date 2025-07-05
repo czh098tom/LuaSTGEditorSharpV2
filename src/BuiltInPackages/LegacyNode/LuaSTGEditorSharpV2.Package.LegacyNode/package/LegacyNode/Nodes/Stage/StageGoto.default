@@ -1,0 +1,6 @@
+{
+    "TypeUID": "StageGoto",
+    "DefaultValue": {
+        "stage_index": 1
+    }
+}

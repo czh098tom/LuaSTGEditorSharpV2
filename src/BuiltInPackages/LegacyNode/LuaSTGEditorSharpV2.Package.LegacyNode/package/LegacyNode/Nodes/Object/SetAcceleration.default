@@ -1,0 +1,9 @@
+{
+    "TypeUID": "SetAcceleration",
+    "DefaultValue": {
+        "target": "self",
+        "acceleration_velocity": "0.05",
+        "acceleration_angle": "0",
+        "aim": "false"
+    }
+}

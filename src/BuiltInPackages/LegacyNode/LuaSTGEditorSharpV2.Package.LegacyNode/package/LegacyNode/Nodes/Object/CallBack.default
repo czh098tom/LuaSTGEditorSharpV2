@@ -1,0 +1,6 @@
+{
+    "TypeUID": "CallBack",
+    "DefaultValue": {
+        "type": "frame"
+    }
+}

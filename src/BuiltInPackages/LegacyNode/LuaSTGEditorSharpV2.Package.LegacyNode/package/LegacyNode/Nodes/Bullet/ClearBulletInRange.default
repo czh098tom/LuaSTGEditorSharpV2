@@ -1,0 +1,12 @@
+{
+    "TypeUID": "ClearBulletInRange",
+    "DefaultValue": {
+        "position": "player.x, player.y",
+        "radius": "48",
+        "expanding_time": "15",
+        "clearing_time": "45",
+        "convert_to_faith": "true",
+        "include_indestructible": "false",
+        "vertical_veloctiy": "0"
+    }
+}

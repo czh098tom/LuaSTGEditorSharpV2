@@ -1,0 +1,8 @@
+{
+    "TypeUID": "SetBlendMode",
+    "DefaultValue": {
+        "target": "self",
+        "blend_mode": "\"\"",
+        "argb": "255, 255, 255, 255"
+    }
+}

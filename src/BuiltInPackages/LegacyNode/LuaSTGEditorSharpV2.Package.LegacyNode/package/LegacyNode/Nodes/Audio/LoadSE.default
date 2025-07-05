@@ -1,0 +1,7 @@
+{
+    "TypeUID": "LoadSE",
+    "DefaultValue": {
+        "file_path": "",
+        "resource_name": ""
+    }
+}
