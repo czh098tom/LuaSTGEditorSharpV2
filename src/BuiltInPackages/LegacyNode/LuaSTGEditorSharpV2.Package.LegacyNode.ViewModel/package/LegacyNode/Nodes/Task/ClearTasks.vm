@@ -1,0 +1,34 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ClearAllOtherTasks",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskclear.png",
+	"Captures": [
+		{ "Key": "keep_this" }
+	],
+	"Text": {
+		"Neutral": [
+			{
+				"Text": "clear all other tasks",
+				"ConditionOn": 1
+			},
+			{
+				"Text": "clear all tasks",
+				"ConditionOn": 1,
+				"Inversed": true
+			}
+		],
+		"Localized": {
+			"zh": [
+				{
+					"Text": "清除其他所有任务",
+					"ConditionOn": 1
+				},
+				{
+					"Text": "清除所有任务",
+					"ConditionOn": 1,
+					"Inversed": true
+				}
+			]
+		}
+	}
+}

@@ -1,11 +1,8 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "BezierMoveTo",
+	"TypeUID": "ClearTasks",
 	"Captures": [
-		{ "Key": "duration" },
-		{ "Key": "type" },
-		{ "Key": "mode" },
-		{ "Key": "point_set" }
+		{ "Key": "keep_this" }
 	],
-	"Head": "task.{2}MoveTo({1},{3},{4})"
+	"Head": "task.Clear(self, {1})"
 }

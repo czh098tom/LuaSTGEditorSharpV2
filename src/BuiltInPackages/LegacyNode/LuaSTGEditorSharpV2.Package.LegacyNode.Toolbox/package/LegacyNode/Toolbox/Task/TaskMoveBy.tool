@@ -1,11 +1,11 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Toolbox.Model.SimpleToolboxItem, LuaSTGEditorSharpV2.Toolbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"Path": "Task/MoveTo",
-	"IconSource": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskmoveto.png",
+	"Path": "Task/TaskMoveBy",
+	"IconSource": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskmovetoex.png",
 	"Order": 1,
 	"NodeTemplate": [
 		{
-			"TypeUID": "MoveTo",
+			"TypeUID": "TaskMoveBy",
 			"Properties": {
 				"destination": "0, 120",
 				"duration": 60,
@@ -14,9 +14,9 @@
 		}
 	],
 	"Caption": {
-		"Neutral": "Move to",
+		"Neutral": "Move by",
 		"Localized": {
-			"zh": "移动"
+			"zh": "相对移动"
 		}
 	}
 }

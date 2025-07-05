@@ -1,11 +1,11 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Toolbox.Model.SimpleToolboxItem, LuaSTGEditorSharpV2.Toolbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"Path": "Task/BezierMoveTo",
-	"IconSource": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskBeziermoveto.png",
+	"Path": "Task/TaskCurveMoveBy",
+	"IconSource": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/taskBeziermovetoex.png",
 	"Order": 1,
 	"NodeTemplate": [
 		{
-			"TypeUID": "BezierMoveTo",
+			"TypeUID": "TaskCurveMoveBy",
 			"Properties": {
 				"duration": 60,
 				"type": "Bezier",
@@ -15,9 +15,9 @@
 		}
 	],
 	"Caption": {
-		"Neutral": "Bezier move to",
+		"Neutral": "Curve move by",
 		"Localized": {
-			"zh": "贝塞尔移动"
+			"zh": "相对贝塞尔移动"
 		}
 	}
 }
