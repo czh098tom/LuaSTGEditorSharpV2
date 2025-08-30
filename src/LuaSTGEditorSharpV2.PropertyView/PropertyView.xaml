@@ -6,8 +6,10 @@
                     xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView">
     <DataTemplate x:Key="property:default">
         <lsv:PropertyItemGrid>
-            <TextBlock Text="{Binding Name}" />
-            <TextBox Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <TextBlock Text="{Binding Name}" 
+                       Margin="5,0,5,0" />
+            <TextBox Grid.Column="1" Grid.ColumnSpan="2" 
+                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
         </lsv:PropertyItemGrid>
     </DataTemplate>
     <DataTemplate x:Key="property:childNode">
@@ -37,17 +39,22 @@
     </DataTemplate>
     <DataTemplate x:Key="property:captionName">
         <lsv:PropertyItemGrid>
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Name}" />
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" 
+                       Margin="5,0,5,0" 
+                       Text="{Binding Name}" />
         </lsv:PropertyItemGrid>
     </DataTemplate>
     <DataTemplate x:Key="property:captionValue">
         <lsv:PropertyItemGrid>
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Value}" />
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" 
+                       Margin="5,0,5,0" 
+                       Text="{Binding Value}" />
         </lsv:PropertyItemGrid>
     </DataTemplate>
     <DataTemplate x:Key="property:editorBoolean">
         <lsv:PropertyItemGrid>
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Margin="5,0,5,0" 
+                       Text="{Binding Name}"/>
             <CheckBox Grid.Column="1" IsChecked="{Binding Value, Mode=TwoWay}"/>
         </lsv:PropertyItemGrid>
     </DataTemplate>
@@ -55,7 +62,8 @@
                              ServiceProvider="{DynamicResource ResourceKey=HostServices}"/>
     <DataTemplate x:Key="property:comboBox">
         <lsv:PropertyItemGrid>
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Margin="5,0,5,0" 
+                       Text="{Binding Name}"/>
             <ComboBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay}" IsEditable="True"
                       ItemsSource="{Binding Type.Parameters[Options], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
             <Button Grid.Column="2" Height="16" Content="...">
@@ -71,7 +79,8 @@
     </DataTemplate>
     <DataTemplate x:Key="property:code">
         <lsv:PropertyItemGrid>
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Margin="5,0,5,0"
+                       Text="{Binding Name}"/>
             <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                      AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
             <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
@@ -87,7 +96,8 @@
     </DataTemplate>
     <DataTemplate x:Key="property:collectionCount">
         <lsv:PropertyItemGrid>
-            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Margin="5,0,5,0" 
+                       Text="{Binding Name}"/>
             <Grid Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

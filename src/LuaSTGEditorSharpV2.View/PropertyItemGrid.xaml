@@ -19,4 +19,9 @@
         <ColumnDefinition Width="*" MinWidth="150"/>
         <ColumnDefinition Width="16" />
     </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="5"/>
+    </Grid.RowDefinitions>
+    <Separator Height="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,2,0,2" />
 </Grid>
