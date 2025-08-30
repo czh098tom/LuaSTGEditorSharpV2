@@ -51,7 +51,8 @@
             <CheckBox Grid.Column="1" IsChecked="{Binding Value, Mode=TwoWay}"/>
         </lsv:PropertyItemGrid>
     </DataTemplate>
-    <e:ComboBoxItemConverter x:Key="comboBoxConverter"/>
+    <e:ComboBoxItemConverter x:Key="comboBoxConverter" 
+                             ServiceProvider="{DynamicResource ResourceKey=HostServices}"/>
     <DataTemplate x:Key="property:comboBox">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}"/>

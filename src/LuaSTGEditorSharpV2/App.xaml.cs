@@ -46,6 +46,8 @@ namespace LuaSTGEditorSharpV2
                 packageProvider.Register(new DockingButtonGroupRegisterer());
             });
 
+            Current.Resources.Add("HostServices", host!.Services);
+
             MainWindow mw = host!.Services.GetRequiredService<MainWindow>();
             mw.Show();
             splash.Close();
