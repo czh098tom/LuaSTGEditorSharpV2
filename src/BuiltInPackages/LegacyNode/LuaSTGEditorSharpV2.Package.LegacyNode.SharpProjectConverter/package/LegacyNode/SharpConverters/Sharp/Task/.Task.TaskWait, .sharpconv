@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Task.TaskWait, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "Wait"
+    }
+  ]
+}

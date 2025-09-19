@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Laser.LaserInit, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "parameter_list",
+      "NewKey": "parameters"
+    }
+  ]
+}

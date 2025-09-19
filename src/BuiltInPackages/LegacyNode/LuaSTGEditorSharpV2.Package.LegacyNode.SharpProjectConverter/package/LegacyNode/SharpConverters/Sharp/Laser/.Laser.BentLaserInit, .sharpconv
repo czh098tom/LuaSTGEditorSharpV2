@@ -1,0 +1,23 @@
+{
+  "SharpName": ".Laser.BentLaserInit, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "parameter_list",
+      "NewKey": "parameters"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "length__in_frames",
+      "NewKey": "length"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "node",
+      "NewKey": "node_size"
+    }
+  ]
+}

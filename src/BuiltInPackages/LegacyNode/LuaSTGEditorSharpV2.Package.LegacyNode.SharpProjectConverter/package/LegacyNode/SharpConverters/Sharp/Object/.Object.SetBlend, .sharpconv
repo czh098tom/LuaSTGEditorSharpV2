@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Object.SetBlend, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "SetBlendMode"
+    }
+  ]
+}

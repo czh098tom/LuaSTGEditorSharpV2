@@ -1,0 +1,17 @@
+{
+  "SharpName": ".Laser.LaserDefine, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "DefineLaser"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "identifier"
+    }
+  ]
+}

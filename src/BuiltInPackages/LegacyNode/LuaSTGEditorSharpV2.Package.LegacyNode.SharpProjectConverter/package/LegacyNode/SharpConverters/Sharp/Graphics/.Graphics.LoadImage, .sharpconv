@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Graphics.LoadImage, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "path",
+      "NewKey": "file_path"
+    }
+  ]
+}

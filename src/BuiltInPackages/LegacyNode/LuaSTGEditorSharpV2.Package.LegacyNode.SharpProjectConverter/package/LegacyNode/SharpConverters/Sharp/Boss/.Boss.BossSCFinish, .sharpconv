@@ -1,0 +1,10 @@
+{
+	"SharpName": ".Boss.BossSCFinish, ",
+	"Converters": [
+		{ "$type": "Default" },
+		{
+			"$type": "NodeTypeRemapping",
+			"To": "SpellCardFinish"
+		}
+	]
+}

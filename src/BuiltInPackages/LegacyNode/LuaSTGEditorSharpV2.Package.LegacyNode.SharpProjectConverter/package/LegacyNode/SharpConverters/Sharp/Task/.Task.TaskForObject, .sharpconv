@@ -1,0 +1,17 @@
+{
+  "SharpName": ".Task.TaskForObject, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "Task"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "redirect_self",
+      "NewKey": "redirect_self_to_target"
+    }
+  ]
+}

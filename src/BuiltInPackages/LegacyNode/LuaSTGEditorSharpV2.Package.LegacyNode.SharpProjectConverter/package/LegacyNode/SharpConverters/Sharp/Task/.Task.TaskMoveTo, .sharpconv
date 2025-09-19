@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Task.TaskMoveTo, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "frame",
+      "NewKey": "duration"
+    }
+  ]
+}

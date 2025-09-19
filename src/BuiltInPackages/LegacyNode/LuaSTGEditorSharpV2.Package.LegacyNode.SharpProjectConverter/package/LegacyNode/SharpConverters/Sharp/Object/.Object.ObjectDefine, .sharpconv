@@ -1,0 +1,17 @@
+{
+  "SharpName": ".Object.ObjectDefine, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "DefineObject"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "identifier"
+    }
+  ]
+}

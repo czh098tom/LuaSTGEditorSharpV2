@@ -1,0 +1,23 @@
+{
+  "SharpName": ".Audio.LoadBGM, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "loop_end__sec",
+      "NewKey": "loop_end"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "loop_length__sec",
+      "NewKey": "loop_length"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "path",
+      "NewKey": "file_path"
+    }
+  ]
+}

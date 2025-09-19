@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Stage.StageBG, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "SetBackground"
+    }
+  ]
+}

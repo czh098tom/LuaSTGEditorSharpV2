@@ -1,0 +1,28 @@
+{
+  "SharpName": ".Stage.Stage, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "start_life__practice",
+      "NewKey": "initial_life"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "start_power__practice",
+      "NewKey": "initial_power"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "start_faith__practice",
+      "NewKey": "initial_faith"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "start_bomb__practice",
+      "NewKey": "initial_bomb"
+    }
+  ]
+}

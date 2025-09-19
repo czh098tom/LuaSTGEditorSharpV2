@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Boss.BossBGDefine, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "DefineSCBG"
+    }
+  ]
+}

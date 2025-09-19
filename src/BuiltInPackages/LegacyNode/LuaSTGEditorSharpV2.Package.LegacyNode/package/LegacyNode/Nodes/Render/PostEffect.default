@@ -1,0 +1,9 @@
+{
+    "TypeUID": "PostEffect",
+    "DefaultValue": {
+		"texture": "\"\"",
+		"shader": "\"\"",
+		"blend_mode": "\"\"",
+		"parameter": ""
+    }
+}

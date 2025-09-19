@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Laser.LaserTurnHalfOn, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "wait_in_this_task",
+      "NewKey": "wait"
+    }
+  ]
+}

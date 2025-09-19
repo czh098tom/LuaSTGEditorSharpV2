@@ -1,0 +1,37 @@
+{
+	"SharpName": ".Bullet.BulletClearRange, ",
+	"Converters": [
+	  {
+		"$type": "Default"
+	  },
+	  {
+		"$type": "NodeTypeRemapping",
+		"To": "ClearBulletInRange"
+	  },
+	  {
+		"$type": "NodePropertyRemapping",
+		"OriginalKey": "radius_of_range",
+		"NewKey": "radius"
+	  },
+	  {
+		"$type": "NodePropertyRemapping",
+		"OriginalKey": "time_of_expanding",
+		"NewKey": "expanding_time"
+	  },
+	  {
+		"$type": "NodePropertyRemapping",
+		"OriginalKey": "duration",
+		"NewKey": "clearing_time"
+	  },
+	  {
+		"$type": "NodePropertyRemapping",
+		"OriginalKey": "clear_indestructible",
+		"NewKey": "include_indestructible"
+	  },
+	  {
+		"$type": "NodePropertyRemapping",
+		"OriginalKey": "y_velocity",
+		"NewKey": "vertical_veloctiy"
+	  }
+	]
+  }

@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Boss.BossBGLayerInit, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "SCBGLayerInit"
+    }
+  ]
+}

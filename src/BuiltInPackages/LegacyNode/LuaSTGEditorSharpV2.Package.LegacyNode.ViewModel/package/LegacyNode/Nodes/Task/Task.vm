@@ -19,7 +19,7 @@
                 { "Text": "为 {1} 创建任务" },
                 {
                     "Text": ", 重定向self至目标",
-                    "ConditionOn": 1
+                    "ConditionOn": 2
                 }
             ]
         }

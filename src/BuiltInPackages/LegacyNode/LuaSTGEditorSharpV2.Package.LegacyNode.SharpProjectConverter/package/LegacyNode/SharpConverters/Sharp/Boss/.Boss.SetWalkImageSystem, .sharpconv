@@ -1,0 +1,32 @@
+{
+  "SharpName": ".Boss.SetWalkImageSystem, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "SetWalkImage"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "image_path",
+      "NewKey": "path"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "cols_and_rows",
+      "NewKey": "grid_size"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "number_of_images",
+      "NewKey": "frames_per_line"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "number_of_repetend",
+      "NewKey": "loop_frames_per_line"
+    }
+  ]
+}

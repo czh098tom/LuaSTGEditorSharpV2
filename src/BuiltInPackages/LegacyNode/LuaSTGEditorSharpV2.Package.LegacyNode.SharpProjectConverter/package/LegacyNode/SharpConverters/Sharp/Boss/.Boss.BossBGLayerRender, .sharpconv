@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Boss.BossBGLayerRender, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "SCBGLayerRender"
+    }
+  ]
+}

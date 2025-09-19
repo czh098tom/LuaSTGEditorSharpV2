@@ -1,0 +1,10 @@
+{
+	"SharpName": ".Boss.BossSCBeforeStart, ",
+	"Converters": [
+		{ "$type": "Default" },
+		{
+			"$type": "NodeTypeRemapping",
+			"To": "SpellCardBeforeStart"
+		}
+	]
+}

@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Enemy.EnemyWander, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "time",
+      "NewKey": "duration"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Object.SetVelocity, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "aim_to_player",
+      "NewKey": "aim"
+    }
+  ]
+}

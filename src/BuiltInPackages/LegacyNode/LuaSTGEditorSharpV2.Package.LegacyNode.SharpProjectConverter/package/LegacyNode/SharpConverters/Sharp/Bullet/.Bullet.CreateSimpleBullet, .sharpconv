@@ -1,0 +1,33 @@
+{
+  "SharpName": ".Bullet.CreateSimpleBullet, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "angle",
+      "NewKey": "rotation"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "aim_to_player",
+      "NewKey": "aim"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "rotation_velocity",
+      "NewKey": "omega"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "stay_on_create",
+      "NewKey": "stay"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "time",
+      "NewKey": "delay"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Enemy.CreateEnemy, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "identifier"
+    }
+  ]
+}

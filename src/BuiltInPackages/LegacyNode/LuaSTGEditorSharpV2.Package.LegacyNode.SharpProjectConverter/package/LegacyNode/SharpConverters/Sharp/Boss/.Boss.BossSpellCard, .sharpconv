@@ -1,0 +1,62 @@
+{
+  "SharpName": ".Boss.BossSpellCard, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "DefineSpellCard"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "spellcard_name"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "protect_time__sec",
+      "NewKey": "protect_time"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "dmg_redu._time__sec",
+      "NewKey": "resist_time"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "total_time__sec",
+      "NewKey": "total_time"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "hit_point",
+      "NewKey": "hp"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "drop_power",
+      "NewKey": "power_amount"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "drop_faith",
+      "NewKey": "faith_amount"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "drop_point",
+      "NewKey": "point_amount"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "immune_to_bomb",
+      "NewKey": "bomb_immunity"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "performing_action",
+      "NewKey": "opening_performance"
+    }
+  ]
+}

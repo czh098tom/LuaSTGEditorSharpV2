@@ -1,0 +1,22 @@
+{
+  "SharpName": ".Task.TaskDefine, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "DefineTaskEx"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "identifier"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "parameter",
+      "NewKey": "parameters"
+    }
+  ]
+}

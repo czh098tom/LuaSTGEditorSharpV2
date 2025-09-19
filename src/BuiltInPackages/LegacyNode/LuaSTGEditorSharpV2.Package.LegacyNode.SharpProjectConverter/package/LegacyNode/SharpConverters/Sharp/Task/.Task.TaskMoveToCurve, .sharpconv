@@ -1,0 +1,17 @@
+{
+  "SharpName": ".Task.TaskMoveToCurve, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "TaskCurveMoveTo"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "time",
+      "NewKey": "duration"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "SharpName": ".Object.SetAccel, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "SetAcceleration"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "acceleration",
+      "NewKey": "acceleration_velocity"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "angle",
+      "NewKey": "acceleration_angle"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "aim_to_player",
+      "NewKey": "aim"
+    }
+  ]
+}

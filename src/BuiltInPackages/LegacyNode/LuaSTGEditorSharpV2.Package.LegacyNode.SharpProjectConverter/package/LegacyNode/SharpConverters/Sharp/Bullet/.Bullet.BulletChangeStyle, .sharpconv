@@ -1,0 +1,27 @@
+{
+	"SharpName": ".Bullet.BulletChangeStyle, LuaSTGSharp",
+	"Converters": [
+		{
+			"$type": "StripNamespaceInType"
+		},
+		{
+			"$type": "NodeTypeRemapping",
+			"To": "ChangeBulletStyle"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Target",
+			"NewKey": "target"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Style",
+			"NewKey": "style"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Color",
+			"NewKey": "color"
+		}
+	]
+}

@@ -1,0 +1,18 @@
+{
+  "SharpName": ".Object.ObjectInit, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "parameter_list",
+      "NewKey": "parameters"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "auto_rotation",
+      "NewKey": "navigate"
+    }
+  ]
+}

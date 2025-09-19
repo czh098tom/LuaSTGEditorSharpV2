@@ -1,0 +1,17 @@
+{
+  "SharpName": ".Boss.BossAura, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "ConfigBossAura"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "show/hide_aura",
+      "NewKey": "show_aura"
+    }
+  ]
+}

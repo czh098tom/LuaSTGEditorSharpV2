@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Laser.CreateBentLaser, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "identifier"
+    }
+  ]
+}

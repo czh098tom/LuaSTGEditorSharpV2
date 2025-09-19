@@ -1,0 +1,53 @@
+{
+  "SharpName": ".Enemy.EnemyInit, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "parameter_list",
+      "NewKey": "parameters"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "hit_point",
+      "NewKey": "hp"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "drop_power",
+      "NewKey": "power_amount"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "drop_faith",
+      "NewKey": "faith_amount"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "drop_point",
+      "NewKey": "point_amount"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "protect__frames",
+      "NewKey": "protect_time"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "clear_bullets",
+      "NewKey": "clear_bullet_when_killed"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "offscreen_removal",
+      "NewKey": "bound"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "contact_damage",
+      "NewKey": "collision_damage"
+    }
+  ]
+}

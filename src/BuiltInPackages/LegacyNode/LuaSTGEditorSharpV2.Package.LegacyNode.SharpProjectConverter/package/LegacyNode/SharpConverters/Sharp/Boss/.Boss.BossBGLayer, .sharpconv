@@ -1,0 +1,22 @@
+{
+  "SharpName": ".Boss.BossBGLayer, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "SCBGLayer"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "velocity_x_y",
+      "NewKey": "velocity"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "omiga",
+      "NewKey": "omega"
+    }
+  ]
+}

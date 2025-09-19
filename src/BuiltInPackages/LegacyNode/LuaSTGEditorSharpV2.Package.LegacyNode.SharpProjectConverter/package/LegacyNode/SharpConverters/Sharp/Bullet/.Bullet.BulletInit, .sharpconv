@@ -1,0 +1,33 @@
+{
+	"SharpName": ".Bullet.BulletInit, ",
+	"Converters": [
+		{
+			"$type": "StripNamespaceInType"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Parameters",
+			"NewKey": "parameters"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Style",
+			"NewKey": "style"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Color",
+			"NewKey": "color"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Stay",
+			"NewKey": "stay"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "Destroyable",
+			"NewKey": "destroyable"
+		}
+	]
+}

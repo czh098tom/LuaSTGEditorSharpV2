@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Boss.BossUI, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "ConfigBossUI"
+    }
+  ]
+}

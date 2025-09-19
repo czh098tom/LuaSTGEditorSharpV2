@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Object.GroupForEach, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "ForEachGroup"
+    }
+  ]
+}

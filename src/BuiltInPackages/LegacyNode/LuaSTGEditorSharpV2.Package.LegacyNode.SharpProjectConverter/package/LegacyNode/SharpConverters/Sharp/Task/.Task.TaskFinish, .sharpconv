@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Task.TaskFinish, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "TerminateCurrentTask"
+    }
+  ]
+}

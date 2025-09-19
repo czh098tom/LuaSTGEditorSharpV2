@@ -1,0 +1,17 @@
+{
+  "SharpName": ".Object.CallBackFunc, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "CallBack"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "event_type",
+      "NewKey": "type"
+    }
+  ]
+}

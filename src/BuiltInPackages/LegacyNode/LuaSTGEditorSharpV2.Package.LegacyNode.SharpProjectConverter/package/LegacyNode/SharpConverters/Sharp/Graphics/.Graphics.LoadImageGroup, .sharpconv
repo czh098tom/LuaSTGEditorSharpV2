@@ -1,0 +1,18 @@
+{
+  "SharpName": ".Graphics.LoadImageGroup, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "cols_and_rows",
+      "NewKey": "grid_size"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "path",
+      "NewKey": "file_path"
+    }
+  ]
+}

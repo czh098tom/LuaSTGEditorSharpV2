@@ -1,0 +1,17 @@
+{
+	"SharpName": ".Bullet.CreateBullet, ",
+	"Converters": [
+	  {
+		"$type": "Default"
+	  },
+	  {
+		"$type": "NodeTypeRemapping",
+		"To": "CreateBullet"
+	  },
+	  {
+		"$type": "NodePropertyRemapping",
+		"OriginalKey": "name",
+		"NewKey": "identifier"
+	  }
+	]
+  }
