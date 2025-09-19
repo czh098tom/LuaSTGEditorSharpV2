@@ -4,7 +4,7 @@
 	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bosswalkimg.png",
 	"Captures": [
 		{ "Key": "path" },
-		{ "Key": "size" },
+		{ "Key": "grid_size" },
 		{ "Key": "frames_per_line" },
 		{ "Key": "loop_frames_per_line" },
 		{ "Key": "animation_interval" },

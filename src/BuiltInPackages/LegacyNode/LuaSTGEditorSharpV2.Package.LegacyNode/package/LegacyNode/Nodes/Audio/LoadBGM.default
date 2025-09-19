@@ -3,7 +3,7 @@
     "DefaultValue": {
         "file_path": "",
         "resource_name": "",
-        "loop_end_sec": "",
-        "loop_length_sec": ""
+        "loop_end": "",
+        "loop_length": ""
     }
 }

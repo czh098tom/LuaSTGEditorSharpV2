@@ -8,7 +8,7 @@
 			"TypeUID": "SetWalkImage",
 			"Properties": {
 				"path": "",
-				"size": "4, 3",
+				"grid_size": "4, 3",
 				"frames_per_line": "4, 4, 4",
 				"loop_frames_per_line": "3, 3",
 				"animation_interval": "8",

@@ -4,7 +4,7 @@
         "file_path": "",
         "resource_name": "",
         "mipmap": "true",
-        "cols_and_rows": "1,1",
+        "grid_size": "1,1",
         "animation_interval": "4",
         "collision_size": "0,0",
         "rectangle_collision": "false"
