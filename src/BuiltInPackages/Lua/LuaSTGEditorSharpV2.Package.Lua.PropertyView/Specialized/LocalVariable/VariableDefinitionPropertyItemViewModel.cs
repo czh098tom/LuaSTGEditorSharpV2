@@ -18,8 +18,9 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     public class VariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
-        LocalVariablePropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam)
-        : JsonProxiedPropertyItemViewModel<VariableDefinition>(nodeData, localServiceParam)
+        LocalVariablePropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam,
+        PropertyEditWizardProviderService propertyEditWizardProviderService)
+        : JsonProxiedPropertyItemViewModel<VariableDefinition>(nodeData, localServiceParam, propertyEditWizardProviderService)
     {
         private string _propName = string.Empty;
         private string _propValue = string.Empty;
@@ -72,12 +73,13 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class VariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory)
+    public class VariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory, 
+        PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public VariableDefinitionPropertyItemViewModel Create(LocalVariablePropertyViewItemTerm term, int index,
             NodeData nodeData, LocalServiceParam localServiceParam)
         {
-            return new VariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam);
+            return new VariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam, propertyEditWizardProviderService);
         }
     }
 }
