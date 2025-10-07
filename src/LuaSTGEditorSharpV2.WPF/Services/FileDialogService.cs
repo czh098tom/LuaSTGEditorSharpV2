@@ -15,19 +15,19 @@ using LuaSTGEditorSharpV2.Core.Settings;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 
-namespace LuaSTGEditorSharpV2.Services
+namespace LuaSTGEditorSharpV2.WPF.Services
 {
     [Inject(ServiceLifetime.Singleton)]
-    public class FileDialogService(SettingsService settingsService, LocalizationService localization) 
+    public class FileDialogService(SettingsService settingsService, LocalizationService localization)
         : ISettingsProvider, ISettingsSavedOnClose
     {
-        private static OpenFileDialog? ShowOpenFileDialog(string filter, Property<string> filePath)
+        private static OpenFileDialog? ShowOpenFileDialog(string filter, Property<string> filePath, bool multiselect)
         {
             var dialog = new OpenFileDialog()
             {
                 CheckPathExists = true,
                 Filter = filter,
-                Multiselect = true,
+                Multiselect = multiselect,
                 InitialDirectory = filePath
             };
             if (dialog.ShowDialog() == DialogResult.OK)
@@ -59,7 +59,7 @@ namespace LuaSTGEditorSharpV2.Services
         public object Settings
         {
             get => _settings;
-            set => _settings = (value as FileDialogServiceSettings) ?? _settings;
+            set => _settings = value as FileDialogServiceSettings ?? _settings;
         }
 
         public void RefreshSettings() { }
@@ -71,8 +71,8 @@ namespace LuaSTGEditorSharpV2.Services
 
         public IReadOnlyList<string> ShowOpenFileCommandDialog()
         {
-            if (ShowOpenFileDialog(localization.GetString("fileDialog_openFileExtension", typeof(FileDialogService).Assembly), 
-                new Property<string>(() => _settings.OpenFilePath, v => _settings.OpenFilePath = v)) 
+            if (ShowOpenFileDialog(localization.GetString("fileDialog_openFileExtension", typeof(FileDialogService).Assembly),
+                new Property<string>(() => _settings.OpenFilePath, v => _settings.OpenFilePath = v), true)
                 is OpenFileDialog dialog)
             {
                 return dialog.FileNames;
@@ -86,6 +86,34 @@ namespace LuaSTGEditorSharpV2.Services
                 localization.GetString("fileDialog_saveFileExtension", typeof(FileDialogService).Assembly),
                 new Property<string>(() => _settings.SaveFilePath, v => _settings.SaveFilePath = v))
                 is SaveFileDialog dialog)
+            {
+                return dialog.FileName;
+            }
+            return null;
+        }
+
+        public IReadOnlyList<string> ShowOpenFileDialogForMultipleFile(string key, string filter)
+        {
+            if (ShowOpenFileDialog(filter,
+                new Property<string>(
+                    () => _settings.KeyedPaths.GetValueOrDefault(key, string.Empty),
+                    value => _settings.KeyedPaths[key] = value), 
+                true)
+                is OpenFileDialog dialog)
+            {
+                return dialog.FileNames;
+            }
+            return [];
+        }
+
+        public string? ShowOpenFileDialogForSingleFile(string key, string filter)
+        {
+            if (ShowOpenFileDialog(filter,
+                new Property<string>(
+                    () => _settings.KeyedPaths.GetValueOrDefault(key, string.Empty),
+                    value => _settings.KeyedPaths[key] = value),
+                false)
+                is OpenFileDialog dialog)
             {
                 return dialog.FileName;
             }

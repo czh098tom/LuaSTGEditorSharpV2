@@ -70,6 +70,15 @@ namespace LuaSTGEditorSharpV2.PropertyView.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Any File(*.*)|*.* 的本地化字符串。
+        /// </summary>
+        internal static string fileDialog_chooseFileExtension {
+            get {
+                return ResourceManager.GetString("fileDialog_chooseFileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Native View 的本地化字符串。
         /// </summary>
         internal static string native_view {

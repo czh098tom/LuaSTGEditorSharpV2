@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaSTGEditorSharpV2.Services
+namespace LuaSTGEditorSharpV2.WPF.Services
 {
     public interface ISettingsSavedOnClose
     {

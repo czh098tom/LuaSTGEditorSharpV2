@@ -12,7 +12,9 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
     public abstract class JsonProxiedPropertyItemViewModel<T>(NodeData nodeData,
-        LocalServiceParam localServiceParam) : PropertyItemViewModelBase(nodeData, localServiceParam)
+        LocalServiceParam localServiceParam,
+        PropertyEditWizardProviderService wizardProviderService) 
+        : PropertyItemViewModelBase(nodeData, localServiceParam, wizardProviderService)
         where T : class
     {
         private T? _proxyValue;

@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Editor.Extension;
+using LuaSTGEditorSharpV2.WPF.Services;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
