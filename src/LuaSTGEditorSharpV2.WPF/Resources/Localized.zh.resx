@@ -126,6 +126,12 @@
   <data name="common_ok" xml:space="preserve">
     <value>确定</value>
   </data>
+  <data name="fileDialog_openFileExtension" xml:space="preserve">
+    <value>LuaSTG Editor Sharp V2 文档(*.lstgxml;*.lstgjson)|*.lstgxml;*.lstgjson</value>
+  </data>
+  <data name="fileDialog_saveFileExtension" xml:space="preserve">
+    <value>LuaSTG Editor Sharp V2 XML 文档(*.lstgxml)|*.lstgxml|LuaSTG Editor Sharp V2 JSON 文档(*.lstgjson)|*.lstgjson</value>
+  </data>
   <data name="messageBox_title_app" xml:space="preserve">
     <value>LuaSTG Editor Sharp V2</value>
   </data>

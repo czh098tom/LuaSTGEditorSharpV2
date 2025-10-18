@@ -41,6 +41,7 @@ using LuaSTGEditorSharpV2.ServiceBridge;
 using LuaSTGEditorSharpV2.ServiceBridge.Services;
 using LuaSTGEditorSharpV2.Services;
 using LuaSTGEditorSharpV2.DockingWindows;
+using LuaSTGEditorSharpV2.WPF.Services;
 
 namespace LuaSTGEditorSharpV2
 {

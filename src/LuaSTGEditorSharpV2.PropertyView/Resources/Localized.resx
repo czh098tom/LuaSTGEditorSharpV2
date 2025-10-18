@@ -120,6 +120,9 @@
   <data name="default_view" xml:space="preserve">
     <value>Default View</value>
   </data>
+  <data name="fileDialog_chooseFileExtension" xml:space="preserve">
+    <value>Any File(*.*)|*.*</value>
+  </data>
   <data name="native_view" xml:space="preserve">
     <value>Native View</value>
   </data>

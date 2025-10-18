@@ -120,6 +120,9 @@
   <data name="default_view" xml:space="preserve">
     <value>默认视图</value>
   </data>
+  <data name="fileDialog_chooseFileExtension" xml:space="preserve">
+    <value>任意文件(*.*)|*.*</value>
+  </data>
   <data name="native_view" xml:space="preserve">
     <value>原生视图</value>
   </data>

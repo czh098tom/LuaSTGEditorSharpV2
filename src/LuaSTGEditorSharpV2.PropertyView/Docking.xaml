@@ -4,7 +4,7 @@
                     xmlns:fluent="clr-namespace:Fluent;assembly=Fluent"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com">
     <DataTemplate x:Key="PropertyPageViewModel">
-        <Grid>
+        <Grid MinWidth="250">
             <TabControl x:Name="_propertyTab" ItemsSource="{Binding Tabs}" 
                         SelectedIndex="{Binding SelectedIndex}" >
                 <TabControl.ItemTemplate>
@@ -14,7 +14,7 @@
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>
                     <DataTemplate>
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
                                       VerticalScrollBarVisibility="Visible"
                                       Margin="5">
                             <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"

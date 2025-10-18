@@ -27,8 +27,10 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             }
         }
 
-        public PropertyTabWrapperItemViewModel(IReadOnlyList<PropertyTabViewModel> tabs, NodeData nodeData, LocalServiceParam localServiceParam)
-            : base(nodeData, localServiceParam)
+        public PropertyTabWrapperItemViewModel(IReadOnlyList<PropertyTabViewModel> tabs, 
+            NodeData nodeData, LocalServiceParam localServiceParam,
+            PropertyEditWizardProviderService wizardProviderService)
+            : base(nodeData, localServiceParam, wizardProviderService)
         {
             _tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>(tab =>
             {
