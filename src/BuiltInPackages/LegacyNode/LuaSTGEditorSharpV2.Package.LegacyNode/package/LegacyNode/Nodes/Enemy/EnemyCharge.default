@@ -1,5 +1,5 @@
 {
-    "TypeUID": "EnemyCast",
+    "TypeUID": "EnemyCharge",
     "DefaultValue": {
         "position": "self.x, self.y"
     }

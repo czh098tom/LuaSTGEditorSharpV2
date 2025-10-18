@@ -6,7 +6,7 @@
     },
     {
       "$type": "NodeTypeRemapping",
-      "To": "ForEachGroup"
+      "To": "ForEachInGroup"
     }
   ]
 }

@@ -3,10 +3,6 @@
   "Converters": [
     {
       "$type": "Default"
-    },
-    {
-      "$type": "NodeTypeRemapping",
-      "To": "EnemyCast"
     }
   ]
 }

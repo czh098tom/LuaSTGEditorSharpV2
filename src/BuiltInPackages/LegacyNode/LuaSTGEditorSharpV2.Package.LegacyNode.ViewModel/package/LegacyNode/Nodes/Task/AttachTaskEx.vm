@@ -18,14 +18,12 @@
 		],
 		"Localized": {
 			"zh": [
-				[
-					{"Text": "附加任务 {1} 到 {3}"},
-					{
-						"Text": "使用参数 {2}",
-						"ConditionOn": 2,
-						"UseExistanceInsteadOfBoolValue": true
-					}
-				]
+				{"Text": "附加任务 {1} 到 {3}"},
+				{
+					"Text": "使用参数 {2}",
+					"ConditionOn": 2,
+					"UseExistanceInsteadOfBoolValue": true
+				}
 			]
 		}
 	}

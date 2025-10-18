@@ -1,5 +1,5 @@
 {
-    "TypeUID": "ForEachGroup",
+    "TypeUID": "ForEachInGroup",
     "DefaultValue": {
         "group": "GROUP_INDES"
     }
