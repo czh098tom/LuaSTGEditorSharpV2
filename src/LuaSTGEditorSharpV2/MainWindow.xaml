@@ -20,6 +20,7 @@
         xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
         xmlns:lto="clr-namespace:LuaSTGEditorSharpV2.Toolbox;assembly=LuaSTGEditorSharpV2.Toolbox"
         xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
+        xmlns:lwc="clr-namespace:LuaSTGEditorSharpV2.WPF.Converter;assembly=LuaSTGEditorSharpV2.WPF"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         lex:ResxLocalizationProvider.DefaultAssembly="LuaSTGEditorSharpV2"
         lex:ResxLocalizationProvider.DefaultDictionary="Localized"
@@ -30,7 +31,7 @@
         Icon="pack://application:,,,/icon.ico"
         FocusManager.FocusedElement="{Binding ElementName=RibbonWin}">
     <Window.Resources>
-        <util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <lwc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <sys:Boolean x:Key="TRUE">True</sys:Boolean>
         <sys:Boolean x:Key="FALSE">False</sys:Boolean>
     </Window.Resources>

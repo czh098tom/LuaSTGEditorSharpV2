@@ -123,6 +123,9 @@
   <data name="fileDialog_chooseFileExtension" xml:space="preserve">
     <value>Any File(*.*)|*.*</value>
   </data>
+  <data name="fileDialog_chooseImageFileExtension" xml:space="preserve">
+    <value>Image File(*.png;*.jpg;*.bmp)|*.png;*.jpg;*.bmp</value>
+  </data>
   <data name="native_view" xml:space="preserve">
     <value>Native View</value>
   </data>

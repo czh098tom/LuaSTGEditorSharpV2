@@ -32,7 +32,20 @@ namespace LuaSTGEditorSharpV2.PropertyView
                         return vm.ResolveEditingNodeCommand(vm.SourceNode, p, result);
                     }
                     return null;
-                })
+                }),
+                PropertyEditWizard.Create("imageFile", serviceProvider, (vm, p) =>
+                {
+                    var editorNodeFactory = serviceProvider.GetRequiredService<EditorNodeFactory>();
+                    var localizationService = serviceProvider.GetRequiredService<LocalizationService>();
+                    if (serviceProvider.GetRequiredService<FileDialogService>()
+                        .ShowOpenFileDialogForSingleFile("property_choose_file",
+                        localizationService.GetString("fileDialog_chooseImageFileExtension", typeof(PropertyEditWizardRegisterer).Assembly)) is string result)
+                    {
+                        vm.Value = result;
+                        return vm.ResolveEditingNodeCommand(vm.SourceNode, p, result);
+                    }
+                    return null;
+                }),
             };
 
             return arr;
