@@ -1,0 +1,10 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BossDialog",
+	"Captures": [
+		{ "Key": "can_skip" },
+		{ "Key": "suspend_gameplay" }
+	],
+	"Head": "{0:IND}_tmp_sc = boss.dialog.New({0})\n{0:IND}function _tmp_sc:init()\n{0:IND}lstg.player.dialog = {1}\n{0:IND}_dialog_can_skip = {0}\n{0:IND}self.dialog_displayer = New(dialog_displayer)\n",
+	"Tail": "{0:IND}end\n{0:IND}table.insert(_temporary_class.cards, _tmp_sc)\n"
+}

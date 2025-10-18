@@ -1,5 +1,5 @@
 {
-    "TypeUID": "Dialog",
+    "TypeUID": "BossDialog",
     "DefaultValue": {
         "can_skip": "true",
         "suspend_gameplay": "true"
