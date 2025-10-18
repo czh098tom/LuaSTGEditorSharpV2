@@ -1,0 +1,13 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LoadImage",
+	"Captures": [
+		{ "Key": "resource_name" },
+		{ "Key": "file_path" },
+		{ "Key": "mipmap" },
+		{ "Key": "collision_size" },
+		{ "Key": "rectangle_collision" },
+		{ "Key": "cut_edge" }
+	],
+	"Head": "LoadImage({0},{1},{2},{3},{4},{5})"
+}

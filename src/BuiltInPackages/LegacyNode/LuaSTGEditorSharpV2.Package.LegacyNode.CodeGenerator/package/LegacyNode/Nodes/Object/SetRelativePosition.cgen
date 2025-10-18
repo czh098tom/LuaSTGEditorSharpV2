@@ -1,0 +1,10 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetRelativePosition",
+	"Captures": [
+		{ "Key": "position" },
+		{ "Key": "rotation" },
+		{ "Key": "follow_masters_rotation" }
+	],
+	"Head": "_set_rel_pos(self, {1}, {2}, {3})"
+}

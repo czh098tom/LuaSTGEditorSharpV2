@@ -21,7 +21,7 @@
 			"UseExistanceInsteadOfBoolValue": "true",
 			"Inversed": "true"
 		},
-		{ "Text": "{0:IND}laser_bent.init(self, {2}, _x, _y, 0, {4}, {5}, {6}, {7}, {8}, {9})" }
+		{ "Text": "{0:IND}laser_bent.init(self, {2}, _x, _y, {3}, {4}, {5}, {6})" }
 	],
 	"Tail": [
 		{ "Text": "end" }

@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LoadAnimation",
+	"Captures": [
+		{ "Key": "resource_name" },
+		{ "Key": "file_path" },
+		{ "Key": "mipmap" },
+		{ "Key": "grid_size" },
+		{ "Key": "animation_interval" },
+		{ "Key": "collision_size" },
+		{ "Key": "rectangle_collision" }
+	],
+	"Head": "LoadAnimation({0},{1},{2},{3},{4},{5},{6})"
+}

@@ -1,12 +1,16 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "CallBack",
-	"Captures": {
-		"type": { "Key": "type" }
+	"TypeUID": "DefaultAction",
+	"ContextCaptures": {
+		"callback": {
+			"TypeUID": "CallBack",
+			"Property": {
+				"type": { "Key": "type" }
+			}
+		}
 	},
 	"ConditionTemplates": {
 		"is_colli": "'{{context.callback.type}}'=='colli'"
 	},
-	"Head": ["function _temporary_class:{{self.type}}({{#condition.is_colli}}other{{/condition.is_colli}})"],
-	"Tail": ["end"]
+	"Head": ["self.class.base.{{context.callback.type}}(self{{#condition.is_colli}}, other{{/condition.is_colli}})"]
 }

@@ -1,0 +1,11 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetBinding",
+	"Captures": [
+		{ "Key": "master" },
+		{ "Key": "servant" },
+		{ "Key": "damage_transfer_rate" },
+		{ "Key": "connect_death" }
+	],
+	"Head": "_connect({1}, {2}, {3}, {4})"
+}

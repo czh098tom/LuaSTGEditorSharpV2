@@ -1,0 +1,12 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ConfigBossUI",
+	"Captures": [
+		{ "Key": "show_hp_circle" },
+		{ "Key": "show_boss_name" },
+		{ "Key": "show_time_couunter" },
+		{ "Key": "show_spell_name" },
+		{ "Key": "show_boss_pointer" }
+	],
+	"Head": "boss.SetUIDisplay(self, {1}, {2}, {3}, {4}, true, {5})"
+}

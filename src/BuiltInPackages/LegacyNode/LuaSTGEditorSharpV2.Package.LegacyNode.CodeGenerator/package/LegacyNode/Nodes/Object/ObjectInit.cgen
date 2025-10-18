@@ -34,7 +34,7 @@
 		{ "Text": "{0:IND}self.hp = {8}" },
 		{ "Text": "{0:IND}self.maxhp = {8}" },
 		{ "Text": "{0:IND}self.colli = {9}" },
-		{ "Text": "{0:IND}self.servants = {}" },
+		{ "Text": "{0:IND}self.servants = {{}}" },
 		{ "Text": "{0:IND}self._blend, self._a, self._r, self._g, self._b = '', 255, 255, 255, 255" }
 	],
 	"Tail": [

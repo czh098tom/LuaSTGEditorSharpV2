@@ -1,0 +1,25 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LaserChangeStyle",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "color" },
+		{ "Key": "style" }
+	],
+	"Head": [
+		{
+			"Text": "laser.ChangeImage({1}, {3}"
+		},
+		{
+			"Text": ")",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": true,
+			"Inversed": true
+		},
+		{
+			"Text": ", {1})",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": true
+		}
+	]
+}

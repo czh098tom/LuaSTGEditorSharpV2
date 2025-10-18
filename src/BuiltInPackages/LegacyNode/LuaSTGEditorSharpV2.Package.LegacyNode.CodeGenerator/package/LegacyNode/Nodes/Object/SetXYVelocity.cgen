@@ -1,0 +1,10 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetXYVelocity",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "velocity" },
+		{ "Key": "set_rotation" }
+	],
+	"Head": "{1}.vx, {1}.vy = {2}\nif {3} then {1}.rot = atan2({1}.vy, {1}.vx) end"
+}

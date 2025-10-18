@@ -1,0 +1,11 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetVelocityLimit",
+	"Captures": [
+        { "Key": "target" },
+        { "Key": "max_velocity" },
+        { "Key": "max_x_velocity" },
+        { "Key": "max_y_velocity" }
+	],
+	"Head": "_forbid_v({1}, {2}, {3}, {4})"
+}

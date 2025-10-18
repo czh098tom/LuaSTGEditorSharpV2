@@ -1,0 +1,16 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SCBGLayer",
+	"Captures": [
+		{ "Key": "image" },
+		{ "Key": "is_tile" },
+		{ "Key": "position" },
+		{ "Key": "rotation" },
+		{ "Key": "velocity" },
+		{ "Key": "omega" },
+		{ "Key": "blend_mode" },
+		{ "Key": "scale" }
+	],
+	"Head": "_spellcard_background.AddLayer(self, {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7},",
+	"Tail": "_)"
+}

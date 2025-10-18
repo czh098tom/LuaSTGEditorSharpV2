@@ -1,0 +1,39 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Sentence",
+	"Captures": [
+		{ "Key": "image" },
+		{ "Key": "image_position" },
+		{ "Key": "text" },
+		{ "Key": "time" },
+		{ "Key": "scale" }
+	],
+	"Head": [
+		{
+			"Text": "{0:IND}boss.dialog.sentence(self,{0},{1},[===[{2}]===],"
+		},
+		{
+			"Text": "{3},",
+			"ConditionOn": 3,
+			"UseExistanceInsteadOfBoolValue": true
+		},
+		{
+			"Text": "nil,",
+			"ConditionOn": 3,
+			"UseExistanceInsteadOfBoolValue": true,
+			"Inversed": true
+		},
+		{
+			"Text": "{4}",
+			"ConditionOn": 4,
+			"UseExistanceInsteadOfBoolValue": true
+		},
+		{
+			"Text": "nil,nil",
+			"ConditionOn": 4,
+			"UseExistanceInsteadOfBoolValue": true,
+			"Inversed": true
+		}
+	],
+	"Tail": []
+}

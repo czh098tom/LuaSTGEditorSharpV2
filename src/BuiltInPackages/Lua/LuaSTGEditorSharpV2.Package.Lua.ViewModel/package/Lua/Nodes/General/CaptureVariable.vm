@@ -1,0 +1,13 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CaptureVariable",
+	"Captures": [
+		{ "Key": "variables" }
+	],
+	"Text": {
+		"Neutral": "Capture upvalues {1} to current scope",
+		"Localized": {
+			"zh": "捕获变量{1}至当前作用域"
+		}
+	}
+}
