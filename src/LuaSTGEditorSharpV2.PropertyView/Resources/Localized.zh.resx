@@ -123,6 +123,9 @@
   <data name="fileDialog_chooseFileExtension" xml:space="preserve">
     <value>任意文件(*.*)|*.*</value>
   </data>
+  <data name="fileDialog_chooseImageFileExtension" xml:space="preserve">
+    <value>图像文件(*.png;*.jpg;*.bmp)|*.png;*.jpg;*.bmp</value>
+  </data>
   <data name="native_view" xml:space="preserve">
     <value>原生视图</value>
   </data>
