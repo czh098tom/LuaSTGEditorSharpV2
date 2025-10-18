@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 {
     public class DocumentViewModel : DockingViewModelBase
     {
-        public delegate void SelectedNodeChangedHandler(DocumentViewModel? dvm, NodeData[] nodeData);
+        public delegate void SelectedNodeChangedHandler(DocumentViewModel? dvm, EditorNode[] editorNode);
 
         private readonly EditorDocument _editingDocumentModel;
 
@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 }
                 else
                 {
-                    SelectedNodeChanged?.Invoke(this, [nvm.Source]);
+                    SelectedNodeChanged?.Invoke(this, [nvm.EditorNode]);
                 }
                 RaisePropertyChanged();
             }

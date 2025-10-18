@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -32,7 +33,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public override string I18NTitleKey => "panel_property_title";
 
-        private NodeData? editing = null;
+        private EditorNode? editing = null;
 
         public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
@@ -59,13 +60,18 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 editing = null;
             }
-            LoadNodeData(param, editing ?? NodeData.Empty);
+            LoadNodeData(param, editing);
         }
 
-        private void LoadNodeData(LocalServiceParam param, NodeData nodeData)
+        private void LoadNodeData(LocalServiceParam param, EditorNode? nodeData)
         {
+            if (nodeData == null)
+            {
+                LoadProperties([]);
+                return;
+            }
             var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
-                .GetPropertyViewModelOfNode(nodeData, param);
+                .GetPropertyViewModelOfNode(nodeData.Source, param);
             LoadProperties(list);
         }
 

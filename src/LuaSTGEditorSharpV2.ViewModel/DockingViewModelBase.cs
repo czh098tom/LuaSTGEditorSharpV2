@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -21,17 +22,17 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             public CommandBase? Command { get; set; }
             public IDocument? DocumentModel { get; set; }
-            public NodeData[] NodeData { get; set; } = [];
+            public EditorNode[] EditorNodes { get; set; } = [];
             public bool ShouldRefreshView { get; set; } = true;
         }
 
         public class SelectedNodeChangedEventArgs : EventArgs
         {
             public IDocument? DocumentModel { get; set; }
-            public NodeData[] NodeData { get; set; } = [];
+            public EditorNode[] EditorNodes { get; set; } = [];
         }
 
-        public NodeData[] SourceNodes { get; private set; } = [];
+        public EditorNode[] SourceNodes { get; private set; } = [];
 
         public IDocument? SourceDocument { get; private set; }
 
@@ -99,13 +100,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
             OnReopen?.Invoke(this, EventArgs.Empty);
         }
 
-        protected void PublishCommand(CommandBase? command, IDocument documentModel, NodeData[] nodeData, bool shouldRefreshView = true)
+        protected void PublishCommand(CommandBase? command, IDocument documentModel, EditorNode[] nodeData, bool shouldRefreshView = true)
         {
             OnCommandPublishing?.Invoke(this, new()
             {
                 Command = command,
                 DocumentModel = documentModel,
-                NodeData = nodeData,
+                EditorNodes = nodeData,
                 ShouldRefreshView = shouldRefreshView
             });
         }
@@ -115,7 +116,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             if (!ShouldChangeSelectedNode(o, args)) return;
             var doc = args.DocumentModel;
             SourceDocument = doc;
-            var node = args.NodeData;
+            var node = args.EditorNodes;
             SourceNodes = node;
             HandleSelectedNodeChangedImpl(o, args);
         }

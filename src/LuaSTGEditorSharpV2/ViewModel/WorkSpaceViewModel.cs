@@ -48,7 +48,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             get => IsEnabledHandle.Value;
         }
 
-        public NodeData[] SelectedNodes { get; private set; } = [];
+        public EditorNode[] SelectedNodes { get; private set; } = [];
 
         [MemberNotNullWhen(true, nameof(_activeDocument))]
         public bool HaveActiveDocument => _activeDocument != null;
@@ -114,12 +114,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             return result;
         }
 
-        public void BroadcastSelectedNodeChanged(DocumentViewModel? dvm, NodeData[] nodeData)
+        public void BroadcastSelectedNodeChanged(DocumentViewModel? dvm, EditorNode[] editorNode)
         {
-            BroadcastSelectedNodeChanged(dvm?.DocumentModel, nodeData);
+            BroadcastSelectedNodeChanged(dvm?.DocumentModel, editorNode);
         }
 
-        public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData[] nodeData)
+        public void BroadcastSelectedNodeChanged(IDocument? documentModel, EditorNode[] editorNode)
         {
             if (documentModel == null)
             {
@@ -129,18 +129,18 @@ namespace LuaSTGEditorSharpV2.ViewModel
             {
                 _activeDocument = _documentMapping.GetValueOrDefault(documentModel);
             }
-            SelectedNodes = nodeData;
+            SelectedNodes = editorNode;
             foreach (var p in Anchorables)
             {
-                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
+                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, EditorNodes = editorNode });
             }
             foreach (var p in _documents)
             {
-                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
+                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, EditorNodes = editorNode });
             }
         }
 
-        private void AddCommandToDocument(CommandBase? command, IDocument? document, NodeData[] nodeData, bool shouldRefresh)
+        private void AddCommandToDocument(CommandBase? command, IDocument? document, EditorNode[] editorNode, bool shouldRefresh)
         {
             if (command == null || document == null) return;
             var dvm = _documentMapping!.GetValueOrDefault(document, null);
@@ -148,7 +148,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             dvm.ExecuteCommand(command);
             if (shouldRefresh)
             {
-                BroadcastSelectedNodeChanged(document, nodeData);
+                BroadcastSelectedNodeChanged(document, editorNode);
             }
         }
 
@@ -222,7 +222,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void DeleteSelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
+            AddCommandToDocument(SelectedNodes.Select(en => en.Source).SelectCommand(n =>
             {
                 if (n.PhysicalParent == null) return null;
                 return new RemoveChildCommand(ServiceProvider.GetRequiredService<EditorNodeFactory>(),
@@ -233,7 +233,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void CopySelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            var nodes = _activeDocument.DocumentModel.Root.FindPhysicalMinForestContaining(SelectedNodes);
+            var nodes = _activeDocument.DocumentModel.Root.FindPhysicalMinForestContaining([.. SelectedNodes.Select(en => en.Source)]);
             ServiceProvider.GetRequiredService<ClipboardService>().CopyNode(nodes);
         }
 
@@ -252,7 +252,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             var clipBoardContent = clipBoard.GetNodes();
 
-            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
+            AddCommandToDocument(SelectedNodes.Select(en => en.Source).SelectCommand(n =>
                 clipBoardContent.SelectCommand(c => insCommandHost.InsertCommandFactory.CreateInsertCommand(n, c)))
                 , _activeDocument.DocumentModel, SelectedNodes, true);
         }
@@ -299,7 +299,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             using var _ = new CompositeDisposable(RaiseEnableRequestingEvent());
             await Task.WhenAll(SelectedNodes
-                .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)?.BuildingTask)
+                .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n.Source, param)?.BuildingTask)
                 .OfType<NamedBuildingTask>()
                 .Select(t => t.Execute(buildingContext)));
         }
@@ -322,7 +322,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
             var root = SelectedNodes[0];
             foreach (CodeData codeData in ServiceProvider.GetRequiredService<CodeGeneratorServiceProvider>()
-                .GenerateCode(root, new LocalServiceParam(_activeDocument.SourceDocument)))
+                .GenerateCode(root.Source, new LocalServiceParam(_activeDocument.SourceDocument)))
             {
                 yield return codeData;
             }
@@ -335,7 +335,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var taskFactoryService = ServiceProvider.GetRequiredService<BuildTaskFactoryServiceProvider>();
             var selectedDoc = _activeDocument.SourceDocument;
             var param = new LocalServiceParam(selectedDoc);
-            return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)
+            return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n.Source, param)
                 ?.BuildingTask is NamedBuildingTask);
         }
 
@@ -345,7 +345,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             {
                 if (p.SourceDocument == dvm.DocumentModel)
                 {
-                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = [] });
+                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, EditorNodes = [] });
                 }
             }
             if (_activeDocument == dvm)
@@ -356,7 +356,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private void HandleAddCommandEvent(object? o, DockingViewModelBase.PublishCommandEventArgs e)
         {
-            AddCommandToDocument(e.Command, e.DocumentModel, e.NodeData, e.ShouldRefreshView);
+            AddCommandToDocument(e.Command, e.DocumentModel, e.EditorNodes, e.ShouldRefreshView);
         }
 
         private IEnumerable<IDisposable> RaiseEnableRequestingEvent()
