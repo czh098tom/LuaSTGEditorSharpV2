@@ -14,6 +14,7 @@ using LuaSTGEditorSharpV2.Core.Services;
 
 using LuaSTGEditorSharpV2.ServiceInstanceProvider;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.PropertyView;
 
 namespace LuaSTGEditorSharpV2
 {
@@ -44,7 +45,10 @@ namespace LuaSTGEditorSharpV2
                 packageProvider.Register(new DockingTemplateRegisterer());
                 packageProvider.Register(new DockingButtonRegisterer());
                 packageProvider.Register(new DockingButtonGroupRegisterer());
+                packageProvider.Register(new PropertyEditWizardRegisterer());
             });
+
+            Current.Resources.Add("HostServices", host!.Services);
 
             MainWindow mw = host!.Services.GetRequiredService<MainWindow>();
             mw.Show();

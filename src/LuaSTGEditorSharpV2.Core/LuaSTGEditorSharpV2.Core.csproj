@@ -20,6 +20,9 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
+    <PackageReference Include="Stubble.Core" Version="1.10.8" />
+    <PackageReference Include="NCalc.Core" Version="5.7.0" />
+    <PackageReference Include="NCalcSync" Version="5.7.0" />
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory" Condition="$(InReferenceParent)!='true'">

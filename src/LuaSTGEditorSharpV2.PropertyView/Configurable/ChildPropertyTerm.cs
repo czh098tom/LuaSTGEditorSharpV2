@@ -43,7 +43,8 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                 pairs.Select(p => service.GetPropertyViewModelOfNode(p.NodeData, context)[0])
                 .ToList(),
                 nodeData,
-                context.LocalParam)
+                context.LocalParam,
+                serviceProvider.GetRequiredService<PropertyEditWizardProviderService>())
             {
                 Type = new PropertyViewEditorType("childNode")
             };

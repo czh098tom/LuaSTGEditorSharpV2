@@ -13,6 +13,7 @@ using AvalonDock.Layout.Serialization;
 using LuaSTGEditorSharpV2.Core.Settings;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.WPF.Services;
 
 namespace LuaSTGEditorSharpV2.Services
 {

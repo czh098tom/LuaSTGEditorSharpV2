@@ -88,6 +88,24 @@ namespace LuaSTGEditorSharpV2.WPF.Resources {
         }
         
         /// <summary>
+        ///   查找类似 LuaSTG Editor Sharp V2 Document(*.lstgxml;*.lstgjson)|*.lstgxml;*.lstgjson 的本地化字符串。
+        /// </summary>
+        internal static string fileDialog_openFileExtension {
+            get {
+                return ResourceManager.GetString("fileDialog_openFileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 LuaSTG Editor Sharp V2 XML Document(*.lstgxml)|*.lstgxml|LuaSTG Editor Sharp V2 JSON Document(*.lstgjson)|*.lstgjson 的本地化字符串。
+        /// </summary>
+        internal static string fileDialog_saveFileExtension {
+            get {
+                return ResourceManager.GetString("fileDialog_saveFileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 LuaSTG Editor Sharp V2 的本地化字符串。
         /// </summary>
         internal static string messageBox_title_app {

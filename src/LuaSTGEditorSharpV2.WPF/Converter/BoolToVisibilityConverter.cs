@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
 
-namespace LuaSTGEditorSharpV2.Util
+namespace LuaSTGEditorSharpV2.WPF.Converter
 {
     /// <summary>
     /// Source: http://stackoverflow.com/questions/534575/how-do-i-invert-booleantovisibilityconverter
@@ -15,11 +15,11 @@ namespace LuaSTGEditorSharpV2.Util
     /// Implements a Boolean to Visibility converter
     /// Use ConverterParameter=true to negate the visibility - boolean interpretation.
     /// </summary>
-    [ValueConversion(typeof(Boolean), typeof(Visibility))]
+    [ValueConversion(typeof(bool), typeof(Visibility))]
     public sealed class BoolToVisibilityConverter : IValueConverter
     {
         /// <summary>
-        /// Converts a <seealso cref="Boolean"/> value
+        /// Converts a <seealso cref="bool"/> value
         /// into a <seealso cref="Visibility"/> value.
         /// </summary>
         /// <param name="value"></param>
@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.Util
 
         /// <summary>
         /// Converts a <seealso cref="Visibility"/> value
-        /// into a <seealso cref="Boolean"/> value.
+        /// into a <seealso cref="bool"/> value.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>
@@ -51,7 +51,7 @@ namespace LuaSTGEditorSharpV2.Util
             Visibility visiblility = value == null ? Visibility.Hidden : (Visibility)value;
             bool IsInverted = parameter == null ? false : (bool)parameter;
 
-            return (visiblility == Visibility.Visible) != IsInverted;
+            return visiblility == Visibility.Visible != IsInverted;
         }
     }
 }

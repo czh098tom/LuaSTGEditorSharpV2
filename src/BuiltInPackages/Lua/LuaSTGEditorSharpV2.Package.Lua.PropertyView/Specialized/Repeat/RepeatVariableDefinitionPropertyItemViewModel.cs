@@ -18,8 +18,9 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
     public class RepeatVariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
-        RepeatPropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam)
-        : JsonProxiedPropertyItemViewModel<RepeatVariableDefinition>(nodeData, localServiceParam)
+        RepeatPropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam,
+        PropertyEditWizardProviderService propertyEditWizardProviderService)
+        : JsonProxiedPropertyItemViewModel<RepeatVariableDefinition>(nodeData, localServiceParam, propertyEditWizardProviderService)
     {
         private string _propName = string.Empty;
         private string _propInit = string.Empty;
@@ -89,12 +90,13 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class RepeatVariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory)
+    public class RepeatVariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory, 
+        PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public RepeatVariableDefinitionPropertyItemViewModel Create(RepeatPropertyViewItemTerm term, int index,
             NodeData nodeData, LocalServiceParam localServiceParam)
         {
-            return new RepeatVariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam);
+            return new RepeatVariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam, propertyEditWizardProviderService);
         }
     }
 }
