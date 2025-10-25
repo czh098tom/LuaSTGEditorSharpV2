@@ -18,7 +18,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     public class VariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
-        LocalVariablePropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam,
+        LocalVariablePropertyViewItemTerm term, int index, EditorNode nodeData, LocalServiceParam localServiceParam,
         PropertyEditWizardProviderService propertyEditWizardProviderService)
         : JsonProxiedPropertyItemViewModel<VariableDefinition>(nodeData, localServiceParam, propertyEditWizardProviderService)
     {
@@ -77,7 +77,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
         PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public VariableDefinitionPropertyItemViewModel Create(LocalVariablePropertyViewItemTerm term, int index,
-            NodeData nodeData, LocalServiceParam localServiceParam)
+            EditorNode nodeData, LocalServiceParam localServiceParam)
         {
             return new VariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam, propertyEditWizardProviderService);
         }

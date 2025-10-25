@@ -26,9 +26,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
         [JsonProperty] public NodePropertyCapture? ValueRule { get; set; }
         [JsonProperty] public PropertyViewEditorType? NameValueEditor { get; set; }
 
-        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, PropertyViewContext context, int count)
+        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(EditorNode nodeData, PropertyViewContext context, int count)
         {
-            var token = new NodePropertyAccessToken(serviceProvider, nodeData, context);
+            var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {

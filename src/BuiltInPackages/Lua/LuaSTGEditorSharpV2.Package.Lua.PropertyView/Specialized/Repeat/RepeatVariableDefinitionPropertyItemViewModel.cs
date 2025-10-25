@@ -18,7 +18,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
     public class RepeatVariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
-        RepeatPropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam,
+        RepeatPropertyViewItemTerm term, int index, EditorNode nodeData, LocalServiceParam localServiceParam,
         PropertyEditWizardProviderService propertyEditWizardProviderService)
         : JsonProxiedPropertyItemViewModel<RepeatVariableDefinition>(nodeData, localServiceParam, propertyEditWizardProviderService)
     {
@@ -94,7 +94,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
         PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public RepeatVariableDefinitionPropertyItemViewModel Create(RepeatPropertyViewItemTerm term, int index,
-            NodeData nodeData, LocalServiceParam localServiceParam)
+            EditorNode nodeData, LocalServiceParam localServiceParam)
         {
             return new RepeatVariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam, propertyEditWizardProviderService);
         }

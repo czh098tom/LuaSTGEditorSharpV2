@@ -14,6 +14,7 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
@@ -26,9 +27,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
         [JsonProperty] public NodePropertyCapture? IncrementRule { get; set; }
         [JsonProperty] public PropertyViewEditorType? NameValueEditor { get; set; }
 
-        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, PropertyViewContext context, int count)
+        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(EditorNode nodeData, PropertyViewContext context, int count)
         {
-            var token = new NodePropertyAccessToken(serviceProvider, nodeData, context);
+            var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {
