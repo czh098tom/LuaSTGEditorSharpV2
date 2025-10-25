@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
@@ -28,7 +29,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         }
 
         public PropertyTabWrapperItemViewModel(IReadOnlyList<PropertyTabViewModel> tabs, 
-            NodeData nodeData, LocalServiceParam localServiceParam,
+            EditorNode nodeData, LocalServiceParam localServiceParam,
             PropertyEditWizardProviderService wizardProviderService)
             : base(nodeData, localServiceParam, wizardProviderService)
         {

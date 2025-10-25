@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             }
         }
 
-        public BasicPropertyItemViewModel(NodeData nodeData, LocalServiceParam localServiceParam,
+        public BasicPropertyItemViewModel(EditorNode nodeData, LocalServiceParam localServiceParam,
             string? key, EditorNodeFactory editorNodeFactory, PropertyEditWizardProviderService propertyEditWizardProvider) : base(nodeData, localServiceParam, propertyEditWizardProvider)
         {
             this.key = key;
@@ -62,7 +62,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         PropertyEditWizardProviderService propertyEditWizardProviderService) 
         : IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>
     {
-        public BasicPropertyItemViewModel Create(NodeData nodeData, LocalServiceParam localServiceParam, string? key)
+        public BasicPropertyItemViewModel Create(EditorNode nodeData, LocalServiceParam localServiceParam, string? key)
         {
             return new BasicPropertyItemViewModel(nodeData, localServiceParam, key, editorNodeFactory, propertyEditWizardProviderService);
         }

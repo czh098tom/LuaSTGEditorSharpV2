@@ -15,6 +15,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -33,7 +34,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// </summary>
         /// <param name="nodeData"> The data source with the same TypeUID. </param>
         /// <returns></returns>
-        internal protected IReadOnlyList<PropertyTabViewModel> ResolvePropertyViewModelOfNode(NodeData nodeData
+        internal protected IReadOnlyList<PropertyTabViewModel> ResolvePropertyViewModelOfNode(EditorNode nodeData
             , PropertyViewContext context)
         {
             List<PropertyTabViewModel> propertyTabViewModels = [];

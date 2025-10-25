@@ -23,7 +23,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         private readonly ICommand _decrease;
         public ICommand Decrease => _decrease;
 
-        public CollectionCountPropertyItemViewModel(NodeData nodeData, LocalServiceParam localServiceParam,
+        public CollectionCountPropertyItemViewModel(EditorNode nodeData, LocalServiceParam localServiceParam,
             string? key, EditorNodeFactory editorNodeFactory, PropertyEditWizardProviderService propertyEditWizardProviderService)
             : base(nodeData, localServiceParam, key, editorNodeFactory, propertyEditWizardProviderService)
         {
@@ -57,7 +57,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         PropertyEditWizardProviderService propertyEditWizardProviderService) 
         : IBasicPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel>
     {
-        public CollectionCountPropertyItemViewModel Create(NodeData nodeData, LocalServiceParam localServiceParam, string? key)
+        public CollectionCountPropertyItemViewModel Create(EditorNode nodeData, LocalServiceParam localServiceParam, string? key)
         {
             return new CollectionCountPropertyItemViewModel(nodeData, localServiceParam, key, editorNodeFactory, propertyEditWizardProviderService);
         }

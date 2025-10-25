@@ -7,12 +7,13 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
-    public abstract class PropertyItemViewModelBase(NodeData nodeData,
+    public abstract class PropertyItemViewModelBase(EditorNode nodeData,
         LocalServiceParam localServiceParam, 
         PropertyEditWizardProviderService wizardProviderService) : ViewModelBase
     {
@@ -27,7 +28,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 var oldValue = _value;
                 _value = value;
                 RaisePropertyChanged();
-                OnEdit?.Invoke(this, ResolveEditingNodeCommand(SourceNode, LocalServiceParam, value));
+                OnEdit?.Invoke(this, ResolveEditingNodeCommand(SourceNode.Source, LocalServiceParam, value));
             }
         }
 
@@ -53,7 +54,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             }
         }
 
-        public NodeData SourceNode { get; private init; } = nodeData;
+        public EditorNode SourceNode { get; private init; } = nodeData;
         public LocalServiceParam LocalServiceParam { get; private init; } = localServiceParam;
         public PropertyEditWizardProviderService WizardProviderService { get; } = wizardProviderService;
 

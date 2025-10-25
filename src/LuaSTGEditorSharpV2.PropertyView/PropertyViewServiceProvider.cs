@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
@@ -44,7 +45,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             return new PropertyViewContext(ServiceProvider, localSettings, serviceSettings);
         }
 
-        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(EditorNode nodeData
             , LocalServiceParam localParam)
             => GetPropertyViewModelOfNode(nodeData, localParam, ServiceSettings);
 
@@ -56,25 +57,25 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <param name="serviceSettings"> The <see cref="PropertyViewServiceSettings"/> for this action. </param>
         /// <param name="subtype"></param>
         /// <returns></returns>
-        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(EditorNode nodeData
             , LocalServiceParam localParam, PropertyViewServiceSettings serviceSettings)
         {
-            var ctx = GetContextOfNode(nodeData, localParam, serviceSettings);
+            var ctx = GetContextOfNode(nodeData.Source, localParam, serviceSettings);
             return GetPropertyViewModelOfNode(nodeData, ctx);
         }
 
-        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData, PropertyViewContext ctx)
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(EditorNode nodeData, PropertyViewContext ctx)
         {
             var list = new List<PropertyTabViewModel>();
-            list.AddRange(GetServiceOfNode(nodeData).ResolvePropertyViewModelOfNode(nodeData, ctx));
+            list.AddRange(GetServiceOfNode(nodeData.Source).ResolvePropertyViewModelOfNode(nodeData, ctx));
             list.Add(CreateDefaultViewModel(nodeData, ctx));
             return list;
         }
 
-        private PropertyTabViewModel CreateDefaultViewModel(NodeData nodeData, PropertyViewContext context)
+        private PropertyTabViewModel CreateDefaultViewModel(EditorNode nodeData, PropertyViewContext context)
         {
-            List<PropertyItemViewModelBase> result = new(nodeData.Properties.Count);
-            foreach (var prop in nodeData.Properties)
+            List<PropertyItemViewModelBase> result = new(nodeData.Source.Properties.Count);
+            foreach (var prop in nodeData.Source.Properties)
             {
                 var vm = ServiceProvider.GetRequiredService<BasicPropertyItemViewModelFactory>()
                     .Create(nodeData, context.LocalParam, prop.Key);

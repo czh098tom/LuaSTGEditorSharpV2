@@ -71,7 +71,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 return;
             }
             var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
-                .GetPropertyViewModelOfNode(nodeData.Source, param);
+                .GetPropertyViewModelOfNode(nodeData, param);
             LoadProperties(list);
         }
 
