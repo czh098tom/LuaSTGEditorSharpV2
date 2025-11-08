@@ -78,6 +78,13 @@ namespace LuaSTGEditorSharpV2.PropertyView
         private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels)
         {
             var index = SelectedIndex;
+            foreach (var tab in Tabs)
+            {
+                foreach (var item in tab.Properties)
+                {
+                    item.Dispose();
+                }
+            }
             Tabs.Clear();
             for (int i = 0; i < viewModels.Count; i++)
             {
