@@ -152,18 +152,26 @@
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
                        Margin="5,0,5,0" />
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBox
-                     Grid.Row="0"
+            <TextBox Grid.Column="1"
                      MinWidth="150"
                      HorizontalAlignment="Stretch"
                      TextWrapping="Wrap"
                      Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                <lw:FileButton Grid.Row="1" Margin="10,10" FilePath="{Binding Value}"
+            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                Command="{Binding ShowEditWindow}"
+                                />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <DataTemplate x:Key="property:imagePreview">
+        <lsv:PropertyItemGrid>
+            <Grid Grid.Column="0" Grid.ColumnSpan="3">
+                <lw:FileButton Margin="10,10" FilePath="{Binding Value}"
                                Visibility="{Binding Value, Converter={StaticResource PathValidToVisibilityConverter}}"
                                VerticalContentAlignment="Center" 
                                HorizontalContentAlignment="Center"
@@ -195,15 +203,6 @@
                     <lw:AutoScaleImage Source="{Binding Value}"/>
                 </lw:FileButton>
             </Grid>
-            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction PassEventArgsToCommand="True"
-                                Command="{Binding ShowEditWindow}"
-                                />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
         </lsv:PropertyItemGrid>
     </DataTemplate>
 </ResourceDictionary>

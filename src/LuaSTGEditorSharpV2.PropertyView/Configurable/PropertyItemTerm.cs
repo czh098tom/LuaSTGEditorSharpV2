@@ -13,6 +13,7 @@ using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -27,16 +28,16 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         [JsonProperty] public PropertyViewEditorType? Editor { get; protected set; }
         [JsonProperty] public bool Enabled { get; private set; } = true;
 
-        public virtual PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context)
+        public virtual PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
         {
             return GetViewModelImpl<BasicPropertyItemViewModelFactory, BasicPropertyItemViewModel>(nodeData, context);
         }
 
-        protected PropertyItemViewModelBase GetViewModelImpl<TFactory, TResult>(NodeData nodeData, PropertyViewContext context)
+        protected PropertyItemViewModelBase GetViewModelImpl<TFactory, TResult>(EditorNode nodeData, PropertyViewContext context)
             where TFactory : IBasicPropertyItemViewModelFactory<TResult>
             where TResult : BasicPropertyItemViewModel
         {
-            var token = new NodePropertyAccessToken(serviceProvider, nodeData, context);
+            var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
             var vm = serviceProvider.GetRequiredService<TFactory>()
                 .Create(nodeData, context.LocalParam, Mapping?.Key);
             vm.Name = Caption.GetLocalized();

@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -24,6 +25,6 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         protected IServiceProvider ServiceProvider { get; private set; } = serviceProvider;
         protected PropertyViewServiceProvider PropertyViewServiceProvider { get; private set; } = propertyViewServiceProvider;
 
-        public abstract PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context);
+        public abstract PropertyTabViewModel GetPropertyTabViewModel(EditorNode nodeData, PropertyViewContext context);
     }
 }

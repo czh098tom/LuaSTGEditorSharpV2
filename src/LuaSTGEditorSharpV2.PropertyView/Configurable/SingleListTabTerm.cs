@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -23,9 +24,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         [JsonProperty] public PropertyItemTerm? Count { get; private set; } = null;
         [JsonProperty] public TTermVariable? VariableProperty { get; private set; } = null;
 
-        public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)
+        public override PropertyTabViewModel GetPropertyTabViewModel(EditorNode nodeData, PropertyViewContext context)
         {
-            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData.Source, context);
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < ImmutableProperty.Length; i++)
             {

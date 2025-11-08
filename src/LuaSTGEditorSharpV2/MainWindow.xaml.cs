@@ -108,7 +108,7 @@ namespace LuaSTGEditorSharpV2
             var tree = sender as TreeView;
             if (tree?.SelectedItem is NodeViewModel selectedVM && tree.DataContext is DocumentViewModel dvm)
             {
-                _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, [selectedVM.Source]);
+                _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, [selectedVM.EditorNode]);
             }
         }
 

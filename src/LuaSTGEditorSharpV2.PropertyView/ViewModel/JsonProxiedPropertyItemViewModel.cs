@@ -8,13 +8,14 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
-    public abstract class JsonProxiedPropertyItemViewModel<T>(NodeData nodeData,
+    public abstract class JsonProxiedPropertyItemViewModel<T>(EditorNode editorNode,
         LocalServiceParam localServiceParam,
         PropertyEditWizardProviderService wizardProviderService) 
-        : PropertyItemViewModelBase(nodeData, localServiceParam, wizardProviderService)
+        : PropertyItemViewModelBase(editorNode, localServiceParam, wizardProviderService)
         where T : class
     {
         private T? _proxyValue;

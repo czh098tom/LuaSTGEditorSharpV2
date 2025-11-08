@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
@@ -28,9 +29,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         }
 
         public PropertyTabWrapperItemViewModel(IReadOnlyList<PropertyTabViewModel> tabs, 
-            NodeData nodeData, LocalServiceParam localServiceParam,
+            EditorNode editorNode, LocalServiceParam localServiceParam,
             PropertyEditWizardProviderService wizardProviderService)
-            : base(nodeData, localServiceParam, wizardProviderService)
+            : base(editorNode, localServiceParam, wizardProviderService)
         {
             _tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>(tab =>
             {
@@ -50,6 +51,10 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
         {
             return new EditResult(LocalServiceParam);
+        }
+
+        protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
+        {
         }
     }
 }

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -18,9 +19,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     {
         [JsonProperty] public IPropertyItemTerm[] Mapping { get; set; } = [];
 
-        public override PropertyTabViewModel GetPropertyTabViewModel(NodeData nodeData, PropertyViewContext context)
+        public override PropertyTabViewModel GetPropertyTabViewModel(EditorNode nodeData, PropertyViewContext context)
         {
-            var token = new NodePropertyAccessToken(ServiceProvider, nodeData, context);
+            var token = new NodePropertyAccessToken(ServiceProvider, nodeData.Source, context);
             var mapping = Mapping;
             List<PropertyItemViewModelBase> propertyViewModels = new(mapping.Length);
 

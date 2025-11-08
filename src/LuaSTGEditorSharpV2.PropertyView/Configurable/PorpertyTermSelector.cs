@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
@@ -19,7 +20,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         [JsonProperty] public ChildPropertyTerm? Candidate { get; private set; }
         [JsonProperty] public IPropertyItemTerm? IfEmpty { get; private set; }
 
-        public PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context)
+        public PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
         {
             if (Candidate == null) return CreateDefaultModel(nodeData, context);
             var model = Candidate.GetViewModelImpl(nodeData, context);
@@ -27,7 +28,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             return model;
         }
 
-        private PropertyItemViewModelBase CreateDefaultModel(NodeData nodeData, PropertyViewContext context)
+        private PropertyItemViewModelBase CreateDefaultModel(EditorNode nodeData, PropertyViewContext context)
         {
             return IfEmpty?.GetViewModel(nodeData, context) 
                 ?? throw new InvalidOperationException($"{nameof(Candidate)} and {nameof(IfEmpty)} cannot be both empty.");
