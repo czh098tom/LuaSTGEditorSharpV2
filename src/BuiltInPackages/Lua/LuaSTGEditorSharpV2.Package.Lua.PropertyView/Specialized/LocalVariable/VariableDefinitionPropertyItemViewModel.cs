@@ -70,10 +70,23 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             if (editValue != null) commands.Add(editValue);
             return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, false, localServiceParam);
         }
+
+        protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
+        {
+            if (term.NameRule == null || term.ValueRule == null) return;
+            if (e.Key == string.Format(term.NameRule.Key, index))
+            {
+                SetProxy(e.NewValue, _propValue);
+            }
+            else if (e.Key == string.Format(term.ValueRule.Key, index))
+            {
+                SetProxy(_propName, e.NewValue); 
+            }
+        }
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class VariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory, 
+    public class VariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory,
         PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public VariableDefinitionPropertyItemViewModel Create(LocalVariablePropertyViewItemTerm term, int index,

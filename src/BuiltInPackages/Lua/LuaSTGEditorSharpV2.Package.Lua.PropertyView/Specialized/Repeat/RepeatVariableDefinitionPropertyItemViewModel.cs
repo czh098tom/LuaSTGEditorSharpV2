@@ -87,6 +87,23 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             if (editIncrement != null) commands.Add(editIncrement);
             return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, false, localServiceParam);
         }
+
+        protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
+        {
+            if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return;
+            if (e.Key == string.Format(term.NameRule.Key, index))
+            {
+                SetProxy(e.NewValue, _propInit, _propIncrement);
+            }
+            else if (e.Key == string.Format(term.InitRule.Key, index))
+            {
+                SetProxy(_propName, e.NewValue, _propIncrement);
+            }
+            else if (e.Key == string.Format(term.IncrementRule.Key, index))
+            {
+                SetProxy(_propName, _propInit, e.NewValue);
+            }
+        }
     }
 
     [Inject(ServiceLifetime.Singleton)]
