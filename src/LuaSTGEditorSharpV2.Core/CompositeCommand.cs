@@ -9,28 +9,30 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public class CompositeCommand : CommandBase
     {
-        private readonly List<CommandBase> _innerCommands;
+        private readonly IEnumerable<CommandBase> _commandsEnumerable;
+        private readonly List<CommandBase> _innerCommands = [];
 
-        public IReadOnlyList<CommandBase> InnerCommands => _innerCommands;
         public bool ShouldUnpack { get; private set; } = false;
 
         public CompositeCommand(params CommandBase[] innerCommands)
-            : this((IReadOnlyList<CommandBase>)innerCommands) { }
+            : this((IEnumerable<CommandBase>)innerCommands) { }
 
         public CompositeCommand(bool shouldUnpack, params CommandBase[] innerCommands)
             : this(innerCommands, shouldUnpack) { }
 
-        public CompositeCommand(IReadOnlyList<CommandBase> innerCommands, bool shouldUnpack = false)
+        public CompositeCommand(IEnumerable<CommandBase> innerCommands, bool shouldUnpack = false)
         {
-            _innerCommands = new(innerCommands);
+            _commandsEnumerable = innerCommands;
             ShouldUnpack = shouldUnpack;
         }
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            for (int i = 0; i < _innerCommands.Count; i++)
+            _innerCommands.Clear();
+            foreach (CommandBase command in _commandsEnumerable)
             {
-                _innerCommands[i].Execute(editorDocument);
+                command.Execute(editorDocument);
+                _innerCommands.Add(command);
             }
         }
 
@@ -40,6 +42,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 _innerCommands[i].Revert(editorDocument);
             }
+            _innerCommands.Clear();
         }
 
         public IReadOnlyList<CommandBase> Flatten()
