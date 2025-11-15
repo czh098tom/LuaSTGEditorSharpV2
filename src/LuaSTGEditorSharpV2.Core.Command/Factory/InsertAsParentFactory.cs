@@ -17,13 +17,19 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
     {
         public CommandBase? CreateInsertCommand(NodeData origin, NodeData toAppend)
         {
-            if (origin.PhysicalParent == null) return null;
-            var idx = origin.PhysicalParent.PhysicalChildren.FindIndex(origin);
-            if (idx == -1) return null;
-            var removeCurr = new RemoveChildCommand(editorNodeFactory, origin.PhysicalParent, idx);
-            var addToAppend = new AddChildCommand(editorNodeFactory, origin.PhysicalParent, idx, toAppend);
-            var addOriginal = new AddChildCommand(editorNodeFactory, toAppend, toAppend.PhysicalChildren.Count, origin);
-            return new CompositeCommand(removeCurr, addToAppend, addOriginal);
+            return new CompositeCommand(CreateCommands(origin, toAppend));
+        }
+
+        private IEnumerable<CommandBase> CreateCommands(NodeData origin, NodeData toAppend)
+        {
+            var parent = origin.PhysicalParent;
+            if (parent == null) yield break;
+            var idx = parent.PhysicalChildren.FindIndex(origin);
+            if (idx == -1) yield break;
+            yield return new RemoveChildCommand(editorNodeFactory, parent, idx);
+            yield return new AddChildCommand(editorNodeFactory, parent, idx, toAppend);
+            var target = parent.PhysicalChildren[idx];
+            yield return new AddChildCommand(editorNodeFactory, target, toAppend.PhysicalChildren.Count, origin);
         }
     }
 }
