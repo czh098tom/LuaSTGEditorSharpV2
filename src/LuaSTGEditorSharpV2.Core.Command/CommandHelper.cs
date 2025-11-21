@@ -9,23 +9,37 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public static class CommandHelper
     {
-        public static CompositeCommand? SelectFilter<T>(this IEnumerable<T> nodes, 
+        public static CommandBase? SelectFilter<T>(this IEnumerable<T> nodes, 
             Func<T, CommandBase?> commandGenerator)
         {
-            List<CommandBase> commands = [];
-            foreach (var n in nodes)
+            return new CompositeCommand(nodes.Select(commandGenerator).OfType<CommandBase>());
+        }
+
+        public static CommandBase? SelectFilter<T>(this IReadOnlyCollection<T> nodes,
+            Func<T, CommandBase?> commandGenerator)
+        {
+            return FromList([.. nodes.Select(commandGenerator).OfType<CommandBase>()]);
+        }
+
+        public static CommandBase? FromList(IReadOnlyList<CommandBase>? commands)
+        {
+            if (commands == null)
             {
-                var command = commandGenerator(n);
-                if (command != null)
-                {
-                    commands.Add(command);
-                }
+                return null;
             }
-            if (commands.Count > 0)
+            var commandList = commands;
+            if (commandList.Count == 0)
             {
-                return new CompositeCommand(commands);
+                return null;
             }
-            return null;
+            else if (commandList.Count == 1)
+            {
+                return commandList[0];
+            }
+            else
+            {
+                return new CompositeCommand(commandList);
+            }
         }
     }
 }
