@@ -20,17 +20,17 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
             return new CompositeCommand(CreateCommands(origin, toAppend));
         }
 
-        private IEnumerable<CommandBase> CreateCommands(EditorNode origin, NodeData toAppend)
+        private static IEnumerable<CommandBase> CreateCommands(EditorNode origin, NodeData toAppend)
         {
             var parent = origin.Parent;
             if (parent == null) yield break;
             var idx = parent.Source.PhysicalChildren.FindIndex(origin.Source);
             if (idx == -1) yield break;
             var originSource = origin.Source;
-            yield return new RemoveChildCommand(parent, idx);
-            yield return new AddChildCommand(parent, idx, toAppend);
+            yield return AtomicCommand.RemoveNode(parent, idx);
+            yield return AtomicCommand.AddNode(parent, idx, toAppend);
             var target = parent.Children[idx];
-            yield return new AddChildCommand(target, toAppend.PhysicalChildren.Count, originSource);
+            yield return AtomicCommand.AddNode(target, toAppend.PhysicalChildren.Count, originSource);
         }
     }
 }

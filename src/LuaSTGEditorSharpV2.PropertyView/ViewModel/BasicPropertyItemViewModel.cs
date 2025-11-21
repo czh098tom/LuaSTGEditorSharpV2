@@ -53,7 +53,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 
         public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam context, string edited)
         {
-            return new EditResult(EditPropertyCommand.CreateEditCommandOnDemand(nodeData, key, edited), false, LocalServiceParam);
+            return new EditResult(CheckedCommand.ModifyProperty(nodeData, key, edited), false, LocalServiceParam);
         }
 
         protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
