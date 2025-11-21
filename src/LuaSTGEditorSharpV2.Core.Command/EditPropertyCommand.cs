@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class EditPropertyCommand : ConcreteCommand
     {
-        public static CommandBase? CreateEditCommandOnDemand(EditorNodeFactory factory, NodeData node, string? propertyName, string afterEdit)
+        public static CommandBase? CreateEditCommandOnDemand(EditorNodeFactory factory, EditorNode node, string? propertyName, string afterEdit)
         {
             if (string.IsNullOrEmpty(propertyName))
             {
@@ -20,7 +20,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
             }
             else
             {
-                if (node.HasProperty(propertyName))
+                if (node.Source.HasProperty(propertyName))
                 {
                     return new EditPropertyCommand(factory, node, propertyName, afterEdit);
                 }
@@ -31,13 +31,13 @@ namespace LuaSTGEditorSharpV2.Core.Command
             }
         }
 
-        public NodeData Node { get; private set; }
+        public EditorNode Node { get; private set; }
         public string PropertyName { get; private set; }
         public string AfterEdit { get; private set; }
 
         string? _beforeEdit;
 
-        public EditPropertyCommand(EditorNodeFactory factory, NodeData node, string propertyName, string afterEdit)
+        public EditPropertyCommand(EditorNodeFactory factory, EditorNode node, string propertyName, string afterEdit)
             :base(factory)
         {
             Node = node;
@@ -47,15 +47,15 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            _beforeEdit = Node.Properties[PropertyName];
-            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            _beforeEdit = Node.Source.Properties[PropertyName];
+            var node = Node;
             node.ChangeProperty(PropertyName, AfterEdit);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
             if (_beforeEdit == null) throw new InvalidOperationException("Command has not been executed yet.");
-            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            var node = Node;
             node.ChangeProperty(PropertyName, _beforeEdit);
         }
     }

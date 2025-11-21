@@ -11,12 +11,12 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class RemovePropertyCommand : ConcreteCommand
     {
-        public NodeData Node { get; private set; }
+        public EditorNode Node { get; private set; }
         public string PropertyName { get; private set; }
 
         string? _beforeEdit;
 
-        public RemovePropertyCommand(EditorNodeFactory factory, NodeData node, string propertyName) 
+        public RemovePropertyCommand(EditorNodeFactory factory, EditorNode node, string propertyName) 
             : base(factory)
         {
             Node = node;
@@ -25,16 +25,16 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            _beforeEdit = Node.Properties[PropertyName];
-            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            _beforeEdit = Node.Source.Properties[PropertyName];
+            var node = Node;
             node.RemoveProperty(PropertyName);
-            Node.Properties.Remove(PropertyName);
+            Node.Source.Properties.Remove(PropertyName);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
             if (_beforeEdit == null) throw new InvalidOperationException("Command has not been executed yet.");
-            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            var node = Node;
             node.AddProperty(PropertyName, _beforeEdit);
         }
     }
