@@ -76,12 +76,12 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             var commands = new List<CommandBase>();
             if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return new EditResult(localServiceParam);
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
-            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
+            var editName = EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+                string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
+            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+                string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
+            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+                string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             if (editIncrement != null) commands.Add(editIncrement);
