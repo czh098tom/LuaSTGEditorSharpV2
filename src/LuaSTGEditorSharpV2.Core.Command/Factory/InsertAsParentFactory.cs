@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
         {
             var parent = origin.Parent;
             if (parent == null) yield break;
-            var idx = parent.Source.PhysicalChildren.FindIndex(origin.Source);
+            var idx = parent.Children.FindIndex(origin);
             if (idx == -1) yield break;
             var originSource = origin.Source;
             yield return AtomicCommand.RemoveNode(parent, idx);
