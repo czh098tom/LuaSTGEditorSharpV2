@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class EditPropertyCommand : ConcreteCommand
     {
-        public static CommandBase? CreateEditCommandOnDemand(EditorNodeFactory factory, EditorNode node, string? propertyName, string afterEdit)
+        public static CommandBase? CreateEditCommandOnDemand(EditorNode node, string? propertyName, string afterEdit)
         {
             if (string.IsNullOrEmpty(propertyName))
             {
