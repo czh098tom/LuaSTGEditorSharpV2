@@ -9,7 +9,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public static class CommandHelper
     {
-        public static CompositeCommand? SelectCommand<T>(this IEnumerable<T> nodes, 
+        public static CompositeCommand? SelectFilter<T>(this IEnumerable<T> nodes, 
             Func<T, CommandBase?> commandGenerator)
         {
             List<CommandBase> commands = [];
