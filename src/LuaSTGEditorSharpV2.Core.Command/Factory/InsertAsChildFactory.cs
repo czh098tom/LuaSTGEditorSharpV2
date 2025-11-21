@@ -13,11 +13,11 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Core.Command.Factory
 {
     [Inject(ServiceLifetime.Singleton)]
-    public class InsertAsChildFactory(EditorNodeFactory editorNodeFactory) : IInsertCommandFactory
+    public class InsertAsChildFactory() : IInsertCommandFactory
     {
         public CommandBase? CreateInsertCommand(EditorNode origin, NodeData toAppend)
         {
-            return new AddChildCommand(editorNodeFactory, origin, origin.Children.Count, toAppend);
+            return new AddChildCommand(origin, origin.Children.Count, toAppend);
         }
     }
 }

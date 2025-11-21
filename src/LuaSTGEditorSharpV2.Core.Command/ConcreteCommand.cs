@@ -8,8 +8,7 @@ using LuaSTGEditorSharpV2.ViewModel;
 
 namespace LuaSTGEditorSharpV2.Core.Command
 {
-    public abstract class ConcreteCommand(EditorNodeFactory editorNodeFactory) : CommandBase
+    public abstract class ConcreteCommand : CommandBase
     {
-        protected EditorNodeFactory EditorNodeFactory { get; } = editorNodeFactory;
     }
 }

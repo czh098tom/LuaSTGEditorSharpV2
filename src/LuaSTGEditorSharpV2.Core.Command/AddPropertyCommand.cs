@@ -15,8 +15,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
         public string PropertyName { get; private set; }
         public string Value { get; private set; }
 
-        public AddPropertyCommand(EditorNodeFactory factory, EditorNode node, string propertyName, string value)
-            : base(factory)
+        public AddPropertyCommand(EditorNode node, string propertyName, string value)
         {
             Node = node;
             PropertyName = propertyName;

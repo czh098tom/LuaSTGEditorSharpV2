@@ -22,11 +22,11 @@ namespace LuaSTGEditorSharpV2.Core.Command
             {
                 if (node.Source.HasProperty(propertyName))
                 {
-                    return new EditPropertyCommand(factory, node, propertyName, afterEdit);
+                    return new EditPropertyCommand(node, propertyName, afterEdit);
                 }
                 else
                 {
-                    return new AddPropertyCommand(factory, node, propertyName, afterEdit);
+                    return new AddPropertyCommand(node, propertyName, afterEdit);
                 }
             }
         }
@@ -37,8 +37,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         string? _beforeEdit;
 
-        public EditPropertyCommand(EditorNodeFactory factory, EditorNode node, string propertyName, string afterEdit)
-            :base(factory)
+        public EditPropertyCommand(EditorNode node, string propertyName, string afterEdit)
         {
             Node = node;
             PropertyName = propertyName;

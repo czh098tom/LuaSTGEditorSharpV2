@@ -225,8 +225,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
             AddCommandToDocument(SelectedNodes.SelectCommand(n =>
             {
                 if (n.Parent == null) return null;
-                return new RemoveChildCommand(ServiceProvider.GetRequiredService<EditorNodeFactory>(),
-                    n.Parent, n.Parent.Source.PhysicalChildren.FindIndex(n.Source));
+                return new RemoveChildCommand(n.Parent,
+                    n.Parent.Source.PhysicalChildren.FindIndex(n.Source));
             }), _activeDocument.DocumentModel, [], true);
         }
 
