@@ -48,8 +48,8 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             var commands = new List<CommandBase>();
             if (NameRule == null || ValueRule == null) return null;
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
+            var editName = CheckedCommand.ModifyProperty(nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
+            var editValue = CheckedCommand.ModifyProperty(nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
             return commands.Count > 0 ? new CompositeCommand(commands) : null;

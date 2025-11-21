@@ -76,11 +76,11 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             var commands = new List<CommandBase>();
             if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return new EditResult(localServiceParam);
             object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+            var editName = CheckedCommand.ModifyProperty(nodeData,
                 string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+            var editValue = CheckedCommand.ModifyProperty(nodeData,
                 string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
-            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(nodeData,
+            var editIncrement = CheckedCommand.ModifyProperty(nodeData,
                 string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
             if (editName != null) commands.Add(editName);
             if (editValue != null) commands.Add(editValue);
