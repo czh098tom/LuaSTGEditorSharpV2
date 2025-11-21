@@ -43,7 +43,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             return properties;
         }
 
-        public CommandBase? GetCommand(NodeData nodeData, VariableDefinition intermediateModel, int index)
+        public CommandBase? GetCommand(EditorNode nodeData, VariableDefinition intermediateModel, int index)
         {
             var commands = new List<CommandBase>();
             if (NameRule == null || ValueRule == null) return null;

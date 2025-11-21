@@ -57,7 +57,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             RaisePropertyChanged(nameof(PropValue));
         }
 
-        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam localServiceParam, string edited)
+        public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam localServiceParam, string edited)
         {
             var commands = new List<CommandBase>();
             if (term.NameRule == null || term.ValueRule == null) return new EditResult(localServiceParam);

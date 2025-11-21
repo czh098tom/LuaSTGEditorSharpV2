@@ -71,7 +71,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             RaisePropertyChanged(nameof(PropIncrement));
         }
 
-        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam localServiceParam, string edited)
+        public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam localServiceParam, string edited)
         {
             var commands = new List<CommandBase>();
             if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return new EditResult(localServiceParam);
