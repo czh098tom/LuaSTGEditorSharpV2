@@ -25,8 +25,11 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 var oldValue = _value;
                 _value = value;
-                RaisePropertyChanged();
-                OnEdit?.Invoke(this, ResolveEditingNodeCommand(SourceNode, LocalServiceParam, value));
+                if (oldValue != value)
+                {
+                    RaisePropertyChanged();
+                    OnEdit?.Invoke(this, ResolveEditingNodeCommand(SourceNode, LocalServiceParam, value));
+                }
             }
         }
 
