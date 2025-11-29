@@ -94,6 +94,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 SelectedIndex = viewModels.Count - 1;
             }
+            if (index < 0)
+            {
+                SelectedIndex = 0;
+            }
             else
             {
                 SelectedIndex = index;

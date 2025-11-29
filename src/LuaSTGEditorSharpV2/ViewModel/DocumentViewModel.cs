@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
+using System.Collections;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -37,13 +38,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
             set
             {
                 _selectedNode = value;
-                if (_selectedNode is not NodeViewModel nvm)
+                if (_selectedNode is not IEnumerable nodes)
                 {
                     SelectedNodeChanged?.Invoke(this, []);
                 }
                 else
                 {
-                    SelectedNodeChanged?.Invoke(this, [nvm.EditorNode]);
+                    SelectedNodeChanged?.Invoke(this, [.. ProcessSelectedNodes(nodes)]);
                 }
                 RaisePropertyChanged();
             }
@@ -154,6 +155,46 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             _editingDocumentModel.Redo();
             RaisePropertyChanged(nameof(Title));
+        }
+
+        private List<EditorNode> ProcessSelectedNodes(IEnumerable nodes)
+        {
+            HashSet<EditorNode> set = [];
+            foreach (var item in nodes)
+            {
+                if (item is NodeViewModel nvm)
+                {
+                    set.Add(nvm.EditorNode);
+                }
+            }
+            if (set.Count == 0)
+            {
+                return [];
+            }
+            if (set.Count == 1)
+            {
+                return [set.First()];
+            }
+            List<EditorNode> list = new(set.Count);
+            Stack<EditorNode> stack = new();
+            foreach (var item in Tree)
+            {
+                stack.Push(item.EditorNode);
+            }
+            while (stack.TryPop(out var node))
+            {
+                if (set.Contains(node))
+                {
+                    list.Add(node);
+                    set.Remove(node);
+                }
+                foreach (var child in node.Children.Reverse())
+                {
+                    stack.Push(child);
+                }
+            }
+
+            return list;
         }
     }
 

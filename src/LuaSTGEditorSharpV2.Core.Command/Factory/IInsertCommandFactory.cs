@@ -11,6 +11,6 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
 {
     public interface IInsertCommandFactory
     {
-        CommandBase? CreateInsertCommand(EditorNode origin, NodeData toAppend);
+        CommandBase? CreateInsertCommand(EditorNode origin, IReadOnlyList<NodeData> toAppend);
     }
 }
