@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
+using System.Collections;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
@@ -37,13 +38,21 @@ namespace LuaSTGEditorSharpV2.ViewModel
             set
             {
                 _selectedNode = value;
-                if (_selectedNode is not NodeViewModel nvm)
+                if (_selectedNode is not IEnumerable nodes)
                 {
                     SelectedNodeChanged?.Invoke(this, []);
                 }
                 else
                 {
-                    SelectedNodeChanged?.Invoke(this, [nvm.EditorNode]);
+                    List<EditorNode> list = [];
+                    foreach (var item in nodes)
+                    {
+                        if (item is NodeViewModel nvm)
+                        {
+                            list.Add(nvm.EditorNode);
+                        }
+                    }
+                    SelectedNodeChanged?.Invoke(this, [.. list]);
                 }
                 RaisePropertyChanged();
             }

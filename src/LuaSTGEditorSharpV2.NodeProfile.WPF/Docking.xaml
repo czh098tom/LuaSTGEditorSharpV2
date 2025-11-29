@@ -10,15 +10,18 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition MinWidth="200"/>
             </Grid.ColumnDefinitions>
-            <lw:TreeViewEx Grid.Column="0" ItemsSource="{Binding Tree}" SelectedItemEx="{Binding Current, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+            <lw:TreeViewEx Grid.Column="0" 
+                           HierarchySource="{Binding Tree}" 
+                           ChildrenPath="Children"
+                           SelectedItemEx="{Binding Current, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <lw:TreeViewEx.ItemTemplate>
+                    <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding Icon}" Width="16" Height="16"/>
                             <TextBlock Text="{Binding Title}"/>
                         </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
+                    </DataTemplate>
+                </lw:TreeViewEx.ItemTemplate>
             </lw:TreeViewEx>
             <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
             <Grid Grid.Column="2" DataContext="{Binding Content}">

@@ -44,6 +44,11 @@ namespace LuaSTGEditorSharpV2.Core.Command
             return AtomicCommand.AddNode(origin, origin.Children.Count, toAppend);
         }
 
+        public static CommandBase? InsertNodeAsFirstChild(EditorNode origin, NodeData toAppend)
+        {
+            return AtomicCommand.AddNode(origin, 0, toAppend);
+        }
+
         public static CommandBase? InsertNodeAsParent(EditorNode origin, NodeData toAppend)
         {
             IEnumerable<CommandBase> Get()
@@ -115,6 +120,22 @@ namespace LuaSTGEditorSharpV2.Core.Command
                 if (toMoveIdx < 0) yield break;
                 yield return AtomicCommand.RemoveNode(toMoveParent, toMoveIdx);
                 yield return AtomicCommand.AddNode(origin, origin.Children.Count, toMoveSource);
+            }
+            return Commands.FromEnumerable(Get());
+        }
+
+        public static CommandBase? MoveAsFirstChild(EditorNode origin, EditorNode toMove)
+        {
+            if (toMove.Parent == null) return null;
+            IEnumerable<CommandBase> Get()
+            {
+                var toMoveParent = toMove.Parent;
+                if (toMoveParent == null) yield break;
+                var toMoveIdx = toMoveParent.Children.FindIndex(toMove);
+                var toMoveSource = toMove.Source;
+                if (toMoveIdx < 0) yield break;
+                yield return AtomicCommand.RemoveNode(toMoveParent, toMoveIdx);
+                yield return AtomicCommand.AddNode(origin, 0, toMoveSource);
             }
             return Commands.FromEnumerable(Get());
         }
