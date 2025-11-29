@@ -15,9 +15,9 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
     [Inject(ServiceLifetime.Singleton)]
     public class InsertAsChildFactory(EditorNodeFactory editorNodeFactory) : IInsertCommandFactory
     {
-        public CommandBase? CreateInsertCommand(NodeData origin, NodeData toAppend)
+        public CommandBase? CreateInsertCommand(EditorNode origin, NodeData toAppend)
         {
-            return new AddChildCommand(editorNodeFactory, origin, origin.PhysicalChildren.Count, toAppend);
+            return new AddChildCommand(editorNodeFactory, origin, origin.Children.Count, toAppend);
         }
     }
 }

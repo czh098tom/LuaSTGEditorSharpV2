@@ -15,15 +15,22 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
     [Inject(ServiceLifetime.Singleton)]
     public class InsertAsParentFactory(EditorNodeFactory editorNodeFactory) : IInsertCommandFactory
     {
-        public CommandBase? CreateInsertCommand(NodeData origin, NodeData toAppend)
+        public CommandBase? CreateInsertCommand(EditorNode origin, NodeData toAppend)
         {
-            if (origin.PhysicalParent == null) return null;
-            var idx = origin.PhysicalParent.PhysicalChildren.FindIndex(origin);
-            if (idx == -1) return null;
-            var removeCurr = new RemoveChildCommand(editorNodeFactory, origin.PhysicalParent, idx);
-            var addToAppend = new AddChildCommand(editorNodeFactory, origin.PhysicalParent, idx, toAppend);
-            var addOriginal = new AddChildCommand(editorNodeFactory, toAppend, toAppend.PhysicalChildren.Count, origin);
-            return new CompositeCommand(removeCurr, addToAppend, addOriginal);
+            return new CompositeCommand(CreateCommands(origin, toAppend));
+        }
+
+        private IEnumerable<CommandBase> CreateCommands(EditorNode origin, NodeData toAppend)
+        {
+            var parent = origin.Parent;
+            if (parent == null) yield break;
+            var idx = parent.Source.PhysicalChildren.FindIndex(origin.Source);
+            if (idx == -1) yield break;
+            var originSource = origin.Source;
+            yield return new RemoveChildCommand(editorNodeFactory, parent, idx);
+            yield return new AddChildCommand(editorNodeFactory, parent, idx, toAppend);
+            var target = parent.Children[idx];
+            yield return new AddChildCommand(editorNodeFactory, target, toAppend.PhysicalChildren.Count, originSource);
         }
     }
 }

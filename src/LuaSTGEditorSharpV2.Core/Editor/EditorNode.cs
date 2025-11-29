@@ -16,6 +16,7 @@ namespace LuaSTGEditorSharpV2.Core.Editor
         public IServiceProvider ServiceProvider => _scope.ServiceProvider;
         public NodeData Source { get; }
         public EditorDocument Document { get; }
+        public EditorNode? Parent { get; private set; }
 
         public event NotifyCollectionChangedEventHandler? OnChildrenChanged
         {
@@ -43,6 +44,7 @@ namespace LuaSTGEditorSharpV2.Core.Editor
             Document = document;
             foreach (var en in CreateChildrenRecursive(source))
             {
+                en.Parent = this;
                 _children.Add(en);
             }
         }
@@ -57,13 +59,17 @@ namespace LuaSTGEditorSharpV2.Core.Editor
 
         public void Add(NodeData node)
         {
-            _children.Add(_factory.GetOrCreate(node, Document));
+            var en = _factory.GetOrCreate(node, Document);
+            _children.Add(en);
+            en.Parent = this;
             Source.Add(node);
         }
 
         public void Insert(int position, NodeData node)
         {
-            _children.Insert(position, _factory.GetOrCreate(node, Document));
+            var en = _factory.GetOrCreate(node, Document);
+            _children.Insert(position, en);
+            en.Parent = this;
             Source.Insert(position, node);
         }
 
@@ -123,6 +129,7 @@ namespace LuaSTGEditorSharpV2.Core.Editor
                     {
                         node.Dispose();
                     }
+                    Parent = null;
                     _scope.Dispose();
                     _factory.Free(this);
                 }

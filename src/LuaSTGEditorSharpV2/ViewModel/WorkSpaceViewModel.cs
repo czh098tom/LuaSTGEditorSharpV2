@@ -222,11 +222,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void DeleteSelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            AddCommandToDocument(SelectedNodes.Select(en => en.Source).SelectCommand(n =>
+            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
             {
-                if (n.PhysicalParent == null) return null;
+                if (n.Parent == null) return null;
                 return new RemoveChildCommand(ServiceProvider.GetRequiredService<EditorNodeFactory>(),
-                    n.PhysicalParent, n.PhysicalParent.PhysicalChildren.FindIndex(n));
+                    n.Parent, n.Parent.Source.PhysicalChildren.FindIndex(n.Source));
             }), _activeDocument.DocumentModel, [], true);
         }
 
@@ -252,7 +252,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             var clipBoardContent = clipBoard.GetNodes();
 
-            AddCommandToDocument(SelectedNodes.Select(en => en.Source).SelectCommand(n =>
+            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
                 clipBoardContent.SelectCommand(c => insCommandHost.InsertCommandFactory.CreateInsertCommand(n, c)))
                 , _activeDocument.DocumentModel, SelectedNodes, true);
         }
