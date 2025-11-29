@@ -16,8 +16,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         private NodeData? child;
 
-        public RemoveChildCommand(EditorNodeFactory factory, EditorNode parent, int position) 
-            : base(factory)
+        public RemoveChildCommand(EditorNode parent, int position)
         {
             Parent = parent;
             Position = position;

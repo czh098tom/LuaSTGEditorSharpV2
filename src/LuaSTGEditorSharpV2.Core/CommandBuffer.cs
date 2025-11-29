@@ -27,14 +27,7 @@ namespace LuaSTGEditorSharpV2.Core
             command.Execute(editorDocument);
             if (_commands.Count == _currentCount)
             {
-                if (command is CompositeCommand cc && cc.ShouldUnpack)
-                {
-                    _commands.AddRange(cc.Flatten());
-                }
-                else
-                {
-                    _commands.Add(command);
-                }
+                _commands.Add(command);
             }
             _currentCount = _commands.Count;
         }

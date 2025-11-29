@@ -16,8 +16,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         string? _beforeEdit;
 
-        public RemovePropertyCommand(EditorNodeFactory factory, EditorNode node, string propertyName) 
-            : base(factory)
+        public RemovePropertyCommand(EditorNode node, string propertyName)
         {
             Node = node;
             PropertyName = propertyName;

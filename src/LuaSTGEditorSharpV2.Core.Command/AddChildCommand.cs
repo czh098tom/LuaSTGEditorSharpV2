@@ -15,8 +15,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
         public NodeData Child { get; private set; }
         public int Position { get; private set; }
 
-        public AddChildCommand(EditorNodeFactory factory, EditorNode parent, int position, NodeData child)
-            : base(factory)
+        public AddChildCommand(EditorNode parent, int position, NodeData child)
         {
             Parent = parent;
             Child = child.DeepClone();
