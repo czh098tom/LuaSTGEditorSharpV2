@@ -44,15 +44,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 }
                 else
                 {
-                    List<EditorNode> list = [];
-                    foreach (var item in nodes)
-                    {
-                        if (item is NodeViewModel nvm)
-                        {
-                            list.Add(nvm.EditorNode);
-                        }
-                    }
-                    SelectedNodeChanged?.Invoke(this, [.. list]);
+                    SelectedNodeChanged?.Invoke(this, [.. ProcessSelectedNodes(nodes)]);
                 }
                 RaisePropertyChanged();
             }
@@ -163,6 +155,46 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             _editingDocumentModel.Redo();
             RaisePropertyChanged(nameof(Title));
+        }
+
+        private List<EditorNode> ProcessSelectedNodes(IEnumerable nodes)
+        {
+            HashSet<EditorNode> set = [];
+            foreach (var item in nodes)
+            {
+                if (item is NodeViewModel nvm)
+                {
+                    set.Add(nvm.EditorNode);
+                }
+            }
+            if (set.Count == 0)
+            {
+                return [];
+            }
+            if (set.Count == 1)
+            {
+                return [set.First()];
+            }
+            List<EditorNode> list = new(set.Count);
+            Stack<EditorNode> stack = new();
+            foreach (var item in Tree)
+            {
+                stack.Push(item.EditorNode);
+            }
+            while (stack.TryPop(out var node))
+            {
+                if (set.Contains(node))
+                {
+                    list.Add(node);
+                    set.Remove(node);
+                }
+                foreach (var child in node.Children.Reverse())
+                {
+                    stack.Push(child);
+                }
+            }
+
+            return list;
         }
     }
 
