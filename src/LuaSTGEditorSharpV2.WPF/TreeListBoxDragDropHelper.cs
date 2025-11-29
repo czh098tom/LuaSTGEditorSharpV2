@@ -417,11 +417,22 @@ namespace LuaSTGEditorSharpV2.WPF
             if (this.sourceItemContainer != null)
             {
                 this.draggedData = new List<IDragSource>();
-                this.draggedData.Add(this.sourceItemContainer.DataContext);
+                // this.draggedData.Add(this.sourceItemContainer.DataContext);
 
                 // drag multiple items?
                 // must set e.Handled = true to avoid items being deselected
                 // foreach (var si in sourceItemsControl.SelectedItems) this.draggedData.Add(si);
+                if (!this.sourceItemContainer.IsSelected)
+                {
+                    // don't start drag if clicking on unselected item
+                    this.draggedData = null;
+                    return;
+                }
+                e.Handled = true;
+                foreach (var si in sourceItemsControl.SelectedItems)
+                {
+                    this.draggedData.Add(si);
+                }
             }
             else
             {
