@@ -13,11 +13,5 @@ namespace LuaSTGEditorSharpV2.Core
         {
             return Commands.FromFilteredEnumerable(nodes.Select(commandGenerator).OfType<CommandBase>());
         }
-
-        public static CommandBase? SelectFilter<T>(this IReadOnlyCollection<T> nodes,
-            Func<T, CommandBase?> commandGenerator)
-        {
-            return Commands.FromFilteredList([.. nodes.Select(commandGenerator).OfType<CommandBase>()]);
-        }
     }
 }

@@ -15,9 +15,9 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
     [Inject(ServiceLifetime.Singleton)]
     public class InsertAfterFactory() : IInsertCommandFactory
     {
-        public CommandBase? CreateInsertCommand(EditorNode origin, NodeData toAppend)
+        public CommandBase? CreateInsertCommand(EditorNode origin, IReadOnlyList<NodeData> toAppend)
         {
-            return CheckedCommand.InsertNodeAfter(origin, toAppend);
+            return toAppend.Reverse().SelectFilter(n => CheckedCommand.InsertNodeAfter(origin, n));
         }
     }
 }

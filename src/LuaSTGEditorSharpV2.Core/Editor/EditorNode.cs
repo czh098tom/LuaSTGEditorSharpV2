@@ -119,6 +119,16 @@ namespace LuaSTGEditorSharpV2.Core.Editor
             }
         }
 
+        public IEnumerable<EditorNode> GetAllAncestors()
+        {
+            var current = Parent;
+            while (current != null)
+            {
+                yield return current;
+                current = current.Parent;
+            }
+        }
+
         private void Dispose(bool disposing)
         {
             if (!_disposed)
