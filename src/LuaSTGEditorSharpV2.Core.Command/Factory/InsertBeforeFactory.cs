@@ -17,10 +17,7 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
     {
         public CommandBase? CreateInsertCommand(EditorNode origin, NodeData toAppend)
         {
-            if (origin.Parent == null) return null;
-            int idx = origin.Parent.Children.FindIndex(origin);
-            if (idx < 0) return null;
-            return AtomicCommand.AddNode(origin.Parent, idx, toAppend);
+            return CheckedCommand.InsertNodeBefore(origin, toAppend);
         }
     }
 }

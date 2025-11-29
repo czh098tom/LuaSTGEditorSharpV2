@@ -1,4 +1,5 @@
 ﻿using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,44 @@ namespace LuaSTGEditorSharpV2.Core.Command
             {
                 return AtomicCommand.AddProperty(node, propertyName, newValue);
             }
+        }
+
+        public static CommandBase? InsertNodeBefore(EditorNode origin, NodeData toAppend)
+        {
+            if (origin.Parent == null) return null;
+            int idx = origin.Parent.Children.FindIndex(origin);
+            if (idx < 0) return null;
+            return AtomicCommand.AddNode(origin.Parent, idx, toAppend);
+        }
+
+        public static CommandBase? InsertNodeAfter(EditorNode origin, NodeData toAppend)
+        {
+            if (origin.Parent == null) return null;
+            int idx = origin.Parent.Children.FindIndex(origin);
+            if (idx < 0) return null;
+            return AtomicCommand.AddNode(origin.Parent, idx + 1, toAppend);
+        }
+
+        public static CommandBase? InsertNodeAsLastChild(EditorNode origin, NodeData toAppend)
+        {
+            return AtomicCommand.AddNode(origin, origin.Children.Count, toAppend);
+        }
+
+        public static CommandBase? InsertNodeAsParent(EditorNode origin, NodeData toAppend)
+        {
+            IEnumerable<CommandBase> CreateCommands()
+            {
+                var parent = origin.Parent;
+                if (parent == null) yield break;
+                var idx = parent.Children.FindIndex(origin);
+                if (idx == -1) yield break;
+                var originSource = origin.Source;
+                yield return AtomicCommand.RemoveNode(parent, idx);
+                yield return AtomicCommand.AddNode(parent, idx, toAppend);
+                var target = parent.Children[idx];
+                yield return AtomicCommand.AddNode(target, toAppend.PhysicalChildren.Count, originSource);
+            }
+            return Commands.FromFilteredEnumerable(CreateCommands());
         }
     }
 }
