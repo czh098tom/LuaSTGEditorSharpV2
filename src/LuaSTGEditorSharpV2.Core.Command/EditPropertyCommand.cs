@@ -12,25 +12,6 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class EditPropertyCommand : ConcreteCommand
     {
-        public static CommandBase? CreateEditCommandOnDemand(EditorNode node, string? propertyName, string afterEdit)
-        {
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                return null;
-            }
-            else
-            {
-                if (node.Source.HasProperty(propertyName))
-                {
-                    return new EditPropertyCommand(node, propertyName, afterEdit);
-                }
-                else
-                {
-                    return new AddPropertyCommand(node, propertyName, afterEdit);
-                }
-            }
-        }
-
         public EditorNode Node { get; private set; }
         public string PropertyName { get; private set; }
         public string AfterEdit { get; private set; }

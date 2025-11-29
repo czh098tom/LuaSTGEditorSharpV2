@@ -20,7 +20,7 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
             if (origin.Parent == null) return null;
             int idx = origin.Parent.Children.FindIndex(origin);
             if (idx < 0) return null;
-            return new AddChildCommand(origin.Parent, idx, toAppend);
+            return AtomicCommand.AddNode(origin.Parent, idx, toAppend);
         }
     }
 }
