@@ -32,6 +32,7 @@ namespace LuaSTGEditorSharpV2.Services
 
         public void Drop(IEnumerable<EditorNode> items, DropRelativePosition position, DragDropOperation operation)
         {
+            items = editorNode.Document.OrderByViewOrder(items);
             var expandedWithChildren = editorNode.Children.Count > 0 && _viewModel.Value.IsExpanded;
             var command = (position, operation, expandedWithChildren) switch
             {
