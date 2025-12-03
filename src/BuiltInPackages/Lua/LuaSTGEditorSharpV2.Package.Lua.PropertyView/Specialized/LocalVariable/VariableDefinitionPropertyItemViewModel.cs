@@ -64,9 +64,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             {
                 if (term.NameRule == null || term.ValueRule == null) yield break;
                 object idx = index;
-                yield return CheckedCommand.ModifyProperty(nodeData,
+                yield return CheckedCommand.Property.Modify(nodeData,
                     string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-                yield return CheckedCommand.ModifyProperty(nodeData,
+                yield return CheckedCommand.Property.Modify(nodeData,
                     string.Format(term.ValueRule.Key, idx), ProxyValue?.Value ?? string.Empty);
             }
             return new EditResult(Commands.FromEnumerable(Get()), false, localServiceParam);
