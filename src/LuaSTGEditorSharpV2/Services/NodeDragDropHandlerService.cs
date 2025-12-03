@@ -13,6 +13,8 @@ using LuaSTGEditorSharpV2.Core.Editor.Extension;
 
 namespace LuaSTGEditorSharpV2.Services
 {
+    using static CheckedCommand;
+
     [Inject(ServiceLifetime.Scoped, typeof(IDragDropHandler), key: ScopeKey.EditorNode)]
     public class NodeDragDropHandlerService(
         [FromKeyedServices(ScopeKey.EditorNode)] EditorNode editorNode) : IDragDropHandler
@@ -31,18 +33,18 @@ namespace LuaSTGEditorSharpV2.Services
         public void Drop(IEnumerable<EditorNode> items, DropRelativePosition position, DragDropOperation operation)
         {
             var expandedWithChildren = editorNode.Children.Count > 0 && _viewModel.Value.IsExpanded;
-            var command = items.SelectFilter(en => (position, operation, expandedWithChildren) switch
+            var command = (position, operation, expandedWithChildren) switch
             {
-                (DropRelativePosition.Child, DragDropOperation.Copy, _) => CheckedCommand.InsertNodeAsLastChild(editorNode, en.Source),
-                (DropRelativePosition.Child, DragDropOperation.Move, _) => CheckedCommand.MoveAsLastChild(editorNode, en),
-                (DropRelativePosition.Before, DragDropOperation.Copy, _) => CheckedCommand.InsertNodeBefore(editorNode, en.Source),
-                (DropRelativePosition.Before, DragDropOperation.Move, _) => CheckedCommand.MoveToBefore(editorNode, en),
-                (DropRelativePosition.After, DragDropOperation.Copy, false) => CheckedCommand.InsertNodeAfter(editorNode, en.Source),
-                (DropRelativePosition.After, DragDropOperation.Move, false) => CheckedCommand.MoveToAfter(editorNode, en),
-                (DropRelativePosition.After, DragDropOperation.Copy, true) => CheckedCommand.InsertNodeAsFirstChild(editorNode, en.Source),
-                (DropRelativePosition.After, DragDropOperation.Move, true) => CheckedCommand.MoveAsFirstChild(editorNode, en),
+                (DropRelativePosition.Child, DragDropOperation.Copy, _) => InsertNode.Many.AsLastChild(editorNode, items.Select(en => en.Source)),
+                (DropRelativePosition.Child, DragDropOperation.Move, _) => MoveNode.Many.AsLastChild(editorNode, items),
+                (DropRelativePosition.Before, DragDropOperation.Copy, _) => InsertNode.Many.ToBefore(editorNode, items.Select(en => en.Source)),
+                (DropRelativePosition.Before, DragDropOperation.Move, _) => MoveNode.Many.ToBefore(editorNode, items),
+                (DropRelativePosition.After, DragDropOperation.Copy, false) => InsertNode.Many.ToAfter(editorNode, items.Select(en => en.Source)),
+                (DropRelativePosition.After, DragDropOperation.Move, false) => MoveNode.Many.ToAfter(editorNode, items),
+                (DropRelativePosition.After, DragDropOperation.Copy, true) => InsertNode.Many.AsFirstChild(editorNode, items.Select(en => en.Source)),
+                (DropRelativePosition.After, DragDropOperation.Move, true) => MoveNode.Many.AsFirstChild(editorNode, items),
                 _ => null
-            });
+            };
             if (command != null)
             {
                 editorNode.Document.ExecuteCommand(command);

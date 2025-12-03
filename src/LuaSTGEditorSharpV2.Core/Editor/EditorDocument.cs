@@ -72,6 +72,49 @@ namespace LuaSTGEditorSharpV2.Core.Editor
             }
         }
 
+        private class LexicographicalListComparer<T> : IComparer<IReadOnlyList<T>> where T : IComparable<T>
+        {
+            public int Compare(IReadOnlyList<T>? x, IReadOnlyList<T>? y)
+            {
+                if (x == null && y == null) return 0;
+                if (x == null) return -1;
+                if (y == null) return 1;
+
+                int minLength = Math.Min(x.Count, y.Count);
+                for (int i = 0; i < minLength; i++)
+                {
+                    int cmp = x[i].CompareTo(y[i]);
+                    if (cmp != 0)
+                    {
+                        return cmp;
+                    }
+                }
+                return x.Count.CompareTo(y.Count);
+            }
+        }
+
+        public IEnumerable<EditorNode> OrderByViewOrder(IEnumerable<EditorNode> source)
+        {
+            Dictionary<EditorNode, List<int>> paths = [];
+            foreach (var node in source)
+            {
+                if (node.Document != this)
+                {
+                    throw new InvalidOperationException("All nodes must belong to the same document.");
+                }
+                List<int> path = [];
+                EditorNode? current = node;
+                while (current.Parent is not null)
+                {
+                    var index = current.Parent.Children.FindIndex(current);
+                    path.Insert(0, index);
+                    current = current.Parent;
+                }
+                paths.Add(node, path);
+            }
+            return source.OrderBy(n => paths[n], new LexicographicalListComparer<int>());
+        }
+
         ~EditorDocument()
         {
             Dispose(disposing: false);

@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.Core.Command.Factory
     {
         public CommandBase? CreateInsertCommand(EditorNode origin, IReadOnlyList<NodeData> toAppend)
         {
-            return toAppend.SelectFilter(n => CheckedCommand.InsertNodeBefore(origin, n));
+            return CheckedCommand.InsertNode.Many.ToBefore(origin, toAppend);
         }
     }
 }
