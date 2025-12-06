@@ -18,7 +18,6 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
     public class BasicPropertyItemViewModel : PropertyItemViewModelBase
     {
         private readonly string? key;
-        private readonly EditorNodeFactory editorNodeFactory;
         private string _name = string.Empty;
 
         public string Name
@@ -31,11 +30,11 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             }
         }
 
-        public BasicPropertyItemViewModel(EditorNode editorNode, LocalServiceParam localServiceParam,
-            string? key, EditorNodeFactory editorNodeFactory, PropertyEditWizardProviderService propertyEditWizardProvider) : base(editorNode, localServiceParam, propertyEditWizardProvider)
+        public BasicPropertyItemViewModel(IReadOnlyList<EditorNode> editorNode, string? key,
+            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam, PropertyEditWizardProviderService propertyEditWizardProvider) 
+            : base(editorNode, isBatchSame, localServiceParam, propertyEditWizardProvider)
         {
             this.key = key;
-            this.editorNodeFactory = editorNodeFactory;
 
             ShowEditWindow = new RelayCommand(() =>
             {
@@ -51,28 +50,51 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             });
         }
 
-        public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam context, string edited)
+        public override EditResult ResolveBatchEditingNodeCommand(IReadOnlyList<EditorNode> nodeData, LocalServiceParam context, string edited)
         {
-            return new EditResult(CheckedCommand.Property.Modify(nodeData, key, edited), false, LocalServiceParam);
+            return new EditResult(CheckedCommand.Property.ModifyMany(nodeData, key, edited), false, LocalServiceParam);
         }
 
         protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
         {
             if (e.Key == key)
             {
-                SetValueWithoutPushingEditCommand(e.NewValue);
+                if (SourceNodes.Count == 0)
+                {
+                    BatchEditStatus = BatchEditStatus.AllSame;
+                    SetValueWithoutPushingEditCommand(e.NewValue);
+                    return;
+                }
+                else if (SourceNodes.Count == 1)
+                {
+                    BatchEditStatus = BatchEditStatus.AllSame;
+                    SetValueWithoutPushingEditCommand(e.NewValue);
+                    return;
+                }
+                else
+                {
+                    var first = SourceNodes[0].Source.GetProperty(key);
+                    if (SourceNodes.All(n => n.Source.GetProperty(key) == first))
+                    {
+                        BatchEditStatus = BatchEditStatus.AllSame;
+                    }
+                    else
+                    {
+                        BatchEditStatus = BatchEditStatus.SomeDifferent;
+                    }
+                    SetValueWithoutPushingEditCommand(e.NewValue);
+                }
             }
         }
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class BasicPropertyItemViewModelFactory(EditorNodeFactory editorNodeFactory, 
-        PropertyEditWizardProviderService propertyEditWizardProviderService) 
+    public class BasicPropertyItemViewModelFactory(PropertyEditWizardProviderService propertyEditWizardProviderService)
         : IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>
     {
-        public BasicPropertyItemViewModel Create(EditorNode nodeData, LocalServiceParam localServiceParam, string? key)
+        public BasicPropertyItemViewModel Create(IReadOnlyList<EditorNode> nodeData, string? key, BatchEditStatus isBatchSame, LocalServiceParam localServiceParam)
         {
-            return new BasicPropertyItemViewModel(nodeData, localServiceParam, key, editorNodeFactory, propertyEditWizardProviderService);
+            return new BasicPropertyItemViewModel(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService);
         }
     }
 }

@@ -23,6 +23,13 @@ namespace LuaSTGEditorSharpV2.Core.Command
                     return AtomicCommand.AddProperty(node, propertyName, newValue);
                 }
             }
+
+            public static CommandBase? ModifyMany(IEnumerable<EditorNode> nodes, string? propertyName, string newValue)
+            {
+                return Commands.FromEnumerable(
+                    nodes.Select(n => Modify(n, propertyName, newValue))
+                );
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
     public abstract class JsonProxiedPropertyItemViewModel<T>(EditorNode editorNode,
         LocalServiceParam localServiceParam,
         PropertyEditWizardProviderService wizardProviderService) 
-        : PropertyItemViewModelBase(editorNode, localServiceParam, wizardProviderService)
+        : SingleSourcePropertyItemViewModel(editorNode, localServiceParam, wizardProviderService)
         where T : class
     {
         private T? _proxyValue;

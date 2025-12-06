@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
         {
             var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
             var vm = serviceProvider.GetRequiredService<TFactory>()
-                .Create(nodeData, context.LocalParam, Mapping?.Key);
+                .Create([nodeData], Mapping?.Key, BatchEditStatus.AllSame, context.LocalParam);
             vm.Name = Caption.GetLocalized();
             vm.Value = Mapping?.Capture(token) ?? string.Empty;
             vm.Type = Editor;

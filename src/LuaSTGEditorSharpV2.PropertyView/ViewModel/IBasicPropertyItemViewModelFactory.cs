@@ -13,6 +13,6 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
     public interface IBasicPropertyItemViewModelFactory<TResult>
         where TResult : BasicPropertyItemViewModel
     {
-        public TResult Create(EditorNode nodeData, LocalServiceParam localServiceParam, string? key);
+        public TResult Create(IReadOnlyList<EditorNode> nodeData, string? key, BatchEditStatus isBatchSame, LocalServiceParam localServiceParam);
     }
 }

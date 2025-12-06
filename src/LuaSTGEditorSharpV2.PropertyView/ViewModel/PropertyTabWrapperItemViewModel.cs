@@ -14,7 +14,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
-    public class PropertyTabWrapperItemViewModel : PropertyItemViewModelBase
+    public class PropertyTabWrapperItemViewModel : SingleSourcePropertyItemViewModel
     {
         private ObservableCollection<PropertyTabViewModel> _tabs = [];
 
