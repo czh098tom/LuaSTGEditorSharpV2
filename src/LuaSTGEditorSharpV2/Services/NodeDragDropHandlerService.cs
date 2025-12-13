@@ -17,9 +17,9 @@ namespace LuaSTGEditorSharpV2.Services
 
     [Inject(ServiceLifetime.Scoped, typeof(IDragDropHandler), key: ScopeKey.EditorNode)]
     public class NodeDragDropHandlerService(
-        [FromKeyedServices(ScopeKey.EditorNode)] EditorNode editorNode) : IDragDropHandler
+        [FromKeyedServices(ScopeKey.EditorNode)] EditorNode self) : IDragDropHandler
     {
-        private readonly Lazy<NodeViewModel> _viewModel = new(editorNode.GetRequiredNodeService<NodeViewModel>);
+        private readonly Lazy<NodeViewModel> _viewModel = new(self.GetRequiredNodeService<NodeViewModel>);
 
         public void Detach()
         {
@@ -27,28 +27,29 @@ namespace LuaSTGEditorSharpV2.Services
 
         public bool CanDrop(EditorNode editorNode, DropRelativePosition position, DragDropOperation operation)
         {
-            return position == DropRelativePosition.Child || editorNode.Parent != null;
+            return editorNode.Document == self.Document 
+                && (position == DropRelativePosition.Child || editorNode.Parent != null);
         }
 
         public void Drop(IEnumerable<EditorNode> items, DropRelativePosition position, DragDropOperation operation)
         {
-            items = editorNode.Document.OrderByViewOrder(items);
-            var expandedWithChildren = editorNode.Children.Count > 0 && _viewModel.Value.IsExpanded;
+            items = self.Document.OrderByViewOrder(items);
+            var expandedWithChildren = self.Children.Count > 0 && _viewModel.Value.IsExpanded;
             var command = (position, operation, expandedWithChildren) switch
             {
-                (DropRelativePosition.Child, DragDropOperation.Copy, _) => InsertNode.Many.AsLastChild(editorNode, items.Select(en => en.Source)),
-                (DropRelativePosition.Child, DragDropOperation.Move, _) => MoveNode.Many.AsLastChild(editorNode, items),
-                (DropRelativePosition.Before, DragDropOperation.Copy, _) => InsertNode.Many.ToBefore(editorNode, items.Select(en => en.Source)),
-                (DropRelativePosition.Before, DragDropOperation.Move, _) => MoveNode.Many.ToBefore(editorNode, items),
-                (DropRelativePosition.After, DragDropOperation.Copy, false) => InsertNode.Many.ToAfter(editorNode, items.Select(en => en.Source)),
-                (DropRelativePosition.After, DragDropOperation.Move, false) => MoveNode.Many.ToAfter(editorNode, items),
-                (DropRelativePosition.After, DragDropOperation.Copy, true) => InsertNode.Many.AsFirstChild(editorNode, items.Select(en => en.Source)),
-                (DropRelativePosition.After, DragDropOperation.Move, true) => MoveNode.Many.AsFirstChild(editorNode, items),
+                (DropRelativePosition.Child, DragDropOperation.Copy, _) => InsertNode.Many.AsLastChild(self, items.Select(en => en.Source)),
+                (DropRelativePosition.Child, DragDropOperation.Move, _) => MoveNode.Many.AsLastChild(self, items),
+                (DropRelativePosition.Before, DragDropOperation.Copy, _) => InsertNode.Many.ToBefore(self, items.Select(en => en.Source)),
+                (DropRelativePosition.Before, DragDropOperation.Move, _) => MoveNode.Many.ToBefore(self, items),
+                (DropRelativePosition.After, DragDropOperation.Copy, false) => InsertNode.Many.ToAfter(self, items.Select(en => en.Source)),
+                (DropRelativePosition.After, DragDropOperation.Move, false) => MoveNode.Many.ToAfter(self, items),
+                (DropRelativePosition.After, DragDropOperation.Copy, true) => InsertNode.Many.AsFirstChild(self, items.Select(en => en.Source)),
+                (DropRelativePosition.After, DragDropOperation.Move, true) => MoveNode.Many.AsFirstChild(self, items),
                 _ => null
             };
             if (command != null)
             {
-                editorNode.Document.ExecuteCommand(command);
+                self.Document.ExecuteCommand(command);
             }
         }
     }
