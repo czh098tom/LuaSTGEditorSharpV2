@@ -29,6 +29,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private readonly EditorDocument _editingDocumentModel;
 
+        public ObservableCollection<DocumentTabViewModel> Tabs { get; private set; } = [];
         public ObservableCollection<NodeViewModel> Tree { get; private set; } = [];
 
         private object? _selectedNode;
@@ -52,7 +53,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public event SelectedNodeChangedHandler? SelectedNodeChanged;
 
-        public IDocument DocumentModel => _editingDocumentModel;
+        public IDocument Document => _editingDocumentModel;
 
         private string _rawTitle = string.Empty;
         public string RawTitle => _rawTitle;
@@ -70,6 +71,21 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _rawTitle = documentModel.FileName;
             var vm = documentModel.RootEditorNode.GetRequiredNodeService<NodeViewModel>();
             Tree.Add(vm);
+            var compile = vm.Children.FirstOrDefault(n => n.EditorNode.Source.TypeUID == DocumentModel.compileRootUID);
+            var build = vm.Children.FirstOrDefault(n => n.EditorNode.Source.TypeUID == DocumentModel.buildRootUID);
+            var def = vm.Children.FirstOrDefault(n => n.EditorNode.Source.TypeUID == DocumentModel.definitionRootUID);
+            if (compile != null)
+            {
+                Tabs.Add(new DocumentTabViewModel(compile));
+            }
+            if (build != null)
+            {
+                Tabs.Add(new DocumentTabViewModel(build));
+            }
+            if (def != null)
+            {
+                Tabs.Add(new DocumentTabViewModel(def));
+            }
         }
 
         /// <summary>
@@ -81,7 +97,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         /// </returns>
         public bool SaveOrAskToSaveAs()
         {
-            if (DocumentModel.IsOnDisk())
+            if (Document.IsOnDisk())
             {
                 Save();
                 return true;
@@ -94,7 +110,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private void Save()
         {
-            DocumentModel.Save();
+            Document.Save();
             RaisePropertyChanged(nameof(Title));
         }
 
@@ -107,9 +123,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public bool SaveAs()
         {
             var fileDialog = ServiceProvider.GetRequiredService<FileDialogService>();
-            string? path = fileDialog.ShowSaveAsFileCommandDialog(DocumentModel.FileName);
+            string? path = fileDialog.ShowSaveAsFileCommandDialog(Document.FileName);
             if (path == null) return false;
-            DocumentModel.SaveAs(path);
+            Document.SaveAs(path);
             RaisePropertyChanged(nameof(Title));
             return true;
         }

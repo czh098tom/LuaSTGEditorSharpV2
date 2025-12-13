@@ -2,6 +2,22 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View">
     <DataTemplate x:Key="DocumentViewModel">
-        <lsv:DocumentTreeView SelectedItemEx="{Binding SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TabControl ItemsSource="{Binding Tabs}" TabStripPlacement="Bottom">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel DataContext="{Binding Header}" Orientation="Horizontal">
+                        <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding Text}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <lsv:DocumentTreeView SelectedItemEx="{Binding DataContext.SelectedNode, 
+                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                        RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
     </DataTemplate>
 </ResourceDictionary>

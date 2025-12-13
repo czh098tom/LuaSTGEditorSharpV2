@@ -116,7 +116,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public void BroadcastSelectedNodeChanged(DocumentViewModel? dvm, EditorNode[] editorNode)
         {
-            BroadcastSelectedNodeChanged(dvm?.DocumentModel, editorNode);
+            BroadcastSelectedNodeChanged(dvm?.Document, editorNode);
         }
 
         public void BroadcastSelectedNodeChanged(IDocument? documentModel, EditorNode[] editorNode)
@@ -189,7 +189,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 dvm.AskSaveBeforeClose();
             }
             _documents.Remove(dvm);
-            _documentMapping.Remove(dvm.DocumentModel);
+            _documentMapping.Remove(dvm.Document);
             dvm.CloseActiveDocument();
 
             DisposeOpenedDocument(dvm);
@@ -223,13 +223,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             if (!HaveSelected) throw new InvalidOperationException();
             AddCommandToDocument(SelectedNodes.SelectFilter(CheckedCommand.RemoveNode), 
-                _activeDocument.DocumentModel, [], true);
+                _activeDocument.Document, [], true);
         }
 
         public void CopySelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            var nodes = _activeDocument.DocumentModel.Root.FindPhysicalMinForestContaining([.. SelectedNodes.Select(en => en.Source)]);
+            var nodes = _activeDocument.Document.Root.FindPhysicalMinForestContaining([.. SelectedNodes.Select(en => en.Source)]);
             ServiceProvider.GetRequiredService<ClipboardService>().CopyNode(nodes);
         }
 
@@ -250,7 +250,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             AddCommandToDocument(SelectedNodes.SelectFilter(n =>
                 insCommandHost.InsertCommandFactory.CreateInsertCommand(n, clipBoardContent))
-                , _activeDocument.DocumentModel, SelectedNodes, true);
+                , _activeDocument.Document, SelectedNodes, true);
         }
 
         public async void ViewCode()
@@ -265,9 +265,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var dialog = new SaveFileDialog()
             {
                 CheckPathExists = true,
-                FileName = _activeDocument.DocumentModel.FileName,
+                FileName = _activeDocument.Document.FileName,
                 Filter = "*.*|*.*",
-                InitialDirectory = _activeDocument.DocumentModel.FilePath ?? string.Empty,
+                InitialDirectory = _activeDocument.Document.FilePath ?? string.Empty,
             };
             if (dialog.ShowDialog() != DialogResult.OK) return;
             var fileName = dialog.FileName;
@@ -339,7 +339,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             foreach (var p in Anchorables)
             {
-                if (p.SourceDocument == dvm.DocumentModel)
+                if (p.SourceDocument == dvm.Document)
                 {
                     p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, EditorNodes = [] });
                 }
