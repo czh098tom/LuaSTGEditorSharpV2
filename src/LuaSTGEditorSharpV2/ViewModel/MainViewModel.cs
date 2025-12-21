@@ -18,11 +18,12 @@ using LuaSTGEditorSharpV2.Dialog;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class MainViewModel : InjectableViewModel
+    public class MainViewModel : InjectableViewModel, IDisposable
     {
         private readonly WorkSpaceViewModel _workspace;
         private readonly RibbonViewModel _ribbon;
         private readonly StatusBarViewModel _statusBar = new();
+        private bool disposedValue;
 
         public WorkSpaceViewModel WorkSpace
         {
@@ -66,6 +67,30 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             e.Add(_workspace.IsEnabledHandle.RequestNonNormalState());
             e.Add(_ribbon.IsEnabledHandle.RequestNonNormalState());
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _workspace.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
+        // ~MainViewModel()
+        // {
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -41,15 +41,20 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 _selectedNode = value;
                 if (_selectedNode is not IEnumerable nodes)
                 {
+                    _selectedNodeStrongTyped = [];
                     SelectedNodeChanged?.Invoke(this, []);
                 }
                 else
                 {
-                    SelectedNodeChanged?.Invoke(this, [.. ProcessSelectedNodes(nodes)]);
+                    var nodeList = ProcessSelectedNodes(nodes).ToArray();
+                    _selectedNodeStrongTyped = nodeList;
+                    SelectedNodeChanged?.Invoke(this, nodeList);
                 }
                 RaisePropertyChanged();
             }
         }
+
+        private EditorNode[] _selectedNodeStrongTyped = [];
 
         public event SelectedNodeChangedHandler? SelectedNodeChanged;
 
@@ -187,6 +192,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
 
             return _editingDocumentModel.OrderByViewOrder(Get());
+        }
+
+        protected override void HandleOnSelect()
+        {
+            base.HandleOnSelect();
+            SelectedNodeChanged?.Invoke(this, _selectedNodeStrongTyped);
         }
     }
 

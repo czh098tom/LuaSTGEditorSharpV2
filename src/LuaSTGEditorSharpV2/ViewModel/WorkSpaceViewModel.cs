@@ -31,7 +31,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class WorkSpaceViewModel : InjectableViewModel
+    public class WorkSpaceViewModel : InjectableViewModel, IDisposable
     {
         public WorkSpaceCollection<AnchorableViewModelBase> Anchorables { get; private set; } = [];
 
@@ -39,7 +39,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public ObservableCollection<DocumentViewModel> Documents => _documents;
 
         private DocumentViewModel? _activeDocument;
-
         private readonly Dictionary<IDocument, DocumentViewModel> _documentMapping = [];
 
         public QueuedBoolHandle IsEnabledHandle { get; private set; }
@@ -58,6 +57,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public bool HaveSelectedSingle => SelectedNodes.Length == 1 && _activeDocument != null;
 
         public event EventHandler<OnEnableHandleRequestedEventArgs>? EnableRequesting;
+
+        private bool _disposedValue;
 
         public WorkSpaceViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
@@ -360,6 +361,37 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var args = new OnEnableHandleRequestedEventArgs();
             EnableRequesting?.Invoke(this, args);
             return args.Disposables;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    foreach (var anc in Anchorables)
+                    {
+                        anc.Dispose();
+                    }
+                    Anchorables.Clear();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
+        // ~WorkSpaceViewModel()
+        // {
+        //     // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
