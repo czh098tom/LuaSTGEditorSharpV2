@@ -35,6 +35,6 @@
     </DataTemplate>
     <fluent:Button x:Key="button" 
                    Header="{lex:Loc LuaSTGEditorSharpV2.NodeProfile.WPF:Localized:ribbon_button_nodeProfile}"
-                   LargeIcon="pack://application:,,,/LuaSTGEditorSharpV2.NodeProfile.WPF;component/images/bricks.png"
+                   LargeIcon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/bricks.png"
                    Command="{Binding Command}"/>
 </ResourceDictionary>

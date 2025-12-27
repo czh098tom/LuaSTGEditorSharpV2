@@ -8,19 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="images\brick.png" />
-    <None Remove="images\bricks.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LuaSTGEditorSharpV2.DockingWindows\LuaSTGEditorSharpV2.DockingWindows.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.NodeProfile\LuaSTGEditorSharpV2.NodeProfile.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.ViewModel\LuaSTGEditorSharpV2.ViewModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="images\brick.png" />
-    <Resource Include="images\bricks.png" />
   </ItemGroup>
 
   <ItemGroup>
