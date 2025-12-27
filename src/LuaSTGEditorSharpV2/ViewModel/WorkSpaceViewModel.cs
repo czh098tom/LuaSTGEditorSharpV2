@@ -193,7 +193,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _documentMapping.Remove(dvm.Document);
             dvm.CloseActiveDocument();
 
-            DisposeOpenedDocument(dvm);
+            DestroyReferencesForOpenedDocument(dvm);
+            dvm.Dispose();
         }
 
         public void UndoActiveDocument()
@@ -336,7 +337,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 ?.BuildingTask is NamedBuildingTask);
         }
 
-        private void DisposeOpenedDocument(DocumentViewModel dvm)
+        private void DestroyReferencesForOpenedDocument(DocumentViewModel dvm)
         {
             foreach (var p in Anchorables)
             {

@@ -1,25 +1,25 @@
-﻿using System;
+﻿using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.CodeGenerator;
+using LuaSTGEditorSharpV2.Core.Command;
+using LuaSTGEditorSharpV2.Core.Command.Service;
+using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.Core.Editor.Extension;
+using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.Services;
+using LuaSTGEditorSharpV2.WPF;
+using LuaSTGEditorSharpV2.WPF.Services;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 using System.Windows;
-using System.Collections;
-
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Services;
-using LuaSTGEditorSharpV2.Core.Services;
-using LuaSTGEditorSharpV2.WPF;
-using LuaSTGEditorSharpV2.Core.Command;
-using LuaSTGEditorSharpV2.Core.Command.Service;
-using Microsoft.Extensions.DependencyInjection;
-using LuaSTGEditorSharpV2.Core.CodeGenerator;
-using LuaSTGEditorSharpV2.Core.Editor;
-using LuaSTGEditorSharpV2.Core.Editor.Extension;
-using LuaSTGEditorSharpV2.WPF.Services;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -58,6 +58,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public event SelectedNodeChangedHandler? SelectedNodeChanged;
 
+        public bool HasTabs => Tabs.Count > 0;
+
         public IDocument Document => _editingDocumentModel;
 
         private string _rawTitle = string.Empty;
@@ -76,21 +78,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _rawTitle = documentModel.FileName;
             var vm = documentModel.RootEditorNode.GetRequiredNodeService<NodeViewModel>();
             Tree.Add(vm);
-            var compile = vm.Children.FirstOrDefault(n => n.EditorNode.Source.TypeUID == DocumentModel.compileRootUID);
-            var build = vm.Children.FirstOrDefault(n => n.EditorNode.Source.TypeUID == DocumentModel.buildRootUID);
-            var def = vm.Children.FirstOrDefault(n => n.EditorNode.Source.TypeUID == DocumentModel.definitionRootUID);
-            if (compile != null)
+            foreach (var child in vm.Children)
             {
-                Tabs.Add(new DocumentTabViewModel(compile));
+                Tabs.Add(new DocumentTabViewModel(child));
             }
-            if (build != null)
-            {
-                Tabs.Add(new DocumentTabViewModel(build));
-            }
-            if (def != null)
-            {
-                Tabs.Add(new DocumentTabViewModel(def));
-            }
+            documentModel.RootEditorNode.OnChildrenChanged += RootEditorNode_OnChildrenChanged;
+            Tabs.CollectionChanged += Tabs_CollectionChanged;
         }
 
         /// <summary>
@@ -198,6 +191,38 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             base.HandleOnSelect();
             SelectedNodeChanged?.Invoke(this, _selectedNodeStrongTyped);
+        }
+
+        private void RootEditorNode_OnChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                int i = e.NewStartingIndex;
+                foreach (EditorNode en in e.NewItems!)
+                {
+                    Tabs.Insert(i, new(en.ServiceProvider.GetRequiredKeyedService<NodeViewModel>(ScopeKey.EditorNode)));
+                    i++;
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (EditorNode en in e.OldItems!)
+                {
+                    Tabs.Remove(Tabs.First(t => t.Header.EditorNode == en));
+                }
+            }
+        }
+
+        private void Tabs_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            RaisePropertyChanged(nameof(HasTabs));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _editingDocumentModel.RootEditorNode.OnChildrenChanged -= RootEditorNode_OnChildrenChanged;
+            Tabs.CollectionChanged -= Tabs_CollectionChanged;
         }
     }
 
