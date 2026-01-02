@@ -1,25 +1,25 @@
-﻿using System;
+﻿using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.CodeGenerator;
+using LuaSTGEditorSharpV2.Core.Command;
+using LuaSTGEditorSharpV2.Core.Command.Service;
+using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.Core.Editor.Extension;
+using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.Services;
+using LuaSTGEditorSharpV2.WPF;
+using LuaSTGEditorSharpV2.WPF.Services;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 using System.Windows;
-using System.Collections;
-
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Services;
-using LuaSTGEditorSharpV2.Core.Services;
-using LuaSTGEditorSharpV2.WPF;
-using LuaSTGEditorSharpV2.Core.Command;
-using LuaSTGEditorSharpV2.Core.Command.Service;
-using Microsoft.Extensions.DependencyInjection;
-using LuaSTGEditorSharpV2.Core.CodeGenerator;
-using LuaSTGEditorSharpV2.Core.Editor;
-using LuaSTGEditorSharpV2.Core.Editor.Extension;
-using LuaSTGEditorSharpV2.WPF.Services;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -29,6 +29,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private readonly EditorDocument _editingDocumentModel;
 
+        public ObservableCollection<DocumentTabViewModel> Tabs { get; private set; } = [];
         public ObservableCollection<NodeViewModel> Tree { get; private set; } = [];
 
         private object? _selectedNode;
@@ -40,19 +41,26 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 _selectedNode = value;
                 if (_selectedNode is not IEnumerable nodes)
                 {
+                    _selectedNodeStrongTyped = [];
                     SelectedNodeChanged?.Invoke(this, []);
                 }
                 else
                 {
-                    SelectedNodeChanged?.Invoke(this, [.. ProcessSelectedNodes(nodes)]);
+                    var nodeList = ProcessSelectedNodes(nodes).ToArray();
+                    _selectedNodeStrongTyped = nodeList;
+                    SelectedNodeChanged?.Invoke(this, nodeList);
                 }
                 RaisePropertyChanged();
             }
         }
 
+        private EditorNode[] _selectedNodeStrongTyped = [];
+
         public event SelectedNodeChangedHandler? SelectedNodeChanged;
 
-        public IDocument DocumentModel => _editingDocumentModel;
+        public bool HasTabs => Tabs.Count > 0;
+
+        public IDocument Document => _editingDocumentModel;
 
         private string _rawTitle = string.Empty;
         public string RawTitle => _rawTitle;
@@ -70,6 +78,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             _rawTitle = documentModel.FileName;
             var vm = documentModel.RootEditorNode.GetRequiredNodeService<NodeViewModel>();
             Tree.Add(vm);
+            foreach (var child in vm.Children)
+            {
+                Tabs.Add(new DocumentTabViewModel(child));
+            }
+            documentModel.RootEditorNode.OnChildrenChanged += RootEditorNode_OnChildrenChanged;
+            Tabs.CollectionChanged += Tabs_CollectionChanged;
         }
 
         /// <summary>
@@ -81,7 +95,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         /// </returns>
         public bool SaveOrAskToSaveAs()
         {
-            if (DocumentModel.IsOnDisk())
+            if (Document.IsOnDisk())
             {
                 Save();
                 return true;
@@ -94,7 +108,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private void Save()
         {
-            DocumentModel.Save();
+            Document.Save();
             RaisePropertyChanged(nameof(Title));
         }
 
@@ -107,9 +121,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public bool SaveAs()
         {
             var fileDialog = ServiceProvider.GetRequiredService<FileDialogService>();
-            string? path = fileDialog.ShowSaveAsFileCommandDialog(DocumentModel.FileName);
+            string? path = fileDialog.ShowSaveAsFileCommandDialog(Document.FileName);
             if (path == null) return false;
-            DocumentModel.SaveAs(path);
+            Document.SaveAs(path);
             RaisePropertyChanged(nameof(Title));
             return true;
         }
@@ -171,6 +185,44 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
 
             return _editingDocumentModel.OrderByViewOrder(Get());
+        }
+
+        protected override void HandleOnSelect()
+        {
+            base.HandleOnSelect();
+            SelectedNodeChanged?.Invoke(this, _selectedNodeStrongTyped);
+        }
+
+        private void RootEditorNode_OnChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                int i = e.NewStartingIndex;
+                foreach (EditorNode en in e.NewItems!)
+                {
+                    Tabs.Insert(i, new(en.ServiceProvider.GetRequiredKeyedService<NodeViewModel>(ScopeKey.EditorNode)));
+                    i++;
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (EditorNode en in e.OldItems!)
+                {
+                    Tabs.Remove(Tabs.First(t => t.Header.EditorNode == en));
+                }
+            }
+        }
+
+        private void Tabs_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            RaisePropertyChanged(nameof(HasTabs));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _editingDocumentModel.RootEditorNode.OnChildrenChanged -= RootEditorNode_OnChildrenChanged;
+            Tabs.CollectionChanged -= Tabs_CollectionChanged;
         }
     }
 

@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
                         localizationService.GetString("fileDialog_chooseFileExtension", typeof(PropertyEditWizardRegisterer).Assembly)) is string result)
                     {
                         vm.Value = result;
-                        return vm.ResolveEditingNodeCommand(vm.SourceNode, p, result);
+                        return vm.ResolveBatchEditingNodeCommand(vm.SourceNodes, p, result);
                     }
                     return null;
                 }),
@@ -42,7 +42,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
                         localizationService.GetString("fileDialog_chooseImageFileExtension", typeof(PropertyEditWizardRegisterer).Assembly)) is string result)
                     {
                         vm.Value = result;
-                        return vm.ResolveEditingNodeCommand(vm.SourceNode, p, result);
+                        return vm.ResolveBatchEditingNodeCommand(vm.SourceNodes, p, result);
                     }
                     return null;
                 }),

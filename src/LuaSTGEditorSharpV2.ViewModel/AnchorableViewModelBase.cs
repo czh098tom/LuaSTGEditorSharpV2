@@ -39,9 +39,31 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
         }
 
+        private bool _disposedValue = false;
+
         public AnchorableViewModelBase(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            OnClose += (o, e) => IsVisible = false;
+            OnClose += AnchorableViewModelBase_OnClose;
+        }
+
+        private void AnchorableViewModelBase_OnClose(object? sender, EventArgs e)
+        {
+            IsVisible = false;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    // Crash if IsVisible = true while closing window
+                    IsVisible = false;
+                }
+
+                _disposedValue = true;
+            }
         }
     }
 }

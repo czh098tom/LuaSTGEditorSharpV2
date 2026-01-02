@@ -2,19 +2,25 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:ce="clr-namespace:CommunityToolkit.Mvvm.ComponentModel;assembly=CommunityToolkit.Mvvm"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                     xmlns:e="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
                     xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lwc="clr-namespace:LuaSTGEditorSharpV2.WPF.Converter;assembly=LuaSTGEditorSharpV2.WPF"
-                    xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView">
+                    xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView"
+                    xmlns:lpvc="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Converter">
+    <lpvc:BatchStatusToWaterMarkConverter x:Key="BatchStatusToWaterMarkConverter"/>
     <DataTemplate x:Key="property:default">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
                        Margin="5,0,5,0" />
-            <TextBox Grid.Column="1" Grid.ColumnSpan="2" 
-                     MinWidth="150"
-                     HorizontalAlignment="Stretch"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <xctk:WatermarkTextBox Grid.Column="1" Grid.ColumnSpan="2" 
+                                   MinWidth="150"
+                                   HorizontalAlignment="Stretch"
+                                   Padding="0"
+                                   Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                   Watermark="{Binding BatchEditStatus, Converter={StaticResource BatchStatusToWaterMarkConverter}}">
+            </xctk:WatermarkTextBox>
         </lsv:PropertyItemGrid>
     </DataTemplate>
     <DataTemplate x:Key="property:childNode">

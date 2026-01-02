@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
     /// <summary>
     /// Base viewmodel for any docking panels
     /// </summary>
-    public abstract class DockingViewModelBase(IServiceProvider serviceProvider) : InjectableViewModel(serviceProvider)
+    public abstract class DockingViewModelBase(IServiceProvider serviceProvider) : InjectableViewModel(serviceProvider), IDisposable
     {
         public class PublishCommandEventArgs : EventArgs
         {
@@ -75,16 +75,33 @@ namespace LuaSTGEditorSharpV2.ViewModel
                     _isActive = value;
                     if (_isActive)
                     {
-                        Reopen();
+                        HandleOnSelect();
                     }
                     else
                     {
-                        Close();
+                        HandleOnDeselect();
                     }
                     RaisePropertyChanged();
                 }
             }
         }
+
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        private bool _disposedValue;
 
         public event EventHandler<PublishCommandEventArgs>? OnCommandPublishing;
 
@@ -128,6 +145,33 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public virtual void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
         {
+        }
+
+        protected virtual void HandleOnSelect() { }
+        protected virtual void HandleOnDeselect() { }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
+        // ~WorkSpaceViewModel()
+        // {
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

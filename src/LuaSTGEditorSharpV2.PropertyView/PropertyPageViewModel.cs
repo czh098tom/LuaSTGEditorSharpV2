@@ -33,8 +33,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public override string I18NTitleKey => "panel_property_title";
 
-        private EditorNode? editing = null;
-
         public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
@@ -52,27 +50,28 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
         {
             var param = new LocalServiceParam(SourceDocument ?? DocumentModel.Empty);
-            if (SourceNodes.Length == 1)
+
+            LoadNodeData(param, SourceNodes);
+        }
+
+        private void LoadNodeData(LocalServiceParam param, EditorNode[] nodeData)
+        {
+            if (nodeData.Length == 0)
             {
-                editing = SourceNodes[0];
+                LoadProperties([]);
+            }
+            else if (nodeData.Length == 1)
+            {
+                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
+                    .GetPropertyViewModelOfNode(nodeData[0], param);
+                LoadProperties(list);
             }
             else
             {
-                editing = null;
+                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
+                    .GetPropertyViewModelOfMultipleNodes(nodeData, param);
+                LoadProperties(list);
             }
-            LoadNodeData(param, editing);
-        }
-
-        private void LoadNodeData(LocalServiceParam param, EditorNode? nodeData)
-        {
-            if (nodeData == null)
-            {
-                LoadProperties([]);
-                return;
-            }
-            var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
-                .GetPropertyViewModelOfNode(nodeData, param);
-            LoadProperties(list);
         }
 
         private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels)

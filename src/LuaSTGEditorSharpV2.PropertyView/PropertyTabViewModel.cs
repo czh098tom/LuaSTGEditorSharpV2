@@ -28,12 +28,15 @@ namespace LuaSTGEditorSharpV2.PropertyView
             }
         }
 
+        public bool AllowBatchEditing { get; }
+
         public event EventHandler<EditResult>? OnEdit;
 
-        public PropertyTabViewModel()
+        public PropertyTabViewModel(bool allowBatchEditing = false)
         {
             Properties.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyItemViewModelBase>
                 (vm => vm.OnEdit += Item_OnEdit);
+            AllowBatchEditing = allowBatchEditing;
         }
 
         private void Item_OnEdit(object? sender, EditResult e)

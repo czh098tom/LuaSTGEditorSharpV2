@@ -1,9 +1,10 @@
-﻿using LuaSTGEditorSharpV2.Core.Editor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Core.Command
 {
@@ -22,6 +23,13 @@ namespace LuaSTGEditorSharpV2.Core.Command
                 {
                     return AtomicCommand.AddProperty(node, propertyName, newValue);
                 }
+            }
+
+            public static CommandBase? ModifyMany(IEnumerable<EditorNode> nodes, string? propertyName, string newValue)
+            {
+                return Commands.FromEnumerable(
+                    nodes.Select(n => Modify(n, propertyName, newValue))
+                );
             }
         }
     }

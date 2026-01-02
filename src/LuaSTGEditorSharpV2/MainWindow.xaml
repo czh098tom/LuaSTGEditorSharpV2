@@ -226,7 +226,8 @@
                                     <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}" />
                                     <Setter Property="CanClose" Value="{Binding Model.CanClose}" />
                                     <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
-                                    <Setter Property="IsActive" Value="{Binding Model.IsActive}"/>
+                                    <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>
+                                    <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>
                                 </Style>
                             </util:PanesStyleSelector.FileStyle>
                             <util:PanesStyleSelector.ToolStyle>
@@ -236,6 +237,8 @@
                                     <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource FALSE}}" />
                                     <Setter Property="CanHide" Value="{Binding Model.CanClose}" />
                                     <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
+                                    <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>
+                                    <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>
                                 </Style>
                             </util:PanesStyleSelector.ToolStyle>
                         </util:PanesStyleSelector>

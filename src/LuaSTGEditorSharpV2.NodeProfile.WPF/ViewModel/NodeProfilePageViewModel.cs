@@ -15,8 +15,8 @@ namespace LuaSTGEditorSharpV2.NodeProfile.WPF.ViewModel
 {
     public class NodeProfilePageViewModel : AnchorableViewModelBase
     {
-        private static readonly string BRICK = "pack://application:,,,/LuaSTGEditorSharpV2.NodeProfile.WPF;component/images/brick.png";
-        private static readonly string BRICKS = "pack://application:,,,/LuaSTGEditorSharpV2.NodeProfile.WPF;component/images/bricks.png";
+        private static readonly string BRICK = "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/brick.png";
+        private static readonly string BRICKS = "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/bricks.png";
 
         private static readonly JsonSerializerSettings SETTINGS = new()
         {
