@@ -18,7 +18,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     public class VariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
-        LocalVariablePropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam,
+        LocalVariablePropertyViewItemTerm term, int index, EditorNode nodeData, LocalServiceParam localServiceParam,
         PropertyEditWizardProviderService propertyEditWizardProviderService)
         : JsonProxiedPropertyItemViewModel<VariableDefinition>(nodeData, localServiceParam, propertyEditWizardProviderService)
     {
@@ -57,27 +57,41 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             RaisePropertyChanged(nameof(PropValue));
         }
 
-        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam localServiceParam, string edited)
+        public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam localServiceParam, string edited)
         {
-            var commands = new List<CommandBase>();
             if (term.NameRule == null || term.ValueRule == null) return new EditResult(localServiceParam);
-            object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.ValueRule.Key, idx), ProxyValue?.Value ?? string.Empty);
-            if (editName != null) commands.Add(editName);
-            if (editValue != null) commands.Add(editValue);
-            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, false, localServiceParam);
+            IEnumerable<CommandBase?> Get()
+            {
+                if (term.NameRule == null || term.ValueRule == null) yield break;
+                object idx = index;
+                yield return CheckedCommand.Property.Modify(nodeData,
+                    string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
+                yield return CheckedCommand.Property.Modify(nodeData,
+                    string.Format(term.ValueRule.Key, idx), ProxyValue?.Value ?? string.Empty);
+            }
+            return new EditResult(Commands.FromEnumerable(Get()), false, localServiceParam);
+        }
+
+        protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
+        {
+            if (term.NameRule == null || term.ValueRule == null) return;
+            if (e.Key == string.Format(term.NameRule.Key, index))
+            {
+                SetProxy(e.NewValue, _propValue);
+            }
+            else if (e.Key == string.Format(term.ValueRule.Key, index))
+            {
+                SetProxy(_propName, e.NewValue); 
+            }
         }
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class VariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory, 
+    public class VariableDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory,
         PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public VariableDefinitionPropertyItemViewModel Create(LocalVariablePropertyViewItemTerm term, int index,
-            NodeData nodeData, LocalServiceParam localServiceParam)
+            EditorNode nodeData, LocalServiceParam localServiceParam)
         {
             return new VariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam, propertyEditWizardProviderService);
         }

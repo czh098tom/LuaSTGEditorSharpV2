@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using PropertyTools.Wpf;
+using PropertyTools;
 
 namespace LuaSTGEditorSharpV2.WPF
 {
-    public class TreeViewEx : TreeView
+    public class TreeViewEx : TreeListBox
     {
         /// <summary>
         /// 
@@ -17,78 +20,54 @@ namespace LuaSTGEditorSharpV2.WPF
         public static readonly DependencyProperty SelectedItemExProperty =
             DependencyProperty.RegisterAttached(
                 nameof(SelectedItemEx), 
-                typeof(object), 
+                typeof(IEnumerable), 
                 typeof(TreeViewEx),
                 new UIPropertyMetadata(null, HandleSelectedItemChanged));
 
         private static void HandleSelectedItemChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            if (obj is not TreeView treeView)
-                return;
-
-            if (e.NewValue == treeView.SelectedItem) return;
-
-            ChangeSelectedItem(treeView, e.NewValue);
-        }
-
-        private static void ChangeSelectedItem(TreeView treeView, object p)
-        {
-            var item = FindItemByDataContext(treeView, p);
-            if (item != null)
+            if (obj is not TreeListBox treeView || e.NewValue is not IEnumerable enumerable)
             {
-                item.IsSelected = true;
+                return;
             }
+
+            ChangeSelectedItem(treeView, enumerable);
         }
 
-        private static TreeViewItem? FindItemByDataContext(TreeView treeView, object dataContext)
+        private static void ChangeSelectedItem(TreeListBox treeView, IEnumerable p)
         {
+            HashSet<object> set = [];
+
+            foreach (var item in p)
+            {
+                set.Add(item);
+            }
+
             for (int i = 0; i < treeView.Items.Count; i++)
             {
-                if (treeView.ItemContainerGenerator.ContainerFromIndex(i) is not TreeViewItem treeItem) continue;
+                if (treeView.ItemContainerGenerator.ContainerFromIndex(i) is not TreeListBoxItem treeItem) continue;
 
-                var result = FindItemByDataContext(treeItem, dataContext);
-                if (result != null)
+                if (set.Contains(treeItem.DataContext))
                 {
-                    return result;
+                    treeItem.IsSelected = true;
                 }
             }
-            return null;
         }
 
-        private static TreeViewItem? FindItemByDataContext(TreeViewItem item, object dataContext)
+        public IEnumerable? SelectedItemEx
         {
-            if (item.DataContext == dataContext)
-            {
-                return item;
-            }
-
-            for (int i = 0; i < item.Items.Count; i++)
-            {
-                if (item.ItemContainerGenerator.ContainerFromIndex(i) is not TreeViewItem subItem) continue;
-
-                var result = FindItemByDataContext(subItem, dataContext);
-                if (result != null)
-                {
-                    return result;
-                }
-            }
-            return null;
-        }
-
-        public object SelectedItemEx
-        {
-            get => GetValue(SelectedItemExProperty);
+            get => GetValue(SelectedItemExProperty) as IEnumerable;
             set => SetValue(SelectedItemExProperty, value);
         }
 
         public TreeViewEx() : base()
         {
-            SelectedItemChanged += DocumentTreeView_SelectedItemChanged;
+            SelectionChanged += TreeViewEx_SelectionChanged;
         }
 
-        private void DocumentTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void TreeViewEx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedItemEx = e.NewValue;
+            SelectedItemEx = SelectedItems;
         }
     }
 }

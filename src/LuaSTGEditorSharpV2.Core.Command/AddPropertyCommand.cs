@@ -11,12 +11,11 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class AddPropertyCommand : ConcreteCommand
     {
-        public NodeData Node { get; private set; }
+        public EditorNode Node { get; private set; }
         public string PropertyName { get; private set; }
         public string Value { get; private set; }
 
-        public AddPropertyCommand(EditorNodeFactory factory, NodeData node, string propertyName, string value)
-            : base(factory)
+        public AddPropertyCommand(EditorNode node, string propertyName, string value)
         {
             Node = node;
             PropertyName = propertyName;
@@ -25,13 +24,13 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            var node = Node;
             node.AddProperty(PropertyName, Value);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
-            var node = EditorNodeFactory.GetOrCreate(Node, editorDocument);
+            var node = Node;
             node.RemoveProperty(PropertyName);
         }
     }

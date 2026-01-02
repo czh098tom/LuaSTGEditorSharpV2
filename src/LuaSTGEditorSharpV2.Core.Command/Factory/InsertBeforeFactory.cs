@@ -13,14 +13,11 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Core.Command.Factory
 {
     [Inject(ServiceLifetime.Singleton)]
-    public class InsertBeforeFactory(EditorNodeFactory editorNodeFactory) : IInsertCommandFactory
+    public class InsertBeforeFactory() : IInsertCommandFactory
     {
-        public CommandBase? CreateInsertCommand(NodeData origin, NodeData toAppend)
+        public CommandBase? CreateInsertCommand(EditorNode origin, IReadOnlyList<NodeData> toAppend)
         {
-            if (origin.PhysicalParent == null) return null;
-            int idx = origin.PhysicalParent.PhysicalChildren.FindIndex(origin);
-            if (idx < 0) return null;
-            return new AddChildCommand(editorNodeFactory, origin.PhysicalParent, idx, toAppend);
+            return CheckedCommand.InsertNode.Many.ToBefore(origin, toAppend);
         }
     }
 }

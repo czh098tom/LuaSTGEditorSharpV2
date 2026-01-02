@@ -1,0 +1,11 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "Root",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/document_index.png",
+  "Text": {
+    "Neutral": "Document",
+    "Localized": {
+      "zh": "文档"
+    }
+  }
+}

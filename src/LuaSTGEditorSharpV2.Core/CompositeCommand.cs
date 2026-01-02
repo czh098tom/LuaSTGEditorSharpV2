@@ -9,28 +9,24 @@ namespace LuaSTGEditorSharpV2.Core
 {
     public class CompositeCommand : CommandBase
     {
-        private readonly List<CommandBase> _innerCommands;
-
-        public IReadOnlyList<CommandBase> InnerCommands => _innerCommands;
-        public bool ShouldUnpack { get; private set; } = false;
+        private readonly IEnumerable<CommandBase> _commandsEnumerable;
+        private readonly List<CommandBase> _innerCommands = [];
 
         public CompositeCommand(params CommandBase[] innerCommands)
-            : this((IReadOnlyList<CommandBase>)innerCommands) { }
+            : this((IEnumerable<CommandBase>)innerCommands) { }
 
-        public CompositeCommand(bool shouldUnpack, params CommandBase[] innerCommands)
-            : this(innerCommands, shouldUnpack) { }
-
-        public CompositeCommand(IReadOnlyList<CommandBase> innerCommands, bool shouldUnpack = false)
+        public CompositeCommand(IEnumerable<CommandBase> innerCommands)
         {
-            _innerCommands = new(innerCommands);
-            ShouldUnpack = shouldUnpack;
+            _commandsEnumerable = innerCommands;
         }
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            for (int i = 0; i < _innerCommands.Count; i++)
+            _innerCommands.Clear();
+            foreach (CommandBase command in _commandsEnumerable)
             {
-                _innerCommands[i].Execute(editorDocument);
+                command.Execute(editorDocument);
+                _innerCommands.Add(command);
             }
         }
 
@@ -40,24 +36,7 @@ namespace LuaSTGEditorSharpV2.Core
             {
                 _innerCommands[i].Revert(editorDocument);
             }
-        }
-
-        public IReadOnlyList<CommandBase> Flatten()
-        {
-            if (ShouldUnpack) return [this];
-            List<CommandBase> commands = [];
-            foreach (CommandBase command in _innerCommands)
-            {
-                if (command is CompositeCommand cc && cc.ShouldUnpack)
-                {
-                    commands.AddRange(cc.Flatten());
-                }
-                else
-                {
-                    commands.Add(command);
-                }
-            }
-            return commands;
+            _innerCommands.Clear();
         }
     }
 }

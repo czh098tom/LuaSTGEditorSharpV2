@@ -26,9 +26,9 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
         [JsonProperty] public NodePropertyCapture? ValueRule { get; set; }
         [JsonProperty] public PropertyViewEditorType? NameValueEditor { get; set; }
 
-        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(NodeData nodeData, PropertyViewContext context, int count)
+        public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(EditorNode nodeData, PropertyViewContext context, int count)
         {
-            var token = new NodePropertyAccessToken(serviceProvider, nodeData, context);
+            var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {
@@ -43,16 +43,17 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
             return properties;
         }
 
-        public CommandBase? GetCommand(NodeData nodeData, VariableDefinition intermediateModel, int index)
+        public CommandBase? GetCommand(EditorNode nodeData, VariableDefinition intermediateModel, int index)
         {
-            var commands = new List<CommandBase>();
             if (NameRule == null || ValueRule == null) return null;
-            object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(factory, nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(factory, nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
-            if (editName != null) commands.Add(editName);
-            if (editValue != null) commands.Add(editValue);
-            return commands.Count > 0 ? new CompositeCommand(commands) : null;
+            IEnumerable<CommandBase?> Get()
+            {
+                if (NameRule == null || ValueRule == null) yield break;
+                object idx = index;
+                yield return CheckedCommand.Property.Modify(nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
+                yield return CheckedCommand.Property.Modify(nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
+            }
+            return Commands.FromEnumerable(Get());
         }
     }
 }

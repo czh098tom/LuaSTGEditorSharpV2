@@ -9,29 +9,30 @@ using CommunityToolkit.Mvvm.Input;
 
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
     /// <summary>
     /// Base viewmodel for any docking panels
     /// </summary>
-    public abstract class DockingViewModelBase(IServiceProvider serviceProvider) : InjectableViewModel(serviceProvider)
+    public abstract class DockingViewModelBase(IServiceProvider serviceProvider) : InjectableViewModel(serviceProvider), IDisposable
     {
         public class PublishCommandEventArgs : EventArgs
         {
             public CommandBase? Command { get; set; }
             public IDocument? DocumentModel { get; set; }
-            public NodeData[] NodeData { get; set; } = [];
+            public EditorNode[] EditorNodes { get; set; } = [];
             public bool ShouldRefreshView { get; set; } = true;
         }
 
         public class SelectedNodeChangedEventArgs : EventArgs
         {
             public IDocument? DocumentModel { get; set; }
-            public NodeData[] NodeData { get; set; } = [];
+            public EditorNode[] EditorNodes { get; set; } = [];
         }
 
-        public NodeData[] SourceNodes { get; private set; } = [];
+        public EditorNode[] SourceNodes { get; private set; } = [];
 
         public IDocument? SourceDocument { get; private set; }
 
@@ -74,16 +75,33 @@ namespace LuaSTGEditorSharpV2.ViewModel
                     _isActive = value;
                     if (_isActive)
                     {
-                        Reopen();
+                        HandleOnSelect();
                     }
                     else
                     {
-                        Close();
+                        HandleOnDeselect();
                     }
                     RaisePropertyChanged();
                 }
             }
         }
+
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        private bool _disposedValue;
 
         public event EventHandler<PublishCommandEventArgs>? OnCommandPublishing;
 
@@ -99,13 +117,13 @@ namespace LuaSTGEditorSharpV2.ViewModel
             OnReopen?.Invoke(this, EventArgs.Empty);
         }
 
-        protected void PublishCommand(CommandBase? command, IDocument documentModel, NodeData[] nodeData, bool shouldRefreshView = true)
+        protected void PublishCommand(CommandBase? command, IDocument documentModel, EditorNode[] nodeData, bool shouldRefreshView = true)
         {
             OnCommandPublishing?.Invoke(this, new()
             {
                 Command = command,
                 DocumentModel = documentModel,
-                NodeData = nodeData,
+                EditorNodes = nodeData,
                 ShouldRefreshView = shouldRefreshView
             });
         }
@@ -115,7 +133,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             if (!ShouldChangeSelectedNode(o, args)) return;
             var doc = args.DocumentModel;
             SourceDocument = doc;
-            var node = args.NodeData;
+            var node = args.EditorNodes;
             SourceNodes = node;
             HandleSelectedNodeChangedImpl(o, args);
         }
@@ -127,6 +145,33 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public virtual void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
         {
+        }
+
+        protected virtual void HandleOnSelect() { }
+        protected virtual void HandleOnDeselect() { }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
+        // ~WorkSpaceViewModel()
+        // {
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

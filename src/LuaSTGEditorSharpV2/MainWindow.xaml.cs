@@ -51,8 +51,17 @@ namespace LuaSTGEditorSharpV2
     [Inject(ServiceLifetime.Transient)]
     public partial class MainWindow : RibbonWindow, IMainWindow
     {
+        private enum QuitState
+        {
+            None,
+            Saving,
+            Quitting,
+        }
+
         private readonly MainViewModel _viewModel;
         private readonly IServiceProvider _serviceProvider;
+
+        private QuitState _quitState = QuitState.None;
 
         public MainWindow(IServiceProvider serviceProvider)
         {
@@ -108,7 +117,7 @@ namespace LuaSTGEditorSharpV2
             var tree = sender as TreeView;
             if (tree?.SelectedItem is NodeViewModel selectedVM && tree.DataContext is DocumentViewModel dvm)
             {
-                _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, [selectedVM.Source]);
+                _viewModel.WorkSpace.BroadcastSelectedNodeChanged(dvm, [selectedVM.EditorNode]);
             }
         }
 
@@ -259,10 +268,33 @@ namespace LuaSTGEditorSharpV2
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
+            if (_quitState != QuitState.None) return;
+            _quitState = QuitState.Saving;
+            e.Cancel = true;
             foreach (var s in _serviceProvider.GetServicesWithInheritance<ISettingsSavedOnClose>())
             {
                 s.SaveSettings();
             }
+            foreach (var window in Application.Current.Windows)
+            {
+                if (window is UIElement ue)
+                {
+                    ue.IsEnabled = false;
+                }
+            }
+            DataContext = null;
+            _viewModel?.Dispose();
+            CloseWindowAsync();
+        }
+
+        private async void CloseWindowAsync()
+        {
+            await Task.Delay(100);
+            _quitState = QuitState.Quitting;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Application.Current.Shutdown();
+            });
         }
 
         protected override void OnClosed(EventArgs e)

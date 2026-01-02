@@ -11,13 +11,12 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class RemoveChildCommand : ConcreteCommand
     {
-        public NodeData Parent { get; private set; }
+        public EditorNode Parent { get; private set; }
         public int Position { get; private set; }
 
         private NodeData? child;
 
-        public RemoveChildCommand(EditorNodeFactory factory, NodeData parent, int position) 
-            : base(factory)
+        public RemoveChildCommand(EditorNode parent, int position)
         {
             Parent = parent;
             Position = position;
@@ -25,14 +24,14 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            var node = EditorNodeFactory.GetOrCreate(Parent, editorDocument);
+            var node = Parent;
             child = node.RemoveAt(Position);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
             if (child == null) throw new InvalidOperationException("Command has not been executed yet.");
-            var node = EditorNodeFactory.GetOrCreate(Parent, editorDocument);
+            var node = Parent;
             node.Insert(Position, child);
         }
     }

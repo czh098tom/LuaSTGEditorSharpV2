@@ -18,7 +18,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 {
     public class RepeatVariableDefinitionPropertyItemViewModel(EditorNodeFactory factory,
-        RepeatPropertyViewItemTerm term, int index, NodeData nodeData, LocalServiceParam localServiceParam,
+        RepeatPropertyViewItemTerm term, int index, EditorNode nodeData, LocalServiceParam localServiceParam,
         PropertyEditWizardProviderService propertyEditWizardProviderService)
         : JsonProxiedPropertyItemViewModel<RepeatVariableDefinition>(nodeData, localServiceParam, propertyEditWizardProviderService)
     {
@@ -71,21 +71,38 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
             RaisePropertyChanged(nameof(PropIncrement));
         }
 
-        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam localServiceParam, string edited)
+        public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam localServiceParam, string edited)
         {
-            var commands = new List<CommandBase>();
             if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return new EditResult(localServiceParam);
-            object idx = index;
-            var editName = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-            var editValue = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
-            var editIncrement = EditPropertyCommand.CreateEditCommandOnDemand(factory,
-                nodeData, string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
-            if (editName != null) commands.Add(editName);
-            if (editValue != null) commands.Add(editValue);
-            if (editIncrement != null) commands.Add(editIncrement);
-            return new EditResult(commands.Count > 0 ? new CompositeCommand(commands) : null, false, localServiceParam);
+            IEnumerable<CommandBase?> Get()
+            {
+                if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) yield break;
+                object idx = index;
+                yield return CheckedCommand.Property.Modify(nodeData,
+                    string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
+                yield return CheckedCommand.Property.Modify(nodeData,
+                    string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
+                yield return CheckedCommand.Property.Modify(nodeData,
+                    string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
+            }
+            return new EditResult(Commands.FromEnumerable(Get()), false, localServiceParam);
+        }
+
+        protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
+        {
+            if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return;
+            if (e.Key == string.Format(term.NameRule.Key, index))
+            {
+                SetProxy(e.NewValue, _propInit, _propIncrement);
+            }
+            else if (e.Key == string.Format(term.InitRule.Key, index))
+            {
+                SetProxy(_propName, e.NewValue, _propIncrement);
+            }
+            else if (e.Key == string.Format(term.IncrementRule.Key, index))
+            {
+                SetProxy(_propName, _propInit, e.NewValue);
+            }
         }
     }
 
@@ -94,7 +111,7 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
         PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public RepeatVariableDefinitionPropertyItemViewModel Create(RepeatPropertyViewItemTerm term, int index,
-            NodeData nodeData, LocalServiceParam localServiceParam)
+            EditorNode nodeData, LocalServiceParam localServiceParam)
         {
             return new RepeatVariableDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam, propertyEditWizardProviderService);
         }

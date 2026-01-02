@@ -23,9 +23,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         private readonly ICommand _decrease;
         public ICommand Decrease => _decrease;
 
-        public CollectionCountPropertyItemViewModel(NodeData nodeData, LocalServiceParam localServiceParam,
-            string? key, EditorNodeFactory editorNodeFactory, PropertyEditWizardProviderService propertyEditWizardProviderService)
-            : base(nodeData, localServiceParam, key, editorNodeFactory, propertyEditWizardProviderService)
+        public CollectionCountPropertyItemViewModel(IReadOnlyList<EditorNode> nodeData, string? key,
+            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam, PropertyEditWizardProviderService propertyEditWizardProviderService)
+            : base(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService)
         {
             _increase = new RelayCommand(() =>
             {
@@ -43,9 +43,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             });
         }
 
-        public override EditResult ResolveEditingNodeCommand(NodeData nodeData, LocalServiceParam context, string edited)
+        public override EditResult ResolveBatchEditingNodeCommand(IReadOnlyList<EditorNode> nodeData, LocalServiceParam context, string edited)
         {
-            return base.ResolveEditingNodeCommand(nodeData, context, edited) with
+            return base.ResolveBatchEditingNodeCommand(nodeData, context, edited) with
             {
                 ShouldRefreshView = true
             };
@@ -53,13 +53,12 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class CollectionCountPropertyItemViewModelFactory(EditorNodeFactory editorNodeFactory,
-        PropertyEditWizardProviderService propertyEditWizardProviderService) 
+    public class CollectionCountPropertyItemViewModelFactory(PropertyEditWizardProviderService propertyEditWizardProviderService)
         : IBasicPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel>
     {
-        public CollectionCountPropertyItemViewModel Create(NodeData nodeData, LocalServiceParam localServiceParam, string? key)
+        public CollectionCountPropertyItemViewModel Create(IReadOnlyList<EditorNode> nodeData, string? key, BatchEditStatus isBatchSame, LocalServiceParam localServiceParam)
         {
-            return new CollectionCountPropertyItemViewModel(nodeData, localServiceParam, key, editorNodeFactory, propertyEditWizardProviderService);
+            return new CollectionCountPropertyItemViewModel(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService);
         }
     }
 }

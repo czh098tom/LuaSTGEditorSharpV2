@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.ViewModel;
+using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -32,8 +33,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public override string I18NTitleKey => "panel_property_title";
 
-        private NodeData? editing = null;
-
         public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
@@ -51,27 +50,40 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public override void HandleSelectedNodeChangedImpl(object o, SelectedNodeChangedEventArgs args)
         {
             var param = new LocalServiceParam(SourceDocument ?? DocumentModel.Empty);
-            if (SourceNodes.Length == 1)
+
+            LoadNodeData(param, SourceNodes);
+        }
+
+        private void LoadNodeData(LocalServiceParam param, EditorNode[] nodeData)
+        {
+            if (nodeData.Length == 0)
             {
-                editing = SourceNodes[0];
+                LoadProperties([]);
+            }
+            else if (nodeData.Length == 1)
+            {
+                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
+                    .GetPropertyViewModelOfNode(nodeData[0], param);
+                LoadProperties(list);
             }
             else
             {
-                editing = null;
+                var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
+                    .GetPropertyViewModelOfMultipleNodes(nodeData, param);
+                LoadProperties(list);
             }
-            LoadNodeData(param, editing ?? NodeData.Empty);
-        }
-
-        private void LoadNodeData(LocalServiceParam param, NodeData nodeData)
-        {
-            var list = ServiceProvider.GetRequiredService<PropertyViewServiceProvider>()
-                .GetPropertyViewModelOfNode(nodeData, param);
-            LoadProperties(list);
         }
 
         private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels)
         {
             var index = SelectedIndex;
+            foreach (var tab in Tabs)
+            {
+                foreach (var item in tab.Properties)
+                {
+                    item.Dispose();
+                }
+            }
             Tabs.Clear();
             for (int i = 0; i < viewModels.Count; i++)
             {
@@ -80,6 +92,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
             if (index >= viewModels.Count)
             {
                 SelectedIndex = viewModels.Count - 1;
+            }
+            if (index < 0)
+            {
+                SelectedIndex = 0;
             }
             else
             {

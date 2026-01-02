@@ -2,19 +2,25 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:ce="clr-namespace:CommunityToolkit.Mvvm.ComponentModel;assembly=CommunityToolkit.Mvvm"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                     xmlns:e="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
                     xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lwc="clr-namespace:LuaSTGEditorSharpV2.WPF.Converter;assembly=LuaSTGEditorSharpV2.WPF"
-                    xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView">
+                    xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView"
+                    xmlns:lpvc="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Converter">
+    <lpvc:BatchStatusToWaterMarkConverter x:Key="BatchStatusToWaterMarkConverter"/>
     <DataTemplate x:Key="property:default">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
                        Margin="5,0,5,0" />
-            <TextBox Grid.Column="1" Grid.ColumnSpan="2" 
-                     MinWidth="150"
-                     HorizontalAlignment="Stretch"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <xctk:WatermarkTextBox Grid.Column="1" Grid.ColumnSpan="2" 
+                                   MinWidth="150"
+                                   HorizontalAlignment="Stretch"
+                                   Padding="0"
+                                   Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                   Watermark="{Binding BatchEditStatus, Converter={StaticResource BatchStatusToWaterMarkConverter}}">
+            </xctk:WatermarkTextBox>
         </lsv:PropertyItemGrid>
     </DataTemplate>
     <DataTemplate x:Key="property:childNode">
@@ -152,18 +158,26 @@
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
                        Margin="5,0,5,0" />
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBox
-                     Grid.Row="0"
+            <TextBox Grid.Column="1"
                      MinWidth="150"
                      HorizontalAlignment="Stretch"
                      TextWrapping="Wrap"
                      Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                <lw:FileButton Grid.Row="1" Margin="10,10" FilePath="{Binding Value}"
+            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                Command="{Binding ShowEditWindow}"
+                                />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <DataTemplate x:Key="property:imagePreview">
+        <lsv:PropertyItemGrid>
+            <Grid Grid.Column="0" Grid.ColumnSpan="3">
+                <lw:FileButton Margin="10,10" FilePath="{Binding Value}"
                                Visibility="{Binding Value, Converter={StaticResource PathValidToVisibilityConverter}}"
                                VerticalContentAlignment="Center" 
                                HorizontalContentAlignment="Center"
@@ -195,15 +209,6 @@
                     <lw:AutoScaleImage Source="{Binding Value}"/>
                 </lw:FileButton>
             </Grid>
-            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction PassEventArgsToCommand="True"
-                                Command="{Binding ShowEditWindow}"
-                                />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
         </lsv:PropertyItemGrid>
     </DataTemplate>
 </ResourceDictionary>

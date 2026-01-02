@@ -31,7 +31,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
-    public class WorkSpaceViewModel : InjectableViewModel
+    public class WorkSpaceViewModel : InjectableViewModel, IDisposable
     {
         public WorkSpaceCollection<AnchorableViewModelBase> Anchorables { get; private set; } = [];
 
@@ -39,7 +39,6 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public ObservableCollection<DocumentViewModel> Documents => _documents;
 
         private DocumentViewModel? _activeDocument;
-
         private readonly Dictionary<IDocument, DocumentViewModel> _documentMapping = [];
 
         public QueuedBoolHandle IsEnabledHandle { get; private set; }
@@ -48,7 +47,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             get => IsEnabledHandle.Value;
         }
 
-        public NodeData[] SelectedNodes { get; private set; } = [];
+        public EditorNode[] SelectedNodes { get; private set; } = [];
 
         [MemberNotNullWhen(true, nameof(_activeDocument))]
         public bool HaveActiveDocument => _activeDocument != null;
@@ -58,6 +57,8 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public bool HaveSelectedSingle => SelectedNodes.Length == 1 && _activeDocument != null;
 
         public event EventHandler<OnEnableHandleRequestedEventArgs>? EnableRequesting;
+
+        private bool _disposedValue;
 
         public WorkSpaceViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
@@ -114,12 +115,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
             return result;
         }
 
-        public void BroadcastSelectedNodeChanged(DocumentViewModel? dvm, NodeData[] nodeData)
+        public void BroadcastSelectedNodeChanged(DocumentViewModel? dvm, EditorNode[] editorNode)
         {
-            BroadcastSelectedNodeChanged(dvm?.DocumentModel, nodeData);
+            BroadcastSelectedNodeChanged(dvm?.Document, editorNode);
         }
 
-        public void BroadcastSelectedNodeChanged(IDocument? documentModel, NodeData[] nodeData)
+        public void BroadcastSelectedNodeChanged(IDocument? documentModel, EditorNode[] editorNode)
         {
             if (documentModel == null)
             {
@@ -129,18 +130,18 @@ namespace LuaSTGEditorSharpV2.ViewModel
             {
                 _activeDocument = _documentMapping.GetValueOrDefault(documentModel);
             }
-            SelectedNodes = nodeData;
+            SelectedNodes = editorNode;
             foreach (var p in Anchorables)
             {
-                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
+                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, EditorNodes = editorNode });
             }
             foreach (var p in _documents)
             {
-                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, NodeData = nodeData });
+                p?.HandleSelectedNodeChanged(this, new() { DocumentModel = documentModel, EditorNodes = editorNode });
             }
         }
 
-        private void AddCommandToDocument(CommandBase? command, IDocument? document, NodeData[] nodeData, bool shouldRefresh)
+        private void AddCommandToDocument(CommandBase? command, IDocument? document, EditorNode[] editorNode, bool shouldRefresh)
         {
             if (command == null || document == null) return;
             var dvm = _documentMapping!.GetValueOrDefault(document, null);
@@ -148,7 +149,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             dvm.ExecuteCommand(command);
             if (shouldRefresh)
             {
-                BroadcastSelectedNodeChanged(document, nodeData);
+                BroadcastSelectedNodeChanged(document, editorNode);
             }
         }
 
@@ -189,10 +190,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 dvm.AskSaveBeforeClose();
             }
             _documents.Remove(dvm);
-            _documentMapping.Remove(dvm.DocumentModel);
+            _documentMapping.Remove(dvm.Document);
             dvm.CloseActiveDocument();
 
-            DisposeOpenedDocument(dvm);
+            DestroyReferencesForOpenedDocument(dvm);
+            dvm.Dispose();
         }
 
         public void UndoActiveDocument()
@@ -222,18 +224,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void DeleteSelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
-            {
-                if (n.PhysicalParent == null) return null;
-                return new RemoveChildCommand(ServiceProvider.GetRequiredService<EditorNodeFactory>(),
-                    n.PhysicalParent, n.PhysicalParent.PhysicalChildren.FindIndex(n));
-            }), _activeDocument.DocumentModel, [], true);
+            AddCommandToDocument(SelectedNodes.SelectFilter(CheckedCommand.RemoveNode), 
+                _activeDocument.Document, [], true);
         }
 
         public void CopySelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            var nodes = _activeDocument.DocumentModel.Root.FindPhysicalMinForestContaining(SelectedNodes);
+            var nodes = _activeDocument.Document.Root.FindPhysicalMinForestContaining([.. SelectedNodes.Select(en => en.Source)]);
             ServiceProvider.GetRequiredService<ClipboardService>().CopyNode(nodes);
         }
 
@@ -252,9 +250,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             var clipBoardContent = clipBoard.GetNodes();
 
-            AddCommandToDocument(SelectedNodes.SelectCommand(n =>
-                clipBoardContent.SelectCommand(c => insCommandHost.InsertCommandFactory.CreateInsertCommand(n, c)))
-                , _activeDocument.DocumentModel, SelectedNodes, true);
+            AddCommandToDocument(SelectedNodes.SelectFilter(n =>
+                insCommandHost.InsertCommandFactory.CreateInsertCommand(n, clipBoardContent))
+                , _activeDocument.Document, SelectedNodes, true);
         }
 
         public async void ViewCode()
@@ -269,9 +267,9 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var dialog = new SaveFileDialog()
             {
                 CheckPathExists = true,
-                FileName = _activeDocument.DocumentModel.FileName,
+                FileName = _activeDocument.Document.FileName,
                 Filter = "*.*|*.*",
-                InitialDirectory = _activeDocument.DocumentModel.FilePath ?? string.Empty,
+                InitialDirectory = _activeDocument.Document.FilePath ?? string.Empty,
             };
             if (dialog.ShowDialog() != DialogResult.OK) return;
             var fileName = dialog.FileName;
@@ -299,7 +297,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             using var _ = new CompositeDisposable(RaiseEnableRequestingEvent());
             await Task.WhenAll(SelectedNodes
-                .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)?.BuildingTask)
+                .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n.Source, param)?.BuildingTask)
                 .OfType<NamedBuildingTask>()
                 .Select(t => t.Execute(buildingContext)));
         }
@@ -322,7 +320,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             }
             var root = SelectedNodes[0];
             foreach (CodeData codeData in ServiceProvider.GetRequiredService<CodeGeneratorServiceProvider>()
-                .GenerateCode(root, new LocalServiceParam(_activeDocument.SourceDocument)))
+                .GenerateCode(root.Source, new LocalServiceParam(_activeDocument.SourceDocument)))
             {
                 yield return codeData;
             }
@@ -335,17 +333,17 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var taskFactoryService = ServiceProvider.GetRequiredService<BuildTaskFactoryServiceProvider>();
             var selectedDoc = _activeDocument.SourceDocument;
             var param = new LocalServiceParam(selectedDoc);
-            return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n, param)
+            return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n.Source, param)
                 ?.BuildingTask is NamedBuildingTask);
         }
 
-        private void DisposeOpenedDocument(DocumentViewModel dvm)
+        private void DestroyReferencesForOpenedDocument(DocumentViewModel dvm)
         {
             foreach (var p in Anchorables)
             {
-                if (p.SourceDocument == dvm.DocumentModel)
+                if (p.SourceDocument == dvm.Document)
                 {
-                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, NodeData = [] });
+                    p?.HandleSelectedNodeChanged(this, new() { DocumentModel = null, EditorNodes = [] });
                 }
             }
             if (_activeDocument == dvm)
@@ -356,7 +354,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         private void HandleAddCommandEvent(object? o, DockingViewModelBase.PublishCommandEventArgs e)
         {
-            AddCommandToDocument(e.Command, e.DocumentModel, e.NodeData, e.ShouldRefreshView);
+            AddCommandToDocument(e.Command, e.DocumentModel, e.EditorNodes, e.ShouldRefreshView);
         }
 
         private IEnumerable<IDisposable> RaiseEnableRequestingEvent()
@@ -364,6 +362,37 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var args = new OnEnableHandleRequestedEventArgs();
             EnableRequesting?.Invoke(this, args);
             return args.Disposables;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    foreach (var anc in Anchorables)
+                    {
+                        anc.Dispose();
+                    }
+                    Anchorables.Clear();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
+        // ~WorkSpaceViewModel()
+        // {
+        //     // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

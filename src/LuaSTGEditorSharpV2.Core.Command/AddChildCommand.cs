@@ -11,12 +11,11 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class AddChildCommand : ConcreteCommand
     {
-        public NodeData Parent { get; private set; }
+        public EditorNode Parent { get; private set; }
         public NodeData Child { get; private set; }
         public int Position { get; private set; }
 
-        public AddChildCommand(EditorNodeFactory factory, NodeData parent, int position, NodeData child)
-            : base(factory)
+        public AddChildCommand(EditorNode parent, int position, NodeData child)
         {
             Parent = parent;
             Child = child.DeepClone();
@@ -25,13 +24,13 @@ namespace LuaSTGEditorSharpV2.Core.Command
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            var parent = EditorNodeFactory.GetOrCreate(Parent, editorDocument);
+            var parent = Parent;
             parent.Insert(Position, Child);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
-            var parent = EditorNodeFactory.GetOrCreate(Parent, editorDocument);
+            var parent = Parent;
             parent.RemoveAt(Position);
         }
     }

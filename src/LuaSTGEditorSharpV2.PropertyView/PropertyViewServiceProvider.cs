@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -44,7 +45,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             return new PropertyViewContext(ServiceProvider, localSettings, serviceSettings);
         }
 
-        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(EditorNode nodeData
             , LocalServiceParam localParam)
             => GetPropertyViewModelOfNode(nodeData, localParam, ServiceSettings);
 
@@ -56,33 +57,72 @@ namespace LuaSTGEditorSharpV2.PropertyView
         /// <param name="serviceSettings"> The <see cref="PropertyViewServiceSettings"/> for this action. </param>
         /// <param name="subtype"></param>
         /// <returns></returns>
-        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(EditorNode nodeData
             , LocalServiceParam localParam, PropertyViewServiceSettings serviceSettings)
         {
-            var ctx = GetContextOfNode(nodeData, localParam, serviceSettings);
+            var ctx = GetContextOfNode(nodeData.Source, localParam, serviceSettings);
             return GetPropertyViewModelOfNode(nodeData, ctx);
         }
 
-        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(NodeData nodeData, PropertyViewContext ctx)
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfNode(EditorNode nodeData, PropertyViewContext ctx)
         {
             var list = new List<PropertyTabViewModel>();
-            list.AddRange(GetServiceOfNode(nodeData).ResolvePropertyViewModelOfNode(nodeData, ctx));
+            list.AddRange(GetServiceOfNode(nodeData.Source).ResolvePropertyViewModelOfNode(nodeData, ctx));
             list.Add(CreateDefaultViewModel(nodeData, ctx));
             return list;
         }
 
-        private PropertyTabViewModel CreateDefaultViewModel(NodeData nodeData, PropertyViewContext context)
+        public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfMultipleNodes(EditorNode[] nodeData
+            , LocalServiceParam localParam)
         {
-            List<PropertyItemViewModelBase> result = new(nodeData.Properties.Count);
-            foreach (var prop in nodeData.Properties)
+            return [CreateDefaultViewModelForNodes(nodeData, localParam)];
+        }
+
+        private PropertyTabViewModel CreateDefaultViewModel(EditorNode nodeData, PropertyViewContext context)
+        {
+            List<PropertyItemViewModelBase> result = new(nodeData.Source.Properties.Count);
+            foreach (var prop in nodeData.Source.Properties)
             {
                 var vm = ServiceProvider.GetRequiredService<BasicPropertyItemViewModelFactory>()
-                    .Create(nodeData, context.LocalParam, prop.Key);
+                    .Create([nodeData], prop.Key, BatchEditStatus.AllSame, context.LocalParam);
                 vm.Name = prop.Key;
                 vm.Value = prop.Value;
                 result.Add(vm);
             }
-            PropertyTabViewModel tab = new()
+            PropertyTabViewModel tab = new(true)
+            {
+                Caption = NativeViewI18NCaption
+            };
+            result.ForEach(tab.Properties.Add);
+            return tab;
+        }
+
+        private PropertyTabViewModel CreateDefaultViewModelForNodes(IEnumerable<EditorNode> nodes, LocalServiceParam localServiceParam)
+        {
+            var firstType = nodes.First().Source.TypeUID;
+            if (nodes.Any(n => n.Source.TypeUID != firstType))
+            {
+                return new PropertyTabViewModel(true)
+                {
+                    Caption = NativeViewI18NCaption
+                };
+            }
+
+            List<PropertyItemViewModelBase> result = [];
+            var nodeList = nodes.ToList();
+            var props = nodes.SelectMany(n => n.Source.Properties, (n, p) => (node: n, prop: p))
+                .GroupBy(p => p.prop.Key);
+            foreach (var gp in props)
+            {
+                var value = gp.First().prop.Value;
+                var allSame = gp.All(t => t.prop.Value == value);
+                var vm = ServiceProvider.GetRequiredService<BasicPropertyItemViewModelFactory>()
+                    .Create(nodeList, gp.Key, allSame ? BatchEditStatus.AllSame : BatchEditStatus.SomeDifferent, localServiceParam);
+                vm.Name = gp.Key;
+                vm.Value = allSame ? value : string.Empty;
+                result.Add(vm);
+            }
+            PropertyTabViewModel tab = new(true)
             {
                 Caption = NativeViewI18NCaption
             };

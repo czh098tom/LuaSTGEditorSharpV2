@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
@@ -19,7 +20,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             Editor = new PropertyViewEditorType("collectionCount");
         }
 
-        public override PropertyItemViewModelBase GetViewModel(NodeData nodeData, PropertyViewContext context)
+        public override PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
         {
             return GetViewModelImpl<CollectionCountPropertyItemViewModelFactory, CollectionCountPropertyItemViewModel>(nodeData, context);
         }
