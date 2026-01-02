@@ -128,7 +128,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
             return true;
         }
 
-        public void AskSaveBeforeClose()
+        public bool AskSaveBeforeClose()
         {
             var localization = ServiceProvider.GetRequiredService<LocalizationService>();
             var messageBoxResult =
@@ -139,11 +139,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
                     MessageBoxButton.YesNoCancel,
                     MessageBoxImage.Information
                     );
-            if (messageBoxResult == MessageBoxResult.Cancel) return;
+            if (messageBoxResult == MessageBoxResult.Cancel) return false;
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                SaveOrAskToSaveAs();
+                return SaveOrAskToSaveAs();
             }
+            return true;
         }
 
         public void CloseActiveDocument()

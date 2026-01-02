@@ -187,7 +187,10 @@ namespace LuaSTGEditorSharpV2.ViewModel
             if (!dvm.CanClose) return;
             if (dvm.IsModified)
             {
-                dvm.AskSaveBeforeClose();
+                if (!dvm.AskSaveBeforeClose())
+                {
+                    return;
+                }
             }
             _documents.Remove(dvm);
             _documentMapping.Remove(dvm.Document);
