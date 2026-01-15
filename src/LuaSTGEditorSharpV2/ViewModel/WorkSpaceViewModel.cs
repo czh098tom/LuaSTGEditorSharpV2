@@ -28,6 +28,7 @@ using LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory;
 using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
 using LuaSTGEditorSharpV2.Core.Building;
 using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.Debugging.ViewModel;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -70,9 +71,23 @@ namespace LuaSTGEditorSharpV2.ViewModel
             return (T)AddOrActivatePage(typeof(T));
         }
 
-        public AnchorableViewModelBase AddOrActivatePage(Type type)
+        public AnchorableViewModelBase? GetAnchorable(Type type)
         {
             if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase visible)
+            {
+                return visible;
+            }
+            return null;
+        }
+
+        public T? GetAnchorable<T>() where T : AnchorableViewModelBase
+        {
+            return (T?)GetAnchorable(typeof(T));
+        }
+
+        public AnchorableViewModelBase AddOrActivatePage(Type type)
+        {
+            if (GetAnchorable(type) is AnchorableViewModelBase visible)
             {
                 return visible;
             }
@@ -85,7 +100,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         {
             foreach (var type in types)
             {
-                if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) == null)
+                if (GetAnchorable(type) == null)
                 {
                     var vm = (AnchorableViewModelBase)ServiceProvider.GetRequiredService(type);
                     AddPage(vm);
@@ -105,7 +120,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
         public AnchorableViewModelBase ChangeActiveState(Type type)
         {
-            if (Anchorables.FirstOrDefault(anc => anc.GetType() == type) is AnchorableViewModelBase visible)
+            if (GetAnchorable(type) is AnchorableViewModelBase visible)
             {
                 visible.IsVisible = !visible.IsVisible;
                 return visible;
@@ -227,7 +242,7 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void DeleteSelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            AddCommandToDocument(SelectedNodes.SelectFilter(CheckedCommand.RemoveNode), 
+            AddCommandToDocument(SelectedNodes.SelectFilter(CheckedCommand.RemoveNode),
                 _activeDocument.Document, [], true);
         }
 
@@ -294,9 +309,12 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             var selectedDoc = _activeDocument.SourceDocument;
 
+            var buildingLogWriter = GetAnchorable<DebugOutputPageViewModel>()?.OutputLogWriter?.ToBuildingLogWriter();
+
             var taskFactoryService = ServiceProvider.GetRequiredService<BuildTaskFactoryServiceProvider>();
             var param = new LocalServiceParam(selectedDoc);
-            var buildingContext = ServiceProvider.GetRequiredService<BuildingContextFactory>().Create(param);
+            var buildingContext = ServiceProvider.GetRequiredService<BuildingContextFactory>()
+                .Create(param, buildingLogWriter ?? BuildingLogWriter.Empty);
 
             using var _ = new CompositeDisposable(RaiseEnableRequestingEvent());
             await Task.WhenAll(SelectedNodes

@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="panel_output_clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="panel_output_source_box_build" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="panel_output_source_box_debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="panel_output_source_label" xml:space="preserve">
+    <value>Output Data Source: </value>
+  </data>
   <data name="panel_output_title" xml:space="preserve">
     <value>Output</value>
   </data>

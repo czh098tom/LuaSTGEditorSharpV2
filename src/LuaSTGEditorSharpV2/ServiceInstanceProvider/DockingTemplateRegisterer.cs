@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Debugging.ViewModel;
 using LuaSTGEditorSharpV2.DockingWindows;
 using LuaSTGEditorSharpV2.NodeProfile.WPF.ViewModel;
 using LuaSTGEditorSharpV2.PropertyView;
@@ -23,6 +24,7 @@ namespace LuaSTGEditorSharpV2.ServiceInstanceProvider
             AddDocument(serviceProvider, arr);
             AddToolbox(serviceProvider, arr);
             AddPropertyView(serviceProvider, arr);
+            AddDebugOutput(serviceProvider, arr);
             AddNodeProfile(serviceProvider, arr);
 
             return arr;
@@ -43,6 +45,12 @@ namespace LuaSTGEditorSharpV2.ServiceInstanceProvider
         private static void AddPropertyView(IServiceProvider serviceProvider, List<DockingWindowDescriptor> arr)
         {
             AddImpl<PropertyPageViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.PropertyView;component/Docking.xaml",
+                serviceProvider, arr);
+        }
+
+        private static void AddDebugOutput(IServiceProvider serviceProvider, List<DockingWindowDescriptor> arr)
+        {
+            AddImpl<DebugOutputPageViewModel>("pack://application:,,,/LuaSTGEditorSharpV2.Debugging;component/Docking.xaml",
                 serviceProvider, arr);
         }
 

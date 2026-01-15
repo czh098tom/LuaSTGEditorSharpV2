@@ -31,7 +31,9 @@
         Icon="pack://application:,,,/icon.ico"
         FocusManager.FocusedElement="{Binding ElementName=RibbonWin}">
     <Window.Resources>
-        <lwc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <lwc:BoolToVisibilityConverter PositiveVisibility="Visible" 
+                                       NegativeVisibility="Hidden" 
+                                       x:Key="BoolToVisibilityConverter" />
         <sys:Boolean x:Key="TRUE">True</sys:Boolean>
         <sys:Boolean x:Key="FALSE">False</sys:Boolean>
     </Window.Resources>
@@ -234,7 +236,7 @@
                                 <Style TargetType="{x:Type xcad:LayoutAnchorableItem}" >
                                     <Setter Property="Title" Value="{Binding Model.Title}" />
                                     <Setter Property="HideCommand" Value="{Binding Model.CloseCommand}" />
-                                    <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource FALSE}}" />
+                                    <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     <Setter Property="CanHide" Value="{Binding Model.CanClose}" />
                                     <Setter Property="ContentId" Value="{Binding Model.ContentID}" />
                                     <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>

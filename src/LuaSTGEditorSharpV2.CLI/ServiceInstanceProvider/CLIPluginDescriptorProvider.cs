@@ -100,7 +100,7 @@ namespace LuaSTGEditorSharpV2.CLI.ServiceInstanceProvider
                         foreach (var task in tasks)
                         {
                             using var ctx = serviceProvider.GetRequiredService<BuildingContextFactory>()
-                                .Create(new LocalServiceParam(doc));
+                                .Create(new LocalServiceParam(doc), BuildingLogWriter.Create(s=> Console.WriteLine(s)));
                             try
                             {
                                 await task.Execute(ctx);

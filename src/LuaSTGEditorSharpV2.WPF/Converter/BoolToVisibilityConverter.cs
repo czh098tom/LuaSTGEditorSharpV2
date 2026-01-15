@@ -18,40 +18,43 @@ namespace LuaSTGEditorSharpV2.WPF.Converter
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public sealed class BoolToVisibilityConverter : IValueConverter
     {
-        /// <summary>
-        /// Converts a <seealso cref="bool"/> value
-        /// into a <seealso cref="Visibility"/> value.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
+        public Visibility PositiveVisibility { get; set; } = Visibility.Visible;
+        public Visibility NegativeVisibility { get; set; } = Visibility.Hidden;
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool IsInverted = parameter == null ? false : (bool)parameter;
-            bool IsVisible = value == null ? false : (bool)value;
-            if (IsVisible)
-                return IsInverted ? Visibility.Hidden : Visibility.Visible;
-            else
-                return IsInverted ? Visibility.Visible : Visibility.Hidden;
+            bool IsVisible = value != null && (bool)value;
+            return IsVisible ? PositiveVisibility : NegativeVisibility;
         }
 
-        /// <summary>
-        /// Converts a <seealso cref="Visibility"/> value
-        /// into a <seealso cref="bool"/> value.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Visibility visiblility = value == null ? Visibility.Hidden : (Visibility)value;
-            bool IsInverted = parameter == null ? false : (bool)parameter;
-
-            return visiblility == Visibility.Visible != IsInverted;
+            if (value is Visibility vis)
+            {
+                if (vis == PositiveVisibility)
+                {
+                    return true;
+                }
+                else if (vis == NegativeVisibility)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (vis == Visibility.Visible)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

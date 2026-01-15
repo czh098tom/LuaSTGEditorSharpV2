@@ -1,0 +1,31 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "DefaultLuaSTGBuilding",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "taskName" },
+          "Caption": {
+            "Neutral": "Task Name",
+            "Localized": {
+              "zh": "任务名"
+            }
+          }
+        },
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "outputName" },
+          "Caption": {
+            "Neutral": "Output Name",
+            "Localized": {
+              "zh": "输出名称"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
