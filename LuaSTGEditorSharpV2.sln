@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32929.385
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2", "src\LuaSTGEditorSharpV2\LuaSTGEditorSharpV2.csproj", "{C7F27E60-6C53-4F8D-A44A-6488349224A9}"
 EndProject
@@ -64,6 +64,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.NodeProfile", "src\LuaSTGEditorSharpV2.NodeProfile\LuaSTGEditorSharpV2.NodeProfile.csproj", "{2083983C-7A74-48A4-A310-C30CD668CBF8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuaSTGEditorSharpV2.NodeProfile.WPF", "src\LuaSTGEditorSharpV2.NodeProfile.WPF\LuaSTGEditorSharpV2.NodeProfile.WPF.csproj", "{E6D7730D-7282-4B75-91AB-0C3AFF30D19B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaSTGEditorSharpV2.Execution", "src\LuaSTGEditorSharpV2.Execution\LuaSTGEditorSharpV2.Execution.csproj", "{4B15ECAD-4CF4-4B46-B452-A1707977E6FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +177,10 @@ Global
 		{E6D7730D-7282-4B75-91AB-0C3AFF30D19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6D7730D-7282-4B75-91AB-0C3AFF30D19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6D7730D-7282-4B75-91AB-0C3AFF30D19B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B15ECAD-4CF4-4B46-B452-A1707977E6FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B15ECAD-4CF4-4B46-B452-A1707977E6FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B15ECAD-4CF4-4B46-B452-A1707977E6FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B15ECAD-4CF4-4B46-B452-A1707977E6FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,6 +213,7 @@ Global
 		{7FF4EE3B-DB97-42DC-93EB-AA81F94EFD74} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{2083983C-7A74-48A4-A310-C30CD668CBF8} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 		{E6D7730D-7282-4B75-91AB-0C3AFF30D19B} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
+		{4B15ECAD-4CF4-4B46-B452-A1707977E6FB} = {BED9D5AD-3555-420E-87F8-35D6C45F34CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A88633F9-126D-4418-B464-61038BFEB74C}
