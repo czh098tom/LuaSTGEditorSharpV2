@@ -126,6 +126,9 @@
   <data name="ribbon_button_buildSelected_title" xml:space="preserve">
     <value>构建选中...</value>
   </data>
+  <data name="ribbon_button_executeSelected_title" xml:space="preserve">
+    <value>执行选中...</value>
+  </data>
   <data name="ribbon_button_childDirection_title" xml:space="preserve">
     <value>子节点</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="ribbon_group_building_title" xml:space="preserve">
     <value>构建</value>
+  </data>
+  <data name="ribbon_group_execution_title" xml:space="preserve">
+    <value>执行</value>
   </data>
   <data name="ribbon_group_code_title" xml:space="preserve">
     <value>代码导出</value>

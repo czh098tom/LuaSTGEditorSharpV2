@@ -8,7 +8,7 @@ using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Execution
 {
-    public class DefaultExecutionConfigService : ExecutionConfigServiceBase
+    public class DefaultExecutionConfigService(IServiceProvider serviceProvider) : ExecutionConfigServiceBase(serviceProvider)
     {
         public override ExecutionConfig? GetExecutionConfig(NodeData nodeData, ExecutionConfigContext context)
         {

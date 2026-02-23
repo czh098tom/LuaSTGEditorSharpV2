@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Execution
 {
-    public record ExecutionConfig(string Name, ExecutionTaskFactory ExecutionTaskFactory)
-    {
-    }
+    public delegate Task ExecutionTaskFactory(IProgress<string> progressReporter, CancellationToken cancellationToken);
 }

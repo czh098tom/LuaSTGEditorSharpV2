@@ -27,6 +27,7 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Debugging\LuaSTGEditorSharpV2.Debugging.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Dialog\LuaSTGEditorSharpV2.Dialog.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.DockingWindows\LuaSTGEditorSharpV2.DockingWindows.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Execution\LuaSTGEditorSharpV2.Execution.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.NodeProfile.WPF\LuaSTGEditorSharpV2.NodeProfile.WPF.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Toolbox\LuaSTGEditorSharpV2.Toolbox.csproj" />
@@ -38,6 +39,7 @@
     <ProjectReference Include="..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj" />
     <ProjectReference Include="..\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.Building\LuaSTGEditorSharpV2.ServiceBridge.Building.csproj" />
     <ProjectReference Include="..\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator\LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.csproj" />
+    <ProjectReference Include="..\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.Execution\LuaSTGEditorSharpV2.ServiceBridge.Execution.csproj" />
     <ProjectReference Include="..\ServiceBridge\LuaSTGEditorSharpV2.ServiceBridge.UICustomization\LuaSTGEditorSharpV2.ServiceBridge.UICustomization.csproj" />
   </ItemGroup>
 

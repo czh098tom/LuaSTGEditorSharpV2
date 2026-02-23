@@ -228,6 +228,18 @@ namespace LuaSTGEditorSharpV2
             }
         }
 
+        private void ExecuteExecuteSelectedCommand(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                _viewModel.WorkSpace.ExecuteExecuteForSelected();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
         private void CanPerformRedoActiveDoc(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = _viewModel?.WorkSpace?.CanPerformRedoActivateDocument() ?? false;
@@ -252,6 +264,17 @@ namespace LuaSTGEditorSharpV2
                 return;
             }
             e.CanExecute = _viewModel.WorkSpace?.CanPerformBuild() ?? false;
+        }
+
+        private void CanExecuteExecuteForSingleNode(object sender, CanExecuteRoutedEventArgs e)
+        {
+            var haveSelected = _viewModel.WorkSpace?.HaveSelectedSingle ?? false;
+            if (!haveSelected)
+            {
+                e.CanExecute = false;
+                return;
+            }
+            e.CanExecute = _viewModel.WorkSpace?.CanPerformExecution() ?? false;
         }
 
         private void CanPaste(object sender, CanExecuteRoutedEventArgs e)

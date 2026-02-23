@@ -29,6 +29,8 @@ using LuaSTGEditorSharpV2.Core.Building.BuildTasks;
 using LuaSTGEditorSharpV2.Core.Building;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Debugging.ViewModel;
+using LuaSTGEditorSharpV2.Execution;
+using System.Threading;
 
 namespace LuaSTGEditorSharpV2.ViewModel
 {
@@ -309,7 +311,10 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             var selectedDoc = _activeDocument.SourceDocument;
 
-            var buildingLogWriter = GetAnchorable<DebugOutputPageViewModel>()?.OutputLogWriter?.ToBuildingLogWriter();
+            var outVM = GetAnchorable<DebugOutputPageViewModel>();
+            outVM?.SetSelectedOutput("build");
+
+            var buildingLogWriter = outVM?.OutputLogWriter?.ToBuildingLogWriter();
 
             var taskFactoryService = ServiceProvider.GetRequiredService<BuildTaskFactoryServiceProvider>();
             var param = new LocalServiceParam(selectedDoc);
@@ -321,6 +326,27 @@ namespace LuaSTGEditorSharpV2.ViewModel
                 .Select(n => taskFactoryService.GetWeightedBuildingTaskForNode(n.Source, param)?.BuildingTask)
                 .OfType<NamedBuildingTask>()
                 .Select(t => t.Execute(buildingContext)));
+        }
+
+        public async void ExecuteExecuteForSelected()
+        {
+            if (_activeDocument?.SourceDocument == null) throw new InvalidOperationException();
+            if (!_activeDocument.SaveOrAskToSaveAs()) return;
+
+            var selectedDoc = _activeDocument.SourceDocument;
+
+            var outVM = GetAnchorable<DebugOutputPageViewModel>();
+            outVM?.SetSelectedOutput("debug");
+
+            var executionLogWriter = outVM?.OutputLogWriter?.ToExecutionLogWriter() ?? ExecutionLogWriter.Empty;
+
+            var exec = ServiceProvider.GetRequiredService<ExecutionConfigServiceProvider>();
+            var param = new LocalServiceParam(selectedDoc);
+
+            using var _ = new CompositeDisposable(RaiseEnableRequestingEvent());
+            var first = SelectedNodes.First();
+            var fac = exec.GetExecutionConfigOfNode(first.Source, param)?.ExecutionTaskFactory;
+            await (fac?.Invoke(new Progress<string>(executionLogWriter.WriteLine), CancellationToken.None) ?? Task.CompletedTask);
         }
 
         private string GenerateCodeForFirstSelectedNode()
@@ -356,6 +382,17 @@ namespace LuaSTGEditorSharpV2.ViewModel
             var param = new LocalServiceParam(selectedDoc);
             return SelectedNodes.Any(n => taskFactoryService.GetWeightedBuildingTaskForNode(n.Source, param)
                 ?.BuildingTask is NamedBuildingTask);
+        }
+
+        public bool CanPerformExecution()
+        {
+            if (_activeDocument == null) return false;
+            if (_activeDocument.SourceDocument == null) return false;
+            var exec = ServiceProvider.GetRequiredService<ExecutionConfigServiceProvider>();
+            var selectedDoc = _activeDocument.SourceDocument;
+            var param = new LocalServiceParam(selectedDoc);
+            return SelectedNodes.Any(n => exec.GetExecutionConfigOfNode(n.Source, param)
+                ?.ExecutionTaskFactory != null);
         }
 
         private void DestroyReferencesForOpenedDocument(DocumentViewModel dvm)

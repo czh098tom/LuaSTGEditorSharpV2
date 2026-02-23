@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LuaSTGEditorSharpV2.ServiceBridge.Building.Resources {
+namespace LuaSTGEditorSharpV2.ServiceBridge.Execution.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Building.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.ServiceBridge.Building.Resources.Localized", typeof(Localized).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LuaSTGEditorSharpV2.ServiceBridge.Execution.Resources.Localized", typeof(Localized).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,11 @@ namespace LuaSTGEditorSharpV2.ServiceBridge.Building.Resources {
         }
         
         /// <summary>
-        ///   查找类似 Building 的本地化字符串。
+        ///   查找类似 Execution 的本地化字符串。
         /// </summary>
-        internal static string settings_title_buildTaskFactory {
+        internal static string settings_title_execution {
             get {
-                return ResourceManager.GetString("settings_title_buildTaskFactory", resourceCulture);
+                return ResourceManager.GetString("settings_title_execution", resourceCulture);
             }
         }
     }

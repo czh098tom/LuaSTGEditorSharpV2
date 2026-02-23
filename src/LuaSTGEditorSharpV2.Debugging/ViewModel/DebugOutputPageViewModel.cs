@@ -10,6 +10,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LuaSTGEditorSharpV2.Debugging.ViewModel
 {
@@ -109,6 +110,18 @@ namespace LuaSTGEditorSharpV2.Debugging.ViewModel
                 ClearStream = new();
             });
             _outputLogWriter = new OutputLogWriterImpl(this);
+        }
+
+        public void SetSelectedOutput(string name)
+        {
+            if (name == "build")
+            {
+                SelectedOutputSourceIndex = 0;
+            }
+            else if (name == "debug")
+            {
+                SelectedOutputSourceIndex = 1;
+            }
         }
 
         private void SetSelectedOutputSource(int index)
