@@ -10,10 +10,10 @@ namespace LuaSTGEditorSharpV2.Execution
 {
     [PackedServiceProvider]
     [ServiceName("Execution"), ServiceShortName("execfg")]
-    public class ExecutionConfigServiceProvider(IServiceProvider serviceProvider)
-        : ContextualNodeServiceProvider<ExecutionConfigServiceBase, ExecutionConfigContext, ExecutionConfigServiceSettings>(serviceProvider)
+    public class ExecutionConfigServiceProvider(IServiceProvider serviceProvider) : ContextualNodeServiceProvider<ExecutionConfigServiceBase, ExecutionConfigContext, ExecutionConfigServiceSettings>(serviceProvider)
     {
-        private static readonly ExecutionConfigServiceBase _defaultService = new DefaultExecutionConfigService();
+        private readonly ExecutionConfigServiceBase _defaultService = new DefaultExecutionConfigService(serviceProvider);
+
         protected override ExecutionConfigServiceBase DefaultService => _defaultService;
 
         public override sealed ExecutionConfigContext GetEmptyContext(LocalServiceParam localSettings

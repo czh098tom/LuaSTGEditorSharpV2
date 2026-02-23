@@ -75,6 +75,9 @@
         <CommandBinding Command="{x:Static lrc:LuaSTGBuildingCommand.BuildSelected}"
                         Executed="ExecuteBuildSelectedCommand"
                         CanExecute="CanExecuteBuildForSingleNode"/>
+        <CommandBinding Command="{x:Static lrc:LuaSTGExecutionCommand.ExecuteSelected}"
+                        Executed="ExecuteExecuteSelectedCommand"
+                        CanExecute="CanExecuteExecuteForSingleNode"/>
     </Window.CommandBindings>
     <lw:ScalableGrid>
         <DockPanel>
@@ -192,6 +195,12 @@
                                            Command="{x:Static lrc:LuaSTGBuildingCommand.BuildSelected}"
                                            KeyTip="B" 
                                            Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/debugstage.png" />
+                        </fluent:RibbonGroupBox>
+                        <fluent:RibbonGroupBox x:Name="Execution" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_group_execution_title}">
+                            <fluent:Button Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_button_executeSelected_title}" 
+                                           Command="{x:Static lrc:LuaSTGExecutionCommand.ExecuteSelected}"
+                                           KeyTip="B" 
+                                           Icon="pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/editor/run.png" />
                         </fluent:RibbonGroupBox>
                     </fluent:RibbonTabItem>
                     <fluent:RibbonTabItem x:Name="tabPage" Header="{lex:Loc LuaSTGEditorSharpV2:Localized:ribbon_tab_page_title}" KeyTip="P">

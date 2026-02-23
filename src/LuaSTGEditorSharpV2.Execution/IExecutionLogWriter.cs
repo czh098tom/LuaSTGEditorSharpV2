@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Execution
 {
-    public record ExecutionConfig(string Name, ExecutionTaskFactory ExecutionTaskFactory)
+    public interface IExecutionLogWriter
     {
+        public void WriteLine(string text);
     }
 }

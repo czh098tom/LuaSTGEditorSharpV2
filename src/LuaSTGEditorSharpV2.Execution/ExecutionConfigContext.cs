@@ -10,5 +10,6 @@ namespace LuaSTGEditorSharpV2.Execution
     public class ExecutionConfigContext(IServiceProvider serviceProvider, LocalServiceParam localParam, ExecutionConfigServiceSettings serviceSettings) 
         : NodeContextWithSettings<ExecutionConfigServiceSettings>(serviceProvider, localParam, serviceSettings)
     {
+        public ExecutionConfigServiceSettings Settings => ServiceSettings;
     }
 }
