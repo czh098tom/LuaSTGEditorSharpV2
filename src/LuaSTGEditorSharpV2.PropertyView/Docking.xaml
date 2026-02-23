@@ -17,7 +17,7 @@
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
                                       VerticalScrollBarVisibility="Visible"
                                       Margin="5">
-                            <ItemsControl ItemsSource="{Binding Properties}" Background="FloralWhite"
+                            <ItemsControl ItemsSource="{Binding Properties}" Background="{DynamicResource ResourceKey=inspector:background_brush}"
                                           Grid.IsSharedSizeScope="True"
                                           ItemContainerStyle="{DynamicResource ResourceKey=inspector:style}">
                                 <ItemsControl.ItemTemplateSelector>

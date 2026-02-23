@@ -19,7 +19,7 @@ namespace LuaSTGEditorSharpV2.Debugging.Resources {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Localized {
@@ -57,6 +57,42 @@ namespace LuaSTGEditorSharpV2.Debugging.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Clear 的本地化字符串。
+        /// </summary>
+        internal static string panel_output_clear {
+            get {
+                return ResourceManager.GetString("panel_output_clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Build 的本地化字符串。
+        /// </summary>
+        internal static string panel_output_source_box_build {
+            get {
+                return ResourceManager.GetString("panel_output_source_box_build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Debug 的本地化字符串。
+        /// </summary>
+        internal static string panel_output_source_box_debug {
+            get {
+                return ResourceManager.GetString("panel_output_source_box_debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Output Data Source:  的本地化字符串。
+        /// </summary>
+        internal static string panel_output_source_label {
+            get {
+                return ResourceManager.GetString("panel_output_source_label", resourceCulture);
             }
         }
         

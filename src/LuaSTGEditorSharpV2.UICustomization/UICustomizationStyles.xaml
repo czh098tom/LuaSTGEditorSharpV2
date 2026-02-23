@@ -21,4 +21,5 @@
             </Style>
         </Style.Resources>
     </Style>
+    <Brush x:Key="inspector:background_brush">White</Brush>
 </ResourceDictionary>

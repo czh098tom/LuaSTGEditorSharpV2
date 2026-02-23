@@ -13,25 +13,28 @@ namespace LuaSTGEditorSharpV2.Core.Building
 {
     public sealed class BuildingContext : IDisposable
     {
-        private Dictionary<string, string[]> _contextVariables = new();
+        private readonly Dictionary<string, string[]> _contextVariables = [];
 
         public BuildingContexturalTemporaryFiles TempFiles { get; private set; } = new ();
         public LocalServiceParam LocalParam { get; private set; }
         public IServiceProvider ServiceProvider { get; private set; }
+        public IBuildingLogWriter LogWriter { get; private set; }
 
-        private JObject _serviceSettings = [];
-        private IReadOnlyDictionary<string, object> _serviceShortName2SettingsDict;
+        private readonly JObject _serviceSettings = [];
+        private readonly IReadOnlyDictionary<string, object> _serviceShortName2SettingsDict;
 
         public BuildingContext(BuildingContext source)
-            : this(source.ServiceProvider, source.LocalParam, source._serviceShortName2SettingsDict)
+            : this(source.ServiceProvider, source.LocalParam, source.LogWriter, source._serviceShortName2SettingsDict)
         {
         }
 
         public BuildingContext(IServiceProvider serviceProvider, LocalServiceParam serviceParam, 
+            IBuildingLogWriter logWriter,
             IReadOnlyDictionary<string, object>? serviceShortName2SettingsDict = null) 
         {
             LocalParam = serviceParam;
             ServiceProvider = serviceProvider;
+            LogWriter = logWriter;
             serviceShortName2SettingsDict ??= ServiceProvider
                 .GetRequiredService<NodePackageProvider>().GetServiceShortName2SettingsDict();
             _serviceShortName2SettingsDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(
@@ -61,9 +64,10 @@ namespace LuaSTGEditorSharpV2.Core.Building
     public class BuildingContextFactory(IServiceProvider serviceProvider)
     {
         public BuildingContext Create(LocalServiceParam serviceParam,
+            IBuildingLogWriter logWriter,
             IReadOnlyDictionary<string, object>? serviceShortName2SettingsDict = null)
         {
-            return new BuildingContext(serviceProvider, serviceParam, serviceShortName2SettingsDict);
+            return new BuildingContext(serviceProvider, serviceParam, logWriter, serviceShortName2SettingsDict);
         }
     }
 }
