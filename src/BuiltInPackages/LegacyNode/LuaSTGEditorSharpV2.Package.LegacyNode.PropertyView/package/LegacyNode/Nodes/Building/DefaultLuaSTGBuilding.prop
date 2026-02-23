@@ -7,7 +7,7 @@
       "Mapping": [
         {
           "$type": "Default",
-          "Mapping": { "Key": "taskName" },
+          "Mapping": { "Key": "task_name" },
           "Caption": {
             "Neutral": "Task Name",
             "Localized": {
@@ -17,7 +17,7 @@
         },
         {
           "$type": "Default",
-          "Mapping": { "Key": "outputName" },
+          "Mapping": { "Key": "output_name" },
           "Caption": {
             "Neutral": "Output Name",
             "Localized": {
