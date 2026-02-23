@@ -1,10 +1,10 @@
 ﻿{
   "$type": "LuaSTGEditorSharpV2.Core.Building.BuildTaskFactory.Configurable.CaptureResourceGroupTaskFactory, LuaSTGEditorSharpV2.Core.Building, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
   "TypeUID": "CaptureResourceGroupTask",
-  "NameCapture": { "Key": "taskName" },
-  "WeightCapture": { "Key": "taskWeight" },
+  "NameCapture": { "Key": "task_name" },
+  "WeightCapture": { "Key": "task_weight" },
   "SourceCapture": { "Key": "source" },
   "SourceVariableName": "source",
-  "GatheredSourcePathVariableName": "gatheredResourcePath",
-  "GatheredNameInPackageVariableName": "gatheredNameInPackage"
+  "GatheredSourcePathVariableName": "gathered_resourcePath",
+  "GatheredNameInPackageVariableName": "gathered_name_in_package"
 }

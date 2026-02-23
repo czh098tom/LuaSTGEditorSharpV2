@@ -7,7 +7,7 @@
       "Mapping": [
         {
           "$type": "Default",
-          "Mapping": { "Key": "taskName" },
+          "Mapping": { "Key": "task_name" },
           "Caption": {
             "Neutral": "Task Name",
             "Localized": {
@@ -17,7 +17,7 @@
         },
         {
           "$type": "Default",
-          "Mapping": { "Key": "taskWeight" },
+          "Mapping": { "Key": "task_weight" },
           "Caption": {
             "Neutral": "Task Weight",
             "Localized": {
@@ -28,7 +28,7 @@
         {
           "$type": "Selector",
           "Candidate": {
-            "FindProperty": { "Key": "propertyName" },
+            "FindProperty": { "Key": "property_name" },
             "OfName": [ "source" ]
           },
           "IfEmpty": {
@@ -45,12 +45,12 @@
         {
           "$type": "Selector",
           "Candidate": {
-            "FindProperty": { "Key": "propertyName" },
-            "OfName": [ "targetArchivePath" ]
+            "FindProperty": { "Key": "property_name" },
+            "OfName": [ "target_archive_path" ]
           },
           "IfEmpty": {
             "$type": "Default",
-            "Mapping": { "Key": "targetArchivePath" },
+            "Mapping": { "Key": "target_archive_path" },
             "Caption": {
               "Neutral": "Copy Target Base Path (Constant)",
               "Localized": {
@@ -62,12 +62,12 @@
         {
           "$type": "Selector",
           "Candidate": {
-            "FindProperty": { "Key": "propertyName" },
-            "OfName": [ "targetName" ]
+            "FindProperty": { "Key": "property_name" },
+            "OfName": [ "target_name" ]
           },
           "IfEmpty": {
             "$type": "Default",
-            "Mapping": { "Key": "targetName" },
+            "Mapping": { "Key": "target_name" },
             "Caption": {
               "Neutral": "Copy Target Name (Constant)",
               "Localized": {
