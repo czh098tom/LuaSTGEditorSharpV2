@@ -1,0 +1,6 @@
+﻿{
+  "Name": "LuaSTGSub",
+  "Version": "1.0",
+  "Priority": 1.0,
+  "LibraryPath": "LuaSTGEditorSharpV2.Package.LuaSTGSub.dll"
+}

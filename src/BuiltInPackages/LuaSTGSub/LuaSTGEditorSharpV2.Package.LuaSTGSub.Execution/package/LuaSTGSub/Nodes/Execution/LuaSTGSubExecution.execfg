@@ -1,0 +1,10 @@
+﻿{
+  "$type": "LuaSTGEditorSharpV2.Package.LuaSTGSub.Execution.LuaSTGSubExecutionConfigService, LuaSTGEditorSharpV2.Package.LuaSTGSub.Execution, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "LuaSTGSubExecution",
+  "NameCapture": { "Key": "name" },
+  "ModNameCapture": { "Key": "mod_name" },
+  "IsWindowedCapture": { "Key": "is_windowed" },
+  "ResolutionXCapture": { "Key": "resolution_x" },
+  "ResolutionYCapture": { "Key": "resolution_y" },
+  "IsCheatCapture": { "Key": "is_cheat" }
+}

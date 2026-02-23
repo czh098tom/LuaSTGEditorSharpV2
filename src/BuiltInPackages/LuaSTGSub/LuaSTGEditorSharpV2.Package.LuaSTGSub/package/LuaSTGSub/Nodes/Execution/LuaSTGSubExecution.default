@@ -1,0 +1,9 @@
+﻿{
+  "TypeUID": "LuaSTGSubExecution",
+  "DefaultValue": {
+    "is_windowed": "true",
+    "resolution_x": "800",
+    "resolution_y": "600",
+    "is_cheat": "false"
+  }
+}
