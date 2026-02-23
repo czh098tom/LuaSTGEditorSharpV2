@@ -1,0 +1,38 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LuaSTGEditorSharpV2.Analyzer/LuaSTGEditorSharpV2.Analyzer.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.CLI.Plugin/LuaSTGEditorSharpV2.CLI.Plugin.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.CLI/LuaSTGEditorSharpV2.CLI.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation/LuaSTGEditorSharpV2.Core.Analyzer.StructuralValidation.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Core.Building/LuaSTGEditorSharpV2.Core.Building.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Core.CodeGenerator/LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Core.Command/LuaSTGEditorSharpV2.Core.Command.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Core/LuaSTGEditorSharpV2.Core.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Debugging/LuaSTGEditorSharpV2.Debugging.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Dialog/LuaSTGEditorSharpV2.Dialog.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.DockingWindows/LuaSTGEditorSharpV2.DockingWindows.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Execution/LuaSTGEditorSharpV2.Execution.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.NodeProfile.WPF/LuaSTGEditorSharpV2.NodeProfile.WPF.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.NodeProfile/LuaSTGEditorSharpV2.NodeProfile.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.PropertyView/LuaSTGEditorSharpV2.PropertyView.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.ResourceDictionaryService/LuaSTGEditorSharpV2.ResourceDictionaryService.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Resources.Shared/LuaSTGEditorSharpV2.Resources.Shared.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.ServiceBridge/LuaSTGEditorSharpV2.ServiceBridge.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.Toolbox/LuaSTGEditorSharpV2.Toolbox.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.UICustomization/LuaSTGEditorSharpV2.UICustomization.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.View/LuaSTGEditorSharpV2.View.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.ViewModel/LuaSTGEditorSharpV2.ViewModel.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2.WPF/LuaSTGEditorSharpV2.WPF.csproj" />
+    <Project Path="src/LuaSTGEditorSharpV2/LuaSTGEditorSharpV2.csproj" />
+  </Folder>
+  <Folder Name="/src/ServiceBridge/">
+    <Project Path="src/ServiceBridge/LuaSTGEditorSharpV2.ServiceBridge.Building/LuaSTGEditorSharpV2.ServiceBridge.Building.csproj" />
+    <Project Path="src/ServiceBridge/LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator/LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.csproj" />
+    <Project Path="src/ServiceBridge/LuaSTGEditorSharpV2.ServiceBridge.Execution/LuaSTGEditorSharpV2.ServiceBridge.Execution.csproj" />
+    <Project Path="src/ServiceBridge/LuaSTGEditorSharpV2.ServiceBridge.UICustomization/LuaSTGEditorSharpV2.ServiceBridge.UICustomization.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <File Path="test/test.lstgjson" />
+    <File Path="test/test.lstgxml" />
+  </Folder>
+</Solution>
