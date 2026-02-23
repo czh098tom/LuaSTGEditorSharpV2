@@ -1,6 +1,6 @@
 ﻿{
   "TypeUID": "ServiceDefinition",
   "DefaultValue": {
-    "serviceShortName": "cgen"
+    "service_short_name": "cgen"
   }
 }

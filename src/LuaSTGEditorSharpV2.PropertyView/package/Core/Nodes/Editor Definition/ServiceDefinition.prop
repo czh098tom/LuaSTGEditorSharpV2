@@ -7,7 +7,7 @@
       "Mapping": [
         {
           "$type": "Default",
-          "Mapping": { "Key": "serviceShortName" },
+          "Mapping": { "Key": "service_short_name" },
           "Caption": {
             "Neutral": "Service Short Name",
             "Localized": {
@@ -17,7 +17,7 @@
         },
         {
           "$type": "Default",
-          "Mapping": { "Key": "serviceDeclaration" },
+          "Mapping": { "Key": "service_declaration" },
           "Caption": {
             "Neutral": "Service Declaration",
             "Localized": {

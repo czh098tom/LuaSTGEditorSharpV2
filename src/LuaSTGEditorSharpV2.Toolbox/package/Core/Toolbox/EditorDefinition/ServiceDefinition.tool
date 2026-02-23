@@ -7,8 +7,8 @@
     {
       "TypeUID": "ServiceDefinition",
       "Properties": {
-        "serviceShortName": "",
-        "serviceDeclaration": ""
+        "service_short_name": "",
+        "service_declaration": ""
       }
     }
   ],

@@ -7,7 +7,7 @@
       "Mapping": [
         {
           "$type": "Default",
-          "Mapping": { "Key": "propertyName" },
+          "Mapping": { "Key": "property_name" },
           "Caption": {
             "Neutral": "Property Name",
             "Localized": {
