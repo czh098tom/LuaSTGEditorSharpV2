@@ -59,14 +59,16 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 
         public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam localServiceParam, string edited)
         {
+            var doc = nodeData.Document;
+            var path = nodeData.GetPath();
             if (term.NameRule == null || term.ValueRule == null) return new EditResult(localServiceParam);
             IEnumerable<CommandBase?> Get()
             {
                 if (term.NameRule == null || term.ValueRule == null) yield break;
                 object idx = index;
-                yield return CheckedCommand.Property.Modify(nodeData,
+                yield return CheckedCommand.Property.Modify(doc, path,
                     string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-                yield return CheckedCommand.Property.Modify(nodeData,
+                yield return CheckedCommand.Property.Modify(doc, path,
                     string.Format(term.ValueRule.Key, idx), ProxyValue?.Value ?? string.Empty);
             }
             return new EditResult(Commands.FromEnumerable(Get()), false, localServiceParam);

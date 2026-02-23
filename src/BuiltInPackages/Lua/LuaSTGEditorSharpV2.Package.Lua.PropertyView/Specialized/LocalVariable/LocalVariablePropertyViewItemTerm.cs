@@ -45,13 +45,15 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 
         public CommandBase? GetCommand(EditorNode nodeData, VariableDefinition intermediateModel, int index)
         {
+            var doc = nodeData.Document;
+            var path = nodeData.GetPath();
             if (NameRule == null || ValueRule == null) return null;
             IEnumerable<CommandBase?> Get()
             {
                 if (NameRule == null || ValueRule == null) yield break;
                 object idx = index;
-                yield return CheckedCommand.Property.Modify(nodeData, string.Format(NameRule.Key, idx), intermediateModel.Name);
-                yield return CheckedCommand.Property.Modify(nodeData, string.Format(ValueRule.Key, idx), intermediateModel.Value);
+                yield return CheckedCommand.Property.Modify(doc, path, string.Format(NameRule.Key, idx), intermediateModel.Name);
+                yield return CheckedCommand.Property.Modify(doc, path, string.Format(ValueRule.Key, idx), intermediateModel.Value);
             }
             return Commands.FromEnumerable(Get());
         }

@@ -73,16 +73,18 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
 
         public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam localServiceParam, string edited)
         {
+            var doc = nodeData.Document;
+            var path = nodeData.GetPath();
             if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) return new EditResult(localServiceParam);
             IEnumerable<CommandBase?> Get()
             {
                 if (term.NameRule == null || term.InitRule == null || term.IncrementRule == null) yield break;
                 object idx = index;
-                yield return CheckedCommand.Property.Modify(nodeData,
+                yield return CheckedCommand.Property.Modify(doc, path,
                     string.Format(term.NameRule.Key, idx), ProxyValue?.Name ?? string.Empty);
-                yield return CheckedCommand.Property.Modify(nodeData,
+                yield return CheckedCommand.Property.Modify(doc, path,
                     string.Format(term.InitRule.Key, idx), ProxyValue?.Init ?? string.Empty);
-                yield return CheckedCommand.Property.Modify(nodeData,
+                yield return CheckedCommand.Property.Modify(doc, path,
                     string.Format(term.IncrementRule.Key, idx), ProxyValue?.Increment ?? string.Empty);
             }
             return new EditResult(Commands.FromEnumerable(Get()), false, localServiceParam);
