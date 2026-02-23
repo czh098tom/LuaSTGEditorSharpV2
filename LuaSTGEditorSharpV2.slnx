@@ -25,6 +25,33 @@
     <Project Path="src/LuaSTGEditorSharpV2.WPF/LuaSTGEditorSharpV2.WPF.csproj" />
     <Project Path="src/LuaSTGEditorSharpV2/LuaSTGEditorSharpV2.csproj" />
   </Folder>
+  <Folder Name="/src/BuiltInPackages/" />
+  <Folder Name="/src/BuiltInPackages/LegacyNode/">
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.Building/LuaSTGEditorSharpV2.Package.LegacyNode.Building.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory/LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.CLIPluginProvider/LuaSTGEditorSharpV2.Package.LegacyNode.CLIPluginProvider.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView/LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter/LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.Toolbox/LuaSTGEditorSharpV2.Package.LegacyNode.Toolbox.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.ViewModel/LuaSTGEditorSharpV2.Package.LegacyNode.ViewModel.csproj" />
+    <Project Path="src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.csproj" />
+  </Folder>
+  <Folder Name="/src/BuiltInPackages/Lua/">
+    <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.Building/LuaSTGEditorSharpV2.Package.Lua.Building.csproj" />
+    <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.CodeGenerator/LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.csproj" />
+    <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.PropertyView/LuaSTGEditorSharpV2.Package.Lua.PropertyView.csproj" />
+    <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.Resources.Shared/LuaSTGEditorSharpV2.Package.Lua.Resources.Shared.csproj" />
+    <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.Toolbox/LuaSTGEditorSharpV2.Package.Lua.Toolbox.csproj" />
+    <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.ViewModel/LuaSTGEditorSharpV2.Package.Lua.ViewModel.csproj" />
+    <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua/LuaSTGEditorSharpV2.Package.Lua.csproj" />
+  </Folder>
+  <Folder Name="/src/BuiltInPackages/LuaSTGSub/">
+    <Project Path="src/BuiltInPackages/LuaSTGSub/LuaSTGEditorSharpV2.Package.LuaSTGSub.Execution/LuaSTGEditorSharpV2.Package.LuaSTGSub.Execution.csproj" />
+    <Project Path="src/BuiltInPackages/LuaSTGSub/LuaSTGEditorSharpV2.Package.LuaSTGSub.PropertyView/LuaSTGEditorSharpV2.Package.LuaSTGSub.PropertyView.csproj" />
+    <Project Path="src/BuiltInPackages/LuaSTGSub/LuaSTGEditorSharpV2.Package.LuaSTGSub/LuaSTGEditorSharpV2.Package.LuaSTGSub.csproj" />
+  </Folder>
   <Folder Name="/src/ServiceBridge/">
     <Project Path="src/ServiceBridge/LuaSTGEditorSharpV2.ServiceBridge.Building/LuaSTGEditorSharpV2.ServiceBridge.Building.csproj" />
     <Project Path="src/ServiceBridge/LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator/LuaSTGEditorSharpV2.ServiceBridge.CodeGenerator.csproj" />
