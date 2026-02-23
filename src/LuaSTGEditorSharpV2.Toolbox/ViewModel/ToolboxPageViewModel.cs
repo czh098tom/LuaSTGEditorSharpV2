@@ -86,8 +86,10 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             if (e.CreatedData.Length > 0)
             {
                 var insCommandHost = ServiceProvider.GetRequiredService<InsertCommandHostingService>();
-                PublishCommand(SourceNodes.SelectFilter(ori => 
-                    insCommandHost.InsertCommandFactory.CreateInsertCommand(ori, e.CreatedData))
+                PublishCommand(SourceNodes
+                    .Select(n => (d: n.Document, p: n.GetPath()))
+                    .SelectFilter(t => insCommandHost.InsertCommandFactory
+                        .CreateInsertCommand(t.d, t.p, e.CreatedData))
                     , SourceDocument, SourceNodes);
             }
         }
@@ -102,8 +104,10 @@ namespace LuaSTGEditorSharpV2.Toolbox.ViewModel
             if (inputDialog.ShowDialog() == true)
             {
                 var insCommandHost = ServiceProvider.GetRequiredService<InsertCommandHostingService>();
-                PublishCommand(SourceNodes.SelectFilter(n => insCommandHost.InsertCommandFactory
-                    .CreateInsertCommand(n, [new NodeData(inputDialog.ViewModel.Text)])), SourceDocument, SourceNodes);
+                PublishCommand(SourceNodes
+                    .Select(n => (d: n.Document, p: n.GetPath()))
+                    .SelectFilter(t => insCommandHost.InsertCommandFactory
+                        .CreateInsertCommand(t.d, t.p, [new NodeData(inputDialog.ViewModel.Text)])), SourceDocument, SourceNodes);
             }
         }
     }

@@ -12,30 +12,32 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class EditPropertyCommand : ConcreteCommand
     {
-        public EditorNode Node { get; private set; }
+        public EditorDocument Document { get; private set; }
+        public NodePath ParentPath { get; private set; }
         public string PropertyName { get; private set; }
         public string AfterEdit { get; private set; }
 
         string? _beforeEdit;
 
-        public EditPropertyCommand(EditorNode node, string propertyName, string afterEdit)
+        public EditPropertyCommand(EditorDocument document, NodePath parentPath, string propertyName, string afterEdit)
         {
-            Node = node;
+            Document = document;
+            ParentPath = parentPath;
             PropertyName = propertyName;
             AfterEdit = afterEdit;
         }
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            _beforeEdit = Node.Source.Properties[PropertyName];
-            var node = Node;
+            var node = Document.RootEditorNode.GetNodeByPath(ParentPath) ?? throw new CommandExecutionException();
+            _beforeEdit = node.Source.Properties[PropertyName];
             node.ChangeProperty(PropertyName, AfterEdit);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
             if (_beforeEdit == null) throw new InvalidOperationException("Command has not been executed yet.");
-            var node = Node;
+            var node = Document.RootEditorNode.GetNodeByPath(ParentPath) ?? throw new CommandExecutionException();
             node.ChangeProperty(PropertyName, _beforeEdit);
         }
     }

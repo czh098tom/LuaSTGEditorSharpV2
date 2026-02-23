@@ -244,7 +244,10 @@ namespace LuaSTGEditorSharpV2.ViewModel
         public void DeleteSelectedNode()
         {
             if (!HaveSelected) throw new InvalidOperationException();
-            AddCommandToDocument(SelectedNodes.SelectFilter(CheckedCommand.RemoveNode),
+            AddCommandToDocument(SelectedNodes
+                .Select(n => (d: n.Document, p: n.GetPath()))
+                .ToArray()
+                .SelectFilter(t => CheckedCommand.RemoveNode(t.d, t.p)),
                 _activeDocument.Document, [], true);
         }
 
@@ -270,8 +273,11 @@ namespace LuaSTGEditorSharpV2.ViewModel
 
             var clipBoardContent = clipBoard.GetNodes();
 
-            AddCommandToDocument(SelectedNodes.SelectFilter(n =>
-                insCommandHost.InsertCommandFactory.CreateInsertCommand(n, clipBoardContent))
+            AddCommandToDocument(SelectedNodes
+                .Select(n => (d: n.Document, p: n.GetPath()))
+                .ToArray()
+                .SelectFilter(t => insCommandHost.InsertCommandFactory
+                    .CreateInsertCommand(t.d, t.p, clipBoardContent))
                 , _activeDocument.Document, SelectedNodes, true);
         }
 

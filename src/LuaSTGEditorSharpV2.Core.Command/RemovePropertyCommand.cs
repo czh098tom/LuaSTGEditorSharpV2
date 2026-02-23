@@ -11,29 +11,31 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class RemovePropertyCommand : ConcreteCommand
     {
-        public EditorNode Node { get; private set; }
+        public EditorDocument Document { get; private set; }
+        public NodePath ParentPath { get; private set; }
         public string PropertyName { get; private set; }
 
         string? _beforeEdit;
 
-        public RemovePropertyCommand(EditorNode node, string propertyName)
+        public RemovePropertyCommand(EditorDocument document, NodePath parentPath, string propertyName)
         {
-            Node = node;
+            Document = document;
+            ParentPath = parentPath;
             PropertyName = propertyName;
         }
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            _beforeEdit = Node.Source.Properties[PropertyName];
-            var node = Node;
+            var node = Document.RootEditorNode.GetNodeByPath(ParentPath) ?? throw new CommandExecutionException();
+            _beforeEdit = node.Source.Properties[PropertyName];
             node.RemoveProperty(PropertyName);
-            Node.Source.Properties.Remove(PropertyName);
+            node.Source.Properties.Remove(PropertyName);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
             if (_beforeEdit == null) throw new InvalidOperationException("Command has not been executed yet.");
-            var node = Node;
+            var node = Document.RootEditorNode.GetNodeByPath(ParentPath) ?? throw new CommandExecutionException();
             node.AddProperty(PropertyName, _beforeEdit);
         }
     }

@@ -10,19 +10,19 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public static class AtomicCommand
     {
-        public static CommandBase AddNode(EditorNode parent, int pos, NodeData content) 
-            => new AddChildCommand(parent, pos, content);
+        public static CommandBase AddNode(EditorDocument document, NodePath path, int pos, NodeData content) 
+            => new AddChildCommand(document, path, pos, content);
 
-        public static CommandBase RemoveNode(EditorNode parent, int pos)
-            => new RemoveChildCommand(parent, pos);
+        public static CommandBase RemoveNode(EditorDocument document, NodePath path, int pos)
+            => new RemoveChildCommand(document, path, pos);
 
-        public static CommandBase AddProperty(EditorNode node, string propName, string propValue)
-            => new AddPropertyCommand(node, propName, propValue);
+        public static CommandBase AddProperty(EditorDocument document, NodePath path, string propName, string propValue)
+            => new AddPropertyCommand(document, path, propName, propValue);
 
-        public static CommandBase RemoveProperty(EditorNode node, string propName)
-            => new RemovePropertyCommand(node, propName);
+        public static CommandBase RemoveProperty(EditorDocument document, NodePath path, string propName)
+            => new RemovePropertyCommand(document, path, propName);
 
-        public static CommandBase EditProperty(EditorNode node, string propName, string newValue)
-            => new EditPropertyCommand(node, propName, newValue);
+        public static CommandBase EditProperty(EditorDocument document, NodePath path, string propName, string newValue)
+            => new EditPropertyCommand(document, path, propName, newValue);
     }
 }

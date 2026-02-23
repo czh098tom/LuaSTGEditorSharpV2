@@ -102,15 +102,7 @@ namespace LuaSTGEditorSharpV2.Core.Editor
                 {
                     throw new InvalidOperationException("All nodes must belong to the same document.");
                 }
-                List<int> path = [];
-                EditorNode? current = node;
-                while (current.Parent is not null)
-                {
-                    var index = current.Parent.Children.FindIndex(current);
-                    path.Insert(0, index);
-                    current = current.Parent;
-                }
-                paths.Add(node, path);
+                paths.Add(node, node.GetPath());
             }
             return source.OrderBy(n => paths[n], new LexicographicalListComparer<int>());
         }

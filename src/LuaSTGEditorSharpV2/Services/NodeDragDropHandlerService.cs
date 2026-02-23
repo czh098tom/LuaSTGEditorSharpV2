@@ -37,14 +37,14 @@ namespace LuaSTGEditorSharpV2.Services
             var expandedWithChildren = self.Children.Count > 0 && _viewModel.Value.IsExpanded;
             var command = (position, operation, expandedWithChildren) switch
             {
-                (DropRelativePosition.Child, DragDropOperation.Copy, _) => InsertNode.Many.AsLastChild(self, items.Select(en => en.Source)),
-                (DropRelativePosition.Child, DragDropOperation.Move, _) => MoveNode.Many.AsLastChild(self, items),
-                (DropRelativePosition.Before, DragDropOperation.Copy, _) => InsertNode.Many.ToBefore(self, items.Select(en => en.Source)),
-                (DropRelativePosition.Before, DragDropOperation.Move, _) => MoveNode.Many.ToBefore(self, items),
-                (DropRelativePosition.After, DragDropOperation.Copy, false) => InsertNode.Many.ToAfter(self, items.Select(en => en.Source)),
-                (DropRelativePosition.After, DragDropOperation.Move, false) => MoveNode.Many.ToAfter(self, items),
-                (DropRelativePosition.After, DragDropOperation.Copy, true) => InsertNode.Many.AsFirstChild(self, items.Select(en => en.Source)),
-                (DropRelativePosition.After, DragDropOperation.Move, true) => MoveNode.Many.AsFirstChild(self, items),
+                (DropRelativePosition.Child, DragDropOperation.Copy, _) => InsertNode.Many.AsLastChild(self.Document, self.GetPath(), items.Select(en => en.Source)),
+                (DropRelativePosition.Child, DragDropOperation.Move, _) => MoveNode.Many.AsLastChild(self.Document, self.GetPath(), items),
+                (DropRelativePosition.Before, DragDropOperation.Copy, _) => InsertNode.Many.ToBefore(self.Document, self.GetPath(), items.Select(en => en.Source)),
+                (DropRelativePosition.Before, DragDropOperation.Move, _) => MoveNode.Many.ToBefore(self.Document, self.GetPath(), items),
+                (DropRelativePosition.After, DragDropOperation.Copy, false) => InsertNode.Many.ToAfter(self.Document, self.GetPath(), items.Select(en => en.Source)),
+                (DropRelativePosition.After, DragDropOperation.Move, false) => MoveNode.Many.ToAfter(self.Document, self.GetPath(), items),
+                (DropRelativePosition.After, DragDropOperation.Copy, true) => InsertNode.Many.AsFirstChild(self.Document, self.GetPath(), items.Select(en => en.Source)),
+                (DropRelativePosition.After, DragDropOperation.Move, true) => MoveNode.Many.AsFirstChild(self.Document, self.GetPath(), items),
                 _ => null
             };
             if (command != null)
