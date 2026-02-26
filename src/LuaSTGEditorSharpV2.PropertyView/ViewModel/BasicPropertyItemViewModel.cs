@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         }
 
         public BasicPropertyItemViewModel(IReadOnlyList<EditorNode> editorNode, string? key,
-            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam, PropertyEditWizardProviderService propertyEditWizardProvider) 
+            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam, PropertyEditWizardProviderService propertyEditWizardProvider)
             : base(editorNode, isBatchSame, localServiceParam, propertyEditWizardProvider)
         {
             this.key = key;
@@ -52,7 +52,10 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 
         public override EditResult ResolveBatchEditingNodeCommand(IReadOnlyList<EditorNode> nodeData, LocalServiceParam context, string edited)
         {
-            return new EditResult(CheckedCommand.Property.ModifyMany(nodeData, key, edited), false, LocalServiceParam);
+            return new EditResult(nodeData.Select(n => (d: n.Document, p: n.GetPath()))
+                .ToArray()
+                .SelectFilter(t => CheckedCommand.Property.Modify(t.d, t.p, key, edited))
+                , false, LocalServiceParam);
         }
 
         protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)

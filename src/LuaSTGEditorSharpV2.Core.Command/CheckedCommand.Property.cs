@@ -12,24 +12,18 @@ namespace LuaSTGEditorSharpV2.Core.Command
     {
         public static class Property
         {
-            public static CommandBase? Modify(EditorNode node, string? propertyName, string newValue)
+            public static CommandBase? Modify(EditorDocument document, NodePath path, string? propertyName, string newValue)
             {
-                if (string.IsNullOrEmpty(propertyName)) return null;
+                var node = document.RootEditorNode.GetNodeByPath(path) ?? throw new CommandExecutionException();
+                if (string.IsNullOrEmpty(propertyName)) throw new CommandExecutionException();
                 if (node.Source.HasProperty(propertyName))
                 {
-                    return AtomicCommand.EditProperty(node, propertyName, newValue);
+                    return AtomicCommand.EditProperty(document, path, propertyName, newValue);
                 }
                 else
                 {
-                    return AtomicCommand.AddProperty(node, propertyName, newValue);
+                    return AtomicCommand.AddProperty(document, path, propertyName, newValue);
                 }
-            }
-
-            public static CommandBase? ModifyMany(IEnumerable<EditorNode> nodes, string? propertyName, string newValue)
-            {
-                return Commands.FromEnumerable(
-                    nodes.Select(n => Modify(n, propertyName, newValue))
-                );
             }
         }
     }

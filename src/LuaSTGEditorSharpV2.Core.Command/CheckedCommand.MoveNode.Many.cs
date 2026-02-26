@@ -13,21 +13,21 @@ namespace LuaSTGEditorSharpV2.Core.Command
         {
             public static class Many
             {
-                public static CommandBase? ToBefore(EditorNode origin, IEnumerable<EditorNode> toMove)
+                public static CommandBase? ToBefore(EditorDocument document, NodePath path, IEnumerable<EditorNode> toMove)
                 {
-                    return toMove.SelectFilter(n => MoveNode.ToBefore(origin, n));
+                    return toMove.SelectFilter(n => MoveNode.ToBefore(document, path, n));
                 }
-                public static CommandBase? ToAfter(EditorNode origin, IEnumerable<EditorNode> toMove)
+                public static CommandBase? ToAfter(EditorDocument document, NodePath path, IEnumerable<EditorNode> toMove)
                 {
-                    return toMove.Reverse().SelectFilter(n => MoveNode.ToAfter(origin, n));
+                    return toMove.Reverse().SelectFilter(n => MoveNode.ToAfter(document, path, n));
                 }
-                public static CommandBase? AsLastChild(EditorNode origin, IEnumerable<EditorNode> toMove)
+                public static CommandBase? AsLastChild(EditorDocument document, NodePath path, IEnumerable<EditorNode> toMove)
                 {
-                    return toMove.SelectFilter(n => MoveNode.AsLastChild(origin, n));
+                    return toMove.SelectFilter(n => MoveNode.AsLastChild(document, path, n));
                 }
-                public static CommandBase? AsFirstChild(EditorNode origin, IEnumerable<EditorNode> toMove)
+                public static CommandBase? AsFirstChild(EditorDocument document, NodePath path, IEnumerable<EditorNode> toMove)
                 {
-                    return toMove.Reverse().SelectFilter(n => MoveNode.AsFirstChild(origin, n));
+                    return toMove.Reverse().SelectFilter(n => MoveNode.AsFirstChild(document, path, n));
                 }
             }
         }

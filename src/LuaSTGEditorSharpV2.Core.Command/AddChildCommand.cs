@@ -11,26 +11,30 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class AddChildCommand : ConcreteCommand
     {
-        public EditorNode Parent { get; private set; }
         public NodeData Child { get; private set; }
+        public EditorDocument Document { get; private set; }
+        public NodePath ParentPath { get; private set; }
         public int Position { get; private set; }
 
-        public AddChildCommand(EditorNode parent, int position, NodeData child)
+        public AddChildCommand(EditorDocument document, NodePath parentPath, int position, NodeData child)
         {
-            Parent = parent;
-            Child = child.DeepClone();
+            Document = document;
+            ParentPath = parentPath;
             Position = position;
+            Child = child.DeepClone();
         }
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            var parent = Parent;
+            var parent = Document.RootEditorNode.GetNodeByPath(ParentPath) 
+                ?? throw new CommandExecutionException();
             parent.Insert(Position, Child);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
-            var parent = Parent;
+            var parent = Document.RootEditorNode.GetNodeByPath(ParentPath)
+                ?? throw new CommandExecutionException();
             parent.RemoveAt(Position);
         }
     }

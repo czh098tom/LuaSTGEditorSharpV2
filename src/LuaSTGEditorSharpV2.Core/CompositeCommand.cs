@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,10 +24,21 @@ namespace LuaSTGEditorSharpV2.Core
         protected override void DoExecute(EditorDocument editorDocument)
         {
             _innerCommands.Clear();
-            foreach (CommandBase command in _commandsEnumerable)
+            try
             {
-                command.Execute(editorDocument);
-                _innerCommands.Add(command);
+                foreach (CommandBase command in _commandsEnumerable)
+                {
+                    command.Execute(editorDocument);
+                    _innerCommands.Add(command);
+                }
+            }
+            catch (CommandExecutionException ex)
+            {
+                for (int i = _innerCommands.Count - 1; i >= 0; i--)
+                {
+                    _innerCommands[i].Revert(editorDocument);
+                }
+                ExceptionDispatchInfo.Capture(ex).Throw();
             }
         }
 

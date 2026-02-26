@@ -11,26 +11,28 @@ namespace LuaSTGEditorSharpV2.Core.Command
 {
     public class AddPropertyCommand : ConcreteCommand
     {
-        public EditorNode Node { get; private set; }
+        public EditorDocument Document { get; private set; }
+        public NodePath ParentPath { get; private set; }
         public string PropertyName { get; private set; }
         public string Value { get; private set; }
 
-        public AddPropertyCommand(EditorNode node, string propertyName, string value)
+        public AddPropertyCommand(EditorDocument document, NodePath parentPath, string propertyName, string value)
         {
-            Node = node;
+            Document = document;
+            ParentPath = parentPath;
             PropertyName = propertyName;
             Value = value;
         }
 
         protected override void DoExecute(EditorDocument editorDocument)
         {
-            var node = Node;
+            var node = Document.RootEditorNode.GetNodeByPath(ParentPath) ?? throw new CommandExecutionException();
             node.AddProperty(PropertyName, Value);
         }
 
         protected override void RevertExecution(EditorDocument editorDocument)
         {
-            var node = Node;
+            var node = Document.RootEditorNode.GetNodeByPath(ParentPath) ?? throw new CommandExecutionException();
             node.RemoveProperty(PropertyName);
         }
     }

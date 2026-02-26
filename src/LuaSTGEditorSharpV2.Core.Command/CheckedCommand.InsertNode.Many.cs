@@ -14,28 +14,29 @@ namespace LuaSTGEditorSharpV2.Core.Command
         {
             public static class Many
             {
-                public static CommandBase? ToBefore(EditorNode origin, IEnumerable<NodeData> toAppend)
+                public static CommandBase? ToBefore(EditorDocument document, NodePath path, IEnumerable<NodeData> toAppend)
                 {
-                    return toAppend.SelectFilter(n => InsertNode.ToBefore(origin, n));
+                    return toAppend.SelectFilter(n => InsertNode.ToBefore(document, path, n));
                 }
 
-                public static CommandBase? ToAfter(EditorNode origin, IEnumerable<NodeData> toAppend)
+                public static CommandBase? ToAfter(EditorDocument document, NodePath path, IEnumerable<NodeData> toAppend)
                 {
-                    return toAppend.Reverse().SelectFilter(n => InsertNode.ToAfter(origin, n));
+                    return toAppend.Reverse().SelectFilter(n => InsertNode.ToAfter(document, path, n));
                 }
 
-                public static CommandBase? AsLastChild(EditorNode origin, IEnumerable<NodeData> toAppend)
+                public static CommandBase? AsLastChild(EditorDocument document, NodePath path, IEnumerable<NodeData> toAppend)
                 {
-                    return toAppend.SelectFilter(n => InsertNode.AsLastChild(origin, n));
+                    return toAppend.SelectFilter(n => InsertNode.AsLastChild(document, path, n));
                 }
 
-                public static CommandBase? AsFirstChild(EditorNode origin, IEnumerable<NodeData> toAppend)
+                public static CommandBase? AsFirstChild(EditorDocument document, NodePath path, IEnumerable<NodeData> toAppend)
                 {
-                    return toAppend.Reverse().SelectFilter(n => InsertNode.AsFirstChild(origin, n));
+                    return toAppend.Reverse().SelectFilter(n => InsertNode.AsFirstChild(document, path, n));
                 }
 
-                public static CommandBase? AsParent(EditorNode origin, IEnumerable<NodeData> toAppend)
+                public static CommandBase? AsParent(EditorDocument document, NodePath path, IEnumerable<NodeData> toAppend)
                 {
+                    var origin = document.RootEditorNode.GetNodeByPath(path) ?? throw new CommandExecutionException();
                     IEnumerable<CommandBase?> Get()
                     {
                         var originParent = origin.Parent;
@@ -45,17 +46,16 @@ namespace LuaSTGEditorSharpV2.Core.Command
                         {
                             if (idx == 0)
                             {
-                                var cmd = InsertNode.AsParent(origin, n);
+                                var cmd = InsertNode.AsParent(document, path, n);
                                 yield return cmd;
-                                if (cmd == null) yield break;
                             }
                             else
                             {
                                 if (originParent == null || originIndex < 0)
                                 {
-                                    yield break;
+                                    throw new CommandExecutionException();
                                 }
-                                yield return InsertNode.ToAfter(originParent.Children[originIndex + idx - 1], n);
+                                yield return InsertNode.ToAfter(document, originParent.Children[originIndex + idx - 1].GetPath(), n);
                             }
                             idx++;
                         }

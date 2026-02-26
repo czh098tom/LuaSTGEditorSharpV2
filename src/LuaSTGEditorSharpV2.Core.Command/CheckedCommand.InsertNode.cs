@@ -12,45 +12,49 @@ namespace LuaSTGEditorSharpV2.Core.Command
     {
         public static partial class InsertNode
         {
-            public static CommandBase? ToBefore(EditorNode origin, NodeData toAppend)
+            public static CommandBase? ToBefore(EditorDocument document, NodePath path, NodeData toAppend)
             {
-                if (origin.Parent == null) return null;
+                var origin = document.RootEditorNode.GetNodeByPath(path);
+                if (origin?.Parent == null) throw new CommandExecutionException();
                 int idx = origin.Parent.Children.FindIndex(origin);
-                if (idx < 0) return null;
-                return AtomicCommand.AddNode(origin.Parent, idx, toAppend);
+                if (idx < 0) throw new CommandExecutionException();
+                return AtomicCommand.AddNode(document, origin.Parent.GetPath(), idx, toAppend);
             }
 
-            public static CommandBase? ToAfter(EditorNode origin, NodeData toAppend)
+            public static CommandBase? ToAfter(EditorDocument document, NodePath path, NodeData toAppend)
             {
-                if (origin.Parent == null) return null;
+                var origin = document.RootEditorNode.GetNodeByPath(path);
+                if (origin?.Parent == null) throw new CommandExecutionException();
                 int idx = origin.Parent.Children.FindIndex(origin);
-                if (idx < 0) return null;
-                return AtomicCommand.AddNode(origin.Parent, idx + 1, toAppend);
+                if (idx < 0) throw new CommandExecutionException();
+                return AtomicCommand.AddNode(document, origin.Parent.GetPath(), idx + 1, toAppend);
             }
 
-            public static CommandBase? AsLastChild(EditorNode origin, NodeData toAppend)
+            public static CommandBase? AsLastChild(EditorDocument document, NodePath path, NodeData toAppend)
             {
-                return AtomicCommand.AddNode(origin, origin.Children.Count, toAppend);
+                var origin = document.RootEditorNode.GetNodeByPath(path) ?? throw new CommandExecutionException();
+                return AtomicCommand.AddNode(document, path, origin.Children.Count, toAppend);
             }
 
-            public static CommandBase? AsFirstChild(EditorNode origin, NodeData toAppend)
+            public static CommandBase? AsFirstChild(EditorDocument document, NodePath path, NodeData toAppend)
             {
-                return AtomicCommand.AddNode(origin, 0, toAppend);
+                return AtomicCommand.AddNode(document, path, 0, toAppend);
             }
 
-            public static CommandBase? AsParent(EditorNode origin, NodeData toAppend)
+            public static CommandBase? AsParent(EditorDocument document, NodePath path, NodeData toAppend)
             {
+                var origin = document.RootEditorNode.GetNodeByPath(path) ?? throw new CommandExecutionException();
                 IEnumerable<CommandBase> Get()
                 {
-                    var parent = origin.Parent;
-                    if (parent == null) yield break;
+                    var parent = origin.Parent ?? throw new CommandExecutionException();
                     var idx = parent.Children.FindIndex(origin);
-                    if (idx == -1) yield break;
+                    if (idx == -1) throw new CommandExecutionException();
                     var originSource = origin.Source;
-                    yield return AtomicCommand.RemoveNode(parent, idx);
-                    yield return AtomicCommand.AddNode(parent, idx, toAppend);
+                    var parentPath = parent.GetPath();
+                    yield return AtomicCommand.RemoveNode(document, parentPath, idx);
+                    yield return AtomicCommand.AddNode(document, parentPath, idx, toAppend);
                     var target = parent.Children[idx];
-                    yield return AtomicCommand.AddNode(target, toAppend.PhysicalChildren.Count, originSource);
+                    yield return AtomicCommand.AddNode(document, target.GetPath(), toAppend.PhysicalChildren.Count, originSource);
                 }
                 return Commands.FromFilteredEnumerable(Get());
             }
