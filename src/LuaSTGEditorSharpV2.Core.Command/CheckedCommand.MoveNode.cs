@@ -61,7 +61,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
                     var toMoveSource = toMove.Source;
                     if (toMoveIdx < 0) throw new CommandExecutionException();
                     yield return AtomicCommand.RemoveNode(document, toMoveParent.GetPath(), toMoveIdx);
-                    yield return AtomicCommand.AddNode(document, path, origin.Children.Count, toMoveSource);
+                    yield return AtomicCommand.AddNode(document, origin.GetPath(), origin.Children.Count, toMoveSource);
                 }
                 return Commands.FromEnumerable(Get());
             }
@@ -77,7 +77,7 @@ namespace LuaSTGEditorSharpV2.Core.Command
                     var toMoveSource = toMove.Source;
                     if (toMoveIdx < 0) throw new CommandExecutionException();
                     yield return AtomicCommand.RemoveNode(document, toMoveParent.GetPath(), toMoveIdx);
-                    yield return AtomicCommand.AddNode(document, path, 0, toMoveSource);
+                    yield return AtomicCommand.AddNode(document, origin.GetPath(), 0, toMoveSource);
                 }
                 return Commands.FromEnumerable(Get());
             }
