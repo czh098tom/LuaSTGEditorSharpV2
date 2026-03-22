@@ -15,30 +15,28 @@
 	],
 	"Text": {
 		"Neutral": [
-			{
-				"Text": "initialize object with image {2} in collision group {4}, rendering priority {3}, hp {8}"
-			},
+			{ "Text": "initialize object with image {2} in collision group {4}, rendering priority {3}, hp {8}" },
+			{ "Text": "\nwith parameters {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true },
 			{
 				"Text": ", disable render",
 				"ConditionOn": 5
 			},
 			{
-				"Text": "disable collision",
+				"Text": ", disable collision",
 				"ConditionOn": 9,
 				"Inversed": true
 			}
 		],
 		"Localized": {
 			"zh": [
-				{
-					"Text": "初始化物体, 图像{2}, 碰撞组{4}, 渲染优先级{3}, 血量{8}"
-				},
+				{ "Text": "初始化物体, 图像{2}, 碰撞组{4}, 渲染优先级{3}, 血量{8}" },
+				{ "Text": "\n参数 {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true },
 				{
 					"Text": ", 禁用渲染",
 					"ConditionOn": 5
 				},
 				{
-					"Text": "禁用碰撞",
+					"Text": ", 禁用碰撞",
 					"ConditionOn": 9,
 					"Inversed": true
 				}

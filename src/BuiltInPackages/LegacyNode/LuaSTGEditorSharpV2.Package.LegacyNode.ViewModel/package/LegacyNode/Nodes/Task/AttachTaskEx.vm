@@ -12,7 +12,7 @@
 			{"Text": "Attach taskex {1} to {3}"},
 			{
 				"Text": "with parameters {2}",
-				"ConditionOn": 2,
+				"ConditionOn": 1,
 				"UseExistanceInsteadOfBoolValue": true
 			}
 		],
@@ -21,7 +21,7 @@
 				{"Text": "附加任务 {1} 到 {3}"},
 				{
 					"Text": "使用参数 {2}",
-					"ConditionOn": 2,
+					"ConditionOn": 1,
 					"UseExistanceInsteadOfBoolValue": true
 				}
 			]

@@ -1,0 +1,42 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ConfigBossUI",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bosssetui.png",
+	"Captures": [
+		{ "Key": "show_hp_circle" },
+		{ "Key": "show_boss_name" },
+		{ "Key": "show_time_counter" },
+		{ "Key": "show_spell_name" },
+		{ "Key": "show_boss_pointer" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "Configure boss UI with" },
+			{ "Text": " hpbar shown", "ConditionOn": 0 },
+			{ "Text": " hpbar hidden", "ConditionOn": 0, "Inversed": true },
+			{ "Text": ", name shown", "ConditionOn": 1 },
+			{ "Text": ", name hidden", "ConditionOn": 1, "Inversed": true },
+			{ "Text": ", time shown", "ConditionOn": 2 },
+			{ "Text": ", time hidden", "ConditionOn": 2, "Inversed": true },
+			{ "Text": ", spell name shown", "ConditionOn": 3 },
+			{ "Text": ", spell name hidden", "ConditionOn": 3, "Inversed": true },
+			{ "Text": ", pointer shown", "ConditionOn": 4 },
+			{ "Text": ", pointer hidden", "ConditionOn": 4, "Inversed": true }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "配置Boss UI：" },
+				{ "Text": "血条显示", "ConditionOn": 0 },
+				{ "Text": "血条隐藏", "ConditionOn": 0, "Inversed": true },
+				{ "Text": "，名称显示", "ConditionOn": 1 },
+				{ "Text": "，名称隐藏", "ConditionOn": 1, "Inversed": true },
+				{ "Text": "，计时显示", "ConditionOn": 2 },
+				{ "Text": "，计时隐藏", "ConditionOn": 2, "Inversed": true },
+				{ "Text": "，符卡名显示", "ConditionOn": 3 },
+				{ "Text": "，符卡名隐藏", "ConditionOn": 3, "Inversed": true },
+				{ "Text": "，指示显示", "ConditionOn": 4 },
+				{ "Text": "，指示隐藏", "ConditionOn": 4, "Inversed": true }
+			]
+		}
+	}
+}

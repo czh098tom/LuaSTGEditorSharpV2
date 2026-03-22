@@ -16,7 +16,8 @@
 	],
 	"Text": {
 		"Neutral": [
-			{ "Text": "initiallize enemy with style {2}, hp {3}, position {4}, bonus {5} power, {6} faith, {7} point, protect time {8}" },
+			{ "Text": "initialize enemy with style {2}, hp {3}, position {4}, bonus {5} power, {6} faith, {7} point, protect time {8}" },
+			{ "Text": "\nwith parameters {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true },
 			{ "Text": ", clear bullet when killed", "ConditionOn": 9 },
 			{ "Text": ", removed when off screen", "ConditionOn": 10 },
 			{ "Text": ", miss when collision", "ConditionOn": 11 }
@@ -24,6 +25,7 @@
 		"Localized": {
 			"zh": [
 				{ "Text": "初始化敌机, 样式 {2}, 血量 {3}, 位置 {4}, 奖励 {5} 力量, {6} 信仰, {7} 分数, 保护时间 {8}" },
+				{ "Text": "\n参数 {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true },
 				{ "Text": ", 死亡时清除子弹", "ConditionOn": 9 },
 				{ "Text": ", 离开屏幕时移除", "ConditionOn": 10 },
 				{ "Text": ", 碰撞时Miss", "ConditionOn": 11 }

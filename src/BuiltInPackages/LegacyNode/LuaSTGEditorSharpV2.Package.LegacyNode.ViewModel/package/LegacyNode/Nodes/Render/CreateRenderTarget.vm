@@ -1,0 +1,13 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.Mustache.MustacheViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateRenderTarget",
+	"Captures": {
+		"name": { "Key": "name" }
+	},
+	"Text": {
+		"Neutral": "Create Render Target {name}",
+		"Localized": {
+			"zh": "创建渲染目标 {name}"
+		}
+	}
+}

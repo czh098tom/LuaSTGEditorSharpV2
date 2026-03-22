@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "StageGoto",
+	"Captures": [
+		{ "Key": "stage_index" }
+	],
+	"Head": [
+		{ "Text": "New(mask_fader, 'close')" },
+		{ "Text": "do" },
+		{ "Text": "{0:IND}local _, bgm = EnumRes('bgm')" },
+		{ "Text": "{0:IND}for i = 1, 30 do" },
+		{ "Text": "{0:IND}{0:IND}for _, v in pairs(bgm) do" },
+		{ "Text": "{0:IND}{0:IND}{0:IND}if GetMusicState(v) == 'playing' then" },
+		{ "Text": "{0:IND}{0:IND}{0:IND}{0:IND}SetBGMVolume(v, 1 - i / 30)" },
+		{ "Text": "{0:IND}{0:IND}{0:IND}end" },
+		{ "Text": "{0:IND}{0:IND}end" },
+		{ "Text": "{0:IND}{0:IND}task.Wait()" },
+		{ "Text": "{0:IND}end" },
+		{ "Text": "end" },
+		{ "Text": "stage.group.GoToStage({1})" }
+	]
+}

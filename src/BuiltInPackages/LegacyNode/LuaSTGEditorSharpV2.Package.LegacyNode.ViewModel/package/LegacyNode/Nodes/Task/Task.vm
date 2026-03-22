@@ -11,7 +11,7 @@
             { "Text": "Create task for {1}" },
             {
                 "Text": ", redirect self to target",
-                "ConditionOn": 1
+                "ConditionOn": 0
             }
         ],
         "Localized": {
@@ -19,7 +19,7 @@
                 { "Text": "为 {1} 创建任务" },
                 {
                     "Text": ", 重定向self至目标",
-                    "ConditionOn": 2
+                    "ConditionOn": 1
                 }
             ]
         }

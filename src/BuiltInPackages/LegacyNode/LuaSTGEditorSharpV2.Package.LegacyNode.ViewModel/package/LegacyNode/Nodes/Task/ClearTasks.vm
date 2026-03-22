@@ -9,11 +9,11 @@
 		"Neutral": [
 			{
 				"Text": "clear all other tasks",
-				"ConditionOn": 1
+				"ConditionOn": 0
 			},
 			{
 				"Text": "clear all tasks",
-				"ConditionOn": 1,
+				"ConditionOn": 0,
 				"Inversed": true
 			}
 		],
@@ -21,11 +21,11 @@
 			"zh": [
 				{
 					"Text": "清除其他所有任务",
-					"ConditionOn": 1
+					"ConditionOn": 0
 				},
 				{
 					"Text": "清除所有任务",
-					"ConditionOn": 1,
+					"ConditionOn": 0,
 					"Inversed": true
 				}
 			]

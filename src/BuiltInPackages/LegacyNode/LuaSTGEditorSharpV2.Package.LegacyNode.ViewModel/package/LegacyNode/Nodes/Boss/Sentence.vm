@@ -1,0 +1,28 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Sentence",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/sentence.png",
+	"Captures": [
+		{ "Key": "image" },
+		{ "Key": "image_position" },
+		{ "Key": "text" },
+		{ "Key": "time" },
+		{ "Key": "scale" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "Sentence: {1} at {2}" },
+			{ "Text": " \"{3}\"", "ConditionOn": 2, "UseExistanceInsteadOfBoolValue": true },
+			{ "Text": " ({4})", "ConditionOn": 3, "UseExistanceInsteadOfBoolValue": true },
+			{ "Text": " scale {5}", "ConditionOn": 4, "UseExistanceInsteadOfBoolValue": true }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "对话：{1} 于 {2}" },
+				{ "Text": "「{3}」", "ConditionOn": 2, "UseExistanceInsteadOfBoolValue": true },
+				{ "Text": "（{4}）", "ConditionOn": 3, "UseExistanceInsteadOfBoolValue": true },
+				{ "Text": " 缩放 {5}", "ConditionOn": 4, "UseExistanceInsteadOfBoolValue": true }
+			]
+		}
+	}
+}

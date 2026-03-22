@@ -1,0 +1,27 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetVelocityLimit",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/setfv.png",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "max_velocity" },
+		{ "Key": "max_x_velocity" },
+		{ "Key": "max_y_velocity" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "limit {1} velocity" },
+			{ "Text": ": max {2}", "ConditionOn": 1, "UseExistanceInsteadOfBoolValue": true },
+			{ "Text": ", max x {3}", "ConditionOn": 2, "UseExistanceInsteadOfBoolValue": true },
+			{ "Text": ", max y {4}", "ConditionOn": 3, "UseExistanceInsteadOfBoolValue": true }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "限制{1}速度" },
+				{ "Text": "：最大{2}", "ConditionOn": 1, "UseExistanceInsteadOfBoolValue": true },
+				{ "Text": "，x最大{3}", "ConditionOn": 2, "UseExistanceInsteadOfBoolValue": true },
+				{ "Text": "，y最大{4}", "ConditionOn": 3, "UseExistanceInsteadOfBoolValue": true }
+			]
+		}
+	}
+}

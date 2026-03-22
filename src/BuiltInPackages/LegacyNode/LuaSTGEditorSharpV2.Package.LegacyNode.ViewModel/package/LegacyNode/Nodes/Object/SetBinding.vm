@@ -1,0 +1,23 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetBinding",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/connect.png",
+	"Captures": [
+		{ "Key": "master" },
+		{ "Key": "servant" },
+		{ "Key": "damage_transfer_rate" },
+		{ "Key": "connect_death" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "bind {2} to {1} with damage transfer {3}" },
+			{ "Text": ", connect death", "ConditionOn": 3 }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "将{2}绑定到{1}，伤害转移率{3}" },
+				{ "Text": "，同步死亡", "ConditionOn": 3 }
+			]
+		}
+	}
+}

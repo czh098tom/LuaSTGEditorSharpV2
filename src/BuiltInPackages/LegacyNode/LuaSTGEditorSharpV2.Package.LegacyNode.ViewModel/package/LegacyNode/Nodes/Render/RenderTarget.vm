@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "RenderTarget",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/RenderTarget.png",
+	"Captures": [
+		{ "Key": "operation" },
+		{ "Key": "name" }
+	],
+	"Text": {
+		"Neutral": "{1} render target {2}",
+		"Localized": {
+			"zh": "{1}渲染目标 {2}"
+		}
+	}
+}

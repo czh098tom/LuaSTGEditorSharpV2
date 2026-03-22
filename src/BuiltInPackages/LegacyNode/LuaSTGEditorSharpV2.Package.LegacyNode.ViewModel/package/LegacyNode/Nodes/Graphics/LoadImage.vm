@@ -1,0 +1,19 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LoadImage",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/loadimage.png",
+	"Captures": [
+		{ "Key": "file_path" },
+		{ "Key": "resource_name" },
+		{ "Key": "mipmap" },
+		{ "Key": "collision_size" },
+		{ "Key": "rectangle_collision" },
+		{ "Key": "cut_edge" }
+	],
+	"Text": {
+		"Neutral": "load image {2} from {1}",
+		"Localized": {
+			"zh": "加载图片 {2}，来源 {1}"
+		}
+	}
+}

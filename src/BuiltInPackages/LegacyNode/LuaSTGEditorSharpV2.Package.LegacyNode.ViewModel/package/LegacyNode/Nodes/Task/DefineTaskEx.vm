@@ -11,7 +11,7 @@
 			{ "Text": "define taskex {1}" },
 			{
 				"Text": "with parameters {2}",
-				"ConditionOn": 2,
+				"ConditionOn": 1,
 				"UseExistanceInsteadOfBoolValue": true
 			}
 		],
@@ -20,7 +20,7 @@
 				{ "Text": "定义任务 {1}" },
 				{
 					"Text": "带参数 {2}",
-					"ConditionOn": 2,
+					"ConditionOn": 1,
 					"UseExistanceInsteadOfBoolValue": true
 				}
 			]

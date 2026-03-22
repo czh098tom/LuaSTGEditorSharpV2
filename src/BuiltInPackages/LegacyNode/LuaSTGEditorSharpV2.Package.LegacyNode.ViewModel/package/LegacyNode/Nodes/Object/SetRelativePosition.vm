@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetRelativePosition",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/setrelpos.png",
+	"Captures": [
+		{ "Key": "position" },
+		{ "Key": "rotation" },
+		{ "Key": "follow_masters_rotation" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "set relative position to {1}, rotation {2}" },
+			{ "Text": " (follow master rotation)", "ConditionOn": 2 }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "设置相对位置为{1}，旋转{2}" },
+				{ "Text": "（跟随主对象旋转）", "ConditionOn": 2 }
+			]
+		}
+	}
+}

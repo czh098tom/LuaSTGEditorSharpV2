@@ -1,0 +1,11 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "PauseBGM",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/pausebgm.png",
+	"Text": {
+		"Neutral": "Pause BGM",
+		"Localized": {
+			"zh": "暂停BGM"
+		}
+	}
+}

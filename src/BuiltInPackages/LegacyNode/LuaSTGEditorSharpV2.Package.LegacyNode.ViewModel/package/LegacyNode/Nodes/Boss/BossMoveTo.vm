@@ -1,0 +1,16 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BossMoveTo",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bossmoveto.png",
+	"Captures": [
+		{ "Key": "position" },
+		{ "Key": "time" },
+		{ "Key": "mode" }
+	],
+	"Text": {
+		"Neutral": "Move to {1} in {2} frames ({3})",
+		"Localized": {
+			"zh": "移动至 ({1})，{2} 帧，模式 {3}"
+		}
+	}
+}

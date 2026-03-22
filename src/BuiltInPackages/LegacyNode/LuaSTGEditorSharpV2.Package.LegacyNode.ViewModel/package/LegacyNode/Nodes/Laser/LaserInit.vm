@@ -15,15 +15,13 @@
 	],
 	"Text": {
 		"Neutral": [
-			{
-				"Text": "initialize laser of color {2}, style {3}, length {4}+{5}+{6}, width {7}, head size{9}, tail size {8}"
-			}
+			{ "Text": "initialize laser of color {2}, style {3}, length {4}+{5}+{6}, width {7}, head size {9}, tail size {8}" },
+			{ "Text": "\nwith parameters {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true }
 		],
 		"Localized": {
 			"zh": [
-				{
-					"Text": "初始化激光, 颜色{2}, 样式{3}, 长度{4}+{5}+{6}, 宽度{4}, 激光头节点大小{9}, 激光尾节点大小{8}"
-				}
+				{ "Text": "初始化激光, 颜色{2}, 样式{3}, 长度{4}+{5}+{6}, 宽度{7}, 激光头节点大小{9}, 激光尾节点大小{8}" },
+				{ "Text": "\n参数 {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true }
 			]
 		}
 	}

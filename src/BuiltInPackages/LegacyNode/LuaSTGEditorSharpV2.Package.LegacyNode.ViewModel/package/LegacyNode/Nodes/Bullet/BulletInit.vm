@@ -11,9 +11,8 @@
 	],
 	"Text": {
 		"Neutral": [
-			{
-				"Text": "initialize bullet of style {2}, color {3}"
-			},
+			{ "Text": "initialize bullet of style {2}, color {3}" },
+			{ "Text": "\nwith parameters {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true },
 			{
 				"Text": ", stay on create",
 				"ConditionOn": 3
@@ -26,9 +25,8 @@
 		],
 		"Localized": {
 			"zh": [
-				{
-					"Text": "初始化子弹, 样式 {2}, 颜色 {3}"
-				},
+				{ "Text": "初始化子弹, 样式 {2}, 颜色 {3}" },
+				{ "Text": "\n参数 {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true },
 				{
 					"Text": ", 生成时停滞",
 					"ConditionOn": 3

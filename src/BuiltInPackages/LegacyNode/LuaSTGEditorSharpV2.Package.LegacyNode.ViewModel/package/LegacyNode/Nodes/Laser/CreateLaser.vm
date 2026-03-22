@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateLaser",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/lasercreate.png",
+	"Captures": [
+		{ "Key": "identifier" },
+		{ "Key": "position" },
+		{ "Key": "parameters" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "create laser of type {1} at position ({2})" },
+			{ "Text": " with parameter {3}", "ConditionOn": 2, "UseExistanceInsteadOfBoolValue": true }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "在({2})创建类型{1}的激光" },
+				{ "Text": "，传入参数{3}", "ConditionOn": 2, "UseExistanceInsteadOfBoolValue": true }
+			]
+		}
+	}
+}

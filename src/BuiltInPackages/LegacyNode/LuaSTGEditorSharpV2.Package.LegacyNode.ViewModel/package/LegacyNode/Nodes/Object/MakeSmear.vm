@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "MakeSmear",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/smear.png",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "interval" }
+	],
+	"Text": {
+		"Neutral": "make smear for {1} every {2} frame(s)",
+		"Localized": {
+			"zh": "为{1}生成拖影，间隔{2}帧"
+		}
+	}
+}

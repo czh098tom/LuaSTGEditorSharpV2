@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LaserChangeStyle",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/laserchangestyle.png",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "color" },
+		{ "Key": "style" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "change laser {1} to color {2}, style {3}" },
+			{ "Text": " (keep original color)", "ConditionOn": 1, "UseExistanceInsteadOfBoolValue": true, "Inversed": true }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "修改激光{1}为颜色{2}，样式{3}" },
+				{ "Text": "（保留原有颜色）", "ConditionOn": 1, "UseExistanceInsteadOfBoolValue": true, "Inversed": true }
+			]
+		}
+	}
+}

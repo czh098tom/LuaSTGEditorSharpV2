@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "PlayBGM",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/playbgm.png",
+	"Captures": [
+		{ "Key": "name" }
+	],
+	"Text": {
+		"Neutral": "Play BGM {1}",
+		"Localized": {
+			"zh": "播放BGM {1}"
+		}
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetXYVelocity",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/setvxy.png",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "velocity" },
+		{ "Key": "set_rotation" }
+	],
+	"Text": {
+		"Neutral": [
+			{ "Text": "set {1} velocity to {2}" },
+			{ "Text": ", set rotation", "ConditionOn": 2 }
+		],
+		"Localized": {
+			"zh": [
+				{ "Text": "设置{1}速度为{2}" },
+				{ "Text": "，同步旋转", "ConditionOn": 2 }
+			]
+		}
+	}
+}

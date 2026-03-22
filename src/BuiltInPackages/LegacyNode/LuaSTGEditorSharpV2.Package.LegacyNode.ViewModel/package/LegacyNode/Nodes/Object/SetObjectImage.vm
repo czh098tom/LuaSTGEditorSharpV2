@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetObjectImage",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/objectsetimg.png",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "image" }
+	],
+	"Text": {
+		"Neutral": "set {1} image to {2}",
+		"Localized": {
+			"zh": "设置{1}的贴图为{2}"
+		}
+	}
+}

@@ -1,68 +1,38 @@
 {
-	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SelectiveViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.Mustache.MustacheViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineSpellCard",
 	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bossspellcard.png",
-	"Captures": [
-		{ "Key": "spellcard_name" },
-		{ "Key": "protect_time" },
-		{ "Key": "resist_time" },
-		{ "Key": "total_time" },
-		{ "Key": "hp" },
-		{ "Key": "power_amount" },
-		{ "Key": "faith_amount" },
-		{ "Key": "point_amount" },
-		{ "Key": "bomb_immunity" },
-		{ "Key": "opening_performance" }
-	],
+	"Captures": {
+		"spellcard_name" :{ "Key": "spellcard_name"  },
+		"protect_time" :{ "Key": "protect_time" },
+		"resist_time" :{ "Key": "resist_time" },
+		"total_time" :{ "Key": "total_time" },
+		"hp" :{ "Key": "hp" },
+		"power_amount" :{ "Key": "power_amount" },
+		"faith_amount" :{ "Key": "faith_amount" },
+		"point_amount" :{ "Key": "point_amount" },
+		"bomb_immunity" :{ "Key": "bomb_immunity" },
+		"opening_performance":{ "Key": "opening_performance" }
+	},
+	"ConditionTemplates": {
+		"is_spellcard": "{{#self.spellcard_name}}{{&self.spellcard_name}} != \"\"{{/self.spellcard_name}}",
+		"is_non_spellcard": "{{#self.spellcard_name}}{{&self.spellcard_name}} == \"\"{{/self.spellcard_name}}"
+	},
 	"Text": {
 		"Neutral": [
-			{
-				"Text": "Non-spellcard",
-				"ConditionOn": 0,
-				"UseExistanceInsteadOfBoolValue": true,
-				"Inversed": true
-			},
-			{
-				"Text": "SpellCard {1} ",
-				"ConditionOn": 0,
-				"UseExistanceInsteadOfBoolValue": true
-			},
-			{
-				"Text": ", time(protected:{2}(s), resist:{3}(s), total:{4}(s)), hp: {5}, bonus {6} power, {7} faith, {8} points"
-			},
-			{
-				"Text": ", immune to bomb",
-				"ConditionOn": 8
-			},
-			{
-				"Text": ", redirect entrance of scprac to previous phase",
-				"ConditionOn": 9
-			}
+			"{{#condition.is_spellcard}}Spellcard {{&self.spellcard_name}}\n{{/condition.is_spellcard}}",
+			"{{#condition.is_non_spellcard}}Non-spellcard\n{{/condition.is_non_spellcard}}",
+			"time(protected:{2}(s), resist:{3}(s), total:{4}(s)), hp: {5}, bonus: {6} power, {7} faith, {8} points",
+			"{{#self.bomb_immunity}}\nimmune to bomb{{/self.bomb_immunity}}",
+			"{{#self.opening_performance}}\nredirect entrance of scprac to previous phase{{/self.opening_performance}}"
 		],
 		"Localized": {
 			"zh": [
-				{
-					"Text": "非符",
-					"ConditionOn": 0,
-					"UseExistanceInsteadOfBoolValue": true,
-					"Inversed": true
-				},
-				{
-					"Text": "符卡 {1} ",
-					"ConditionOn": 0,
-					"UseExistanceInsteadOfBoolValue": true
-				},
-				{
-					"Text": ", 无敌{2}秒, 减伤{3}秒, 总共{4}秒, 血量{5}, 击破奖励{6}灵力, {7}信仰, {8}点数"
-				},
-				{
-					"Text": ", 免疫Bomb",
-					"ConditionOn": 8
-				},
-				{
-					"Text": ", 将符卡练习入口重定向至上一阶段",
-					"ConditionOn": 9
-				}
+				"{{#condition.is_non_spellcard}}非符\n{{/condition.is_non_spellcard}}",
+				"{{#condition.is_spellcard}}符卡 {{&self.spellcard_name}}\n{{/condition.is_spellcard}}",
+				"无敌{{self.protect_time}}秒, 减伤{{self.resist_time}}秒, 总共{{self.total_time}}秒, 血量{{self.hp}}, 击破奖励：{{self.power_amount}}灵力, {{self.faith_amount}}信仰, {{self.point_amount}}点数",
+				"{{#self.bomb_immunity}}\n免疫Bomb{{/self.bomb_immunity}}",
+				"{{#self.opening_performance}}\n将符卡练习入口重定向至上一阶段{{/self.opening_performance}}"
 			]
 		}
 	}

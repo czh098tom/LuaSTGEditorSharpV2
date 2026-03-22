@@ -1,0 +1,16 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.Mustache.MustacheViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "PostEffect",
+	"Captures": {
+		"texture": { "Key": "texture" },
+		"shader": { "Key": "shader" },
+		"blend_mode": { "Key": "blend_mode" },
+		"parameter": { "Key": "parameter" }
+	},
+	"Text": {
+		"Neutral": "Post Effect: Texture={texture}, Shader={shader}, Blend Mode={blend_mode}, Parameter={parameter}",
+		"Localized": {
+			"zh": "后处理：纹理={texture}，着色器={shader}，混合模式={blend_mode}，参数={parameter}"
+		}
+	}
+}

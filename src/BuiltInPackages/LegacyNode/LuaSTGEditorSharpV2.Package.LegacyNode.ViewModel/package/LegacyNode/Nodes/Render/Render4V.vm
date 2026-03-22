@@ -1,0 +1,18 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Render4V",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/render4v.png",
+	"Captures": [
+		{ "Key": "image" },
+		{ "Key": "upper_left_position" },
+		{ "Key": "upper_right_position" },
+		{ "Key": "lower_right_position" },
+		{ "Key": "lower_left_position" }
+	],
+	"Text": {
+		"Neutral": "render {1} with quad ({2}), ({3}), ({4}), ({5})",
+		"Localized": {
+			"zh": "以四边形({2})({3})({4})({5})渲染{1}"
+		}
+	}
+}

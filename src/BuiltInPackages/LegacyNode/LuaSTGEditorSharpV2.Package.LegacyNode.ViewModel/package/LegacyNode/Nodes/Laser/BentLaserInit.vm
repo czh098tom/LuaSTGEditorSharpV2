@@ -12,15 +12,13 @@
 	],
 	"Text": {
 		"Neutral": [
-			{
-				"Text": "initialize bent laser of color {2}, length {3}, width {4}, node size {6}"
-			}
+			{ "Text": "initialize bent laser of color {2}, length {3}, width {4}, node size {6}" },
+			{ "Text": "\nwith parameters {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true }
 		],
 		"Localized": {
 			"zh": [
-				{
-					"Text": "初始化曲光, 颜色{2}, 长度{3}, 宽度{4}, 激光头大小{6}"
-				}
+				{ "Text": "初始化曲光, 颜色{2}, 长度{3}, 宽度{4}, 激光头大小{6}" },
+				{ "Text": "\n参数 {1}", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true }
 			]
 		}
 	}

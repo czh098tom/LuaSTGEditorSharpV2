@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "ForEachInGroup",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/unitforeach.png",
+	"Captures": [
+		{ "Key": "group" }
+	],
+	"Text": {
+		"Neutral": "for each unit in group {1}",
+		"Localized": {
+			"zh": "遍历组 {1} 中的单位"
+		}
+	}
+}

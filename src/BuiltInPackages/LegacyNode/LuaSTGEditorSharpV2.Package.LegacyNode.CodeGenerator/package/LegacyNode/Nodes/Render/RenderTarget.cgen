@@ -1,0 +1,12 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "RenderTarget",
+	"Captures": [
+		{ "Key": "operation" },
+		{ "Key": "name" }
+	],
+	"Head": [
+		{ "Text": "PushRenderTarget({2})", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true },
+		{ "Text": "PopRenderTarget({2})", "ConditionOn": 0, "UseExistanceInsteadOfBoolValue": true, "Inversed": true }
+	]
+}

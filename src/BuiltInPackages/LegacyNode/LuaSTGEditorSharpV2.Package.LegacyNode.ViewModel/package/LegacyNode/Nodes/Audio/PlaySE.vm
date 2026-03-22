@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "PlaySE",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/playsound.png",
+	"Captures": [
+		{ "Key": "name" },
+		{ "Key": "volume" }
+	],
+	"Text": {
+		"Neutral": "Play SE {1} (vol {2})",
+		"Localized": {
+			"zh": "播放音效 {1}（音量{2}）"
+		}
+	}
+}

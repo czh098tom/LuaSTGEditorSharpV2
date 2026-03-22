@@ -17,5 +17,6 @@
 		{ "Text": "{0:IND}faith = {4}," },
 		{ "Text": "{0:IND}bomb = {5}" },
 		{ "Text": "}}, {6}, {7})" }
-	]
+	],
+	"IndentionIncrement": 0
   }

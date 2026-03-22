@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LoadBGM",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/loadbgm.png",
+	"Captures": [
+		{ "Key": "file_path" },
+		{ "Key": "resource_name" }
+	],
+	"Text": {
+		"Neutral": "Load BGM {2} ({1})",
+		"Localized": {
+			"zh": "加载BGM {2}（{1}）"
+		}
+	}
+}

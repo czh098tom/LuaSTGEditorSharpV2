@@ -1,0 +1,20 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "LoadAnimation",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/loadani.png",
+	"Captures": [
+		{ "Key": "file_path" },
+		{ "Key": "resource_name" },
+		{ "Key": "mipmap" },
+		{ "Key": "grid_size" },
+		{ "Key": "animation_interval" },
+		{ "Key": "collision_size" },
+		{ "Key": "rectangle_collision" }
+	],
+	"Text": {
+		"Neutral": "load animation {2} from {1}",
+		"Localized": {
+			"zh": "加载动画 {2}，来源 {1}"
+		}
+	}
+}

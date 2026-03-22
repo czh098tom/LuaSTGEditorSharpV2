@@ -1,0 +1,15 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SetGravity",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/setgravity.png",
+	"Captures": [
+		{ "Key": "target" },
+		{ "Key": "gravity" }
+	],
+	"Text": {
+		"Neutral": "set gravity of {1} to {2}",
+		"Localized": {
+			"zh": "设置{1}的重力为{2}"
+		}
+	}
+}

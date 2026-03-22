@@ -6,5 +6,6 @@
 		{ "Key": "difficulty" }
 	],
 	"Head": "_temporary_class = Class(enemy)",
-	"Tail": "_editor_class[{1}..'@'..{2}] = _temporary_class"
+	"Tail": "_editor_class[{1}..'@'..{2}] = _temporary_class",
+	"IndentionIncrement": 0
 }

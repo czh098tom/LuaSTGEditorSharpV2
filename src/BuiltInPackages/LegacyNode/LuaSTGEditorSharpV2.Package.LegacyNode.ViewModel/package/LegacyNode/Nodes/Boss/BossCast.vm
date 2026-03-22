@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BossCast",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bosscast.png",
+	"Captures": [
+		{ "Key": "time" }
+	],
+	"Text": {
+		"Neutral": "Boss cast animation ({1}s)",
+		"Localized": {
+			"zh": "Boss施法动画 ({1}秒)"
+		}
+	}
+}

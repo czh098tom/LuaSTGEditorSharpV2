@@ -6,5 +6,6 @@
 		{ "Key": "parameters" }
 	],
 	"Head": "_editor_tasks[{1}] = function({2})\n{0:IND}return function()\n{0:IND}{0:IND}local self = task.GetSelf()",
-	"Tail": "{0:IND}end\nend"
+	"Tail": "{0:IND}end\nend",
+	"IndentionIncrement": 2
 }

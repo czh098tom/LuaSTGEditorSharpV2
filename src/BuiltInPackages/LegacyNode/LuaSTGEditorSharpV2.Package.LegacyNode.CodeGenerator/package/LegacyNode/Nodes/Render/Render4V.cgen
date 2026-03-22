@@ -1,0 +1,12 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Render4V",
+	"Captures": [
+		{ "Key": "image" },
+		{ "Key": "upper_left_position" },
+		{ "Key": "upper_right_position" },
+		{ "Key": "lower_right_position" },
+		{ "Key": "lower_left_position" }
+	],
+	"Head": "Render4V({1}, {2}, 0.5, {3}, 0.5, {4}, 0.5, {5}, 0.5)"
+}

@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "DefineSCBG",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bossspellcard.png",
+	"Captures": [
+		{ "Key": "identifier" }
+	],
+	"Text": {
+		"Neutral": "Define spellcard background {1}",
+		"Localized": {
+			"zh": "定义符卡背景 {1}"
+		}
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "OnRender",
+	"ContextCaptures": {
+		"definition": {
+			"TypeUID": "DefineObject",
+			"Property": {
+				"identifier": { "Key": "identifier" },
+				"difficulty": { "Key": "difficulty" }
+			}
+		}
+	},
+	"ConditionTemplates": {
+		"has_difficulty": "'{{context.definition.difficulty}}' != ''"
+	},
+	"Head": [
+		"_editor_class[\"{{context.definition.identifier}}{{#condition.has_difficulty}}@{{context.definition.difficulty}}{{/condition.has_difficulty}}\"].render = function(self)"
+	],
+	"Tail": [
+		"end"
+	]
+}

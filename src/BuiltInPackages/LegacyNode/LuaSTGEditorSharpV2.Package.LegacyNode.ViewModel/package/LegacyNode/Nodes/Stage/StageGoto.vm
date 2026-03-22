@@ -1,0 +1,14 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "StageGoto",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/stagegoto.png",
+	"Captures": [
+		{ "Key": "stage_index" }
+	],
+	"Text": {
+		"Neutral": "go to stage {1}",
+		"Localized": {
+			"zh": "跳转到关卡 {1}"
+		}
+	}
+}

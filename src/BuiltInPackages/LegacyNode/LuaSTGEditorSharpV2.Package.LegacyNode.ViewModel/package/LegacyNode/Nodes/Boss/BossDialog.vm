@@ -1,0 +1,27 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.Mustache.MustacheViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "BossDialog",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bossscstart.png",
+	"Captures": {
+		"can_skip": { "Key": "can_skip" },
+		"suspend_gameplay": { "Key": "suspend_gameplay" }
+	},
+	"ConditionTemplates": {
+		"is_skippable": "{{&self.can_skip}} == \"true\"",
+		"is_suspend": "{{&self.suspend_gameplay}} == \"true\""
+	},
+	"Text": {
+		"Neutral": [
+			"Boss dialog",
+			"{{#self.can_skip}} (skippable){{/self.can_skip}}",
+			"{{#self.suspend_gameplay}} - suspend gameplay{{/self.suspend_gameplay}}"
+		],
+		"Localized": {
+			"zh": [
+				"Boss对话",
+				"{{#self.can_skip}}（可跳过）{{/self.can_skip}}",
+				"{{#self.suspend_gameplay}} - 暂停游戏{{/self.suspend_gameplay}}"
+			]
+		}
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "SCBGLayer",
+	"Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/bossspellcard.png",
+	"Captures": [
+		{ "Key": "image" },
+		{ "Key": "is_tile" },
+		{ "Key": "position" },
+		{ "Key": "rotation" },
+		{ "Key": "velocity" },
+		{ "Key": "omega" },
+		{ "Key": "blend_mode" },
+		{ "Key": "scale" }
+	],
+	"Text": {
+		"Neutral": "SCBG Layer {0} with blend mode {6}",
+		"Localized": {
+			"zh": "符卡背景层：{0} 使用混合模式 {6}"
+		}
+	}
+}
