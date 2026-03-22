@@ -174,41 +174,41 @@
             </Button>
         </lsv:PropertyItemGrid>
     </DataTemplate>
-    <DataTemplate x:Key="property:imagePreview">
-        <lsv:PropertyItemGrid>
-            <Grid Grid.Column="0" Grid.ColumnSpan="3">
-                <lw:FileButton Margin="10,10" FilePath="{Binding Value}"
+	<DataTemplate x:Key="property:imagePreview">
+		<lsv:PropertyItemGrid>
+			<Grid Grid.Column="0" Grid.ColumnSpan="3">
+				<lw:FileButton Margin="10,10" FilePath="{Binding Value}"
                                Visibility="{Binding Value, Converter={StaticResource PathValidToVisibilityConverter}}"
                                VerticalContentAlignment="Center" 
                                HorizontalContentAlignment="Center"
                                OverridesDefaultStyle="True" Background="Transparent">
-                    <lw:FileButton.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="Padding" Value="1"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border 
+					<lw:FileButton.Style>
+						<Style TargetType="Button">
+							<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+							<Setter Property="BorderThickness" Value="1"/>
+							<Setter Property="Padding" Value="1"/>
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate TargetType="Button">
+										<Border 
                                             Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}"
                                             SnapsToDevicePixels="true">
-                                            <ContentPresenter 
+											<ContentPresenter 
                                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                 Margin="{TemplateBinding Padding}"
                                                 RecognizesAccessKey="True"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </lw:FileButton.Style>
-                    <lw:AutoScaleImage Source="{Binding Value}"/>
-                </lw:FileButton>
-            </Grid>
-        </lsv:PropertyItemGrid>
-    </DataTemplate>
+										</Border>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</lw:FileButton.Style>
+					<lw:AutoScaleImage Source="{Binding Value}"/>
+				</lw:FileButton>
+			</Grid>
+		</lsv:PropertyItemGrid>
+	</DataTemplate>
 </ResourceDictionary>

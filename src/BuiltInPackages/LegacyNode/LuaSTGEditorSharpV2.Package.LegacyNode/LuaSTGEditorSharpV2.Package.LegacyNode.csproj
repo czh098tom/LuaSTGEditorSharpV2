@@ -20,6 +20,10 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="package\LegacyNode\Config\" />
+  </ItemGroup>
+
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>

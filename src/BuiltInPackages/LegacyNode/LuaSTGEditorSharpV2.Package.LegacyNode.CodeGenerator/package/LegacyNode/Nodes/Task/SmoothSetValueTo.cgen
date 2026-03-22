@@ -9,20 +9,16 @@
 	"CountCapture": { "Key": "count" },
 	"SubCaptureRule": [
 		{
-			"Key": "variable_name{0}",
-			"DefaultValue": "\"_speed\""
+			"Key": "variable_name{0}"
 		},
 		{
-			"Key": "target_value{0}",
-			"DefaultValue": 1
+			"Key": "target_value{0}"
 		},
 		{
-			"Key": "interpolation_mode{0}",
-			"DefaultValue": "MOVE_NORMAL"
+			"Key": "interpolation_mode{0}"
 		},
 		{
-			"Key": "modification_mode{0}",
-			"DefaultValue": "MODE_SET"
+			"Key": "modification_mode{0}"
 		}
 	],
 	"SubCaptureFormat": [
