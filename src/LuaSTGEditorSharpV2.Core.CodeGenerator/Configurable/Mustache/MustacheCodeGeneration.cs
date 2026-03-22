@@ -17,6 +17,13 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 	public class MustacheCodeGeneration(CodeGeneratorServiceProvider nodeServiceProvider, IServiceProvider serviceProvider)
 		: CodeGeneratorServiceBase(nodeServiceProvider, serviceProvider)
 	{
+		protected struct CaptureResult
+		{
+			public Dictionary<string, object?> self = [];
+			public Dictionary<string, Dictionary<string, object?>> context = [];
+			public Dictionary<string, bool> condition = [];
+			public CaptureResult() {}
+		}
 		[JsonProperty] public Dictionary<string, CaptureWithMacroOption> Captures { get; private set; } = [];
 		[JsonProperty] public Dictionary<string, ContextCapture> ContextCaptures { get; private set; } = [];
 		[JsonProperty] public Dictionary<string, string> ConditionTemplates { get; private set; } = [];
@@ -25,14 +32,16 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 		[JsonProperty] public bool IgnoreChildren { get; private set; } = false;
 		[JsonProperty] public int IndentionIncrement { get; private set; } = 1;
 
-		protected MustacheCodeGenerationHash _captureResult;
+		protected CaptureResult _captureResult;
 
 		internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
 		{
 			_captureResult = new();
 			WriteCaptureResult(ref _captureResult, node, context);
 			if (Head.Length != 0)
-				yield return new CodeData(context.RenderIndentedTemplate(string.Join('\n', Head), _captureResult).ToString(), node);
+			{
+				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Head), _captureResult, context).ToString(), node);
+			}
 			if (!IgnoreChildren)
 			{
 				foreach (var cd in NodeServiceProvider.GenerateForChildren(node, context, IndentionIncrement))
@@ -41,21 +50,12 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 				}
 			}
 			if (Tail.Length != 0)
-				yield return new CodeData(context.RenderIndentedTemplate(string.Join('\n', Tail), _captureResult).ToString(), node);
-		}
-
-		protected virtual int GetCaptureCacheLength()
-		{
-			int l = Captures.Count;
-			foreach(var cc in ContextCaptures.Values)
 			{
-				l += cc.Property.Count;
+				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Tail), _captureResult, context).ToString(), node);
 			}
-			l += ConditionTemplates.Count;
-			return l;
 		}
 
-		protected virtual int WriteCaptureResult(ref MustacheCodeGenerationHash captureResult, NodeData node, CodeGenerationContext context)
+		protected int WriteCaptureResult(ref CaptureResult captureResult, NodeData node, CodeGenerationContext context)
 		{
 			var token = new NodePropertyAccessToken(ServiceProvider, node, context);
 			int n = 0;
@@ -94,6 +94,11 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			}
 
 			return n;
+		}
+
+		protected static StringBuilder RenderIndentedTemplate(string template, CaptureResult captureResult, CodeGenerationContext context)
+		{
+			return context.ApplyIndented(context.GetIndented(), StaticStubbleRenderer.Render(template, captureResult));
 		}
 	}
 }

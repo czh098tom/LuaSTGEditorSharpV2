@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View">
     <DataTemplate x:Key="DocumentViewModel">
-        <Grid Background="{StaticResource ResourceKey=inspector:background_brush}">
+        <Grid Background="{DynamicResource ResourceKey=inspector:background_brush}">
             <ContentControl Content="{Binding}">
                 <ContentControl.Style>
                     <Style TargetType="ContentControl">
