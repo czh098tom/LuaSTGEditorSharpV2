@@ -1,0 +1,8 @@
+{
+	"Name": "modification_mode",
+	"Options": [
+		{ "Result": "MODE_SET" },
+		{ "Result": "MODE_ADD" },
+		{ "Result": "MODE_MUL" },
+	]
+}
