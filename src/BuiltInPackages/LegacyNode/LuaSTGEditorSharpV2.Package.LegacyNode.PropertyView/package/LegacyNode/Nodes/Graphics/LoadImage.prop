@@ -1,0 +1,87 @@
+{
+    "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "TypeUID": "LoadImage",
+    "Tabs": [
+        {
+            "$type": "Default",
+            "Mapping": [
+                {
+                    "$type": "Default",
+                    "Mapping": { "Key": "file_path" },
+                    "Caption": {
+                        "Neutral": "File Path",
+                        "Localized": { "zh": "文件路径" }
+                    },
+                    "Editor": {
+                        "Name": "imageFile"
+                    }
+                },
+                {
+                    "$type": "Default",
+                    "Mapping": { "Key": "resource_name" },
+                    "Caption": {
+                        "Neutral": "Resource Name",
+                        "Localized": { "zh": "资源名称" }
+                    }
+                },
+                {
+                    "$type": "Default",
+                    "Mapping": { "Key": "mipmap" },
+                    "Caption": {
+                        "Neutral": "Mipmap",
+                        "Localized": { "zh": "使用 Mipmap" }
+                    },
+                    "Editor": {
+                        "Name": "comboBox",
+                        "Parameters": {
+                            "Options": "boolean"
+                        }
+                    }
+                },
+                {
+                    "$type": "Vector2",
+                    "Mapping": { "Key": "collision_size" },
+                    "Caption": {
+                        "Neutral": "Collision Size",
+                        "Localized": { "zh": "碰撞尺寸" }
+                    },
+					"Editor": {
+						"Name": "vector2"
+					}
+                },
+                {
+                    "$type": "Default",
+                    "Mapping": { "Key": "rectangle_collision" },
+                    "Caption": {
+                        "Neutral": "Rectangle Collision",
+                        "Localized": { "zh": "矩形碰撞" }
+                    },
+                    "Editor": {
+                        "Name": "comboBox",
+                        "Parameters": {
+                            "Options": "boolean"
+                        }
+                    }
+                },
+                {
+                    "$type": "Default",
+                    "Mapping": { "Key": "cut_edge" },
+                    "Caption": {
+                        "Neutral": "Edge Trim",
+                        "Localized": { "zh": "边缘裁剪" }
+                    },
+                    "Editor": {
+                        "Name": "number"
+                    }
+                },
+                {
+                    "$type": "Default",
+                    "Mapping": { "Key": "file_path" },
+                    "Editor": {
+                        "Name": "imagePreview"
+                    }
+                }
+            ]
+        }
+    ]
+}
