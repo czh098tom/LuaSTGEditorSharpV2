@@ -365,3 +365,10 @@ FodyWeavers.xsd
 # Test output
 test/output/
 /src/LuaSTGEditorSharpV2.CLI/Properties/launchSettings.json
+
+# Agent things
+CLAUDE.md
+.opencode/
+
+# IDEA things
+.idea/
