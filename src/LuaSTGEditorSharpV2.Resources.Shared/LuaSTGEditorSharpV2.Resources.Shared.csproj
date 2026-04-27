@@ -7,6 +7,16 @@
     <BaseOutputPath>$(MSBuildProjectDirectory)..\..\..\bin\</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
+  <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory" Condition="$(InReferenceParent)!='true'">
+    <PropertyGroup>
+      <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>
+      <YourDestinationDirectory>$(MSBuildProjectDirectory)\..\..\bin\$(Configuration)\package</YourDestinationDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <ExtraFiles Include="$(YourSourceDirectory)\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExtraFiles)" DestinationFiles="$(YourDestinationDirectory)\%(ExtraFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
+  </Target>
 
   <ItemGroup>
     <None Remove="images\editor\brick.png" />
@@ -188,6 +198,10 @@
     <Resource Include="images\nodes\unidentifiedNode.png" />
     <Resource Include="images\nodes\userdefinednode.png" />
     <Resource Include="images\nodes\Warning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="icons\" />
   </ItemGroup>
 
 </Project>
