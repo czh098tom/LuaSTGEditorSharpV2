@@ -43,7 +43,15 @@
         "TargetValueRule": { "Key": "target_value{0}" },
         "InterpolationModeRule": { "Key": "interpolation_mode{0}" },
         "ModificationModeRule": { "Key": "modification_mode{0}" },
-        "NameValueEditor": { "Name": "smoothsetvalue" }
+        "Editor": { 
+          "Name": "nativePropertyTween",
+          "Parameters": {
+            "Step": "0.1",
+            "VariableNamePresets": "gameobject_numeric_property",
+            "InterpolationModePresets": "interpolation_mode",
+            "ModificationModePresets": "modification_mode"
+          }
+        }
       }
     }
   ]

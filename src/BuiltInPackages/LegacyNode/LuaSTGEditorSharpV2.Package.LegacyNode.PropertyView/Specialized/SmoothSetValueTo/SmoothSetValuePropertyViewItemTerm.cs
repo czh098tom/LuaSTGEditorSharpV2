@@ -16,10 +16,10 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.Smooth
         : IMultipleFieldPropertyItemTerm<SmoothSetValueDefinition>
     {
         [JsonProperty] public NodePropertyCapture? VariableNameRule { get; set; }
-        [JsonProperty] public NodePropertyCapture? TargetValueRule { get; set; }
+		[JsonProperty] public NodePropertyCapture? TargetValueRule { get; set; }
         [JsonProperty] public NodePropertyCapture? InterpolationModeRule { get; set; }
-        [JsonProperty] public NodePropertyCapture? ModificationModeRule { get; set; }
-        [JsonProperty] public PropertyViewEditorType? NameValueEditor { get; set; }
+		[JsonProperty] public NodePropertyCapture? ModificationModeRule { get; set; }
+		[JsonProperty] public PropertyViewEditorType? Editor { get; set; }
 
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(EditorNode nodeData, PropertyViewContext context, int count)
         {
@@ -30,7 +30,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.Smooth
                 object idx = i;
                 var vm = serviceProvider.GetRequiredService<SmoothSetValueDefinitionPropertyItemViewModelFactory>()
                     .Create(this, i, nodeData, context.LocalParam);
-                vm.Type = NameValueEditor;
+				vm.Type = Editor;
                 vm.SetProxy(
                     VariableNameRule?.CaptureByFormat(token, idx) ?? string.Empty,
                     TargetValueRule?.CaptureByFormat(token, idx) ?? string.Empty,

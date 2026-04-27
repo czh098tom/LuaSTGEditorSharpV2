@@ -9,7 +9,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.SmoothSetValueTo
 {
-    public class SmoothSetValueDefinitionPropertyItemViewModel(EditorNodeFactory factory,
+    public class SmoothSetValueDefinitionPropertyItemViewModel(
         SmoothSetValuePropertyViewItemTerm term, int index, EditorNode nodeData, LocalServiceParam localServiceParam,
         PropertyEditWizardProviderService propertyEditWizardProviderService)
         : JsonProxiedPropertyItemViewModel<SmoothSetValueDefinition>(nodeData, localServiceParam, propertyEditWizardProviderService)
@@ -106,31 +106,36 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.Smooth
             if (term.VariableNameRule == null || term.TargetValueRule == null || term.InterpolationModeRule == null || term.ModificationModeRule == null) return;
             if (e.Key == string.Format(term.VariableNameRule.Key, index))
             {
-                SetProxy(e.NewValue, _targetValue, _interpolationMode, _modificationMode);
+                _variableName = e.NewValue;
+                RaisePropertyChanged(nameof(VariableName));
             }
             else if (e.Key == string.Format(term.TargetValueRule.Key, index))
             {
-                SetProxy(_variableName, e.NewValue, _interpolationMode, _modificationMode);
+                _targetValue = e.NewValue;
+                RaisePropertyChanged(nameof(TargetValue));
             }
             else if (e.Key == string.Format(term.InterpolationModeRule.Key, index))
             {
-                SetProxy(_variableName, _targetValue, e.NewValue, _modificationMode);
+                _interpolationMode = e.NewValue;
+                RaisePropertyChanged(nameof(InterpolationMode));
             }
             else if (e.Key == string.Format(term.ModificationModeRule.Key, index))
             {
-                SetProxy(_variableName, _targetValue, _interpolationMode, e.NewValue);
+                _modificationMode = e.NewValue;
+                RaisePropertyChanged(nameof(ModificationMode));
             }
         }
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class SmoothSetValueDefinitionPropertyItemViewModelFactory(EditorNodeFactory factory,
+    public class SmoothSetValueDefinitionPropertyItemViewModelFactory(
         PropertyEditWizardProviderService propertyEditWizardProviderService)
     {
         public SmoothSetValueDefinitionPropertyItemViewModel Create(SmoothSetValuePropertyViewItemTerm term, int index,
             EditorNode nodeData, LocalServiceParam localServiceParam)
         {
-            return new SmoothSetValueDefinitionPropertyItemViewModel(factory, term, index, nodeData, localServiceParam, propertyEditWizardProviderService);
+            return new SmoothSetValueDefinitionPropertyItemViewModel(term, index, nodeData, localServiceParam,
+                propertyEditWizardProviderService);
         }
     }
 }

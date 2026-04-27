@@ -31,9 +31,10 @@
       <ExcludeAssets>**\*.prop</ExcludeAssets>
       <Private>false</Private>
     </ProjectReference>
-	  <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj">
-		  <Private>false</Private>
-	  </ProjectReference>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj">
+        <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.WPF\LuaSTGEditorSharpV2.WPF.csproj" />
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared\LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared.csproj" />
   </ItemGroup>
 
