@@ -15,7 +15,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public abstract class PropertyItemViewModelBase : ViewModelBase, IDisposable
     {
-        public string Value
+        public virtual string Value
         {
             get => _value;
             set
