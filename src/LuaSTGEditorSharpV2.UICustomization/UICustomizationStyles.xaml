@@ -7,19 +7,17 @@
     <swm:FontFamily x:Key="inspector:font_family"></swm:FontFamily>
     <Style x:Key="inspector:style">
         <Style.Resources>
-            <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="{DynamicResource ResourceKey=inspector:text_size}"/>
-                <Setter Property="FontFamily" Value="{DynamicResource ResourceKey=inspector:font_family}"/>
-            </Style>
-            <Style TargetType="{x:Type TextBox}">
-                <Setter Property="FontSize" Value="{DynamicResource ResourceKey=inspector:text_size}"/>
-                <Setter Property="FontFamily" Value="{DynamicResource ResourceKey=inspector:font_family}"/>
-            </Style>
-            <Style TargetType="{x:Type xctk:WatermarkTextBox}">
-                <Setter Property="FontSize" Value="{DynamicResource ResourceKey=inspector:text_size}"/>
-                <Setter Property="FontFamily" Value="{DynamicResource ResourceKey=inspector:font_family}"/>
-            </Style>
-        </Style.Resources>
+			<Style x:Key="font_setting">
+				<Setter Property="Control.FontSize" Value="{DynamicResource ResourceKey=inspector:text_size}"/>
+				<Setter Property="Control.FontFamily" Value="{DynamicResource ResourceKey=inspector:font_family}"/>
+			</Style>
+			<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource font_setting}"/>
+			<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource font_setting}"/>
+			<Style TargetType="{x:Type xctk:WatermarkTextBox}" BasedOn="{StaticResource font_setting}"/>
+			<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource font_setting}"/>
+			<Style TargetType="{x:Type xctk:IntegerUpDown}" BasedOn="{StaticResource font_setting}"/>
+			<Style TargetType="{x:Type xctk:DoubleUpDown}" BasedOn="{StaticResource font_setting}"/>
+		</Style.Resources>
     </Style>
     <Brush x:Key="inspector:background_brush">White</Brush>
 </ResourceDictionary>
