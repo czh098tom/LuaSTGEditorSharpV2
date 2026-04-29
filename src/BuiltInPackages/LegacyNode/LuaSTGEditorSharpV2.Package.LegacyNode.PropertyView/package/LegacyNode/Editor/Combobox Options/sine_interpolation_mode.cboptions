@@ -1,0 +1,8 @@
+{
+	"Name": "sine_interpolation_mode",
+	"Options": [
+		{ "Result": "SINE_ACCEL" },
+		{ "Result": "SINE_DECEL" },
+		{ "Result": "SINE_ACC_DEC" },
+	]
+}

@@ -1,0 +1,22 @@
+{
+	"Name": "gameobject_numeric_property",
+	"Options": [
+		{ "Result": "\"x\"" },
+		{ "Result": "\"y\"" },
+		{ "Result": "\"rot\"" },
+		{ "Result": "\"omega\"" },
+		{ "Result": "\"timer\"" },
+		{ "Result": "\"vx\"" },
+		{ "Result": "\"vy\"" },
+		{ "Result": "\"ax\"" },
+		{ "Result": "\"ay\"" },
+		{ "Result": "\"layer\"" },
+		{ "Result": "\"group\"" },
+		{ "Result": "\"hscale\"" },
+		{ "Result": "\"vscale\"" },
+		{ "Result": "\"a\"" },
+		{ "Result": "\"b\"" },
+		{ "Result": "\"_angle\"" },
+		{ "Result": "\"_speed\"" },
+	]
+}

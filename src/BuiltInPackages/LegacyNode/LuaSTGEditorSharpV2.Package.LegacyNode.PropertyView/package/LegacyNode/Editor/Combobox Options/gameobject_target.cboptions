@@ -1,0 +1,10 @@
+{
+	"Name": "gameobject_target",
+	"Options": [
+		{ "Result": "self" },
+		{ "Result": "last" },
+		{ "Result": "unit" },
+		{ "Result": "player" },
+		{ "Result": "_boss" }
+	]
+}

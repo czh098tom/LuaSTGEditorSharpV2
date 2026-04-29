@@ -3,10 +3,11 @@
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:ce="clr-namespace:CommunityToolkit.Mvvm.ComponentModel;assembly=CommunityToolkit.Mvvm"
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-                    xmlns:e="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
+                    xmlns:lpve="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
                     xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lwc="clr-namespace:LuaSTGEditorSharpV2.WPF.Converter;assembly=LuaSTGEditorSharpV2.WPF"
+                    xmlns:lwctrl="clr-namespace:LuaSTGEditorSharpV2.WPF.Controls;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView"
                     xmlns:lpvc="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Converter">
     <lpvc:BatchStatusToWaterMarkConverter x:Key="BatchStatusToWaterMarkConverter"/>
@@ -62,27 +63,80 @@
                        Text="{Binding Value}" />
         </lsv:PropertyItemGrid>
     </DataTemplate>
-    <DataTemplate x:Key="property:editorBoolean">
-        <lsv:PropertyItemGrid>
-            <TextBlock Margin="5,0,5,0" 
+	<DataTemplate x:Key="property:editorBoolean">
+		<lsv:PropertyItemGrid>
+			<TextBlock Margin="5,0,5,0" 
                        Text="{Binding Name}"/>
-            <CheckBox Grid.Column="1" 
+			<CheckBox Grid.Column="1"
                       MinWidth="150"
                       HorizontalAlignment="Stretch"
                       IsChecked="{Binding Value, Mode=TwoWay}"/>
+		</lsv:PropertyItemGrid>
+	</DataTemplate>
+    <DataTemplate x:Key="property:number">
+        <lsv:PropertyItemGrid>
+            <TextBlock Margin="5,0,5,0"
+                       Text="{Binding Name}"/>
+            <lwctrl:ExpressionSpinner Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                      Step="{Binding Type.Parameters[Step]}"
+                                      Grid.Column="1" Grid.ColumnSpan="2"
+                                      MinWidth="150"
+                                      Padding="-1"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"/>
         </lsv:PropertyItemGrid>
     </DataTemplate>
-    <e:ComboBoxItemConverter x:Key="comboBoxConverter" 
+	<DataTemplate x:Key="property:vector2">
+        <lsv:PropertyItemGrid>
+            <TextBlock Margin="5,0,5,0" Text="{Binding Name}"/>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<lwctrl:ExpressionSpinner Text="{Binding X, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                          Step="{Binding Type.Parameters[Step]}"
+                                          Grid.Column="0"
+                                          Padding="-1"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"/>
+				<lwctrl:ExpressionSpinner Text="{Binding Y, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                          Step="{Binding Type.Parameters[Step]}"
+                                          Grid.Column="1"
+                                          Padding="-1"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"/>
+            </Grid>
+            <Button Grid.Column="2" VerticalAlignment="Stretch">
+                <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Stretch"
+                      Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                Command="{Binding ShowEditWindow}"
+                                />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <lpve:ComboBoxItemConverter x:Key="comboBoxConverter" 
                              ServiceProvider="{DynamicResource ResourceKey=HostServices}"/>
     <DataTemplate x:Key="property:comboBox">
         <lsv:PropertyItemGrid>
             <TextBlock Margin="5,0,5,0" 
                        Text="{Binding Name}"/>
             <ComboBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay}" IsEditable="True"
-                      MinWidth="150"
-                      HorizontalAlignment="Stretch"
+                      Padding="0" MinWidth="150"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
                       ItemsSource="{Binding Type.Parameters[Options], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
-            <Button Grid.Column="2" Height="16" Content="...">
+            <Button Grid.Column="2" VerticalAlignment="Stretch">
+                <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Stretch"
+                      Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction PassEventArgsToCommand="True"
@@ -101,7 +155,11 @@
                      MinWidth="150"
                      HorizontalAlignment="Stretch"
                      AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
-            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
+            <Button Grid.Column="2" Height="16" VerticalAlignment="Top">
+                <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Stretch"
+                          Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction PassEventArgsToCommand="True"
@@ -142,7 +200,11 @@
                      TextWrapping="Wrap"
                      Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
             </Grid>
-            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
+            <Button Grid.Column="2" VerticalAlignment="Top">
+                <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Stretch"
+                          Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction PassEventArgsToCommand="True"
@@ -163,7 +225,11 @@
                      HorizontalAlignment="Stretch"
                      TextWrapping="Wrap"
                      Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-            <Button Grid.Column="2" Height="16" Content="..." VerticalAlignment="Top">
+            <Button Grid.Column="2" Height="16" VerticalAlignment="Top">
+                <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Stretch"
+                          Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction PassEventArgsToCommand="True"

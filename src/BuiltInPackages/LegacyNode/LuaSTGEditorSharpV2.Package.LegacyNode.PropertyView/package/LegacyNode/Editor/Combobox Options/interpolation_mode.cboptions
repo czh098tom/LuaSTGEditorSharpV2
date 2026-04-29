@@ -1,0 +1,9 @@
+{
+	"Name": "interpolation_mode",
+	"Options": [
+		{ "Result": "MODE_NORMAL" },
+		{ "Result": "MODE_ACCEL" },
+		{ "Result": "MODE_DECEL" },
+		{ "Result": "MODE_ACC_DEC" },
+	]
+}

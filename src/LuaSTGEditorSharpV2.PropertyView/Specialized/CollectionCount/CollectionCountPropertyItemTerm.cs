@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
-using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
-namespace LuaSTGEditorSharpV2.PropertyView.Configurable
+namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
 {
     [JsonTypeShortName(typeof(IPropertyItemTerm), "CollectionCount")]
     [JsonTypeShortName(typeof(PropertyItemTerm), "CollectionCount")]
@@ -22,7 +17,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 
         public override PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
         {
-            return GetViewModelImpl<CollectionCountPropertyItemViewModelFactory, CollectionCountPropertyItemViewModel>(nodeData, context);
+            return GetViewModelImpl<CollectionCountPropertyItemViewModel>(nodeData, context);
         }
     }
 }
