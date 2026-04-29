@@ -91,7 +91,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         }
     }
 
-    [Inject(ServiceLifetime.Singleton)]
+    [Inject(ServiceLifetime.Singleton, typeof(IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>))]
     public class BasicPropertyItemViewModelFactory(PropertyEditWizardProviderService propertyEditWizardProviderService)
         : IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>
     {

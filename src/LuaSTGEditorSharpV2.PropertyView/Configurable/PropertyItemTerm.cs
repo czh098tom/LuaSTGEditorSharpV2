@@ -20,25 +20,29 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     [Inject(ServiceLifetime.Transient)]
     [JsonUseShortNaming]
     [JsonTypeShortName(typeof(IPropertyItemTerm), "Default")]
-    public class PropertyItemTerm(IServiceProvider serviceProvider)
-        : IPropertyItemTerm
+    public class PropertyItemTerm(IServiceProvider serviceProvider): IPropertyItemTerm
     {
-        [JsonProperty] public NodePropertyCapture? Mapping { get; private set; }
+		[JsonProperty] public NodePropertyCapture? Mapping { get; private set; }
         [JsonProperty] public LocalizableString Caption { get; private set; } = new();
         [JsonProperty] public PropertyViewEditorType? Editor { get; protected set; }
         [JsonProperty] public bool Enabled { get; private set; } = true;
 
         public virtual PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
         {
-            return GetViewModelImpl<BasicPropertyItemViewModelFactory, BasicPropertyItemViewModel>(nodeData, context);
+            return GetViewModelImpl<BasicPropertyItemViewModel>(nodeData, context);
         }
-
-        protected PropertyItemViewModelBase GetViewModelImpl<TFactory, TResult>(EditorNode nodeData, PropertyViewContext context)
-            where TFactory : IBasicPropertyItemViewModelFactory<TResult>
+        
+        protected PropertyItemViewModelBase GetViewModelImpl<TResult>(EditorNode nodeData, PropertyViewContext context)
             where TResult : BasicPropertyItemViewModel
+            => GetViewModelImpl<TResult, IBasicPropertyItemViewModelFactory<TResult>>(nodeData, context);
+
+        protected PropertyItemViewModelBase GetViewModelImpl<TResult, TFactory>(EditorNode nodeData, PropertyViewContext context)
+            where TResult : BasicPropertyItemViewModel
+            where TFactory : IBasicPropertyItemViewModelFactory<TResult>
         {
             var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
-            var vm = serviceProvider.GetRequiredService<TFactory>()
+            var factory = serviceProvider.GetRequiredService<TFactory>();
+            var vm = factory
                 .Create([nodeData], Mapping?.Key, BatchEditStatus.AllSame, context.LocalParam);
             vm.Name = Caption.GetLocalized();
             vm.Value = Mapping?.Capture(token) ?? string.Empty;

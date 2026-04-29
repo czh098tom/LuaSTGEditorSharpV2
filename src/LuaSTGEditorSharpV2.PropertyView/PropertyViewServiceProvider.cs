@@ -83,7 +83,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             List<PropertyItemViewModelBase> result = new(nodeData.Source.Properties.Count);
             foreach (var prop in nodeData.Source.Properties)
             {
-                var vm = ServiceProvider.GetRequiredService<BasicPropertyItemViewModelFactory>()
+                var vm = ServiceProvider.GetRequiredService<IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>>()
                     .Create([nodeData], prop.Key, BatchEditStatus.AllSame, context.LocalParam);
                 vm.Name = prop.Key;
                 vm.Value = prop.Value;

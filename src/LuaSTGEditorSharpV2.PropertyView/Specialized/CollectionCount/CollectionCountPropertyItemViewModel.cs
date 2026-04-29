@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
-
+using CommunityToolkit.Mvvm.Input;
+using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
-using CommunityToolkit.Mvvm.Input;
-
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Core.Editor;
-
-namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
+namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
 {
     public class CollectionCountPropertyItemViewModel : BasicPropertyItemViewModel
     {
@@ -52,7 +45,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         }
     }
 
-    [Inject(ServiceLifetime.Singleton)]
+    [Inject(ServiceLifetime.Singleton, typeof(IBasicPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel>))]
     public class CollectionCountPropertyItemViewModelFactory(PropertyEditWizardProviderService propertyEditWizardProviderService)
         : IBasicPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel>
     {
