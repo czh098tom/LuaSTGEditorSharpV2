@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Core.Command.Factory
