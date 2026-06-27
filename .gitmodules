@@ -1,0 +1,3 @@
+[submodule "src/BuiltInPackages/LinqSTG/external/LinqSTG"]
+	path = src/BuiltInPackages/LinqSTG/external/LinqSTG
+	url = https://github.com/czh098tom/LinqSTG.git
