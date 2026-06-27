@@ -48,6 +48,7 @@
     <Project Path="src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua/LuaSTGEditorSharpV2.Package.Lua.csproj" />
   </Folder>
   <Folder Name="/src/BuiltInPackages/LinqSTG/">
+    <Project Path="src/BuiltInPackages/LinqSTG/LinqSTG.Expression.ToLua/LinqSTG.Expression.ToLua.csproj" Id="97c4fdce-3c49-4ee2-928a-a13a3bd9f92c" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator/LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView/LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.Toolbox/LuaSTGEditorSharpV2.Package.LinqSTG.Toolbox.csproj" />
@@ -69,8 +70,8 @@
   <Folder Name="/test/">
     <File Path="test/test.lstgjson" />
     <File Path="test/test.lstgxml" />
+    <Project Path="test/LuaSTGEditorSharpV2.Core.CodeGenerator.Tests/LuaSTGEditorSharpV2.Core.CodeGenerator.Tests.csproj" />
     <Project Path="test/LuaSTGEditorSharpV2.Core.Command.Tests/LuaSTGEditorSharpV2.Core.Command.Tests.csproj" />
     <Project Path="test/LuaSTGEditorSharpV2.Core.Tests/LuaSTGEditorSharpV2.Core.Tests.csproj" />
-    <Project Path="test/LuaSTGEditorSharpV2.Core.CodeGenerator.Tests/LuaSTGEditorSharpV2.Core.CodeGenerator.Tests.csproj" />
   </Folder>
 </Solution>
