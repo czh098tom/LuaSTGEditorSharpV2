@@ -1,0 +1,2 @@
+# Drop `.prop` files here (ConfigurablePropertyViewService definitions).
+# JSON schema: { "$type": "ConfigurablePropertyViewService, ...", "TypeUID": "<id>", "Tabs": [ ... ] }

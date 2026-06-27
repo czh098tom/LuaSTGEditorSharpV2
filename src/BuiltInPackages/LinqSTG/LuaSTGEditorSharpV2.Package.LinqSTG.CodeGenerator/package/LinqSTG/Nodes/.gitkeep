@@ -1,0 +1,2 @@
+# Drop `.cgen` files here (CodeGenerator definitions, one per TypeUID).
+# JSON schema: { "$type": "<code-gen type>, <assembly>", "TypeUID": "<unique-id>", ... }

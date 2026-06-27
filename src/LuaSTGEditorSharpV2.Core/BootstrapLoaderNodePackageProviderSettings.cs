@@ -11,6 +11,6 @@ namespace LuaSTGEditorSharpV2.Core
     public class BootstrapLoaderNodePackageProviderSettings
     {
         [JsonProperty]
-        public List<string> Packages = [ "Core", "Lua", "LegacyNode", "LuaSTGSub" ];
+        public List<string> Packages = [ "Core", "Lua", "LegacyNode", "LuaSTGSub", "LinqSTG" ];
     }
 }
