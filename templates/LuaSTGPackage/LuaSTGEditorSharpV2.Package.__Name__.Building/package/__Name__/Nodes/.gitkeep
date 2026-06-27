@@ -1,0 +1,2 @@
+# Drop `.resg` files here (ConfigurableResourceGatheringService definitions).
+# See existing packages (Lua/LegacyNode) for the JSON schema.

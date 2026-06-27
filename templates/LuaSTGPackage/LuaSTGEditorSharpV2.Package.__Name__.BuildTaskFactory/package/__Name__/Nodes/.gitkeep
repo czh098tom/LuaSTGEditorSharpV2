@@ -1,0 +1,2 @@
+# Drop `.build` files here (BuildTaskFactory definitions).
+# Each file references a BuildTaskFactoryServiceBase subclass that orchestrates the build pipeline.
