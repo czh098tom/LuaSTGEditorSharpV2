@@ -32,7 +32,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView.Specialized.LinqSTGBl
         {
             OpenWindow = new RelayCommand(() =>
             {
-                new BlueprintPatternWindow().ShowDialog();
+                var window = new BlueprintPatternWindow
+                {
+                    NetworkJson = Value
+                };
+                window.ShowDialog();
+                Value = window.NetworkJson ?? string.Empty;
             });
         }
     }

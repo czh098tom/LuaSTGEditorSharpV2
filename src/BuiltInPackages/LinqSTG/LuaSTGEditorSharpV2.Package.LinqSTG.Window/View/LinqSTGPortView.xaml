@@ -1,0 +1,90 @@
+﻿<UserControl x:Name="userControl" x:Class="LuaSTGEditorSharpV2.Package.LinqSTG.Windows.View.LinqSTGPortView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:NodeNetwork.Views;assembly=NodeNetwork"
+             xmlns:controls="clr-namespace:NodeNetwork.Views.Controls;assembly=NodeNetwork"
+             xmlns:local="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="20">
+    <views:PortView x:Name="PortView" RenderTransformOrigin="0.5,0.5" 
+                    RegularFill="#FF000000">
+        <views:PortView.Style>
+            <Style TargetType="{x:Type views:PortView}">
+                <Setter Property="RegularStroke" Value="#9E9E9E"/>
+                <Setter Property="RegularFill" Value="#E0E0E0"/>
+                <Setter Property="ConnectedStroke" Value="#AEAEAE"/>
+                <Setter Property="ConnectedFill" Value="#F0F0F0"/>
+                <Setter Property="HighlightStroke" Value="#30FFFFFF"/>
+                <Setter Property="HighlightFill" Value="#30FFFFFF"/>
+                <Setter Property="ErrorStroke" Value="#F44336"/>
+                <Setter Property="ErrorFill" Value="#FFCDD2"/>
+                <Setter Property="IsTabStop" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="views:PortView">
+                            <controls:FillPanel>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="{x:Static views:PortView.ConnectedVisualStatesGroup}">
+                                        <VisualState Name="{x:Static views:PortView.ConnectedState}">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"  Storyboard.TargetName="ConnectedEllipse" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState Name="{x:Static views:PortView.DisconnectedState}">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"  Storyboard.TargetName="ConnectedEllipse" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup Name="{x:Static views:PortView.HighlightVisualStatesGroup}">
+                                        <VisualState Name="{x:Static views:PortView.HighlightedState}">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"  Storyboard.TargetName="HighlightEllipse" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState Name="{x:Static views:PortView.NonHighlightedState}">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"  Storyboard.TargetName="HighlightEllipse" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup Name="{x:Static views:PortView.ErrorVisualStatesGroup}">
+                                        <VisualState Name="{x:Static views:PortView.ErrorState}">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="ErrorEllipse" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState Name="{x:Static views:PortView.NonErrorState}">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="ErrorEllipse" Storyboard.TargetProperty="Visibility">
+                                                    <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Rectangle Fill="#00000000"/>
+                                <Ellipse Width="10" Height="10" Name="RegularEllipse" StrokeThickness="1" Stroke="{TemplateBinding RegularStroke}" Fill="{TemplateBinding RegularFill}"/>
+                                <Ellipse Width="5" Height="5" Name="ConnectedEllipse" StrokeThickness="1" Stroke="{TemplateBinding ConnectedStroke}" Fill="{TemplateBinding ConnectedFill}"/>
+                                <Ellipse Width="10" Height="10" Name="ErrorEllipse" StrokeThickness="1" Stroke="{TemplateBinding ErrorStroke}" Fill="{TemplateBinding ErrorFill}"/>
+                                <Ellipse Width="10" Height="10" Name="HighlightEllipse" StrokeThickness="1" Stroke="{TemplateBinding HighlightStroke}" Fill="{TemplateBinding HighlightFill}"/>
+                            </controls:FillPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </views:PortView.Style>
+    </views:PortView>
+</UserControl>

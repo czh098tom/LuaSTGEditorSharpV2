@@ -6,14 +6,37 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <RootNamespace>LuaSTGEditorSharpV2.Package.LinqSTG.Windows</RootNamespace>
+    <LangVersion>12</LangVersion>
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(MSBuildProjectDirectory)..\..\..\..\..\bin\$(Configuration)\package\LinqSTG\</OutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="LinqSTG" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NodeNetwork" Version="6.0.0" />
+    <PackageReference Include="NodeNetworkToolkit" Version="6.0.0" />
+    <PackageReference Include="RichCanvas" Version="2.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.WPF\LuaSTGEditorSharpV2.WPF.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\external\LinqSTG\LinqSTG.Kinematics\LinqSTG.Kinematics.csproj" />
+    <ProjectReference Include="..\external\LinqSTG\LinqSTG\LinqSTG.csproj" />
+  </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
