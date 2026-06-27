@@ -52,6 +52,7 @@
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView/LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.Toolbox/LuaSTGEditorSharpV2.Package.LinqSTG.Toolbox.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.ViewModel/LuaSTGEditorSharpV2.Package.LinqSTG.ViewModel.csproj" />
+    <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.Window/LuaSTGEditorSharpV2.Package.LinqSTG.Window.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.csproj" />
   </Folder>
   <Folder Name="/src/BuiltInPackages/LuaSTGSub/">

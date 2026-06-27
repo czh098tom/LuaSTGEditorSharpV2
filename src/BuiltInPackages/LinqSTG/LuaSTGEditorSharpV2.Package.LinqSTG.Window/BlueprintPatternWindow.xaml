@@ -1,0 +1,9 @@
+<Window x:Class="LuaSTGEditorSharpV2.Package.LinqSTG.Windows.BlueprintPatternWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Blueprint Pattern"
+        Height="450" Width="600"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+    </Grid>
+</Window>

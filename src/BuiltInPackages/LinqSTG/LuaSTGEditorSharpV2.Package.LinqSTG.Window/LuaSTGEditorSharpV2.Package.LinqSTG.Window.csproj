@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <RootNamespace>LuaSTGEditorSharpV2.Package.LinqSTG.Windows</RootNamespace>
 
     <BuildProjectReferences>false</BuildProjectReferences>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -13,29 +14,6 @@
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <InReferenceParent>true</InReferenceParent>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
-      <ExcludeAssets>manifest</ExcludeAssets>
-      <Private>false</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.ViewModel\LuaSTGEditorSharpV2.ViewModel.csproj">
-      <ExcludeAssets>manifest</ExcludeAssets>
-      <Private>false</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj">
-      <ExcludeAssets>**\*.prop</ExcludeAssets>
-      <Private>false</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.View\LuaSTGEditorSharpV2.View.csproj">
-      <Private>false</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\LuaSTGEditorSharpV2.Package.LinqSTG.Window\LuaSTGEditorSharpV2.Package.LinqSTG.Window.csproj" />
-  </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
