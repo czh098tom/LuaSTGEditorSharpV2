@@ -1,5 +1,4 @@
 {
   "$type": "LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator.LinqSTGBlueprintPatternGenerator, LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "TypeUID": "LinqSTGBlueprintPattern",
-  "Language": "Sample"
+  "TypeUID": "LinqSTGBlueprintPattern"
 }

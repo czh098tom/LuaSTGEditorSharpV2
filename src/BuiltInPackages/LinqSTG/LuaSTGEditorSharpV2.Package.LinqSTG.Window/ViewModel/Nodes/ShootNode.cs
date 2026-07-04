@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
 using global::LinqSTG.Kinematics;
 using NodeNetwork.Toolkit.ValueNode;
 using NodeNetwork.ViewModels;
@@ -17,6 +18,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 {
     public class ShootNode : LinqSTGNodeViewModel
     {
+        public const string ShooterNameEditorKey = "shooter_name";
+
+        public StringValueEditorViewModel ShooterNameEditor { get; } = new();
+        public LinqSTGNodeInputViewModel<Contextual<string>?> InputShooterName { get; }
         public LinqSTGNodeInputViewModel<Contextual<IPattern<Parameter, int>>?> InputPattern { get; }
         public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
 
@@ -24,11 +29,19 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 
         public ShootNode()
         {
+            InputShooterName = new LinqSTGNodeInputViewModel<Contextual<string>?>
+            {
+                Name = "Shooter Name",
+                Editor = ShooterNameEditor,
+                Port = null
+            };
             InputPattern = LinqSTGNodeInputViewModel.Pattern("Pattern");
             InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
 
+            AddInput(ShooterNameEditorKey, InputShooterName);
             AddInput("pattern", InputPattern);
             AddInput("movement", InputMovement);
+            AddEditor(ShooterNameEditorKey, ShooterNameEditor);
 
             Name = "Shoot";
 

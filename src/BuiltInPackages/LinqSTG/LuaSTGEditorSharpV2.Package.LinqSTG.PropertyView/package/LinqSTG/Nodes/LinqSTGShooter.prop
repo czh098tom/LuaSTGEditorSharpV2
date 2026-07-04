@@ -1,0 +1,19 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "LinqSTGShooter",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "name" },
+          "Caption": {
+            "Neutral": "Shooter Name",
+            "Localized": { "zh": "射击器名称" }
+          }
+        }
+      ]
+    }
+  ]
+}
