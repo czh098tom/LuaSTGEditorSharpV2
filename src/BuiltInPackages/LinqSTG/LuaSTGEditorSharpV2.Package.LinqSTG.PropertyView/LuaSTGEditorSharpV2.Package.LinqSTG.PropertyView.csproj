@@ -35,6 +35,7 @@
       <Private>false</Private>
     </ProjectReference>
     <ProjectReference Include="..\LuaSTGEditorSharpV2.Package.LinqSTG.Window\LuaSTGEditorSharpV2.Package.LinqSTG.Window.csproj" />
+    <ProjectReference Include="..\LuaSTGEditorSharpV2.Package.LinqSTG.Resources.Shared\LuaSTGEditorSharpV2.Package.LinqSTG.Resources.Shared.csproj" />
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">

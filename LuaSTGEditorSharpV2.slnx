@@ -51,6 +51,7 @@
     <Project Path="src/BuiltInPackages/LinqSTG/LinqSTG.Expression.ToLua/LinqSTG.Expression.ToLua.csproj" Id="97c4fdce-3c49-4ee2-928a-a13a3bd9f92c" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator/LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView/LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView.csproj" />
+    <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.Resources.Shared/LuaSTGEditorSharpV2.Package.LinqSTG.Resources.Shared.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.Toolbox/LuaSTGEditorSharpV2.Package.LinqSTG.Toolbox.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.ViewModel/LuaSTGEditorSharpV2.Package.LinqSTG.ViewModel.csproj" />
     <Project Path="src/BuiltInPackages/LinqSTG/LuaSTGEditorSharpV2.Package.LinqSTG.Window/LuaSTGEditorSharpV2.Package.LinqSTG.Window.csproj" />
