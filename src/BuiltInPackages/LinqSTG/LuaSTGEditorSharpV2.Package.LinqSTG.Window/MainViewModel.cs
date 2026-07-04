@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using LinqSTG.Expression.ToLua.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
@@ -149,7 +150,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         {
             try
             {
-                NetworkJson = JsonConvert.SerializeObject(NetworkModel.FromViewModel(network));
+                NetworkJson = JsonConvert.SerializeObject(NetworkModelConversion.FromViewModel(network));
             }
             catch (Exception)
             {

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\external\LinqSTG\LinqSTG.Kinematics\LinqSTG.Kinematics.csproj" />
     <ProjectReference Include="..\external\LinqSTG\LinqSTG\LinqSTG.csproj" />
   </ItemGroup>

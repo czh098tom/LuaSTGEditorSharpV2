@@ -22,6 +22,9 @@
       <ExcludeAssets>**\*.cgen</ExcludeAssets>
       <Private>false</Private>
     </ProjectReference>
+    <ProjectReference Include="..\LinqSTG.Expression.ToLua\LinqSTG.Expression.ToLua.csproj">
+      <Private>false</Private>
+    </ProjectReference>
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">

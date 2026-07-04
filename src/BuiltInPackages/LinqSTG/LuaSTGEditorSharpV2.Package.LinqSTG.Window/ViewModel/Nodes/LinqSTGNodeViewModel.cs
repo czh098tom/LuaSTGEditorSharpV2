@@ -23,6 +23,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 
         public Color TitleColor { get; protected init; } = DefaultTitleColor;
 
+        public virtual string NodeType
+        {
+            get
+            {
+                var name = GetType().Name;
+                return name.EndsWith("Node", StringComparison.Ordinal) ? name[..^4] : name;
+            }
+        }
+
         public void AddOutput(string name, NodeOutputViewModel output)
         {
             if (output is null)

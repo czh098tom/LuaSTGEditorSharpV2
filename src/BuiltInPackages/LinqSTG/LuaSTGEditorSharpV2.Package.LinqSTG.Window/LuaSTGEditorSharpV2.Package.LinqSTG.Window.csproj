@@ -36,6 +36,7 @@
     </ProjectReference>
     <ProjectReference Include="..\external\LinqSTG\LinqSTG.Kinematics\LinqSTG.Kinematics.csproj" />
     <ProjectReference Include="..\external\LinqSTG\LinqSTG\LinqSTG.csproj" />
+    <ProjectReference Include="..\LinqSTG.Expression.ToLua\LinqSTG.Expression.ToLua.csproj" />
   </ItemGroup>
 
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
