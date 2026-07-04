@@ -1,3 +1,4 @@
+using LinqSTG;
 using LinqSTG.Expression.ToLua.Serialization;
 using Newtonsoft.Json.Linq;
 
@@ -27,10 +28,12 @@ namespace LinqSTG.Expression.ToLua
                 "Sample01MinMax" => Parser.Sample01MinMax(
                     InputOrDefaultRepeater(inputs, "repeater"),
                     InputOrConstant(node, inputs, "lower_bound"),
-                    InputOrConstant(node, inputs, "upper_bound")),
+                    InputOrConstant(node, inputs, "upper_bound"),
+                    ReadIntervalType(node, "interval_type")),
 
                 "Sample01" => Parser.Sample01(
-                    InputOrDefaultRepeater(inputs, "repeater")),
+                    InputOrDefaultRepeater(inputs, "repeater"),
+                    ReadIntervalType(node, "interval_type")),
 
                 "MinMax" => Parser.MinMax(
                     InputOrUnknown(node, inputs, "input_value"),
@@ -140,6 +143,15 @@ namespace LinqSTG.Expression.ToLua
                 };
             }
             return Unknown(node, key);
+        }
+
+        private static IntervalType ReadIntervalType(NodeModel node, string key)
+        {
+            if (node.Editors.TryGetValue(key, out var token) && token != null && token.Type == JTokenType.Integer)
+            {
+                return (IntervalType)token.ToObject<int>();
+            }
+            return IntervalType.HeadClosed;
         }
     }
 }

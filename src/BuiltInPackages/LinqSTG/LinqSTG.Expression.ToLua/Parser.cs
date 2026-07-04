@@ -12,7 +12,8 @@ namespace LinqSTG.Expression.ToLua
                 var constructedInner = Concat(
                     inner,
                     Single("local obj = last"),
-                    Single("task.New(obj, function(self)"),
+                    Single("task.New(obj, function()"),
+                    Single("local self = obj", 1),
                     Single("local __t", 1),
                     Single("for _ = 1, _infinite do", 1),
                     Single("__t = self.timer", 2),
@@ -20,6 +21,7 @@ namespace LinqSTG.Expression.ToLua
                     Shift(movement(inner), 2),
                     Single("self.x = __x", 2),
                     Single("self.y = __y", 2),
+                    Single("task.Wait()", 2),
                     Single("end", 1),
                     Single("end)")
                 );
@@ -62,7 +64,7 @@ namespace LinqSTG.Expression.ToLua
             return (inner) => Single($"__t, __i");
         }
 
-        public static LuaParser Sample01MinMax(LuaParser repeater, LuaParser lb, LuaParser ub)
+        public static LuaParser Sample01MinMax(LuaParser repeater, LuaParser lb, LuaParser ub, IntervalType intervalType)
         {
             return (inner) => Concat(
                 Single("local __lb, __ub"),
@@ -75,16 +77,29 @@ namespace LinqSTG.Expression.ToLua
                 Single("__ub = __val", 1),
                 Single("end"),
                 Single($"local __max, __curr = {FlatText(repeater(inner))}"),
-                Single("local __val = __curr / __max * (__ub - __lb) + __lb")
+                GetIntervalManipulater("__u", intervalType)(inner),
+                Single("local __val = __u * (__ub - __lb) + __lb")
             );
         }
 
-        public static LuaParser Sample01(LuaParser repeater)
+        public static LuaParser Sample01(LuaParser repeater, IntervalType intervalType)
         {
             return (inner) => Concat(
                 Single($"local __max, __curr = {FlatText(repeater(inner))}"),
-                Single("local __val = __curr / __max")
+                GetIntervalManipulater("__val", intervalType)(inner)
             );
+        }
+
+        private static LuaParser GetIntervalManipulater(string name, IntervalType intervalType)
+        {
+            return intervalType switch
+            {
+                IntervalType.Open => (inner) => Single($"local {name} = __curr / (__max + 1)"),
+                IntervalType.HeadClosed => (inner) => Single($"local {name} = (__curr - 1) / __max"),
+                IntervalType.TailClosed => (inner) => Single($"local {name} = __curr / __max"),
+                IntervalType.BothClosed => (inner) => Single($"local {name} = (__curr - 1) / (__max - 1)"),
+                _ => GetIntervalManipulater(name, IntervalType.HeadClosed)
+            };
         }
 
         public static LuaParser MinMax(LuaParser value, LuaParser lb, LuaParser ub)
