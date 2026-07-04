@@ -1,4 +1,5 @@
 using DynamicData;
+using LinqSTG;
 using LinqSTG.Expression.ToLua.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
@@ -91,6 +92,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
                 {
                     editors[editor.Key] = JToken.FromObject(stringEditor.RawValue);
                 }
+                else if (editor.Value is IContextualValueEditorViewModel<IntervalType> intervalEditor)
+                {
+                    editors[editor.Key] = JToken.FromObject(intervalEditor.RawValue);
+                }
             }
 
             return new(viewModel.NodeType, x, y, editors);
@@ -124,6 +129,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
                     {
                         stringContextual.RawValue = editor.Value?.ToObject<string>()
                             ?? throw new InvalidOperationException($"Could not convert value for editor '{editor.Key}' to string.");
+                    }
+                    else if (editorViewModel is IContextualValueEditorViewModel<IntervalType> intervalContextual)
+                    {
+                        intervalContextual.RawValue = editor.Value?.ToObject<IntervalType>()
+                            ?? throw new InvalidOperationException($"Could not convert value for editor '{editor.Key}' to IntervalType.");
                     }
                 }
             }

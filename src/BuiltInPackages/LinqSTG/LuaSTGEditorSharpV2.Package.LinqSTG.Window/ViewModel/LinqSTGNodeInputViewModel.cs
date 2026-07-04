@@ -276,6 +276,16 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             };
         }
 
+        public static LinqSTGNodeInputViewModel<Contextual<IntervalType>?> IntervalType(string? name = null, ValueEditorViewModel<Contextual<IntervalType>>? editor = null)
+        {
+            return new LinqSTGNodeInputViewModel<Contextual<IntervalType>?>
+            {
+                Name = name,
+                Editor = editor,
+                Port = null,
+            };
+        }
+
         public static LinqSTGNodeInputViewModel<Contextual<Vector2>?> Vector2(string? name = null)
         {
             return new LinqSTGNodeInputViewModel<Contextual<Vector2>?>
