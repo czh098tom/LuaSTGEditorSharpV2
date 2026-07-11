@@ -1,0 +1,18 @@
+<UserControl x:Class="LuaSTGEditorSharpV2.Package.LinqSTG.Windows.View.Editor.BulletShapeEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows"
+             mc:Ignorable="d"
+             d:DesignHeight="30" d:DesignWidth="120">
+    <ComboBox Name="ShapeCombo" MinWidth="80">
+        <ComboBox.ItemContainerStyle>
+            <Style TargetType="ComboBoxItem">
+                <Setter Property="Tag" Value="{Binding}"/>
+            </Style>
+        </ComboBox.ItemContainerStyle>
+        <local:BulletShape>Circle</local:BulletShape>
+        <local:BulletShape>Square</local:BulletShape>
+    </ComboBox>
+</UserControl>

@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
     {
         public string? NetworkJson { get; set; }
 
-        public ObservableCollection<PointF> Points { get; set; } = [];
+        public ObservableCollection<BulletVisual> Points { get; set; } = [];
 
         public int Time
         {
@@ -141,7 +141,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
                 {
                     var point = pred.PointFunc.Predict(Time - pred.StartTime);
                     if (float.IsNaN(point.X) || float.IsNaN(point.Y)) continue;
-                    Points.Add(new PointF(point.X, -point.Y));
+                    var half = pred.Diameter / 2f;
+                    Points.Add(new BulletVisual(
+                        new PointF(point.X - half, -point.Y - half),
+                        pred.Shape,
+                        pred.Diameter));
                 }
             }
         }

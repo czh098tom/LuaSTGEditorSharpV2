@@ -1,15 +1,13 @@
-﻿using global::LinqSTG.Kinematics;
-using System;
+using global::LinqSTG.Kinematics;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 {
-    public class PointShooter<TData>(Func<TData?, IParametric<int, Vector2>?> createPrediction)
+    public class PointShooter<TData>(
+        Func<TData?, IParametric<int, Vector2>?> createPrediction,
+        BulletShape shape,
+        float diameter)
         : IShooter<TData, int, IEnumerable<PointPrediction>>
     {
         public IEnumerable<PointPrediction> Shoot(IPattern<TData, int>? pattern)
@@ -26,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
                     var pred = createPrediction(data.Data);
                     if (pred != null)
                     {
-                        yield return new PointPrediction(pred, startTime);
+                        yield return new PointPrediction(pred, startTime, shape, diameter);
                     }
                 }
                 else

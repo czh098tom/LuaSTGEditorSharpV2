@@ -43,6 +43,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Splat.Locator.CurrentMutable.Register(() => new StringValueEditorView(), typeof(IViewFor<StringValueEditorViewModel>));
             Splat.Locator.CurrentMutable.Register(() => new FloatValueEditorView(), typeof(IViewFor<FloatValueEditorViewModel>));
             Splat.Locator.CurrentMutable.Register(() => new IntervalTypeEditorView(), typeof(IViewFor<IntervalTypeEditorViewModel>));
+            Splat.Locator.CurrentMutable.Register(() => new BulletShapeEditorView(), typeof(IViewFor<BulletShapeEditorViewModel>));
 
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGPortView(), typeof(IViewFor<LinqSTGPortViewModel>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGConnectionView(), typeof(IViewFor<LinqSTGConnectionViewModel>));

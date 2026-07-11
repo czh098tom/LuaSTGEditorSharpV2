@@ -76,19 +76,41 @@
                         </ControlTemplate>
                     </rc:RichItemsControl.Template>
                     <rc:RichItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type draw:PointF}">
-                            <Rectangle Width="8" Height="8" Fill="Blue">
-                                <Rectangle.RenderTransform>
-                                    <TranslateTransform X="-4" Y="-4"/>
-                                </Rectangle.RenderTransform>
-                            </Rectangle>
+                        <DataTemplate DataType="{x:Type local:BulletVisual}">
+                            <Grid>
+                                <Ellipse Width="{Binding Diameter}" Height="{Binding Diameter}"
+                                         Stroke="#FF0000" StrokeThickness="1" Fill="Transparent">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Shape}" Value="Square">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <Rectangle Width="{Binding Diameter}" Height="{Binding Diameter}"
+                                           Stroke="#FF0000" StrokeThickness="1" Fill="Transparent">
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Shape}" Value="Square">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+                            </Grid>
                         </DataTemplate>
                     </rc:RichItemsControl.Resources>
 
                     <rc:RichItemsControl.ItemContainerStyle>
                         <Style TargetType="rc:RichItemContainer">
-                            <Setter Property="Left" Value="{Binding X}" />
-                            <Setter Property="Top" Value="{Binding Y}" />
+                            <Setter Property="Left" Value="{Binding Position.X}" />
+                            <Setter Property="Top" Value="{Binding Position.Y}" />
                         </Style>
                     </rc:RichItemsControl.ItemContainerStyle>
                 </rc:RichItemsControl>

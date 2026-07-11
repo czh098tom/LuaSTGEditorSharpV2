@@ -96,6 +96,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
                 {
                     editors[editor.Key] = JToken.FromObject(intervalEditor.RawValue);
                 }
+                else if (editor.Value is IContextualValueEditorViewModel<BulletShape> shapeEditor)
+                {
+                    editors[editor.Key] = JToken.FromObject(shapeEditor.RawValue);
+                }
             }
 
             return new(viewModel.NodeType, x, y, editors);
@@ -134,6 +138,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
                     {
                         intervalContextual.RawValue = editor.Value?.ToObject<IntervalType>()
                             ?? throw new InvalidOperationException($"Could not convert value for editor '{editor.Key}' to IntervalType.");
+                    }
+                    else if (editorViewModel is IContextualValueEditorViewModel<BulletShape> shapeContextual)
+                    {
+                        shapeContextual.RawValue = editor.Value?.ToObject<BulletShape>()
+                            ?? throw new InvalidOperationException($"Could not convert value for editor '{editor.Key}' to BulletShape.");
                     }
                 }
             }
