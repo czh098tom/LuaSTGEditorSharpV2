@@ -24,22 +24,75 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
-            <rc:RichItemsControl Grid.Row="0" ItemsSource="{Binding Points}"
-                                 HorizontalScrollBarVisibility="Visible"
-                                 VerticalScrollBarVisibility="Visible">
-                <rc:RichItemsControl.Resources>
-                    <DataTemplate DataType="{x:Type draw:PointF}">
-                        <Rectangle Width="8" Height="8" Fill="Blue" />
-                    </DataTemplate>
-                </rc:RichItemsControl.Resources>
+            <Grid x:Name="PreviewHost" Grid.Row="0">
+                <rc:RichItemsControl x:Name="PreviewCanvas" ItemsSource="{Binding Points}"
+                                     Background="#FF1E1E1E"
+                                     HorizontalScrollBarVisibility="Hidden"
+                                     VerticalScrollBarVisibility="Hidden">
+                    <rc:RichItemsControl.Template>
+                        <ControlTemplate TargetType="{x:Type rc:RichItemsControl}">
+                            <ControlTemplate.Resources>
+                                <DrawingBrush x:Key="PreviewGridBrush"
+                                              TileMode="Tile"
+                                              ViewportUnits="Absolute"
+                                              Viewport="0,0,50,50">
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <GeometryDrawing Geometry="M10,0 L10,50 M20,0 L20,50 M30,0 L30,50 M40,0 L40,50 M0,10 L50,10 M0,20 L50,20 M0,30 L50,30 M0,40 L50,40">
+                                                <GeometryDrawing.Pen>
+                                                    <Pen Thickness="1" Brush="#FF2A2A2A"/>
+                                                </GeometryDrawing.Pen>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing Geometry="M0,0 L0,50 M0,0 L50,0">
+                                                <GeometryDrawing.Pen>
+                                                    <Pen Thickness="1.5" Brush="#FF3C3C3C"/>
+                                                </GeometryDrawing.Pen>
+                                            </GeometryDrawing>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </ControlTemplate.Resources>
+                            <Grid Background="{TemplateBinding Background}">
+                                <ScrollViewer CanContentScroll="True"
+                                              HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                                              VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}">
+                                    <rc:PanningGrid x:Name="CanvasContainer">
+                                        <Canvas RenderTransform="{Binding AppliedTransform, RelativeSource={RelativeSource TemplatedParent}}">
+                                            <Rectangle Canvas.Left="-192" Canvas.Top="-224" Width="384" Height="448"
+                                                       Stroke="ForestGreen" StrokeThickness="1" Fill="#FF000000"/>
+                                            <Rectangle Canvas.Left="-10000" Canvas.Top="-10000" Width="20000" Height="20000"
+                                                       Fill="{StaticResource PreviewGridBrush}"/>
+                                            <rc:RichCanvas x:Name="PART_Panel" IsItemsHost="True" />
+                                            <Rectangle x:Name="PART_SelectionRectangle"
+                                                       Style="{TemplateBinding SelectionRectangleStyle}"
+                                                       Canvas.Left="{Binding SelectionRectangle.X, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       Canvas.Top="{Binding SelectionRectangle.Y, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       Width="{Binding SelectionRectangle.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       Height="{Binding SelectionRectangle.Height, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Canvas>
+                                    </rc:PanningGrid>
+                                </ScrollViewer>
+                            </Grid>
+                        </ControlTemplate>
+                    </rc:RichItemsControl.Template>
+                    <rc:RichItemsControl.Resources>
+                        <DataTemplate DataType="{x:Type draw:PointF}">
+                            <Rectangle Width="8" Height="8" Fill="Blue">
+                                <Rectangle.RenderTransform>
+                                    <TranslateTransform X="-4" Y="-4"/>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                        </DataTemplate>
+                    </rc:RichItemsControl.Resources>
 
-                <rc:RichItemsControl.ItemContainerStyle>
-                    <Style TargetType="rc:RichItemContainer">
-                        <Setter Property="Left" Value="{Binding X}" />
-                        <Setter Property="Top" Value="{Binding Y}" />
-                    </Style>
-                </rc:RichItemsControl.ItemContainerStyle>
-            </rc:RichItemsControl>
+                    <rc:RichItemsControl.ItemContainerStyle>
+                        <Style TargetType="rc:RichItemContainer">
+                            <Setter Property="Left" Value="{Binding X}" />
+                            <Setter Property="Top" Value="{Binding Y}" />
+                        </Style>
+                    </rc:RichItemsControl.ItemContainerStyle>
+                </rc:RichItemsControl>
+            </Grid>
             <Slider Grid.Row="1" Value="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1200"/>
         </Grid>
         <Grid Grid.Row="1">
