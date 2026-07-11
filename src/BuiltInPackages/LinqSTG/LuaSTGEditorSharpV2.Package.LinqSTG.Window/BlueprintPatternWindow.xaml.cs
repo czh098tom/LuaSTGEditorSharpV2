@@ -30,7 +30,20 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
+            _viewModel.Pause();
             _viewModel.Save();
+        }
+
+        private void PlayPauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_viewModel.IsPlaying)
+            {
+                _viewModel.Pause();
+            }
+            else
+            {
+                _viewModel.Play();
+            }
         }
 
         private void BlueprintPatternWindow_Loaded(object sender, RoutedEventArgs e)

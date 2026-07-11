@@ -22,7 +22,7 @@
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="25"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid x:Name="PreviewHost" Grid.Row="0">
                 <rc:RichItemsControl x:Name="PreviewCanvas" ItemsSource="{Binding Points}"
@@ -115,7 +115,56 @@
                     </rc:RichItemsControl.ItemContainerStyle>
                 </rc:RichItemsControl>
             </Grid>
-            <Slider Grid.Row="1" Value="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1200"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="PlayPauseButton" Grid.Column="0" Click="PlayPauseButton_Click"
+                        Width="30" Height="26" Margin="4,2" VerticalAlignment="Center">
+                    <Grid Width="18" Height="18">
+                        <Path Data="M 3,2 L 16,9 L 3,16 Z" Fill="#FF222222" Stretch="Fill">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <Path Data="M 3,2 L 7,2 L 7,16 L 3,16 Z M 11,2 L 15,2 L 15,16 L 11,16 Z" Fill="#FF222222" Stretch="Fill">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                    </Grid>
+                </Button>
+                <TextBlock Grid.Column="1" Text="Start:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                <TextBox Grid.Column="2" Text="{Binding TimeMinimum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
+                <Slider Grid.Column="3" Value="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Minimum="{Binding TimeMinimum}" Maximum="{Binding TimeMaximum}"
+                        VerticalAlignment="Center" Margin="4,0" TickPlacement="None"/>
+                <TextBlock Grid.Column="4" Text="End:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                <TextBox Grid.Column="5" Text="{Binding TimeMaximum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
+                <TextBlock Grid.Column="6" Text="Time:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                <TextBlock Grid.Column="7" Text="{Binding Time}" VerticalAlignment="Center" Margin="2,0,4,0"/>
+            </Grid>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

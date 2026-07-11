@@ -15,12 +15,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator;
@@ -39,11 +41,112 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             set
             {
                 time = value;
+                if (isPlaying)
+                {
+                    timeAtPlayStart = value;
+                    playStopwatch.Restart();
+                }
                 RaisePropertyChanged();
                 UpdatePrediction();
             }
         }
         private int time;
+
+        public int TimeMinimum
+        {
+            get => timeMinimum;
+            set
+            {
+                timeMinimum = value;
+                if (Time < timeMinimum)
+                {
+                    Time = timeMinimum;
+                }
+                RaisePropertyChanged();
+            }
+        }
+        private int timeMinimum = 0;
+
+        public int TimeMaximum
+        {
+            get => timeMaximum;
+            set
+            {
+                timeMaximum = value;
+                if (Time > timeMaximum)
+                {
+                    Time = timeMaximum;
+                }
+                RaisePropertyChanged();
+            }
+        }
+        private int timeMaximum = 1200;
+
+        private const double PlayUnitsPerSecond = 60.0;
+
+        public bool IsPlaying
+        {
+            get => isPlaying;
+            private set
+            {
+                if (isPlaying == value) return;
+                isPlaying = value;
+                RaisePropertyChanged();
+            }
+        }
+        private bool isPlaying;
+
+        private DispatcherTimer? playTimer;
+        private readonly Stopwatch playStopwatch = new();
+        private int timeAtPlayStart;
+
+        public void Play()
+        {
+            if (isPlaying) return;
+            if (Time >= TimeMaximum)
+            {
+                Time = TimeMinimum;
+            }
+            timeAtPlayStart = Time;
+            playStopwatch.Restart();
+            playTimer ??= CreatePlayTimer();
+            playTimer.Start();
+            IsPlaying = true;
+        }
+
+        public void Pause()
+        {
+            if (!isPlaying) return;
+            playTimer!.Stop();
+            playStopwatch.Stop();
+            IsPlaying = false;
+        }
+
+        private DispatcherTimer CreatePlayTimer()
+        {
+            var timer = new DispatcherTimer(DispatcherPriority.Render)
+            {
+                Interval = TimeSpan.FromMilliseconds(1000.0 / PlayUnitsPerSecond)
+            };
+            timer.Tick += OnPlayTick;
+            return timer;
+        }
+
+        private void OnPlayTick(object? sender, EventArgs e)
+        {
+            var newTime = timeAtPlayStart + (int)Math.Round(playStopwatch.Elapsed.TotalSeconds * PlayUnitsPerSecond);
+            if (newTime >= TimeMaximum)
+            {
+                time = TimeMaximum;
+                RaisePropertyChanged(nameof(Time));
+                UpdatePrediction();
+                Pause();
+                return;
+            }
+            time = newTime;
+            RaisePropertyChanged(nameof(Time));
+            UpdatePrediction();
+        }
 
         public NetworkViewModel Network
         {
