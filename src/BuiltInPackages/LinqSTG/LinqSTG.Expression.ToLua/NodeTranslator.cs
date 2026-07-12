@@ -47,6 +47,10 @@ namespace LinqSTG.Expression.ToLua
                     InputOrConstant(node, inputs, "rotation"),
                     InputOrConstant(node, inputs, "distance")),
 
+                "Vector2" => Parser.Vector2(
+                    InputOrConstant(node, inputs, "x"),
+                    InputOrConstant(node, inputs, "y")),
+
                 "ConstantFloat" => ConstantFromEditor(node, "value"),
 
                 "ConstantInt" => ConstantFromEditor(node, "value"),
@@ -57,8 +61,29 @@ namespace LinqSTG.Expression.ToLua
                     InputOrUnknown(node, inputs, "a"),
                     InputOrUnknown(node, inputs, "b")),
 
+                "FloatToInt" => Parser.FloatToInt(
+                    InputOrUnknown(node, inputs, "float")),
+
+                "IntToFloat" => Parser.IntToFloat(
+                    InputOrUnknown(node, inputs, "int")),
+
                 "UniformVelocityMovement" => Parser.UniformVelocityMovement(
                     InputOrUnknown(node, inputs, "velocity")),
+
+                "StationaryMovement" => Parser.StationaryMovement(
+                    InputOrUnknown(node, inputs, "position")),
+
+                "UniformAccelerationMovement" => Parser.UniformAccelerationMovement(
+                    InputOrUnknown(node, inputs, "initial_velocity"),
+                    InputOrUnknown(node, inputs, "acceleration")),
+
+                "MovementSum" => Parser.MovementSum(
+                    InputOrUnknown(node, inputs, "movement1"),
+                    InputOrUnknown(node, inputs, "movement2")),
+
+                "MovementOffset" => Parser.MovementOffset(
+                    InputOrUnknown(node, inputs, "movement"),
+                    InputOrUnknown(node, inputs, "offset")),
 
                 "TakeVariableFromContext" => Parser.TakeVariableFromContext(
                     InputOrConstant(node, inputs, "key")),
@@ -75,6 +100,54 @@ namespace LinqSTG.Expression.ToLua
                 "ExtrudePattern" => Parser.ExtrudePattern(
                     InputOrUnknown(node, inputs, "pattern"),
                     InputOrUnknown(node, inputs, "sub_pattern")),
+
+                "ExtrudeConcatPattern" => Parser.ExtrudeConcatPattern(
+                    InputOrUnknown(node, inputs, "pattern"),
+                    InputOrUnknown(node, inputs, "sub_pattern")),
+
+                "SingleDataPattern" => Parser.SingleDataPattern(
+                    InputOrEmpty(inputs, "transformation")),
+
+                "SingleIntervalPattern" => Parser.SingleIntervalPattern(
+                    InputOrConstant(node, inputs, "interval")),
+
+                "EmptyPattern" => Parser.Empty(),
+
+                "FilterPattern" => Parser.FilterPattern(
+                    InputOrUnknown(node, inputs, "pattern"),
+                    InputOrUnknown(node, inputs, "predicate")),
+
+                "ConcatPattern" => Parser.ConcatPattern(
+                    InputOrUnknown(node, inputs, "pattern1"),
+                    InputOrUnknown(node, inputs, "pattern2")),
+
+                "ReversePattern" => Parser.ReversePattern(
+                    InputOrUnknown(node, inputs, "pattern")),
+
+                "SkipPattern" => Parser.SkipPattern(
+                    InputOrUnknown(node, inputs, "pattern"),
+                    InputOrConstant(node, inputs, "count")),
+
+                "TakePattern" => Parser.TakePattern(
+                    InputOrUnknown(node, inputs, "pattern"),
+                    InputOrConstant(node, inputs, "count")),
+
+                "SkipWhilePattern" => Parser.SkipWhilePattern(
+                    InputOrUnknown(node, inputs, "pattern"),
+                    InputOrUnknown(node, inputs, "predicate")),
+
+                "TakeWhilePattern" => Parser.TakeWhilePattern(
+                    InputOrUnknown(node, inputs, "pattern"),
+                    InputOrUnknown(node, inputs, "predicate")),
+
+                "TrimStartPattern" => Parser.TrimStartPattern(
+                    InputOrUnknown(node, inputs, "pattern")),
+
+                "TrimEndPattern" => Parser.TrimEndPattern(
+                    InputOrUnknown(node, inputs, "pattern")),
+
+                "TrimPattern" => Parser.TrimPattern(
+                    InputOrUnknown(node, inputs, "pattern")),
 
                 "Assign" => Parser.Assign(
                     InputOrEmpty(inputs, "transformation"),
