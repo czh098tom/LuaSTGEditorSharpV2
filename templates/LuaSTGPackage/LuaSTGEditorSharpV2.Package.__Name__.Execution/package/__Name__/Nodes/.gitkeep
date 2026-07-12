@@ -1,0 +1,2 @@
+# Drop `.execfg` files here (ExecutionConfigService definitions).
+# JSON schema: { "$type": "<ExecutionConfigService subclass>, <assembly>", "TypeUID": "<id>", "<CaptureName>": { "Key": "<prop-key>" } }

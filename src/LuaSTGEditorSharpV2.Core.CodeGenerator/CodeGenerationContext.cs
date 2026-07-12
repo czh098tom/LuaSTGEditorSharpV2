@@ -118,6 +118,16 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             return sb;
         }
 
+        public StringBuilder GetIndented(int additionalIndent)
+        {
+            var sb = GetIndented();
+            for (int i = 0; i < additionalIndent; i++)
+            {
+                sb.Append(ServiceSettings.IndentionString);
+            }
+            return sb;
+        }
+
         public string ApplyMacro(NodeData curr, string original)
         {
             foreach (var node in EnumerateTypeFromFarest("macro"))

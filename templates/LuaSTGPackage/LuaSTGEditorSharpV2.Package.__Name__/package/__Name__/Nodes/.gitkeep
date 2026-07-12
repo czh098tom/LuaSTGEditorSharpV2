@@ -1,0 +1,2 @@
+# Drop package-scoped JSON data files here.
+# Default values use the `.default` extension; node-type-specific files use other extensions (e.g. `.execfg`, `.cgen`).

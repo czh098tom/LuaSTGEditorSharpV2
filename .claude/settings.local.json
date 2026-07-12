@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(dotnet test *)",
+      "Bash(dotnet --version)",
+      "Bash(xargs grep -l \"Provider\")",
+      "Bash(dotnet new *)"
+    ]
+  }
+}
