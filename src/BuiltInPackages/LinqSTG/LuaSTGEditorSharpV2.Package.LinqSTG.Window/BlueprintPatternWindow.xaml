@@ -1,4 +1,4 @@
-﻿<Window x:Class="LuaSTGEditorSharpV2.Package.LinqSTG.Windows.BlueprintPatternWindow"
+<Window x:Class="LuaSTGEditorSharpV2.Package.LinqSTG.Windows.BlueprintPatternWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,7 +25,7 @@
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Grid x:Name="PreviewHost" Grid.Row="0">
-                <rc:RichItemsControl x:Name="PreviewCanvas" ItemsSource="{Binding Points}"
+                <rc:RichItemsControl x:Name="PreviewCanvas"
                                      Background="#FF1E1E1E"
                                      HorizontalScrollBarVisibility="Hidden"
                                      VerticalScrollBarVisibility="Hidden">
@@ -63,6 +63,10 @@
                                             <Rectangle Canvas.Left="-10000" Canvas.Top="-10000" Width="20000" Height="20000"
                                                        Fill="{StaticResource PreviewGridBrush}"/>
                                             <rc:RichCanvas x:Name="PART_Panel" IsItemsHost="True" />
+                                            <local:BulletPreviewCanvas x:Name="BulletLayer"
+                                                                       Canvas.Left="-10000" Canvas.Top="-10000"
+                                                                       Width="20000" Height="20000"
+                                                                       Bullets="{Binding Points}"/>
                                             <Rectangle x:Name="PART_SelectionRectangle"
                                                        Style="{TemplateBinding SelectionRectangleStyle}"
                                                        Canvas.Left="{Binding SelectionRectangle.X, RelativeSource={RelativeSource TemplatedParent}}"
@@ -75,44 +79,6 @@
                             </Grid>
                         </ControlTemplate>
                     </rc:RichItemsControl.Template>
-                    <rc:RichItemsControl.Resources>
-                        <DataTemplate DataType="{x:Type local:BulletVisual}">
-                            <Grid>
-                                <Ellipse Width="{Binding Diameter}" Height="{Binding Diameter}"
-                                         Stroke="#FF0000" StrokeThickness="1" Fill="Transparent">
-                                    <Ellipse.Style>
-                                        <Style TargetType="Ellipse">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Shape}" Value="Square">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
-                                <Rectangle Width="{Binding Diameter}" Height="{Binding Diameter}"
-                                           Stroke="#FF0000" StrokeThickness="1" Fill="Transparent">
-                                    <Rectangle.Style>
-                                        <Style TargetType="Rectangle">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Shape}" Value="Square">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Rectangle.Style>
-                                </Rectangle>
-                            </Grid>
-                        </DataTemplate>
-                    </rc:RichItemsControl.Resources>
-
-                    <rc:RichItemsControl.ItemContainerStyle>
-                        <Style TargetType="rc:RichItemContainer">
-                            <Setter Property="Left" Value="{Binding Position.X}" />
-                            <Setter Property="Top" Value="{Binding Position.Y}" />
-                        </Style>
-                    </rc:RichItemsControl.ItemContainerStyle>
                 </rc:RichItemsControl>
             </Grid>
             <Grid Grid.Row="1">

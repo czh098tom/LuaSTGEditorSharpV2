@@ -13,7 +13,6 @@ using NodeNetwork.Toolkit.NodeList;
 using NodeNetwork.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -33,7 +32,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
     {
         public string? NetworkJson { get; set; }
 
-        public ObservableCollection<BulletVisual> Points { get; set; } = [];
+        public IReadOnlyList<BulletVisual> Points { get; private set; } = Array.Empty<BulletVisual>();
 
         public int Time
         {
@@ -237,7 +236,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 
         private void UpdatePrediction()
         {
-            Points.Clear();
+            var list = new List<BulletVisual>();
             foreach (var pred in pointPredictions)
             {
                 if (Time >= pred.StartTime)
@@ -245,12 +244,14 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
                     var point = pred.PointFunc.Predict(Time - pred.StartTime);
                     if (float.IsNaN(point.X) || float.IsNaN(point.Y)) continue;
                     var half = pred.Diameter / 2f;
-                    Points.Add(new BulletVisual(
+                    list.Add(new BulletVisual(
                         new PointF(point.X - half, -point.Y - half),
                         pred.Shape,
                         pred.Diameter));
                 }
             }
+            Points = list;
+            RaisePropertyChanged(nameof(Points));
         }
 
         public void Save()
