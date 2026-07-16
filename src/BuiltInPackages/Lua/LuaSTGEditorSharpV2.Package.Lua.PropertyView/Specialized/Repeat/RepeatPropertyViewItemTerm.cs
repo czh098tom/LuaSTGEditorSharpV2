@@ -30,18 +30,12 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(EditorNode nodeData, PropertyViewContext context, int count)
         {
             var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
+            var source = new PropertySource(nodeData, token);
+            var factory = serviceProvider.GetRequiredService<RepeatVariableDefinitionPropertyItemViewModelFactory>();
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {
-                object idx = i;
-                var vm = serviceProvider.GetRequiredService<RepeatVariableDefinitionPropertyItemViewModelFactory>()
-                    .Create(this, i, nodeData, context.LocalParam);
-                vm.Type = NameValueEditor;
-                vm.SetProxy(
-                    NameRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    InitRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    IncrementRule?.CaptureByFormat(token, idx) ?? string.Empty);
-                properties.Add(vm);
+                properties.Add(factory.Create([source], this, i, NameValueEditor, context.LocalParam));
             }
             return properties;
         }

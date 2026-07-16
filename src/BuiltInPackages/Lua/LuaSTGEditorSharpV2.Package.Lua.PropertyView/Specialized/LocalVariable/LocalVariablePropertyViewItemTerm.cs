@@ -8,18 +8,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
-using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
-using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
-using LuaSTGEditorSharpV2.ViewModel;
 using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
 {
     [Inject(ServiceLifetime.Transient)]
-    public class LocalVariablePropertyViewItemTerm(IServiceProvider serviceProvider, EditorNodeFactory factory)
+    public class LocalVariablePropertyViewItemTerm(IServiceProvider serviceProvider)
         : IMultipleFieldPropertyItemTerm<VariableDefinition>
     {
         [JsonProperty] public NodePropertyCapture? NameRule { get; set; }
@@ -29,33 +26,14 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.LocalVariable
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(EditorNode nodeData, PropertyViewContext context, int count)
         {
             var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
+            var source = new PropertySource(nodeData, token);
+            var factory = serviceProvider.GetRequiredService<VariableDefinitionPropertyItemViewModelFactory>();
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {
-                object idx = i;
-                var vm = serviceProvider.GetRequiredService<VariableDefinitionPropertyItemViewModelFactory>()
-                    .Create(this, i, nodeData, context.LocalParam);
-                vm.Type = NameValueEditor;
-                vm.SetProxy(NameRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    ValueRule?.CaptureByFormat(token, idx) ?? string.Empty);
-                properties.Add(vm);
+                properties.Add(factory.Create([source], this, i, NameValueEditor, context.LocalParam));
             }
             return properties;
-        }
-
-        public CommandBase? GetCommand(EditorNode nodeData, VariableDefinition intermediateModel, int index)
-        {
-            var doc = nodeData.Document;
-            var path = nodeData.GetPath();
-            if (NameRule == null || ValueRule == null) return null;
-            IEnumerable<CommandBase?> Get()
-            {
-                if (NameRule == null || ValueRule == null) yield break;
-                object idx = index;
-                yield return CheckedCommand.Property.Modify(doc, path, string.Format(NameRule.Key, idx), intermediateModel.Name);
-                yield return CheckedCommand.Property.Modify(doc, path, string.Format(ValueRule.Key, idx), intermediateModel.Value);
-            }
-            return Commands.FromEnumerable(Get());
         }
     }
 }
