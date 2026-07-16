@@ -1,83 +1,46 @@
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat;
 
 public class RepeatVariableDefinitionPropertyItemViewModel
-    : BoundPropertyItemViewModelBase<RepeatPropertyViewItemTerm>
+    : BoundPropertyItemViewModelBase<RepeatPropertyViewItemListTerm.ItemTerm>
 {
-    private int _index;
-
-    private readonly BoundProperty _propName = new();
-    private readonly BoundProperty _propInit = new();
-    private readonly BoundProperty _propIncrement = new();
+    private readonly BoundProperty _propNameProperty = new();
+    private readonly BoundProperty _propInitProperty = new();
+    private readonly BoundProperty _propIncrementProperty = new();
 
     public string PropName
     {
-        get => _propName.Value;
-        set => _propName.Value = value;
+        get => _propNameProperty.Value;
+        set => _propNameProperty.Value = value;
     }
 
     public string PropInit
     {
-        get => _propInit.Value;
-        set => _propInit.Value = value;
+        get => _propInitProperty.Value;
+        set => _propInitProperty.Value = value;
     }
 
     public string PropIncrement
     {
-        get => _propIncrement.Value;
-        set => _propIncrement.Value = value;
+        get => _propIncrementProperty.Value;
+        set => _propIncrementProperty.Value = value;
     }
 
-    public void Configure(RepeatPropertyViewItemTerm term, int index)
+    protected override void ConfigureViewModel(RepeatPropertyViewItemListTerm.ItemTerm term)
     {
-        _index = index;
-        base.Configure(term);
+        ForwardValueChanges(_propNameProperty, nameof(PropName));
+        ForwardValueChanges(_propInitProperty, nameof(PropInit));
+        ForwardValueChanges(_propIncrementProperty, nameof(PropIncrement));
     }
 
-    protected override void ConfigureViewModel(RepeatPropertyViewItemTerm term)
-    {
-        ForwardValueChanges(_propName, nameof(PropName));
-        ForwardValueChanges(_propInit, nameof(PropInit));
-        ForwardValueChanges(_propIncrement, nameof(PropIncrement));
-    }
-
-    protected override void ConfigureBinding(RepeatPropertyViewItemTerm term)
-    {
-        if (term.NameRule != null)
-        {
-            Bind(term.NameRule.Format(_index)).ToOne(_propName);
-        }
-        if (term.InitRule != null)
-        {
-            Bind(term.InitRule.Format(_index)).ToOne(_propInit);
-        }
-        if (term.IncrementRule != null)
-        {
-            Bind(term.IncrementRule.Format(_index)).ToOne(_propIncrement);
-        }
-    }
-}
-
-[Inject(ServiceLifetime.Singleton)]
-public class RepeatVariableDefinitionPropertyItemViewModelFactory(
-    PropertyEditWizardProviderService propertyEditWizardProviderService)
-{
-    public RepeatVariableDefinitionPropertyItemViewModel Create(
-        IReadOnlyList<PropertySource> sources,
-        RepeatPropertyViewItemTerm term,
-        int index,
-        PropertyViewEditorType? type,
-        LocalServiceParam localServiceParam)
-    {
-        var viewModel = new RepeatVariableDefinitionPropertyItemViewModel();
-        viewModel.Initialize(sources, localServiceParam, propertyEditWizardProviderService);
-        viewModel.Type = type;
-        viewModel.Configure(term, index);
-        viewModel.Populate();
-        return viewModel;
-    }
+    protected override void ConfigureBinding(RepeatPropertyViewItemListTerm.ItemTerm term)
+	{
+		Bind(term.Name).ToOne(_propNameProperty);
+		Bind(term.Initial).ToOne(_propInitProperty);
+		Bind(term.Increment).ToOne(_propIncrementProperty);
+	}
 }
