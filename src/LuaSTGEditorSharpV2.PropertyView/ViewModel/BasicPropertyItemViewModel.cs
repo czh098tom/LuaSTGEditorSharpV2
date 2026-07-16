@@ -50,20 +50,4 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             Bind(term.Mapping).ToOne(ValueProperty);
         }
     }
-
-    [Inject(ServiceLifetime.Singleton, typeof(IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>))]
-    public class BasicPropertyItemViewModelFactory(
-        PropertyEditWizardProviderService propertyEditWizardProviderService)
-        : IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>
-    {
-        public BasicPropertyItemViewModel Create(IReadOnlyList<PropertySource> nodeData, PropertyItemTerm term,
-            PropertyViewEditorType? type, LocalServiceParam localServiceParam)
-        {
-            var vm = new BasicPropertyItemViewModel();
-            vm.Initialize(nodeData, localServiceParam, propertyEditWizardProviderService);
-            vm.Type = type;
-            vm.Configure(term);
-            return vm;
-        }
-    }
 }

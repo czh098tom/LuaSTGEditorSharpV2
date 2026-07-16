@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,19 +10,26 @@ namespace LuaSTGEditorSharpV2.PropertyView;
 
 [Inject(ServiceLifetime.Singleton, typeof(IPropertyItemViewModelFactory<,>))]
 public class PropertyItemViewModelFactory<TViewModel, TTerm>(
+    IServiceProvider serviceProvider,
     PropertyEditWizardProviderService propertyEditWizardProviderService)
     : IPropertyItemViewModelFactory<TViewModel, TTerm>
-    where TTerm: PropertyItemTermBase
-    where TViewModel: BoundPropertyItemViewModelBase<TTerm>, new()
+    where TTerm : PropertyItemTermBase
+    where TViewModel : BoundPropertyItemViewModelBase<TTerm>, new()
 {
-    public TViewModel Create(IReadOnlyList<PropertySource> nodeData, TTerm term,
-        PropertyViewEditorType? type, LocalServiceParam localServiceParam)
+    public TViewModel Create(
+        IReadOnlyList<EditorNode> nodes,
+        TTerm term,
+        PropertyViewEditorType? type,
+        PropertyViewContext context)
     {
-        var vm = new TViewModel();
-        vm.Initialize(nodeData, localServiceParam, propertyEditWizardProviderService);
-        vm.Type = type;
-        vm.Configure(term);
-        vm.Populate();
-        return vm;
+        var sources = nodes.Select(node => new PropertySource(
+            node,
+            new NodePropertyAccessToken(serviceProvider, node.Source, context))).ToArray();
+        var viewModel = new TViewModel();
+        viewModel.Initialize(sources, context.LocalParam, propertyEditWizardProviderService);
+        viewModel.Type = type;
+        viewModel.Configure(term);
+        viewModel.Populate();
+        return viewModel;
     }
 }

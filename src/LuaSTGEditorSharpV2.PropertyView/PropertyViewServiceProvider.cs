@@ -10,6 +10,7 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
@@ -126,17 +127,10 @@ namespace LuaSTGEditorSharpV2.PropertyView
         private BasicPropertyItemViewModel CreateNativePropertyViewModel(
             IReadOnlyList<EditorNode> nodes, string key, PropertyViewContext context)
         {
-            var sources = nodes.Select(node => new PropertySource(
-                node,
-                new NodePropertyAccessToken(ServiceProvider, node.Source, context))).ToList();
-            var viewModel = new BasicPropertyItemViewModel();
-            viewModel.Initialize(
-                sources,
-                context.LocalParam,
-                ServiceProvider.GetRequiredService<PropertyEditWizardProviderService>());
-            viewModel.Name = key;
-            viewModel.Populate();
-            return viewModel;
+            var term = PropertyItemTerm.CreateNative(ServiceProvider, key);
+            var factory = ServiceProvider.GetRequiredService<
+                IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>>();
+            return factory.Create(nodes, term, null, context);
         }
     }
 }

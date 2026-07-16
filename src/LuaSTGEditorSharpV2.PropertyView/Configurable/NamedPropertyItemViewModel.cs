@@ -16,6 +16,6 @@ public abstract class NamedPropertyItemViewModel<TTerm>: BoundPropertyItemViewMo
     }
     protected override void ConfigureViewModel(TTerm term)
     {
-        Name = term.Caption.GetLocalized();
+        Name = term.ResolvedCaption;
     }
 }

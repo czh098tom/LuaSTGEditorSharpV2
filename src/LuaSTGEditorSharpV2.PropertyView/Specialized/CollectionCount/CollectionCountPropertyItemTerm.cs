@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
 {
@@ -15,9 +17,11 @@ namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
             Editor = new PropertyViewEditorType("collectionCount");
         }
 
-        public override PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
+        public override PropertyItemViewModelBase GetViewModel(IReadOnlyList<EditorNode> nodes, PropertyViewContext context)
         {
-            return GetViewModelImpl<CollectionCountPropertyItemViewModel, PropertyItemTerm>(nodeData, context, this, Editor);
+            var factory = ServiceProvider.GetRequiredService<
+                IPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel, PropertyItemTerm>>();
+            return factory.Create(nodes, this, Editor, context);
         }
     }
 }

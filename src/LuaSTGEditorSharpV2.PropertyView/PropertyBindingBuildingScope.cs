@@ -22,10 +22,6 @@ public class PropertyBindingBuildingScope<TTerm>(NodePropertyCapture nodePropert
                     n => CheckedCommand.Property.Modify(n.Document, n.GetPath(), nodeProperty.Key, convert?.Invoke(boundProperty.Value) ?? boundProperty.Value))),
                 vm.LocalServiceParam));
         addBindingCallback.Invoke(nodeProperty.Key, binding);
-        boundProperty.EditRequested += (sender, args) =>
-        {
-            vm.RaiseOnEdit(binding.EditResultResolver.Invoke());
-        };
     }
 
     public void ToOne(BoundProperty boundProperty)
@@ -50,13 +46,6 @@ public class PropertyBindingBuildingScope<TTerm>(NodePropertyCapture nodePropert
                     compose(boundProperties.Select(bp => bp.Value).ToArray())))),
                 vm.LocalServiceParam));
         addBindingCallback.Invoke(nodeProperty.Key, binding);
-        foreach (var boundProperty in boundProperties)
-        {
-            boundProperty.EditRequested += (sender, args) =>
-            {
-                vm.RaiseOnEdit(binding.EditResultResolver.Invoke());
-            };
-        }
     }
 
     public void ToMany(

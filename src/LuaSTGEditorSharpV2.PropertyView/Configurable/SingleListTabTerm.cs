@@ -15,10 +15,9 @@ using LuaSTGEditorSharpV2.Core.Editor;
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable
 {
     [Inject(ServiceLifetime.Transient)]
-    public class SingleListTabTerm<TTermVariable, TIntermediateModel>(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewProvider) 
+    public class SingleListTabTerm<TTermVariable>(IServiceProvider serviceProvider, PropertyViewServiceProvider propertyViewProvider)
         : PropertyTabTermBase(serviceProvider, propertyViewProvider)
-        where TTermVariable : class, IMultipleFieldPropertyItemTerm<TIntermediateModel>
-        where TIntermediateModel : class
+        where TTermVariable : class, IPropertyItemListTerm
     {
         [JsonProperty] public IPropertyItemTerm[] ImmutableProperty { get; private set; } = [];
         [JsonProperty] public PropertyItemTerm? Count { get; private set; } = null;
@@ -41,7 +40,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                     count = c;
                 }
                 properties.Add(Count.GetViewModel(nodeData, context));
-                properties.AddRange(VariableProperty.GetViewModel(nodeData, context, count));
+                properties.AddRange(VariableProperty.GetViewModels(nodeData, context, count));
             }
             var tab = new PropertyTabViewModel()
             {

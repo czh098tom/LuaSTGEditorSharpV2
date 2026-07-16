@@ -14,5 +14,16 @@ namespace LuaSTGEditorSharpV2.PropertyView
     public interface IPropertyItemTerm
     {
         public PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context);
-    }
+        public PropertyItemViewModelBase GetViewModel(
+            IReadOnlyList<EditorNode> nodeData,
+            PropertyViewContext context)
+        {
+            if (nodeData.Count != 1)
+            {
+                throw new NotSupportedException($"{GetType().Name} does not support multiple source nodes.");
+            }
+
+            return GetViewModel(nodeData[0], context);
+        }
+	}
 }

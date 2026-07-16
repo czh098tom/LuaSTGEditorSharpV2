@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
-using LuaSTGEditorSharpV2.Core;
+using System.Collections.Generic;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 
 namespace LuaSTGEditorSharpV2.PropertyView;
 
 public interface IPropertyItemViewModelFactory<out TViewModel, in TTerm>
-    where TViewModel: BoundPropertyItemViewModelBase<TTerm>
-    where TTerm: PropertyItemTermBase
+    where TTerm : PropertyItemTermBase
+    where TViewModel : BoundPropertyItemViewModelBase<TTerm>
 {
-    public TViewModel Create(IReadOnlyList<PropertySource> nodeData, TTerm term,
-        PropertyViewEditorType? type, LocalServiceParam localServiceParam);
+    TViewModel Create(
+        IReadOnlyList<EditorNode> nodes,
+        TTerm term,
+        PropertyViewEditorType? type,
+        PropertyViewContext context);
 }

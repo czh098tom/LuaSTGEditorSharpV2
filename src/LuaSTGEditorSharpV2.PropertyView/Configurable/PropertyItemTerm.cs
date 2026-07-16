@@ -23,14 +23,28 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     public class PropertyItemTerm(IServiceProvider serviceProvider)
         : PropertyItemTermBase(serviceProvider)
     {
-        [JsonProperty] public NodePropertyCapture Mapping { get; private set; } = null!;
-        [JsonProperty] public LocalizableString Caption { get; private set; } = new();
-        [JsonProperty] public PropertyViewEditorType? Editor { get; protected set; }
-        [JsonProperty] public bool Enabled { get; private set; } = true;
+        private string? _captionOverride;
 
-        public override PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
+        [JsonProperty(Required = Required.Always)] public NodePropertyCapture Mapping { get; private set; } = null!;
+        [JsonProperty] public LocalizableString Caption { get; private set; } = new();
+
+        [JsonIgnore]
+        public string ResolvedCaption => _captionOverride ?? Caption.GetLocalized();
+
+        internal static PropertyItemTerm CreateNative(IServiceProvider serviceProvider, string key)
         {
-            return GetViewModelImpl<BasicPropertyItemViewModel, PropertyItemTerm>(nodeData, context, this, Editor);
+            return new PropertyItemTerm(serviceProvider)
+            {
+                Mapping = NodePropertyCapture.FromKey(key),
+                _captionOverride = key,
+            };
+        }
+
+        public override PropertyItemViewModelBase GetViewModel(IReadOnlyList<EditorNode> nodes, PropertyViewContext context)
+        {
+            var factory = ServiceProvider.GetRequiredService<
+                IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>>();
+            return factory.Create(nodes, this, Editor, context);
         }
     }
 }
