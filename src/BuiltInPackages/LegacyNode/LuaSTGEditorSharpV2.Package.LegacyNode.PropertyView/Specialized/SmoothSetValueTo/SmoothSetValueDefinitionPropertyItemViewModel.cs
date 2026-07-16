@@ -1,95 +1,55 @@
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.PropertyView;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.SmoothSetValueTo;
 
 public class SmoothSetValueDefinitionPropertyItemViewModel
-    : BoundPropertyItemViewModelBase<SmoothSetValuePropertyViewItemTerm>
+    : BoundPropertyItemViewModelBase<SmoothSetValuePropertyViewItemListTerm.ItemTerm>
 {
-    private int _index;
-
-    private readonly BoundProperty _variableName = new();
-    private readonly BoundProperty _targetValue = new();
-    private readonly BoundProperty _interpolationMode = new();
-    private readonly BoundProperty _modificationMode = new();
+    private readonly BoundProperty _variableNameProperty = new();
+    private readonly BoundProperty _targetValueProperty = new();
+    private readonly BoundProperty _interpolationModeProperty = new();
+    private readonly BoundProperty _modificationModeProperty = new();
 
     public string VariableName
     {
-        get => _variableName.Value;
-        set => _variableName.Value = value;
+        get => _variableNameProperty.Value;
+        set => _variableNameProperty.Value = value;
     }
 
     public string TargetValue
     {
-        get => _targetValue.Value;
-        set => _targetValue.Value = value;
+        get => _targetValueProperty.Value;
+        set => _targetValueProperty.Value = value;
     }
 
     public string InterpolationMode
     {
-        get => _interpolationMode.Value;
-        set => _interpolationMode.Value = value;
+        get => _interpolationModeProperty.Value;
+        set => _interpolationModeProperty.Value = value;
     }
 
     public string ModificationMode
     {
-        get => _modificationMode.Value;
-        set => _modificationMode.Value = value;
+        get => _modificationModeProperty.Value;
+        set => _modificationModeProperty.Value = value;
     }
 
-    public void Configure(SmoothSetValuePropertyViewItemTerm term, int index)
+    protected override void ConfigureViewModel(SmoothSetValuePropertyViewItemListTerm.ItemTerm term)
     {
-        _index = index;
-        base.Configure(term);
+        ForwardValueChanges(_variableNameProperty, nameof(VariableName));
+        ForwardValueChanges(_targetValueProperty, nameof(TargetValue));
+        ForwardValueChanges(_interpolationModeProperty, nameof(InterpolationMode));
+        ForwardValueChanges(_modificationModeProperty, nameof(ModificationMode));
     }
 
-    protected override void ConfigureViewModel(SmoothSetValuePropertyViewItemTerm term)
-    {
-        ForwardValueChanges(_variableName, nameof(VariableName));
-        ForwardValueChanges(_targetValue, nameof(TargetValue));
-        ForwardValueChanges(_interpolationMode, nameof(InterpolationMode));
-        ForwardValueChanges(_modificationMode, nameof(ModificationMode));
-    }
-
-    protected override void ConfigureBinding(SmoothSetValuePropertyViewItemTerm term)
-    {
-        if (term.VariableNameRule != null)
-        {
-            Bind(term.VariableNameRule.Format(_index)).ToOne(_variableName);
-        }
-        if (term.TargetValueRule != null)
-        {
-            Bind(term.TargetValueRule.Format(_index)).ToOne(_targetValue);
-        }
-        if (term.InterpolationModeRule != null)
-        {
-            Bind(term.InterpolationModeRule.Format(_index)).ToOne(_interpolationMode);
-        }
-        if (term.ModificationModeRule != null)
-        {
-            Bind(term.ModificationModeRule.Format(_index)).ToOne(_modificationMode);
-        }
-    }
-}
-
-[Inject(ServiceLifetime.Singleton)]
-public class SmoothSetValueDefinitionPropertyItemViewModelFactory(
-    PropertyEditWizardProviderService propertyEditWizardProviderService)
-{
-    public SmoothSetValueDefinitionPropertyItemViewModel Create(
-        IReadOnlyList<PropertySource> sources,
-        SmoothSetValuePropertyViewItemTerm term,
-        int index,
-        PropertyViewEditorType? type,
-        LocalServiceParam localServiceParam)
-    {
-        var viewModel = new SmoothSetValueDefinitionPropertyItemViewModel();
-        viewModel.Initialize(sources, localServiceParam, propertyEditWizardProviderService);
-        viewModel.Type = type;
-        viewModel.Configure(term, index);
-        viewModel.Populate();
-        return viewModel;
-    }
+    protected override void ConfigureBinding(SmoothSetValuePropertyViewItemListTerm.ItemTerm term)
+	{
+		Bind(term.VariableName).ToOne(_variableNameProperty);
+		Bind(term.TargetValue).ToOne(_targetValueProperty);
+		Bind(term.InterpolationMode).ToOne(_interpolationModeProperty);
+		Bind(term.ModificationMode).ToOne(_modificationModeProperty);
+	}
 }

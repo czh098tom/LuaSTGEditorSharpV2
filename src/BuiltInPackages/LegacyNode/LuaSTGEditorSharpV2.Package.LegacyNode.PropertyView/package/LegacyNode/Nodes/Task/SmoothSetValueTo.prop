@@ -3,56 +3,56 @@
   "TypeUID": "SmoothSetValueTo",
   "Tabs": [
     {
-      "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.SingleListTabTerm`2[[LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.SmoothSetValueTo.SmoothSetValuePropertyViewItemTerm, LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.SmoothSetValueTo.SmoothSetValueDefinition, LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "ImmutableProperty": [
-        {
-          "$type": "Default",
-          "Mapping": { "Key": "target" },
-          "Caption": {
-            "Neutral": "Target",
-            "Localized": { "zh": "目标" }
-          }
+        "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.SingleListTabTerm`1[[LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.SmoothSetValueTo.SmoothSetValuePropertyViewItemListTerm, LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "ImmutableProperty": [
+            {
+                "$type": "Default",
+                "Mapping": { "Key": "target" },
+                "Caption": {
+                    "Neutral": "Target",
+                    "Localized": { "zh": "目标" }
+                }
+            },
+            {
+                "$type": "Default",
+                "Mapping": { "Key": "delay" },
+                "Caption": {
+                    "Neutral": "Delay",
+                    "Localized": { "zh": "延迟" }
+                }
+            },
+            {
+                "$type": "Default",
+                "Mapping": { "Key": "duration" },
+                "Caption": {
+                    "Neutral": "Duration",
+                    "Localized": { "zh": "时长" }
+                }
+            }
+        ],
+        "Count": {
+            "$type": "CollectionCount",
+            "Mapping": { "Key": "count" },
+            "Caption": {
+                "Neutral": "Variable Count",
+                "Localized": { "zh": "变量数量" }
+            }
         },
-        {
-          "$type": "Default",
-          "Mapping": { "Key": "delay" },
-          "Caption": {
-            "Neutral": "Delay",
-            "Localized": { "zh": "延迟" }
-          }
-        },
-        {
-          "$type": "Default",
-          "Mapping": { "Key": "duration" },
-          "Caption": {
-            "Neutral": "Duration",
-            "Localized": { "zh": "时长" }
-          }
+        "VariableProperty": {
+            "VariableNameRule": { "Key": "variable_name{0}" },
+            "TargetValueRule": { "Key": "target_value{0}" },
+            "InterpolationModeRule": { "Key": "interpolation_mode{0}" },
+            "ModificationModeRule": { "Key": "modification_mode{0}" },
+            "Editor": {
+                "Name": "nativePropertyTween",
+                "Parameters": {
+                    "Step": "0.1",
+                    "VariableNamePresets": "gameobject_numeric_property",
+                    "InterpolationModePresets": "interpolation_mode",
+                    "ModificationModePresets": "modification_mode"
+                }
+            }
         }
-      ],
-      "Count": {
-        "$type": "CollectionCount",
-        "Mapping": { "Key": "count" },
-        "Caption": {
-          "Neutral": "Variable Count",
-          "Localized": { "zh": "变量数量" }
-        }
-      },
-      "VariableProperty": {
-        "VariableNameRule": { "Key": "variable_name{0}" },
-        "TargetValueRule": { "Key": "target_value{0}" },
-        "InterpolationModeRule": { "Key": "interpolation_mode{0}" },
-        "ModificationModeRule": { "Key": "modification_mode{0}" },
-        "Editor": { 
-          "Name": "nativePropertyTween",
-          "Parameters": {
-            "Step": "0.1",
-            "VariableNamePresets": "gameobject_numeric_property",
-            "InterpolationModePresets": "interpolation_mode",
-            "ModificationModePresets": "modification_mode"
-          }
-        }
-      }
     }
   ]
 }
