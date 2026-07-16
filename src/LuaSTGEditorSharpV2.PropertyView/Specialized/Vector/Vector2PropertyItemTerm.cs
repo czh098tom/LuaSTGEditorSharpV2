@@ -12,6 +12,6 @@ public class Vector2PropertyItemTerm(IServiceProvider serviceProvider) : Propert
 {
     public override PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
     {
-        return GetViewModelImpl<Vector2PropertyItemViewModel>(nodeData, context);
+        return GetViewModelImpl<Vector2PropertyItemViewModel, Vector2PropertyItemTerm>(nodeData, context, this, Editor);
     }
 }

@@ -10,7 +10,7 @@
                     xmlns:lwctrl="clr-namespace:LuaSTGEditorSharpV2.WPF.Controls;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView"
                     xmlns:lpvc="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Converter">
-    <lpvc:BatchStatusToWaterMarkConverter x:Key="BatchStatusToWaterMarkConverter"/>
+    <lpvc:BooleanToWaterMarkConverter x:Key="BooleanToWaterMarkConverter"/>
     <DataTemplate x:Key="property:default">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
@@ -20,7 +20,7 @@
                                    HorizontalAlignment="Stretch"
                                    Padding="0"
                                    Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                   Watermark="{Binding BatchEditStatus, Converter={StaticResource BatchStatusToWaterMarkConverter}}">
+                                   Watermark="{Binding ValueConflicted, Converter={StaticResource BooleanToWaterMarkConverter}}">
             </xctk:WatermarkTextBox>
         </lsv:PropertyItemGrid>
     </DataTemplate>

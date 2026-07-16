@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -13,7 +14,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     public class PropertyEditWizardProviderService(IServiceProvider serviceProvider) 
         : PackedDataProviderServiceBase<PropertyEditWizardBase>(serviceProvider)
     {
-        public EditResult? GetEditResult(string key, PropertyItemViewModelBase viewModel, 
+        public EditResult? GetEditResult(string key, BasicPropertyItemViewModel viewModel,
             LocalServiceParam localServiceParam)
         {
             var wizard = GetDataOfID(key);

@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
 
         public override PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
         {
-            return GetViewModelImpl<CollectionCountPropertyItemViewModel>(nodeData, context);
+            return GetViewModelImpl<CollectionCountPropertyItemViewModel, PropertyItemTerm>(nodeData, context, this, Editor);
         }
     }
 }

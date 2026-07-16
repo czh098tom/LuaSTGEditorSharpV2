@@ -6,22 +6,23 @@ using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyEditWizard(string name,
         IServiceProvider serviceProvider,
-        Func<PropertyItemViewModelBase, LocalServiceParam, EditResult?> edit)
+        Func<BasicPropertyItemViewModel, LocalServiceParam, EditResult?> edit)
         : PropertyEditWizardBase(name, serviceProvider)
     {
         public static PropertyEditWizard Create(string name,
             IServiceProvider serviceProvider,
-            Func<PropertyItemViewModelBase, LocalServiceParam, EditResult?> edit)
+            Func<BasicPropertyItemViewModel, LocalServiceParam, EditResult?> edit)
         {
             return new PropertyEditWizard(name, serviceProvider, edit);
         }
 
-        public override EditResult? EditValue(PropertyItemViewModelBase viewModel, LocalServiceParam localServiceParam)
+        public override EditResult? EditValue(BasicPropertyItemViewModel viewModel, LocalServiceParam localServiceParam)
         {
             return edit.Invoke(viewModel, localServiceParam);
         }

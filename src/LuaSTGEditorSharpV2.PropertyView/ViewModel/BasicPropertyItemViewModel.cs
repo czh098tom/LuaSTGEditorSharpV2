@@ -12,33 +12,28 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.PropertyView.Configurable;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
-    public class BasicPropertyItemViewModel : PropertyItemViewModelBase
+    public class BasicPropertyItemViewModel : NamedPropertyItemViewModel<PropertyItemTerm>
     {
-        private readonly string? key;
-        private string _name = string.Empty;
+        public readonly BoundProperty ValueProperty = new();
 
-        public string Name
+        public string Value
         {
-            get => _name;
-            set
-            {
-                _name = value;
-                RaisePropertyChanged();
-            }
+            get => ValueProperty.Value;
+            set => ValueProperty.Value = value;
         }
 
-        public BasicPropertyItemViewModel(IReadOnlyList<EditorNode> editorNode, string? key,
-            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam, PropertyEditWizardProviderService propertyEditWizardProvider)
-            : base(editorNode, isBatchSame, localServiceParam, propertyEditWizardProvider)
-        {
-            this.key = key;
+        public bool ValueConflicted => ValueProperty.HasConflict;
 
-            ShowEditWindow = new RelayCommand(() =>
+		protected override void ConfigureViewModel(PropertyItemTerm term)
+        {
+            base.ConfigureViewModel(term);
+			ShowEditWindow = new RelayCommand(() =>
             {
-                var result = propertyEditWizardProvider.GetEditResult(Type?.Name ?? string.Empty, this, localServiceParam);
+                var result = WizardProviderService.GetEditResult(Type?.Name ?? string.Empty, this, LocalServiceParam);
                 if (result != null)
                 {
                     RaiseOnEdit(result);
@@ -50,54 +45,25 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             });
         }
 
-        public override EditResult ResolveBatchEditingNodeCommand(IReadOnlyList<EditorNode> nodeData, LocalServiceParam context, string edited)
+        protected override void ConfigureBinding(PropertyItemTerm term)
         {
-            return new EditResult(nodeData.Select(n => (d: n.Document, p: n.GetPath()))
-                .ToArray()
-                .SelectFilter(t => CheckedCommand.Property.Modify(t.d, t.p, key, edited))
-                , false, LocalServiceParam);
-        }
-
-        protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
-        {
-            if (e.Key == key)
-            {
-                if (SourceNodes.Count == 0)
-                {
-                    BatchEditStatus = BatchEditStatus.AllSame;
-                    SetValueWithoutPushingEditCommand(e.NewValue);
-                    return;
-                }
-                else if (SourceNodes.Count == 1)
-                {
-                    BatchEditStatus = BatchEditStatus.AllSame;
-                    SetValueWithoutPushingEditCommand(e.NewValue);
-                    return;
-                }
-                else
-                {
-                    var first = SourceNodes[0].Source.GetProperty(key);
-                    if (SourceNodes.All(n => n.Source.GetProperty(key) == first))
-                    {
-                        BatchEditStatus = BatchEditStatus.AllSame;
-                    }
-                    else
-                    {
-                        BatchEditStatus = BatchEditStatus.SomeDifferent;
-                    }
-                    SetValueWithoutPushingEditCommand(e.NewValue);
-                }
-            }
+            Bind(term.Mapping).ToOne(ValueProperty);
         }
     }
 
-    [Inject(ServiceLifetime.Singleton, typeof(IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>))]
-    public class BasicPropertyItemViewModelFactory(PropertyEditWizardProviderService propertyEditWizardProviderService)
-        : IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>
+    [Inject(ServiceLifetime.Singleton, typeof(IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>))]
+    public class BasicPropertyItemViewModelFactory(
+        PropertyEditWizardProviderService propertyEditWizardProviderService)
+        : IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>
     {
-        public BasicPropertyItemViewModel Create(IReadOnlyList<EditorNode> nodeData, string? key, BatchEditStatus isBatchSame, LocalServiceParam localServiceParam)
+        public BasicPropertyItemViewModel Create(IReadOnlyList<PropertySource> nodeData, PropertyItemTerm term,
+            PropertyViewEditorType? type, LocalServiceParam localServiceParam)
         {
-            return new BasicPropertyItemViewModel(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService);
+            var vm = new BasicPropertyItemViewModel();
+            vm.Initialize(nodeData, localServiceParam, propertyEditWizardProviderService);
+            vm.Type = type;
+            vm.Configure(term);
+            return vm;
         }
     }
 }

@@ -14,7 +14,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
-    public class PropertyTabWrapperItemViewModel : SingleSourcePropertyItemViewModel
+    public class PropertyTabWrapperItemViewModel : PropertyItemViewModelBase
     {
         private ObservableCollection<PropertyTabViewModel> _tabs = [];
 
@@ -28,11 +28,11 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
             }
         }
 
-        public PropertyTabWrapperItemViewModel(IReadOnlyList<PropertyTabViewModel> tabs, 
+        public void Initialize(IReadOnlyList<PropertyTabViewModel> tabs,
             EditorNode editorNode, LocalServiceParam localServiceParam,
             PropertyEditWizardProviderService wizardProviderService)
-            : base(editorNode, localServiceParam, wizardProviderService)
         {
+            base.Initialize([editorNode], localServiceParam, wizardProviderService);
             _tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>(tab =>
             {
                 tab.OnEdit += Tab_OnEdit;
@@ -46,11 +46,6 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
         private void Tab_OnEdit(object? sender, EditResult e)
         {
             RaiseOnEdit(e);
-        }
-
-        public override EditResult ResolveEditingNodeCommand(EditorNode nodeData, LocalServiceParam context, string edited)
-        {
-            return new EditResult(LocalServiceParam);
         }
 
         protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)

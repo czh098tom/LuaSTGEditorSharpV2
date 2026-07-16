@@ -83,10 +83,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             List<PropertyItemViewModelBase> result = new(nodeData.Source.Properties.Count);
             foreach (var prop in nodeData.Source.Properties)
             {
-                var vm = ServiceProvider.GetRequiredService<IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>>()
-                    .Create([nodeData], prop.Key, BatchEditStatus.AllSame, context.LocalParam);
-                vm.Name = prop.Key;
-                vm.Value = prop.Value;
+                var vm = CreateNativePropertyViewModel([nodeData], prop.Key, context);
                 result.Add(vm);
             }
             PropertyTabViewModel tab = new(true)
@@ -110,16 +107,12 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
             List<PropertyItemViewModelBase> result = [];
             var nodeList = nodes.ToList();
+            var context = GetContextOfNode(nodeList[0].Source, localServiceParam, ServiceSettings);
             var props = nodes.SelectMany(n => n.Source.Properties, (n, p) => (node: n, prop: p))
                 .GroupBy(p => p.prop.Key);
             foreach (var gp in props)
             {
-                var value = gp.First().prop.Value;
-                var allSame = gp.All(t => t.prop.Value == value);
-                var vm = ServiceProvider.GetRequiredService<BasicPropertyItemViewModelFactory>()
-                    .Create(nodeList, gp.Key, allSame ? BatchEditStatus.AllSame : BatchEditStatus.SomeDifferent, localServiceParam);
-                vm.Name = gp.Key;
-                vm.Value = allSame ? value : string.Empty;
+                var vm = CreateNativePropertyViewModel(nodeList, gp.Key, context);
                 result.Add(vm);
             }
             PropertyTabViewModel tab = new(true)
@@ -128,6 +121,22 @@ namespace LuaSTGEditorSharpV2.PropertyView
             };
             result.ForEach(tab.Properties.Add);
             return tab;
+        }
+
+        private BasicPropertyItemViewModel CreateNativePropertyViewModel(
+            IReadOnlyList<EditorNode> nodes, string key, PropertyViewContext context)
+        {
+            var sources = nodes.Select(node => new PropertySource(
+                node,
+                new NodePropertyAccessToken(ServiceProvider, node.Source, context))).ToList();
+            var viewModel = new BasicPropertyItemViewModel();
+            viewModel.Initialize(
+                sources,
+                context.LocalParam,
+                ServiceProvider.GetRequiredService<PropertyEditWizardProviderService>());
+            viewModel.Name = key;
+            viewModel.Populate();
+            return viewModel;
         }
     }
 }
