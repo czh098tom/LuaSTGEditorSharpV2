@@ -24,19 +24,12 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.PropertyView.Specialized.Smooth
         public IReadOnlyList<PropertyItemViewModelBase> GetViewModel(EditorNode nodeData, PropertyViewContext context, int count)
         {
             var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
+            var source = new PropertySource(nodeData, token);
+            var factory = serviceProvider.GetRequiredService<SmoothSetValueDefinitionPropertyItemViewModelFactory>();
             List<PropertyItemViewModelBase> properties = [];
             for (int i = 0; i < count; i++)
             {
-                object idx = i;
-                var vm = serviceProvider.GetRequiredService<SmoothSetValueDefinitionPropertyItemViewModelFactory>()
-                    .Create(this, i, nodeData, context.LocalParam);
-				vm.Type = Editor;
-                vm.SetProxy(
-                    VariableNameRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    TargetValueRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    InterpolationModeRule?.CaptureByFormat(token, idx) ?? string.Empty,
-                    ModificationModeRule?.CaptureByFormat(token, idx) ?? string.Empty);
-                properties.Add(vm);
+                properties.Add(factory.Create([source], this, i, Editor, context.LocalParam));
             }
             return properties;
         }
