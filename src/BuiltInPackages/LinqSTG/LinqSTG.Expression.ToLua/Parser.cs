@@ -193,6 +193,149 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
+        public static LuaParser IntrinsicSubtract(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhs, __rhs"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhs = __val", 1),
+                Single("end"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhs = __val", 1),
+                Single("end"),
+                Single("local __val = __lhs - __rhs")
+            );
+        }
+
+        public static LuaParser IntrinsicSubtractVector2(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhsx, __lhsy"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __rhsx, __rhsy"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __valx = __lhsx - __rhsx"),
+                Single("local __valy = __lhsy - __rhsy")
+            );
+        }
+
+        public static LuaParser IntrinsicMultiply(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhs, __rhs"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhs = __val", 1),
+                Single("end"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhs = __val", 1),
+                Single("end"),
+                Single("local __val = __lhs * __rhs")
+            );
+        }
+
+        public static LuaParser IntrinsicMultiplyVector2(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhsx, __lhsy"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __rhsx, __rhsy"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __valx = __lhsx * __rhsx"),
+                Single("local __valy = __lhsy * __rhsy")
+            );
+        }
+
+        public static LuaParser IntrinsicDivide(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhs, __rhs"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhs = __val", 1),
+                Single("end"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhs = __val", 1),
+                Single("end"),
+                Single("local __val = __lhs / __rhs")
+            );
+        }
+
+        public static LuaParser IntrinsicDivideVector2(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhsx, __lhsy"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __rhsx, __rhsy"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __valx = __lhsx / __rhsx"),
+                Single("local __valy = __lhsy / __rhsy")
+            );
+        }
+
+        public static LuaParser IntrinsicModulo(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhs, __rhs"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhs = __val", 1),
+                Single("end"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhs = __val", 1),
+                Single("end"),
+                Single("local __val = __lhs % __rhs")
+            );
+        }
+
+        public static LuaParser IntrinsicNegate(LuaParser x)
+        {
+            return (inner) => Concat(
+                Single("local __x"),
+                Single("do"),
+                Shift(x(inner), 1),
+                Single("__x = __val", 1),
+                Single("end"),
+                Single("local __val = -__x")
+            );
+        }
+
+        public static LuaParser IntrinsicNegateVector2(LuaParser x)
+        {
+            return (inner) => Concat(
+                Single("local __x, __y"),
+                Single("do"),
+                Shift(x(inner), 1),
+                Single("__x, __y = __valx, __valy", 1),
+                Single("end"),
+                Single("local __valx = -__x"),
+                Single("local __valy = -__y")
+            );
+        }
+
         public static LuaParser UniformVelocityMovement(LuaParser vec)
         {
             return (inner) => Concat(

@@ -193,6 +193,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeList.AddNodeType(() => new Vector2Node());
 
             NodeList.AddNodeType(() => new AddNode());
+            NodeList.AddNodeType(() => new SubtractNode());
+            NodeList.AddNodeType(() => new MultiplyNode());
+            NodeList.AddNodeType(() => new DivideNode());
+            NodeList.AddNodeType(() => new ModuloNode());
+            NodeList.AddNodeType(() => new NegateNode());
             NodeList.AddNodeType(() => new FloatToIntNode());
             NodeList.AddNodeType(() => new IntToFloatNode());
             NodeList.AddNodeType(() => new MinMaxNode());

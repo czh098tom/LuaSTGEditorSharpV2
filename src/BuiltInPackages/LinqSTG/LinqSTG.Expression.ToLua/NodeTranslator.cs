@@ -94,6 +94,40 @@ namespace LinqSTG.Expression.ToLua
                         ParserOf(node, inputs, "a"),
                         ParserOf(node, inputs, "b")), PortShape.Scalar),
 
+                "Subtract" => InputShapeOr(inputs, "a") == PortShape.Vector2
+                    ? new TypedLuaParser(Parser.IntrinsicSubtractVector2(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Vector2)
+                    : new TypedLuaParser(Parser.IntrinsicSubtract(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Scalar),
+
+                "Multiply" => InputShapeOr(inputs, "a") == PortShape.Vector2
+                    ? new TypedLuaParser(Parser.IntrinsicMultiplyVector2(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Vector2)
+                    : new TypedLuaParser(Parser.IntrinsicMultiply(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Scalar),
+
+                "Divide" => InputShapeOr(inputs, "a") == PortShape.Vector2
+                    ? new TypedLuaParser(Parser.IntrinsicDivideVector2(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Vector2)
+                    : new TypedLuaParser(Parser.IntrinsicDivide(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Scalar),
+
+                "Modulo" => new TypedLuaParser(Parser.IntrinsicModulo(
+                    ParserOf(node, inputs, "a"),
+                    ParserOf(node, inputs, "b")), PortShape.Scalar),
+
+                "Negate" => InputShapeOr(inputs, "a") == PortShape.Vector2
+                    ? new TypedLuaParser(Parser.IntrinsicNegateVector2(
+                        ParserOf(node, inputs, "a")), PortShape.Vector2)
+                    : new TypedLuaParser(Parser.IntrinsicNegate(
+                        ParserOf(node, inputs, "a")), PortShape.Scalar),
+
                 "FloatToInt" => new TypedLuaParser(Parser.FloatToInt(
                     InputOrUnknown(node, inputs, "float").LuaParser), PortShape.Scalar),
 
