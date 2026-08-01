@@ -620,6 +620,42 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
+        public static LuaParser MovementRotate(LuaParser movement, LuaParser angle)
+        {
+            return (inner) => Concat(
+                Single("local __sx, __sy"),
+                Single("do"),
+                Shift(movement(inner), 1),
+                Single("__sx, __sy = __x, __y", 1),
+                Single("end"),
+                Single("local __angle"),
+                Single("do"),
+                Shift(angle(inner), 1),
+                Single("__angle = __val", 1),
+                Single("end"),
+                Single("__x = __sx * cos(__angle) - __sy * sin(__angle)"),
+                Single("__y = __sx * sin(__angle) + __sy * cos(__angle)")
+            );
+        }
+
+        public static LuaParser MovementScale(LuaParser movement, LuaParser scale)
+        {
+            return (inner) => Concat(
+                Single("local __sx, __sy"),
+                Single("do"),
+                Shift(movement(inner), 1),
+                Single("__sx, __sy = __x, __y", 1),
+                Single("end"),
+                Single("local __kx, __ky"),
+                Single("do"),
+                Shift(scale(inner), 1),
+                Single("__kx, __ky = __valx, __valy", 1),
+                Single("end"),
+                Single("__x = __sx * __kx"),
+                Single("__y = __sy * __ky")
+            );
+        }
+
         public static LuaParser SingleDataPattern(LuaParser transformation)
         {
             return (inner) => Concat(

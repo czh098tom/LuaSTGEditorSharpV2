@@ -51,8 +51,9 @@ namespace LinqSTG.Expression.ToLua
                     InputOrConstant(node, inputs, "times").LuaParser,
                     InputOrDefaultRepeater(inputs, "repeater").LuaParser), PortShape.Unknown),
 
-                "RepeaterKey" => new TypedLuaParser(Parser.TakeRepeaterFromContext(
-                    Parser.DefaultRepeater()), PortShape.Unknown),
+                "RepeaterKey" => new TypedLuaParser(Parser.Repeater(
+                    InputOrLiteral(inputs, "id_key", "ID").LuaParser,
+                    InputOrLiteral(inputs, "total_key", "Total").LuaParser), PortShape.Unknown),
 
                 "Sample01MinMax" => new TypedLuaParser(Parser.Sample01MinMax(
                     InputOrDefaultRepeater(inputs, "repeater").LuaParser,
@@ -182,6 +183,14 @@ namespace LinqSTG.Expression.ToLua
                     InputOrConstant(node, inputs, "switch_time").LuaParser,
                     InputOrUnknown(node, inputs, "after").LuaParser), PortShape.Unknown),
 
+                "MovementRotate" => new TypedLuaParser(Parser.MovementRotate(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrConstant(node, inputs, "angle").LuaParser), PortShape.Unknown),
+
+                "MovementScale" => new TypedLuaParser(Parser.MovementScale(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrUnknown(node, inputs, "scale").LuaParser), PortShape.Unknown),
+
                 "MapPattern" => new TypedLuaParser(Parser.MapPattern(
                     InputOrUnknown(node, inputs, "pattern").LuaParser,
                     InputOrUnknown(node, inputs, "mapper").LuaParser), PortShape.Unknown),
@@ -297,6 +306,22 @@ namespace LinqSTG.Expression.ToLua
                 return typed;
             }
             return new TypedLuaParser(Parser.DefaultRepeater(), PortShape.Unknown);
+        }
+
+        /// <summary>
+        /// Resolves a string port to a connected parser, or falls back to
+        /// <paramref name="fallback"/> emitted as a bare Lua identifier (via
+        /// <see cref="Parser.ConstantString"/>, which emits raw text without a
+        /// <c>local __val =</c> wrapper). Used for repeater keys and other
+        /// inputs that must produce a bare identifier rather than a value.
+        /// </summary>
+        private static TypedLuaParser InputOrLiteral(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName, string fallback)
+        {
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
+            {
+                return typed;
+            }
+            return new TypedLuaParser(Parser.ConstantString(fallback), PortShape.Unknown);
         }
 
         private static TypedLuaParser InputOrEmpty(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)

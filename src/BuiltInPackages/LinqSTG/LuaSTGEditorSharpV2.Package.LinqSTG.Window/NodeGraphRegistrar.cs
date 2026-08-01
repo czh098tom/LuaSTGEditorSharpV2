@@ -100,6 +100,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementSumNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementOffsetNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementAfterTimeNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementRotateNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementScaleNode>));
 
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<RepeatPatternNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<RepeatWithIntervalPatternNode>));

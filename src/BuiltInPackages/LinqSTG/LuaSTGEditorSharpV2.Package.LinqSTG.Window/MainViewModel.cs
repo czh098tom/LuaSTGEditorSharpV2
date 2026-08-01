@@ -235,6 +235,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeList.AddNodeType(() => new MovementSumNode());
             NodeList.AddNodeType(() => new MovementOffsetNode());
             NodeList.AddNodeType(() => new MovementAfterTimeNode());
+            NodeList.AddNodeType(() => new MovementRotateNode());
+            NodeList.AddNodeType(() => new MovementScaleNode());
 
             NodeList.AddNodeType(() => new RepeatPatternNode());
             NodeList.AddNodeType(() => new RepeatWithIntervalPatternNode());
