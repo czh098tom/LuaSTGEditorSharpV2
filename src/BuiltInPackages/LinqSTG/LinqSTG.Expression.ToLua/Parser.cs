@@ -175,6 +175,24 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
+        public static LuaParser IntrinsicAddVector2(LuaParser lhs, LuaParser rhs)
+        {
+            return (inner) => Concat(
+                Single("local __lhsx, __lhsy"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __rhsx, __rhsy"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __valx = __lhsx + __rhsx"),
+                Single("local __valy = __lhsy + __rhsy")
+            );
+        }
+
         public static LuaParser UniformVelocityMovement(LuaParser vec)
         {
             return (inner) => Concat(

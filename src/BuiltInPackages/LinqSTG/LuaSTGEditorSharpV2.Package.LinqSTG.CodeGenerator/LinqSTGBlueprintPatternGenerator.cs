@@ -182,7 +182,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                 }
             }
 
-            var memo = new Dictionary<int, LuaParser>();
+            var memo = new Dictionary<int, TypedLuaParser>();
             var resolving = new HashSet<int>();
             var warnings = new List<string>();
 
@@ -193,25 +193,26 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                     && !hasOutgoing.Contains(idx);
             }
 
-            LuaParser? ResolveNode(int idx)
+            TypedLuaParser? ResolveNode(int idx)
             {
                 if (memo.TryGetValue(idx, out var cached)) return cached;
                 if (!resolving.Add(idx)) return null;
                 var nodeModel = model.Nodes[idx];
                 var inputs = ResolveInputs(idx);
-                var parser = NodeTranslator.Translate(nodeModel, inputs);
+                var typed = NodeTranslator.Translate(nodeModel, inputs);
                 if (nodeModel.NodeType == "Shoot" && IsEligibleShooter(idx))
                 {
-                    parser = generator.WrapShootParser(nodeModel, parser, shooterMap, context, warnings);
+                    var wrapped = generator.WrapShootParser(nodeModel, typed.LuaParser, shooterMap, context, warnings);
+                    typed = typed with { LuaParser = wrapped };
                 }
                 resolving.Remove(idx);
-                memo[idx] = parser;
-                return parser;
+                memo[idx] = typed;
+                return typed;
             }
 
-            Dictionary<string, LuaParser> ResolveInputs(int idx)
+            Dictionary<string, TypedLuaParser> ResolveInputs(int idx)
             {
-                var result = new Dictionary<string, LuaParser>(StringComparer.Ordinal);
+                var result = new Dictionary<string, TypedLuaParser>(StringComparer.Ordinal);
                 if (model.Connections == null) return result;
                 foreach (var c in model.Connections)
                 {
@@ -247,7 +248,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
             }
             if (rootIdx < 0) return (null, warnings);
 
-            return (ResolveNode(rootIdx), warnings);
+            return (ResolveNode(rootIdx)?.LuaParser, warnings);
         }
     }
 }

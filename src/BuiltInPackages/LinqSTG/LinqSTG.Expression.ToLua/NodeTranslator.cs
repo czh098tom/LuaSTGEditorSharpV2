@@ -4,52 +4,81 @@ using Newtonsoft.Json.Linq;
 
 namespace LinqSTG.Expression.ToLua
 {
+    /// <summary>
+    /// Describes the kind of Lua binding a node's codegen produces, so that
+    /// polymorphic operators (e.g. <see cref="Parser.IntrinsicAdd"/> vs
+    /// <see cref="Parser.IntrinsicAddVector2"/>) can pick the right variant.
+    /// </summary>
+    public enum PortShape
+    {
+        /// <summary>
+        /// The output shape is irrelevant or not consumed by arithmetic
+        /// (movements, patterns, transformations, shooters, ...).
+        /// </summary>
+        Unknown,
+        /// <summary> Produces a single <c>__val</c> Lua local. </summary>
+        Scalar,
+        /// <summary> Produces <c>__valx</c>/<c>__valy</c> Lua locals. </summary>
+        Vector2,
+    }
+
+    /// <summary>
+    /// A <see cref="LuaParser"/> paired with the <see cref="PortShape"/> of the
+    /// output it produces, so downstream nodes can dispatch on shape.
+    /// </summary>
+    public sealed record TypedLuaParser(LuaParser LuaParser, PortShape Shape)
+    {
+        public static readonly TypedLuaParser Empty =
+            new(Parser.Empty(), PortShape.Unknown);
+    }
+
     public static class NodeTranslator
     {
-        public static LuaParser Translate(NodeModel node, IReadOnlyDictionary<string, LuaParser> inputs)
+        public static TypedLuaParser Translate(NodeModel node, IReadOnlyDictionary<string, TypedLuaParser> inputs)
         {
             return node.NodeType switch
             {
-                "Shoot" => Parser.Shoot(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrUnknown(node, inputs, "movement")),
+                "Shoot" => new TypedLuaParser(Parser.Shoot(
+                    ParserOf(node, inputs, "pattern"),
+                    ParserOf(node, inputs, "movement")), PortShape.Unknown),
 
-                "RepeatWithIntervalPattern" => Parser.RepeatWithIntervalPattern(
-                    InputOrConstant(node, inputs, "times"),
-                    InputOrConstant(node, inputs, "interval"),
-                    InputOrDefaultRepeater(inputs, "repeater")),
+                "RepeatWithIntervalPattern" => new TypedLuaParser(Parser.RepeatWithIntervalPattern(
+                    InputOrConstant(node, inputs, "times").LuaParser,
+                    InputOrConstant(node, inputs, "interval").LuaParser,
+                    InputOrDefaultRepeater(inputs, "repeater").LuaParser), PortShape.Unknown),
 
-                "RepeatPattern" => Parser.RepeatPattern(
-                    InputOrConstant(node, inputs, "times"),
-                    InputOrDefaultRepeater(inputs, "repeater")),
+                "RepeatPattern" => new TypedLuaParser(Parser.RepeatPattern(
+                    InputOrConstant(node, inputs, "times").LuaParser,
+                    InputOrDefaultRepeater(inputs, "repeater").LuaParser), PortShape.Unknown),
 
-                "RepeaterKey" => Parser.TakeRepeaterFromContext(Parser.DefaultRepeater()),
+                "RepeaterKey" => new TypedLuaParser(Parser.TakeRepeaterFromContext(
+                    Parser.DefaultRepeater()), PortShape.Unknown),
 
-                "Sample01MinMax" => Parser.Sample01MinMax(
-                    InputOrDefaultRepeater(inputs, "repeater"),
-                    InputOrConstant(node, inputs, "lower_bound"),
-                    InputOrConstant(node, inputs, "upper_bound"),
-                    ReadIntervalType(node, "interval_type")),
+                "Sample01MinMax" => new TypedLuaParser(Parser.Sample01MinMax(
+                    InputOrDefaultRepeater(inputs, "repeater").LuaParser,
+                    InputOrConstant(node, inputs, "lower_bound").LuaParser,
+                    InputOrConstant(node, inputs, "upper_bound").LuaParser,
+                    ReadIntervalType(node, "interval_type")), PortShape.Scalar),
 
-                "Sample01" => Parser.Sample01(
-                    InputOrDefaultRepeater(inputs, "repeater"),
-                    ReadIntervalType(node, "interval_type")),
+                "Sample01" => new TypedLuaParser(Parser.Sample01(
+                    InputOrDefaultRepeater(inputs, "repeater").LuaParser,
+                    ReadIntervalType(node, "interval_type")), PortShape.Scalar),
 
-                "MinMax" => Parser.MinMax(
-                    InputOrUnknown(node, inputs, "input_value"),
-                    InputOrConstant(node, inputs, "lower_bound"),
-                    InputOrConstant(node, inputs, "upper_bound")),
+                "MinMax" => new TypedLuaParser(Parser.MinMax(
+                    InputOrUnknown(node, inputs, "input_value").LuaParser,
+                    InputOrConstant(node, inputs, "lower_bound").LuaParser,
+                    InputOrConstant(node, inputs, "upper_bound").LuaParser), PortShape.Scalar),
 
-                "TakeRepeaterFromContext" => Parser.TakeRepeaterFromContext(
-                    InputOrUnknown(node, inputs, "repeater_key")),
+                "TakeRepeaterFromContext" => new TypedLuaParser(Parser.TakeRepeaterFromContext(
+                    InputOrUnknown(node, inputs, "repeater_key").LuaParser), PortShape.Unknown),
 
-                "Vector2FromRotationDistance" => Parser.VectorFromAngleLength(
-                    InputOrConstant(node, inputs, "rotation"),
-                    InputOrConstant(node, inputs, "distance")),
+                "Vector2FromRotationDistance" => new TypedLuaParser(Parser.VectorFromAngleLength(
+                    InputOrConstant(node, inputs, "rotation").LuaParser,
+                    InputOrConstant(node, inputs, "distance").LuaParser), PortShape.Vector2),
 
-                "Vector2" => Parser.Vector2(
-                    InputOrConstant(node, inputs, "x"),
-                    InputOrConstant(node, inputs, "y")),
+                "Vector2" => new TypedLuaParser(Parser.Vector2(
+                    InputOrConstant(node, inputs, "x").LuaParser,
+                    InputOrConstant(node, inputs, "y").LuaParser), PortShape.Vector2),
 
                 "ConstantFloat" => ConstantFromEditor(node, "value"),
 
@@ -57,163 +86,189 @@ namespace LinqSTG.Expression.ToLua
 
                 "ConstantString" => ConstantFromEditor(node, "value"),
 
-                "Add" => Parser.IntrinsicAdd(
-                    InputOrUnknown(node, inputs, "a"),
-                    InputOrUnknown(node, inputs, "b")),
+                "Add" => InputShapeOr(inputs, "a") == PortShape.Vector2
+                    ? new TypedLuaParser(Parser.IntrinsicAddVector2(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Vector2)
+                    : new TypedLuaParser(Parser.IntrinsicAdd(
+                        ParserOf(node, inputs, "a"),
+                        ParserOf(node, inputs, "b")), PortShape.Scalar),
 
-                "FloatToInt" => Parser.FloatToInt(
-                    InputOrUnknown(node, inputs, "float")),
+                "FloatToInt" => new TypedLuaParser(Parser.FloatToInt(
+                    InputOrUnknown(node, inputs, "float").LuaParser), PortShape.Scalar),
 
-                "IntToFloat" => Parser.IntToFloat(
-                    InputOrUnknown(node, inputs, "int")),
+                "IntToFloat" => new TypedLuaParser(Parser.IntToFloat(
+                    InputOrUnknown(node, inputs, "int").LuaParser), PortShape.Scalar),
 
-                "UniformVelocityMovement" => Parser.UniformVelocityMovement(
-                    InputOrUnknown(node, inputs, "velocity")),
+                "UniformVelocityMovement" => new TypedLuaParser(Parser.UniformVelocityMovement(
+                    InputOrUnknown(node, inputs, "velocity").LuaParser), PortShape.Unknown),
 
-                "StationaryMovement" => Parser.StationaryMovement(
-                    InputOrUnknown(node, inputs, "position")),
+                "StationaryMovement" => new TypedLuaParser(Parser.StationaryMovement(
+                    InputOrUnknown(node, inputs, "position").LuaParser), PortShape.Unknown),
 
-                "UniformAccelerationMovement" => Parser.UniformAccelerationMovement(
-                    InputOrUnknown(node, inputs, "initial_velocity"),
-                    InputOrUnknown(node, inputs, "acceleration")),
+                "UniformAccelerationMovement" => new TypedLuaParser(Parser.UniformAccelerationMovement(
+                    InputOrUnknown(node, inputs, "initial_velocity").LuaParser,
+                    InputOrUnknown(node, inputs, "acceleration").LuaParser), PortShape.Unknown),
 
-                "MovementSum" => Parser.MovementSum(
-                    InputOrUnknown(node, inputs, "movement1"),
-                    InputOrUnknown(node, inputs, "movement2")),
+                "MovementSum" => new TypedLuaParser(Parser.MovementSum(
+                    InputOrUnknown(node, inputs, "movement1").LuaParser,
+                    InputOrUnknown(node, inputs, "movement2").LuaParser), PortShape.Unknown),
 
-                "MovementOffset" => Parser.MovementOffset(
-                    InputOrUnknown(node, inputs, "movement"),
-                    InputOrUnknown(node, inputs, "offset")),
+                "MovementOffset" => new TypedLuaParser(Parser.MovementOffset(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrUnknown(node, inputs, "offset").LuaParser), PortShape.Unknown),
 
-                "TakeVariableFromContext" => Parser.TakeVariableFromContext(
-                    InputOrConstant(node, inputs, "key")),
+                "TakeVariableFromContext" => new TypedLuaParser(Parser.TakeVariableFromContext(
+                    InputOrConstant(node, inputs, "key").LuaParser), PortShape.Scalar),
 
-                "MovementAfterTime" => Parser.MovementAfterTime(
-                    InputOrUnknown(node, inputs, "movement"),
-                    InputOrConstant(node, inputs, "switch_time"),
-                    InputOrUnknown(node, inputs, "after")),
+                "MovementAfterTime" => new TypedLuaParser(Parser.MovementAfterTime(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrConstant(node, inputs, "switch_time").LuaParser,
+                    InputOrUnknown(node, inputs, "after").LuaParser), PortShape.Unknown),
 
-                "MapPattern" => Parser.MapPattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrUnknown(node, inputs, "mapper")),
+                "MapPattern" => new TypedLuaParser(Parser.MapPattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrUnknown(node, inputs, "mapper").LuaParser), PortShape.Unknown),
 
-                "ExtrudePattern" => Parser.ExtrudePattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrUnknown(node, inputs, "sub_pattern")),
+                "ExtrudePattern" => new TypedLuaParser(Parser.ExtrudePattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrUnknown(node, inputs, "sub_pattern").LuaParser), PortShape.Unknown),
 
-                "ExtrudeConcatPattern" => Parser.ExtrudeConcatPattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrUnknown(node, inputs, "sub_pattern")),
+                "ExtrudeConcatPattern" => new TypedLuaParser(Parser.ExtrudeConcatPattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrUnknown(node, inputs, "sub_pattern").LuaParser), PortShape.Unknown),
 
-                "SingleDataPattern" => Parser.SingleDataPattern(
-                    InputOrEmpty(inputs, "transformation")),
+                "SingleDataPattern" => new TypedLuaParser(Parser.SingleDataPattern(
+                    InputOrEmpty(inputs, "transformation").LuaParser), PortShape.Unknown),
 
-                "SingleIntervalPattern" => Parser.SingleIntervalPattern(
-                    InputOrConstant(node, inputs, "interval")),
+                "SingleIntervalPattern" => new TypedLuaParser(Parser.SingleIntervalPattern(
+                    InputOrConstant(node, inputs, "interval").LuaParser), PortShape.Unknown),
 
-                "EmptyPattern" => Parser.Empty(),
+                "EmptyPattern" => TypedLuaParser.Empty,
 
-                "FilterPattern" => Parser.FilterPattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrUnknown(node, inputs, "predicate")),
+                "FilterPattern" => new TypedLuaParser(Parser.FilterPattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrUnknown(node, inputs, "predicate").LuaParser), PortShape.Unknown),
 
-                "ConcatPattern" => Parser.ConcatPattern(
-                    InputOrUnknown(node, inputs, "pattern1"),
-                    InputOrUnknown(node, inputs, "pattern2")),
+                "ConcatPattern" => new TypedLuaParser(Parser.ConcatPattern(
+                    InputOrUnknown(node, inputs, "pattern1").LuaParser,
+                    InputOrUnknown(node, inputs, "pattern2").LuaParser), PortShape.Unknown),
 
-                "ReversePattern" => Parser.ReversePattern(
-                    InputOrUnknown(node, inputs, "pattern")),
+                "ReversePattern" => new TypedLuaParser(Parser.ReversePattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser), PortShape.Unknown),
 
-                "SkipPattern" => Parser.SkipPattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrConstant(node, inputs, "count")),
+                "SkipPattern" => new TypedLuaParser(Parser.SkipPattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrConstant(node, inputs, "count").LuaParser), PortShape.Unknown),
 
-                "TakePattern" => Parser.TakePattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrConstant(node, inputs, "count")),
+                "TakePattern" => new TypedLuaParser(Parser.TakePattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrConstant(node, inputs, "count").LuaParser), PortShape.Unknown),
 
-                "SkipWhilePattern" => Parser.SkipWhilePattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrUnknown(node, inputs, "predicate")),
+                "SkipWhilePattern" => new TypedLuaParser(Parser.SkipWhilePattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrUnknown(node, inputs, "predicate").LuaParser), PortShape.Unknown),
 
-                "TakeWhilePattern" => Parser.TakeWhilePattern(
-                    InputOrUnknown(node, inputs, "pattern"),
-                    InputOrUnknown(node, inputs, "predicate")),
+                "TakeWhilePattern" => new TypedLuaParser(Parser.TakeWhilePattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser,
+                    InputOrUnknown(node, inputs, "predicate").LuaParser), PortShape.Unknown),
 
-                "TrimStartPattern" => Parser.TrimStartPattern(
-                    InputOrUnknown(node, inputs, "pattern")),
+                "TrimStartPattern" => new TypedLuaParser(Parser.TrimStartPattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser), PortShape.Unknown),
 
-                "TrimEndPattern" => Parser.TrimEndPattern(
-                    InputOrUnknown(node, inputs, "pattern")),
+                "TrimEndPattern" => new TypedLuaParser(Parser.TrimEndPattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser), PortShape.Unknown),
 
-                "TrimPattern" => Parser.TrimPattern(
-                    InputOrUnknown(node, inputs, "pattern")),
+                "TrimPattern" => new TypedLuaParser(Parser.TrimPattern(
+                    InputOrUnknown(node, inputs, "pattern").LuaParser), PortShape.Unknown),
 
-                "Assign" => Parser.Assign(
-                    InputOrEmpty(inputs, "transformation"),
-                    InputOrConstant(node, inputs, "value"),
-                    InputOrUnknown(node, inputs, "key")),
+                "Assign" => new TypedLuaParser(Parser.Assign(
+                    InputOrEmpty(inputs, "transformation").LuaParser,
+                    InputOrConstant(node, inputs, "value").LuaParser,
+                    InputOrUnknown(node, inputs, "key").LuaParser), PortShape.Unknown),
 
                 _ => Unknown(node)
             };
         }
 
-        public static LuaParser Unknown(NodeModel node, string? portName = null)
+        public static TypedLuaParser Unknown(NodeModel node, string? portName = null)
         {
             var nodeType = node.NodeType;
             var suffix = portName != null ? $", port: {portName}" : string.Empty;
-            return _ => new[] { new LuaCodeLine($"--[[ UNKNOWN NODE: {nodeType}{suffix} ]]", 0) };
+            return new TypedLuaParser(_ => new[] { new LuaCodeLine($"--[[ UNKNOWN NODE: {nodeType}{suffix} ]]", 0) }, PortShape.Unknown);
         }
 
-        private static LuaParser InputOrUnknown(NodeModel node, IReadOnlyDictionary<string, LuaParser> inputs, string portName)
+        private static LuaParser ParserOf(NodeModel node, IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)
         {
-            if (inputs.TryGetValue(portName, out var parser) && parser != null)
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
             {
-                return parser;
+                return typed.LuaParser;
+            }
+            return Unknown(node, portName).LuaParser;
+        }
+
+        private static PortShape InputShapeOr(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)
+        {
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
+            {
+                return typed.Shape;
+            }
+            return PortShape.Unknown;
+        }
+
+        private static TypedLuaParser InputOrUnknown(NodeModel node, IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)
+        {
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
+            {
+                return typed;
             }
             return Unknown(node, portName);
         }
 
-        private static LuaParser InputOrConstant(NodeModel node, IReadOnlyDictionary<string, LuaParser> inputs, string key)
+        private static TypedLuaParser InputOrConstant(NodeModel node, IReadOnlyDictionary<string, TypedLuaParser> inputs, string key)
         {
-            if (inputs.TryGetValue(key, out var parser) && parser != null)
+            if (inputs.TryGetValue(key, out var typed) && typed != null)
             {
-                return parser;
+                return typed;
             }
             return ConstantFromEditor(node, key);
         }
 
-        private static LuaParser InputOrDefaultRepeater(IReadOnlyDictionary<string, LuaParser> inputs, string portName)
+        private static TypedLuaParser InputOrDefaultRepeater(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)
         {
-            if (inputs.TryGetValue(portName, out var parser) && parser != null)
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
             {
-                return parser;
+                return typed;
             }
-            return Parser.DefaultRepeater();
+            return new TypedLuaParser(Parser.DefaultRepeater(), PortShape.Unknown);
         }
 
-        private static LuaParser InputOrEmpty(IReadOnlyDictionary<string, LuaParser> inputs, string portName)
+        private static TypedLuaParser InputOrEmpty(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)
         {
-            if (inputs.TryGetValue(portName, out var parser) && parser != null)
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
             {
-                return parser;
+                return typed;
             }
-            return Parser.Empty();
+            return TypedLuaParser.Empty;
         }
 
-        private static LuaParser ConstantFromEditor(NodeModel node, string key)
+        private static TypedLuaParser ConstantFromEditor(NodeModel node, string key)
         {
             if (node.Editors.TryGetValue(key, out var token) && token != null)
             {
-                return token.Type switch
+                var parser = token.Type switch
                 {
                     JTokenType.Integer => Parser.ConstantFloat(token.ToObject<float>()),
                     JTokenType.Float => Parser.ConstantFloat(token.ToObject<float>()),
                     JTokenType.String => token.ToObject<string>() is { } s
                         ? Parser.ConstantString(s)
-                        : Unknown(node, key),
-                    _ => Unknown(node, key)
+                        : Unknown(node, key).LuaParser,
+                    _ => Unknown(node, key).LuaParser
                 };
+                // Editors only carry scalar values (float/int) or strings; a numeric
+                // editor value feeds the scalar __val convention.
+                var shape = token.Type == JTokenType.String ? PortShape.Unknown : PortShape.Scalar;
+                return new TypedLuaParser(parser, shape);
             }
             return Unknown(node, key);
         }
