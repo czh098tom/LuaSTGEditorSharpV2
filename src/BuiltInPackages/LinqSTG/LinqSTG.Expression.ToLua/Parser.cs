@@ -49,7 +49,7 @@ namespace LinqSTG.Expression.ToLua
                 Shift(interval(inner), 1),
                 Single("__intv = __val", 1),
                 Single("end"),
-                Single("for __i = 1, __t do"),
+                Single("for __i = 0, __t - 1 do"),
                 Single($"local {FlatText(repeater(inner))} = __t, __i", 1),
                 Shift(inner, 1),
                 Single("__wait(__intv)", 1),
@@ -97,10 +97,10 @@ namespace LinqSTG.Expression.ToLua
         {
             return intervalType switch
             {
-                IntervalType.Open => (inner) => Single($"local {name} = __curr / (__max + 1)"),
-                IntervalType.HeadClosed => (inner) => Single($"local {name} = (__curr - 1) / __max"),
-                IntervalType.TailClosed => (inner) => Single($"local {name} = __curr / __max"),
-                IntervalType.BothClosed => (inner) => Single($"local {name} = (__curr - 1) / (__max - 1)"),
+                IntervalType.Open => (inner) => Single($"local {name} = (__curr + 1) / (__max + 1)"),
+                IntervalType.HeadClosed => (inner) => Single($"local {name} = __curr / __max"),
+                IntervalType.TailClosed => (inner) => Single($"local {name} = (__curr + 1) / __max"),
+                IntervalType.BothClosed => (inner) => Single($"local {name} = __curr / (__max - 1)"),
                 _ => GetIntervalManipulater(name, IntervalType.HeadClosed)
             };
         }
@@ -137,7 +137,7 @@ namespace LinqSTG.Expression.ToLua
                     Shift(times(inner), 1),
                     Single("__t = __val", 1),
                     Single("end"),
-                    Single("for __i = 1, __t do"),
+                    Single("for __i = 0, __t - 1 do"),
                     Single($"local {repeaterText} = __t, __i", 1),
                     Shift(inner, 1),
                     Single("end")
@@ -590,13 +590,16 @@ namespace LinqSTG.Expression.ToLua
                 Single("local __sx, __sy"),
                 Single("do"),
                 Shift(m1(inner), 1),
-                Single("__sx, __sy = __x, __y", 1),
                 Single("end"),
+                // Capture/accumulate OUTSIDE the do-block: a child movement may itself
+                // declare `local __sx, __sy` (Sum/Offset/Scale/Rotate), which would
+                // shadow ours if the assignment stayed inside the block.
+                Single("__sx, __sy = __x, __y"),
                 Single("do"),
                 Shift(m2(inner), 1),
-                Single("__sx = __sx + __x", 1),
-                Single("__sy = __sy + __y", 1),
                 Single("end"),
+                Single("__sx = __sx + __x"),
+                Single("__sy = __sy + __y"),
                 Single("__x = __sx"),
                 Single("__y = __sy")
             );
@@ -608,8 +611,8 @@ namespace LinqSTG.Expression.ToLua
                 Single("local __sx, __sy"),
                 Single("do"),
                 Shift(movement(inner), 1),
-                Single("__sx, __sy = __x, __y", 1),
                 Single("end"),
+                Single("__sx, __sy = __x, __y"),
                 Single("do"),
                 Shift(offset(inner), 1),
                 Single("__sx = __sx + __valx", 1),
@@ -626,8 +629,8 @@ namespace LinqSTG.Expression.ToLua
                 Single("local __sx, __sy"),
                 Single("do"),
                 Shift(movement(inner), 1),
-                Single("__sx, __sy = __x, __y", 1),
                 Single("end"),
+                Single("__sx, __sy = __x, __y"),
                 Single("local __angle"),
                 Single("do"),
                 Shift(angle(inner), 1),
@@ -644,8 +647,8 @@ namespace LinqSTG.Expression.ToLua
                 Single("local __sx, __sy"),
                 Single("do"),
                 Shift(movement(inner), 1),
-                Single("__sx, __sy = __x, __y", 1),
                 Single("end"),
+                Single("__sx, __sy = __x, __y"),
                 Single("local __kx, __ky"),
                 Single("do"),
                 Shift(scale(inner), 1),
