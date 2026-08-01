@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator.Math;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
@@ -198,6 +199,27 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeList.AddNodeType(() => new DivideNode());
             NodeList.AddNodeType(() => new ModuloNode());
             NodeList.AddNodeType(() => new NegateNode());
+            NodeList.AddNodeType(() => new SinNode());
+            NodeList.AddNodeType(() => new CosNode());
+            NodeList.AddNodeType(() => new TanNode());
+            NodeList.AddNodeType(() => new ASinNode());
+            NodeList.AddNodeType(() => new ACosNode());
+            NodeList.AddNodeType(() => new ATanNode());
+            NodeList.AddNodeType(() => new DegToRadNode());
+            NodeList.AddNodeType(() => new RadToDegNode());
+            NodeList.AddNodeType(() => new AbsNode());
+            NodeList.AddNodeType(() => new SqrtNode());
+            NodeList.AddNodeType(() => new FloorNode());
+            NodeList.AddNodeType(() => new CeilNode());
+            NodeList.AddNodeType(() => new SignNode());
+            NodeList.AddNodeType(() => new ExpNode());
+            NodeList.AddNodeType(() => new LogNode());
+            NodeList.AddNodeType(() => new ATan2Node());
+            NodeList.AddNodeType(() => new PowNode());
+            NodeList.AddNodeType(() => new MinNode());
+            NodeList.AddNodeType(() => new MaxNode());
+            NodeList.AddNodeType(() => new ClampNode());
+            NodeList.AddNodeType(() => new LerpNode());
             NodeList.AddNodeType(() => new FloatToIntNode());
             NodeList.AddNodeType(() => new IntToFloatNode());
             NodeList.AddNodeType(() => new MinMaxNode());

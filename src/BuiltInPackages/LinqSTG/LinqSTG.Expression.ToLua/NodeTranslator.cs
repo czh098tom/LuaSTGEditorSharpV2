@@ -128,6 +128,28 @@ namespace LinqSTG.Expression.ToLua
                     : new TypedLuaParser(Parser.IntrinsicNegate(
                         ParserOf(node, inputs, "a")), PortShape.Scalar),
 
+                "Sin" => new TypedLuaParser(Parser.Sin(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Cos" => new TypedLuaParser(Parser.Cos(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Tan" => new TypedLuaParser(Parser.Tan(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "ASin" => new TypedLuaParser(Parser.ASin(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "ACos" => new TypedLuaParser(Parser.ACos(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "ATan" => new TypedLuaParser(Parser.ATan(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "DegToRad" => new TypedLuaParser(Parser.DegToRad(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "RadToDeg" => new TypedLuaParser(Parser.RadToDeg(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Abs" => new TypedLuaParser(Parser.Abs(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Sqrt" => new TypedLuaParser(Parser.Sqrt(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Floor" => new TypedLuaParser(Parser.Floor(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Ceil" => new TypedLuaParser(Parser.Ceil(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Sign" => new TypedLuaParser(Parser.Sign(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Exp" => new TypedLuaParser(Parser.Exp(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Log" => new TypedLuaParser(Parser.Log(InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "ATan2" => new TypedLuaParser(Parser.ATan2(InputOrConstant(node, inputs, "y").LuaParser, InputOrConstant(node, inputs, "x").LuaParser), PortShape.Scalar),
+                "Pow" => new TypedLuaParser(Parser.Pow(InputOrConstant(node, inputs, "base").LuaParser, InputOrConstant(node, inputs, "exponent").LuaParser), PortShape.Scalar),
+                "Min" => new TypedLuaParser(Parser.Min(InputOrConstant(node, inputs, "a").LuaParser, InputOrConstant(node, inputs, "b").LuaParser), PortShape.Scalar),
+                "Max" => new TypedLuaParser(Parser.Max(InputOrConstant(node, inputs, "a").LuaParser, InputOrConstant(node, inputs, "b").LuaParser), PortShape.Scalar),
+                "Clamp" => new TypedLuaParser(Parser.Clamp(InputOrConstant(node, inputs, "x").LuaParser, InputOrConstant(node, inputs, "min").LuaParser, InputOrConstant(node, inputs, "max").LuaParser), PortShape.Scalar),
+                "Lerp" => new TypedLuaParser(Parser.Lerp(InputOrConstant(node, inputs, "a").LuaParser, InputOrConstant(node, inputs, "b").LuaParser, InputOrConstant(node, inputs, "t").LuaParser), PortShape.Scalar),
+
                 "FloatToInt" => new TypedLuaParser(Parser.FloatToInt(
                     InputOrUnknown(node, inputs, "float").LuaParser), PortShape.Scalar),
 

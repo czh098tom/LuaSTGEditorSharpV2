@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -335,6 +336,81 @@ namespace LinqSTG.Expression.ToLua
                 Single("local __valy = -__y")
             );
         }
+
+        // Single-input scalar function: produces `local __val = <expr>(__x)` where expr receives "__x".
+        public static LuaParser ScalarFunc1(LuaParser x, Func<string, string> expr)
+        {
+            return (inner) => Concat(
+                Single("local __x"),
+                Single("do"),
+                Shift(x(inner), 1),
+                Single("__x = __val", 1),
+                Single("end"),
+                Single($"local __val = {expr("__x")}")
+            );
+        }
+
+        // Two-input scalar function: produces `local __val = <expr>(__lhs, __rhs)`.
+        public static LuaParser ScalarFunc2(LuaParser lhs, LuaParser rhs, Func<string, string, string> expr)
+        {
+            return (inner) => Concat(
+                Single("local __lhs, __rhs"),
+                Single("do"),
+                Shift(lhs(inner), 1),
+                Single("__lhs = __val", 1),
+                Single("end"),
+                Single("do"),
+                Shift(rhs(inner), 1),
+                Single("__rhs = __val", 1),
+                Single("end"),
+                Single($"local __val = {expr("__lhs", "__rhs")}")
+            );
+        }
+
+        // Three-input scalar function: produces `local __val = <expr>(__a, __b, __c)`.
+        public static LuaParser ScalarFunc3(LuaParser a, LuaParser b, LuaParser c, Func<string, string, string, string> expr)
+        {
+            return (inner) => Concat(
+                Single("local __a, __b, __c"),
+                Single("do"),
+                Shift(a(inner), 1),
+                Single("__a = __val", 1),
+                Single("end"),
+                Single("do"),
+                Shift(b(inner), 1),
+                Single("__b = __val", 1),
+                Single("end"),
+                Single("do"),
+                Shift(c(inner), 1),
+                Single("__c = __val", 1),
+                Single("end"),
+                Single($"local __val = {expr("__a", "__b", "__c")}")
+            );
+        }
+
+        // --- Scalar math helpers (LuaSTG runtime globals, degree-based trig) ---
+
+        public static LuaParser Sin(LuaParser x) => ScalarFunc1(x, a => $"sin({a})");
+        public static LuaParser Cos(LuaParser x) => ScalarFunc1(x, a => $"cos({a})");
+        public static LuaParser Tan(LuaParser x) => ScalarFunc1(x, a => $"tan({a})");
+        public static LuaParser ASin(LuaParser x) => ScalarFunc1(x, a => $"asin({a})");
+        public static LuaParser ACos(LuaParser x) => ScalarFunc1(x, a => $"acos({a})");
+        public static LuaParser ATan(LuaParser x) => ScalarFunc1(x, a => $"atan({a})");
+        public static LuaParser ATan2(LuaParser y, LuaParser x) => ScalarFunc2(y, x, (a, b) => $"atan2({a}, {b})");
+        public static LuaParser DegToRad(LuaParser x) => ScalarFunc1(x, a => $"{a} * math.pi / 180");
+        public static LuaParser RadToDeg(LuaParser x) => ScalarFunc1(x, a => $"{a} * 180 / math.pi");
+        public static LuaParser Abs(LuaParser x) => ScalarFunc1(x, a => $"abs({a})");
+        public static LuaParser Sqrt(LuaParser x) => ScalarFunc1(x, a => $"sqrt({a})");
+        public static LuaParser Floor(LuaParser x) => ScalarFunc1(x, a => $"floor({a})");
+        public static LuaParser Ceil(LuaParser x) => ScalarFunc1(x, a => $"ceil({a})");
+        public static LuaParser Sign(LuaParser x) => ScalarFunc1(x, a => $"sign({a})");
+        public static LuaParser Exp(LuaParser x) => ScalarFunc1(x, a => $"exp({a})");
+        public static LuaParser Log(LuaParser x) => ScalarFunc1(x, a => $"log({a})");
+        public static LuaParser Pow(LuaParser b, LuaParser e) => ScalarFunc2(b, e, (a, c) => $"{a} ^ {c}");
+        public static LuaParser Min(LuaParser a, LuaParser b) => ScalarFunc2(a, b, (x, y) => $"min({x}, {y})");
+        public static LuaParser Max(LuaParser a, LuaParser b) => ScalarFunc2(a, b, (x, y) => $"max({x}, {y})");
+        public static LuaParser Clamp(LuaParser x, LuaParser lo, LuaParser hi) => ScalarFunc3(x, lo, hi, (a, b, c) => $"min(max({a}, {b}), {c})");
+        public static LuaParser Lerp(LuaParser a, LuaParser b, LuaParser t) => ScalarFunc3(a, b, t, (x, y, z) => $"{x} + ({y} - {x}) * {z}");
 
         public static LuaParser UniformVelocityMovement(LuaParser vec)
         {
