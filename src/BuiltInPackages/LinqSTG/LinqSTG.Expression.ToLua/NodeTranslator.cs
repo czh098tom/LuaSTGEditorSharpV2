@@ -191,6 +191,24 @@ namespace LinqSTG.Expression.ToLua
                     InputOrUnknown(node, inputs, "movement").LuaParser,
                     InputOrUnknown(node, inputs, "scale").LuaParser), PortShape.Unknown),
 
+                "MovementCartesianToPolar" => new TypedLuaParser(Parser.MovementCartesianToPolar(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrUnknown(node, inputs, "center").LuaParser), PortShape.Unknown),
+
+                "MovementPolarToCartesian" => new TypedLuaParser(Parser.MovementPolarToCartesian(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrUnknown(node, inputs, "center").LuaParser), PortShape.Unknown),
+
+                "MovementMap" => new TypedLuaParser(Parser.MovementMap(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrUnknown(node, inputs, "transform").LuaParser), PortShape.Unknown),
+
+                "MovementTransformInputPoint" => new TypedLuaParser(
+                    Parser.MovementTransformInputPoint(), PortShape.Vector2),
+
+                "MovementTransformFromPoint" => new TypedLuaParser(Parser.MovementTransformFromPoint(
+                    InputOrUnknown(node, inputs, "point").LuaParser), PortShape.Unknown),
+
                 "MapPattern" => new TypedLuaParser(Parser.MapPattern(
                     InputOrUnknown(node, inputs, "pattern").LuaParser,
                     InputOrUnknown(node, inputs, "mapper").LuaParser), PortShape.Unknown),
@@ -253,6 +271,27 @@ namespace LinqSTG.Expression.ToLua
                     InputOrUnknown(node, inputs, "key").LuaParser), PortShape.Unknown),
 
                 _ => Unknown(node)
+            };
+        }
+
+        /// <summary>
+        /// Resolves the <see cref="TypedLuaParser"/> for a specific output port of a node.
+        /// Single-output nodes delegate to <see cref="Translate"/> (ignoring <paramref name="portName"/>);
+        /// only multi-output nodes (e.g. <c>Vector2Split</c> with distinct x/y ports) dispatch on it.
+        /// </summary>
+        public static TypedLuaParser TranslateOutput(NodeModel node, IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)
+        {
+            return node.NodeType switch
+            {
+                "Vector2Split" => portName switch
+                {
+                    "x" => new TypedLuaParser(Parser.Vector2SplitX(
+                        InputOrUnknown(node, inputs, "vector2").LuaParser), PortShape.Scalar),
+                    "y" => new TypedLuaParser(Parser.Vector2SplitY(
+                        InputOrUnknown(node, inputs, "vector2").LuaParser), PortShape.Scalar),
+                    _ => Unknown(node, portName)
+                },
+                _ => Translate(node, inputs)
             };
         }
 

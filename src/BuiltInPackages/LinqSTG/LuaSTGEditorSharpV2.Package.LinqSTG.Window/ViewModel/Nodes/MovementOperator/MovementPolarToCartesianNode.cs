@@ -9,8 +9,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
 {
     /// <summary>
     /// MovementCartesianToPolarNode 的逆变换。
-    /// 把上游运动预测点当作笛卡尔点 (x,y)，转成极坐标 (半径r, 角度θ弧度)，再加 center。
-    /// 输出 center + (√(x²+y²), atan2(y,x))。θ 为弧度（与 MathF.Atan2 一致）。
+    /// 把上游运动预测点当作笛卡尔点 (x,y)，转成极坐标 (半径r, 角度θ度)，再加 center。
+    /// 输出 center + (√(x²+y²), atan2(y,x)·180/π)。θ 为度（与 LuaSTG 运行时及
+    /// <see cref="MovementCartesianToPolarNode"/> 的度制约定一致）。
     /// </summary>
     public class MovementPolarToCartesianNode : LinqSTGNodeViewModel
     {
@@ -40,7 +41,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
                             var c = center?.Invoke(dict) ?? Vector2.Zero;
                             var q = p - c;
                             var r = MathF.Sqrt(q.X * q.X + q.Y * q.Y);
-                            var theta = MathF.Atan2(q.Y, q.X);
+                            var theta = MathF.Atan2(q.Y, q.X) * 180f / MathF.PI;
                             return c + new Vector2(r, theta);
                         })));
         }

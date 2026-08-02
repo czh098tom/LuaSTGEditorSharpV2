@@ -182,7 +182,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                 }
             }
 
-            var memo = new Dictionary<int, TypedLuaParser>();
+            var memo = new Dictionary<(int idx, string port), TypedLuaParser>();
             var resolving = new HashSet<int>();
             var warnings = new List<string>();
 
@@ -193,9 +193,36 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                     && !hasOutgoing.Contains(idx);
             }
 
+            // Resolves a node's output for a specific output port. Multi-output nodes
+            // (e.g. Vector2Split) dispatch on portName; single-output nodes ignore it.
+            TypedLuaParser? ResolveOutput(int idx, string portName)
+            {
+                var key = (idx, portName);
+                if (memo.TryGetValue(key, out var cached)) return cached;
+                if (!resolving.Add(idx)) return null;
+                var nodeModel = model.Nodes[idx];
+                var inputs = ResolveInputs(idx);
+                var typed = NodeTranslator.TranslateOutput(nodeModel, inputs, portName);
+                // Shoot wrapping applies to the node's primary output regardless of port:
+                // Shoot is single-output, so TranslateOutput delegates to Translate here.
+                if (nodeModel.NodeType == "Shoot" && IsEligibleShooter(idx))
+                {
+                    var wrapped = generator.WrapShootParser(nodeModel, typed.LuaParser, shooterMap, context, warnings);
+                    typed = typed with { LuaParser = wrapped };
+                }
+                resolving.Remove(idx);
+                memo[key] = typed;
+                return typed;
+            }
+
+            // Resolves a node by its primary (single) output, used for root nodes whose
+            // output port name cannot be inferred from connections (root has no outgoing edge).
             TypedLuaParser? ResolveNode(int idx)
             {
-                if (memo.TryGetValue(idx, out var cached)) return cached;
+                // Root/Shoot nodes are single-output; Translate ignores port, so any key
+                // suffix works. Use the node type's convention via Translate directly to
+                // avoid depending on a port name we don't have.
+                if (memo.TryGetValue((idx, string.Empty), out var cached)) return cached;
                 if (!resolving.Add(idx)) return null;
                 var nodeModel = model.Nodes[idx];
                 var inputs = ResolveInputs(idx);
@@ -206,7 +233,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                     typed = typed with { LuaParser = wrapped };
                 }
                 resolving.Remove(idx);
-                memo[idx] = typed;
+                memo[(idx, string.Empty)] = typed;
                 return typed;
             }
 
@@ -218,7 +245,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                 {
                     if (c is null) continue;
                     if (c.TargetNodeIndex != idx) continue;
-                    if (ResolveNode(c.SourceNodeIndex) is { } src)
+                    if (ResolveOutput(c.SourceNodeIndex, c.SourcePortName) is { } src)
                     {
                         result[c.TargetPortName] = src;
                     }

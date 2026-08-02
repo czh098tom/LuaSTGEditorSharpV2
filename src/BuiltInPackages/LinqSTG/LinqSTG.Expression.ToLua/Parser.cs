@@ -1,11 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace LinqSTG.Expression.ToLua
 {
     public static class Parser
     {
+        // Monotonic counter producing unique suffixes for per-instance local
+        // variable names. This prevents variable SHADOWING when an operator
+        // (Add/Multiply/ScalarFunc*/movement combinator) is nested inside another
+        // operator of the same family: without unique names, a child's
+        // `local __lhs, __rhs` declared inside the parent's do-block would shadow
+        // the parent's locals, so the parent's capture line would write the
+        // child's locals and the parent would compute on nil.
+        // The counter is incremented at factory-call time (graph resolution),
+        // which is a single-threaded phase; the LuaParser delegates themselves
+        // are also consumed single-threaded during code emission.
+        private static int _uidCounter;
+
+        private static string GenId(string prefix)
+        {
+            int n = Interlocked.Increment(ref _uidCounter);
+            return prefix + n;
+        }
+
         public static LuaParser Shoot(LuaParser pattern, LuaParser movement)
         {
             return (inner) =>
@@ -162,229 +181,254 @@ namespace LinqSTG.Expression.ToLua
 
         public static LuaParser IntrinsicAdd(LuaParser lhs, LuaParser rhs)
         {
+            string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
-                Single("local __lhs, __rhs"),
+                Single($"local {l}, {r}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhs = __val", 1),
+                Single($"{l} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhs = __val", 1),
+                Single($"{r} = __val", 1),
                 Single("end"),
-                Single("local __val = __lhs + __rhs")
+                Single($"local __val = {l} + {r}")
             );
         }
 
         public static LuaParser IntrinsicAddVector2(LuaParser lhs, LuaParser rhs)
         {
+            string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
+            string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
             return (inner) => Concat(
-                Single("local __lhsx, __lhsy"),
+                Single($"local {lx}, {ly}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single($"{lx}, {ly} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __rhsx, __rhsy"),
+                Single($"local {rx}, {ry}"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single($"{rx}, {ry} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __valx = __lhsx + __rhsx"),
-                Single("local __valy = __lhsy + __rhsy")
+                Single($"local __valx = {lx} + {rx}"),
+                Single($"local __valy = {ly} + {ry}")
             );
         }
 
         public static LuaParser IntrinsicSubtract(LuaParser lhs, LuaParser rhs)
         {
+            string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
-                Single("local __lhs, __rhs"),
+                Single($"local {l}, {r}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhs = __val", 1),
+                Single($"{l} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhs = __val", 1),
+                Single($"{r} = __val", 1),
                 Single("end"),
-                Single("local __val = __lhs - __rhs")
+                Single($"local __val = {l} - {r}")
             );
         }
 
         public static LuaParser IntrinsicSubtractVector2(LuaParser lhs, LuaParser rhs)
         {
+            string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
+            string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
             return (inner) => Concat(
-                Single("local __lhsx, __lhsy"),
+                Single($"local {lx}, {ly}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single($"{lx}, {ly} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __rhsx, __rhsy"),
+                Single($"local {rx}, {ry}"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single($"{rx}, {ry} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __valx = __lhsx - __rhsx"),
-                Single("local __valy = __lhsy - __rhsy")
+                Single($"local __valx = {lx} - {rx}"),
+                Single($"local __valy = {ly} - {ry}")
             );
         }
 
         public static LuaParser IntrinsicMultiply(LuaParser lhs, LuaParser rhs)
         {
+            string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
-                Single("local __lhs, __rhs"),
+                Single($"local {l}, {r}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhs = __val", 1),
+                Single($"{l} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhs = __val", 1),
+                Single($"{r} = __val", 1),
                 Single("end"),
-                Single("local __val = __lhs * __rhs")
+                Single($"local __val = {l} * {r}")
             );
         }
 
         public static LuaParser IntrinsicMultiplyVector2(LuaParser lhs, LuaParser rhs)
         {
+            string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
+            string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
             return (inner) => Concat(
-                Single("local __lhsx, __lhsy"),
+                Single($"local {lx}, {ly}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single($"{lx}, {ly} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __rhsx, __rhsy"),
+                Single($"local {rx}, {ry}"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single($"{rx}, {ry} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __valx = __lhsx * __rhsx"),
-                Single("local __valy = __lhsy * __rhsy")
+                Single($"local __valx = {lx} * {rx}"),
+                Single($"local __valy = {ly} * {ry}")
             );
         }
 
         public static LuaParser IntrinsicDivide(LuaParser lhs, LuaParser rhs)
         {
+            string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
-                Single("local __lhs, __rhs"),
+                Single($"local {l}, {r}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhs = __val", 1),
+                Single($"{l} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhs = __val", 1),
+                Single($"{r} = __val", 1),
                 Single("end"),
-                Single("local __val = __lhs / __rhs")
+                Single($"local __val = {l} / {r}")
             );
         }
 
         public static LuaParser IntrinsicDivideVector2(LuaParser lhs, LuaParser rhs)
         {
+            string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
+            string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
             return (inner) => Concat(
-                Single("local __lhsx, __lhsy"),
+                Single($"local {lx}, {ly}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhsx, __lhsy = __valx, __valy", 1),
+                Single($"{lx}, {ly} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __rhsx, __rhsy"),
+                Single($"local {rx}, {ry}"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhsx, __rhsy = __valx, __valy", 1),
+                Single($"{rx}, {ry} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __valx = __lhsx / __rhsx"),
-                Single("local __valy = __lhsy / __rhsy")
+                Single($"local __valx = {lx} / {rx}"),
+                Single($"local __valy = {ly} / {ry}")
             );
         }
 
         public static LuaParser IntrinsicModulo(LuaParser lhs, LuaParser rhs)
         {
+            string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
-                Single("local __lhs, __rhs"),
+                Single($"local {l}, {r}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhs = __val", 1),
+                Single($"{l} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhs = __val", 1),
+                Single($"{r} = __val", 1),
                 Single("end"),
-                Single("local __val = __lhs % __rhs")
+                Single($"local __val = {l} % {r}")
             );
         }
 
         public static LuaParser IntrinsicNegate(LuaParser x)
         {
+            string xv = GenId("__x_");
             return (inner) => Concat(
-                Single("local __x"),
+                Single($"local {xv}"),
                 Single("do"),
                 Shift(x(inner), 1),
-                Single("__x = __val", 1),
+                Single($"{xv} = __val", 1),
                 Single("end"),
-                Single("local __val = -__x")
+                Single($"local __val = -{xv}")
             );
         }
 
         public static LuaParser IntrinsicNegateVector2(LuaParser x)
         {
+            string xv = GenId("__xv_"), yv = GenId("__yv_");
             return (inner) => Concat(
-                Single("local __x, __y"),
+                Single($"local {xv}, {yv}"),
                 Single("do"),
                 Shift(x(inner), 1),
-                Single("__x, __y = __valx, __valy", 1),
+                Single($"{xv}, {yv} = __valx, __valy", 1),
                 Single("end"),
-                Single("local __valx = -__x"),
-                Single("local __valy = -__y")
+                Single($"local __valx = -{xv}"),
+                Single($"local __valy = -{yv}")
             );
         }
 
-        // Single-input scalar function: produces `local __val = <expr>(__x)` where expr receives "__x".
+        // Single-input scalar function: produces `local __val = <expr>(__x)`.
+        // Uses a per-instance unique local name so a nested operand that also
+        // binds `__x` (e.g. Negate, another ScalarFunc1) cannot shadow this one.
         public static LuaParser ScalarFunc1(LuaParser x, Func<string, string> expr)
         {
+            string xVar = GenId("__x_");
             return (inner) => Concat(
-                Single("local __x"),
+                Single($"local {xVar}"),
                 Single("do"),
                 Shift(x(inner), 1),
-                Single("__x = __val", 1),
+                Single($"{xVar} = __val", 1),
                 Single("end"),
-                Single($"local __val = {expr("__x")}")
+                Single($"local __val = {expr(xVar)}")
             );
         }
 
         // Two-input scalar function: produces `local __val = <expr>(__lhs, __rhs)`.
+        // Uses per-instance unique local names (see ScalarFunc1 note).
         public static LuaParser ScalarFunc2(LuaParser lhs, LuaParser rhs, Func<string, string, string> expr)
         {
+            string lhsVar = GenId("__lhs_");
+            string rhsVar = GenId("__rhs_");
             return (inner) => Concat(
-                Single("local __lhs, __rhs"),
+                Single($"local {lhsVar}, {rhsVar}"),
                 Single("do"),
                 Shift(lhs(inner), 1),
-                Single("__lhs = __val", 1),
+                Single($"{lhsVar} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(rhs(inner), 1),
-                Single("__rhs = __val", 1),
+                Single($"{rhsVar} = __val", 1),
                 Single("end"),
-                Single($"local __val = {expr("__lhs", "__rhs")}")
+                Single($"local __val = {expr(lhsVar, rhsVar)}")
             );
         }
 
         // Three-input scalar function: produces `local __val = <expr>(__a, __b, __c)`.
+        // Uses per-instance unique local names (see ScalarFunc1 note).
         public static LuaParser ScalarFunc3(LuaParser a, LuaParser b, LuaParser c, Func<string, string, string, string> expr)
         {
+            string aVar = GenId("__a_");
+            string bVar = GenId("__b_");
+            string cVar = GenId("__c_");
             return (inner) => Concat(
-                Single("local __a, __b, __c"),
+                Single($"local {aVar}, {bVar}, {cVar}"),
                 Single("do"),
                 Shift(a(inner), 1),
-                Single("__a = __val", 1),
+                Single($"{aVar} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(b(inner), 1),
-                Single("__b = __val", 1),
+                Single($"{bVar} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(c(inner), 1),
-                Single("__c = __val", 1),
+                Single($"{cVar} = __val", 1),
                 Single("end"),
-                Single($"local __val = {expr("__a", "__b", "__c")}")
+                Single($"local __val = {expr(aVar, bVar, cVar)}")
             );
         }
 
@@ -414,14 +458,15 @@ namespace LinqSTG.Expression.ToLua
 
         public static LuaParser UniformVelocityMovement(LuaParser vec)
         {
+            string vx = GenId("__vx_"), vy = GenId("__vy_");
             return (inner) => Concat(
-                Single("local __vx, __vy"),
+                Single($"local {vx}, {vy}"),
                 Single("do"),
                 Shift(vec(inner), 1),
-                Single("__vx, __vy = __valx, __valy", 1),
+                Single($"{vx}, {vy} = __valx, __valy", 1),
                 Single("end"),
-                Single("__x = __vx * __t"),
-                Single("__y = __vy * __t")
+                Single($"__x = {vx} * __t"),
+                Single($"__y = {vy} * __t")
             );
         }
 
@@ -521,18 +566,19 @@ namespace LinqSTG.Expression.ToLua
 
         public static LuaParser Vector2(LuaParser x, LuaParser y)
         {
+            string vx = GenId("__vx_"), vy = GenId("__vy_");
             return (inner) => Concat(
-                Single("local __vx, __vy"),
+                Single($"local {vx}, {vy}"),
                 Single("do"),
                 Shift(x(inner), 1),
-                Single("__vx = __val", 1),
+                Single($"{vx} = __val", 1),
                 Single("end"),
                 Single("do"),
                 Shift(y(inner), 1),
-                Single("__vy = __val", 1),
+                Single($"{vy} = __val", 1),
                 Single("end"),
-                Single("local __valx = __vx"),
-                Single("local __valy = __vy")
+                Single($"local __valx = {vx}"),
+                Single($"local __valy = {vy}")
             );
         }
 
@@ -656,6 +702,149 @@ namespace LinqSTG.Expression.ToLua
                 Single("end"),
                 Single("__x = __sx * __kx"),
                 Single("__y = __sy * __ky")
+            );
+        }
+
+        // --- Polar coordinate movements (degree-based trig, LuaSTG runtime globals) ---
+
+        /// <summary>
+        /// 把上游运动预测点 p 当作 (角度θ=q.X 度, 半径r=q.Y) 的极坐标，
+        /// 展开回笛卡尔坐标：p' = center + (r·cos(θ), r·sin(θ))，其中 q = p - center。
+        /// </summary>
+        public static LuaParser MovementCartesianToPolar(LuaParser movement, LuaParser center)
+        {
+            return (inner) => Concat(
+                Single("local __sx, __sy"),
+                Single("do"),
+                Shift(movement(inner), 1),
+                Single("end"),
+                Single("__sx, __sy = __x, __y"),
+                Single("local __cx, __cy"),
+                Single("do"),
+                Shift(center(inner), 1),
+                Single("__cx, __cy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __qx = __sx - __cx"),
+                Single("local __qy = __sy - __cy"),
+                Single("__x = __cx + __qy * cos(__qx)"),
+                Single("__y = __cy + __qy * sin(__qx)")
+            );
+        }
+
+        /// <summary>
+        /// MovementCartesianToPolar 的逆变换：把上游运动预测点 p 当作笛卡尔点 (x,y)，
+        /// 转成极坐标 (半径r, 角度θ度)，p' = center + (√(x²+y²), atan2(y,x))，
+        /// 其中 q = p - center，atan2 返回度（LuaSTG 运行时度制）。
+        /// </summary>
+        public static LuaParser MovementPolarToCartesian(LuaParser movement, LuaParser center)
+        {
+            return (inner) => Concat(
+                Single("local __sx, __sy"),
+                Single("do"),
+                Shift(movement(inner), 1),
+                Single("end"),
+                Single("__sx, __sy = __x, __y"),
+                Single("local __cx, __cy"),
+                Single("do"),
+                Shift(center(inner), 1),
+                Single("__cx, __cy = __valx, __valy", 1),
+                Single("end"),
+                Single("local __qx = __sx - __cx"),
+                Single("local __qy = __sy - __cy"),
+                Single("__x = __cx + sqrt(__qx * __qx + __qy * __qy)"),
+                Single("__y = __cy + atan2(__qy, __qx)")
+            );
+        }
+
+        // --- Abstract movement transform (inline-expanded, see MovementMapNode) ---
+        //
+        // Variable layering convention within a MovementMap transform scope:
+        //   __x, __y        : current movement output point (established convention)
+        //   __tpx, __tpy    : the transform's input point p, declared by MovementMap
+        //   __tqx, __tqy    : the transform's result point p', written by FromPoint
+        //   __valx, __valy  : Vector2 product (established convention)
+        // __tpx/__tpy/__tqx/__tqy live only inside MovementMap's transform scope.
+
+        /// <summary>
+        /// 收口节点：把上游 movement 预测点 p 经 transform 子图映射为 p'。
+        /// 内联展开 transform 子图：先求 p（上游 movement 的 __x,__y），注入为 __tpx/__tpy，
+        /// 再展开 transform 子图（FromPoint 收口写 __tqx/__tqy），最后写回 __x,__y。
+        /// </summary>
+        public static LuaParser MovementMap(LuaParser movement, LuaParser transform)
+        {
+            return (inner) => Concat(
+                Single("local __sx, __sy"),
+                Single("do"),
+                Shift(movement(inner), 1),
+                Single("end"),
+                Single("__sx, __sy = __x, __y"),
+                Single("local __tpx, __tpy"),
+                Single("local __tqx, __tqy"),
+                Single("__tpx, __tpy = __sx, __sy"),
+                Single("do"),
+                Shift(transform(inner), 1),
+                Single("end"),
+                Single("__x = __tqx"),
+                Single("__y = __tqy")
+            );
+        }
+
+        /// <summary>
+        /// 分量原语：输出当前正在被变换的点 p（由 MovementMap 注入到 __tpx/__tpy）。
+        /// 暴露为标准 Vector2 产出（__valx/__valy）。
+        /// </summary>
+        public static LuaParser MovementTransformInputPoint()
+        {
+            return (inner) => Concat(
+                Single("local __valx = __tpx"),
+                Single("local __valy = __tpy")
+            );
+        }
+
+        /// <summary>
+        /// 收口原语：消费一个 Vector2 子图结果（__valx/__valy），赋给 MovementMap
+        /// 声明的收口变量 __tqx/__tqy。本身输出为 Transform（副作用，不写 __x/__y）。
+        /// </summary>
+        public static LuaParser MovementTransformFromPoint(LuaParser point)
+        {
+            return (inner) => Concat(
+                Single("do"),
+                Shift(point(inner), 1),
+                Single("__tqx = __valx", 1),
+                Single("__tqy = __valy", 1),
+                Single("end")
+            );
+        }
+
+        /// <summary>
+        /// Vector2Split 的 X 分量输出：消费输入 Vector2（__valx/__valy），产出 scalar __val = X。
+        /// </summary>
+        public static LuaParser Vector2SplitX(LuaParser vec)
+        {
+            string vx = GenId("__vx_"), vy = GenId("__vy_");
+            return (inner) => Concat(
+                Single($"local {vx}, {vy}"),
+                Single("do"),
+                Shift(vec(inner), 1),
+                Single($"{vx}, {vy} = __valx, __valy", 1),
+                Single("end"),
+                Single($"local __val = {vx}")
+            );
+        }
+
+        /// <summary>
+        /// Vector2Split 的 Y 分量输出：消费输入 Vector2（__valx/__valy），产出 scalar __val = Y。
+        /// </summary>
+        public static LuaParser Vector2SplitY(LuaParser vec)
+        {
+            string vx = GenId("__vx_"), vy = GenId("__vy_");
+            return (inner) => Concat(
+                Single($"local {vx}, {vy}"),
+                Single("do"),
+                Shift(vec(inner), 1),
+                Single($"{vx}, {vy} = __valx, __valy", 1),
+                Single("end"),
+                Single($"local __val = {vy}")
             );
         }
 
