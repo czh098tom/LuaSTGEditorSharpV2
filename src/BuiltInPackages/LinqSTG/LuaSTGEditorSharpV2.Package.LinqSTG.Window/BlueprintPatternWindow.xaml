@@ -9,22 +9,23 @@
         xmlns:nodeList="clr-namespace:NodeNetwork.Toolkit.NodeList;assembly=NodeNetworkToolkit"
         xmlns:local="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows"
         mc:Ignorable="d"
-        Title="Blueprint Pattern" Height="600" Width="900"
+        Title="Blueprint Pattern" Height="600" Width="1200"
         WindowStartupLocation="CenterOwner">
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="200"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="2*" MinWidth="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="PreviewHost" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="62"/>
             </Grid.RowDefinitions>
-            <Grid x:Name="PreviewHost" Grid.Row="0">
+            <Grid x:Name="PreviewArea" Grid.Row="0">
                 <rc:RichItemsControl x:Name="PreviewCanvas"
                                      Background="#FF1E1E1E"
                                      HorizontalScrollBarVisibility="Hidden"
@@ -82,66 +83,79 @@
                 </rc:RichItemsControl>
             </Grid>
             <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="50"/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="PlayPauseButton" Grid.Column="0" Click="PlayPauseButton_Click"
-                        Width="30" Height="26" Margin="4,2" VerticalAlignment="Center">
-                    <Grid Width="18" Height="18">
-                        <Path Data="M 3,2 L 16,9 L 3,16 Z" Fill="#FF222222" Stretch="Fill">
-                            <Path.Style>
-                                <Style TargetType="Path">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-                        <Path Data="M 3,2 L 7,2 L 7,16 L 3,16 Z M 11,2 L 15,2 L 15,16 L 11,16 Z" Fill="#FF222222" Stretch="Fill">
-                            <Path.Style>
-                                <Style TargetType="Path">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-                    </Grid>
-                </Button>
-                <TextBlock Grid.Column="1" Text="Start:" VerticalAlignment="Center" Margin="4,0,2,0"/>
-                <TextBox Grid.Column="2" Text="{Binding TimeMinimum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
-                <Slider Grid.Column="3" Value="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Minimum="{Binding TimeMinimum}" Maximum="{Binding TimeMaximum}"
-                        VerticalAlignment="Center" Margin="4,0" TickPlacement="None"/>
-                <TextBlock Grid.Column="4" Text="End:" VerticalAlignment="Center" Margin="4,0,2,0"/>
-                <TextBox Grid.Column="5" Text="{Binding TimeMaximum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
-                <TextBlock Grid.Column="6" Text="Time:" VerticalAlignment="Center" Margin="4,0,2,0"/>
-                <TextBlock Grid.Column="7" Text="{Binding Time}" VerticalAlignment="Center" Margin="2,0,4,0"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="PlayPauseButton" Grid.Column="0" Click="PlayPauseButton_Click"
+                            Width="30" Height="26" Margin="4,2" VerticalAlignment="Center">
+                        <Grid Width="18" Height="18">
+                            <Path Data="M 3,2 L 16,9 L 3,16 Z" Fill="#FF222222" Stretch="Fill">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                            <Path Data="M 3,2 L 7,2 L 7,16 L 3,16 Z M 11,2 L 15,2 L 15,16 L 11,16 Z" Fill="#FF222222" Stretch="Fill">
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+                        </Grid>
+                    </Button>
+                    <Slider Grid.Column="1" Value="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Minimum="{Binding TimeMinimum}" Maximum="{Binding TimeMaximum}"
+                            VerticalAlignment="Center" Margin="4,0" TickPlacement="None"/>
+                    <TextBlock Grid.Column="2" Text="Time:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Time}" VerticalAlignment="Center" Margin="2,0,4,0"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Start:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                    <TextBox Grid.Column="1" Text="{Binding TimeMinimum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
+                    <TextBlock Grid.Column="2" Text="End:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                    <TextBox Grid.Column="3" Text="{Binding TimeMaximum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
+                </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1">
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" Background="#FF2A2A2A"
+                      ResizeBehavior="PreviousAndNext" ResizeDirection="Columns"/>
+        <Grid Grid.Column="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200" MinWidth="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
+            <Grid Grid.Column="0">
                 <nodeList:NodeListView ViewModel="{Binding NodeList}"/>
             </Grid>
             <Grid Grid.Column="1">
-                <nodenetwork:NetworkView ViewModel="{Binding Network}"/>
+                <nodenetwork:NetworkView x:Name="NetworkView" ViewModel="{Binding Network}"/>
             </Grid>
         </Grid>
     </Grid>
