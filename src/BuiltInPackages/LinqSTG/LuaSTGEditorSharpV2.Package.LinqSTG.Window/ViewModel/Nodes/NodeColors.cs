@@ -16,5 +16,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
         public static readonly Color Transformation = Color.FromArgb(0xFF, 0x1C, 0xDB, 0x1C);
         public static readonly Color PatternOperator = Color.FromArgb(0xFF, 0xDB, 0x81, 0x1C);
         public static readonly Color Operator = Color.FromArgb(0xFF, 0x6B, 0xA0, 0xC7);
+        public static readonly Color TransformInput = Color.FromArgb(0xFF, 0x80, 0x80, 0x80);
     }
 }

@@ -1,0 +1,48 @@
+using global::LinqSTG.Kinematics;
+using NodeNetwork.Toolkit.ValueNode;
+using System;
+using System.Linq;
+using System.Numerics;
+using System.Reactive.Linq;
+
+namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator
+{
+    /// <summary>
+    /// MovementCartesianToPolarNode 的逆变换。
+    /// 把上游运动预测点当作笛卡尔点 (x,y)，转成极坐标 (半径r, 角度θ弧度)，再加 center。
+    /// 输出 center + (√(x²+y²), atan2(y,x))。θ 为弧度（与 MathF.Atan2 一致）。
+    /// </summary>
+    public class MovementPolarToCartesianNode : LinqSTGNodeViewModel
+    {
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputCenter { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+
+        public MovementPolarToCartesianNode()
+        {
+            InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
+            InputCenter = LinqSTGNodeInputViewModel.Vector2("Center");
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+
+            AddInput("movement", InputMovement);
+            AddInput("center", InputCenter);
+            AddOutput("movement", OutputMovement);
+
+            Name = "Movement Polar To Cartesian";
+            TitleColor = NodeColors.Movement;
+
+            OutputMovement.Value = InputMovement.ValueChanged
+                .CombineLatest(InputCenter.ValueChanged, (movement, center)
+                    => Contextual.Create(dict
+                        => new Parametric<int, Vector2>(t =>
+                        {
+                            var p = movement?.Invoke(dict)?.Predict(t) ?? Vector2.Zero;
+                            var c = center?.Invoke(dict) ?? Vector2.Zero;
+                            var q = p - c;
+                            var r = MathF.Sqrt(q.X * q.X + q.Y * q.Y);
+                            var theta = MathF.Atan2(q.Y, q.X);
+                            return c + new Vector2(r, theta);
+                        })));
+        }
+    }
+}

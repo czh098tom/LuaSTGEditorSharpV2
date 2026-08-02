@@ -26,6 +26,7 @@ using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperato
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator.Math;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTransformOperator;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 {
@@ -192,6 +193,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeList.AddNodeType(() => new RepeaterKeyNode());
             NodeList.AddNodeType(() => new Vector2FromRotationDistanceNode());
             NodeList.AddNodeType(() => new Vector2Node());
+            NodeList.AddNodeType(() => new Vector2SplitNode());
 
             NodeList.AddNodeType(() => new AddNode());
             NodeList.AddNodeType(() => new SubtractNode());
@@ -237,6 +239,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeList.AddNodeType(() => new MovementAfterTimeNode());
             NodeList.AddNodeType(() => new MovementRotateNode());
             NodeList.AddNodeType(() => new MovementScaleNode());
+            NodeList.AddNodeType(() => new MovementCartesianToPolarNode());
+            NodeList.AddNodeType(() => new MovementPolarToCartesianNode());
+            NodeList.AddNodeType(() => new MovementMapNode());
+
+            NodeList.AddNodeType(() => new MovementTransformInputPointNode());
+            NodeList.AddNodeType(() => new MovementTransformFromPointNode());
 
             NodeList.AddNodeType(() => new RepeatPatternNode());
             NodeList.AddNodeType(() => new RepeatWithIntervalPatternNode());

@@ -45,7 +45,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transforma
                         var inputKey = key?.Invoke(dict) ?? "Key";
                         var inputValue = value?.Invoke(dict) ?? 0;
 
-                        parameter[inputKey] = inputValue;
+                        parameter.Floats[inputKey] = inputValue;
                         return parameter;
                     }));
         }

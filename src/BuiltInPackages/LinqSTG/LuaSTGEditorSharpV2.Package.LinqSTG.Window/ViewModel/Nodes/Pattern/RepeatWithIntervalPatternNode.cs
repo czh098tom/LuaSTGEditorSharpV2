@@ -49,8 +49,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
                             var rKey = repeater?.Invoke(dict) ?? RepeaterKey.Default;
                             return new Parameter(dict)
                             {
-                                [rKey.ID] = r.ID,
-                                [rKey.Total] = r.Total,
+                                Floats =
+                                {
+                                    [rKey.ID] = r.ID,
+                                    [rKey.Total] = r.Total,
+                                }
                             };
                         })));
         }

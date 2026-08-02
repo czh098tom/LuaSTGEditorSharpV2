@@ -12,8 +12,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 
         public Repeater GetRepeater(Parameter dict)
         {
-            var id = dict.GetValueOrDefault(ID, 0f);
-            var total = dict.GetValueOrDefault(Total, 0f);
+            var id = dict.Floats.GetValueOrDefault(ID, 0f);
+            var total = dict.Floats.GetValueOrDefault(Total, 0f);
             return new Repeater(Convert.ToInt32(id), Convert.ToInt32(total));
         }
     }

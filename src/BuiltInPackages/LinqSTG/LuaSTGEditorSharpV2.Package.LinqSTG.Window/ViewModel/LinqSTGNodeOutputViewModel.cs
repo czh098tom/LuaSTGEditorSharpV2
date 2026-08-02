@@ -141,6 +141,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             };
         }
 
+        public static LinqSTGNodeOutputViewModel<Contextual<MovementTransform>> MovementTransform(string? name = null)
+        {
+            return new LinqSTGNodeOutputViewModel<Contextual<MovementTransform>>()
+            {
+                Name = name,
+                Port = new LinqSTGPortViewModel(PortColor.MovementTransform),
+            };
+        }
+
         public static ContextAwareNodeOutputViewModel Numeric(string? name = null)
         {
             return new ContextAwareNodeOutputViewModel()
