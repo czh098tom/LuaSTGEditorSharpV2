@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace LinqSTG.Expression.ToLua
 {
-    public static class Parser
+    public class Parser
     {
         // Monotonic counter producing unique suffixes for per-instance local
         // variable names. This prevents variable SHADOWING when an operator
@@ -14,18 +13,20 @@ namespace LinqSTG.Expression.ToLua
         // `local __lhs, __rhs` declared inside the parent's do-block would shadow
         // the parent's locals, so the parent's capture line would write the
         // child's locals and the parent would compute on nil.
-        // The counter is incremented at factory-call time (graph resolution),
-        // which is a single-threaded phase; the LuaParser delegates themselves
-        // are also consumed single-threaded during code emission.
-        private static int _uidCounter;
+        // The counter is an instance field so its scope is a single LinqSTG
+        // blueprint: one Parser is constructed per blueprint translation, so the
+        // generated ids stay compact and isolated per blueprint rather than
+        // growing monotonically across the whole process. Graph resolution and
+        // code emission are single-threaded, so no synchronization is needed.
+        private int _uidCounter;
 
-        private static string GenId(string prefix)
+        private string GenId(string prefix)
         {
-            int n = Interlocked.Increment(ref _uidCounter);
+            int n = ++_uidCounter;
             return prefix + n;
         }
 
-        public static LuaParser Shoot(LuaParser pattern, LuaParser movement)
+        public LuaParser Shoot(LuaParser pattern, LuaParser movement)
         {
             return (inner) =>
             {
@@ -55,7 +56,7 @@ namespace LinqSTG.Expression.ToLua
             };
         }
 
-        public static LuaParser RepeatWithIntervalPattern(LuaParser times, LuaParser interval, LuaParser repeater)
+        public LuaParser RepeatWithIntervalPattern(LuaParser times, LuaParser interval, LuaParser repeater)
         {
             return (inner) => Concat(
                 Single("local __t"),
@@ -76,17 +77,17 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser Repeater(LuaParser curr, LuaParser max)
+        public LuaParser Repeater(LuaParser curr, LuaParser max)
         {
             return (inner) => Single($"{FlatText(max(inner))}, {FlatText(curr(inner))}");
         }
 
-        public static LuaParser DefaultRepeater()
+        public LuaParser DefaultRepeater()
         {
             return (inner) => Single($"__t, __i");
         }
 
-        public static LuaParser Sample01MinMax(LuaParser repeater, LuaParser lb, LuaParser ub, IntervalType intervalType)
+        public LuaParser Sample01MinMax(LuaParser repeater, LuaParser lb, LuaParser ub, IntervalType intervalType)
         {
             return (inner) => Concat(
                 Single("local __lb, __ub"),
@@ -104,7 +105,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser Sample01(LuaParser repeater, IntervalType intervalType)
+        public LuaParser Sample01(LuaParser repeater, IntervalType intervalType)
         {
             return (inner) => Concat(
                 Single($"local __max, __curr = {FlatText(repeater(inner))}"),
@@ -112,7 +113,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        private static LuaParser GetIntervalManipulater(string name, IntervalType intervalType)
+        private LuaParser GetIntervalManipulater(string name, IntervalType intervalType)
         {
             return intervalType switch
             {
@@ -124,7 +125,7 @@ namespace LinqSTG.Expression.ToLua
             };
         }
 
-        public static LuaParser MinMax(LuaParser value, LuaParser lb, LuaParser ub)
+        public LuaParser MinMax(LuaParser value, LuaParser lb, LuaParser ub)
         {
             return (inner) => Concat(
                 Single("local __v"),
@@ -145,7 +146,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser RepeatPattern(LuaParser times, LuaParser repeaterKey)
+        public LuaParser RepeatPattern(LuaParser times, LuaParser repeaterKey)
         {
             return (inner) =>
             {
@@ -164,22 +165,22 @@ namespace LinqSTG.Expression.ToLua
             };
         }
 
-        public static LuaParser TakeRepeaterFromContext(LuaParser repeaterKey)
+        public LuaParser TakeRepeaterFromContext(LuaParser repeaterKey)
         {
             return repeaterKey;
         }
 
-        public static LuaParser ConstantFloat(float value)
+        public LuaParser ConstantFloat(float value)
         {
             return _ => Single($"local __val = {value}");
         }
 
-        public static LuaParser ConstantString(string str)
+        public LuaParser ConstantString(string str)
         {
             return _ => Single(str);
         }
 
-        public static LuaParser IntrinsicAdd(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicAdd(LuaParser lhs, LuaParser rhs)
         {
             string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
@@ -196,7 +197,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicAddVector2(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicAddVector2(LuaParser lhs, LuaParser rhs)
         {
             string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
             string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
@@ -216,7 +217,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicSubtract(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicSubtract(LuaParser lhs, LuaParser rhs)
         {
             string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
@@ -233,7 +234,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicSubtractVector2(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicSubtractVector2(LuaParser lhs, LuaParser rhs)
         {
             string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
             string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
@@ -253,7 +254,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicMultiply(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicMultiply(LuaParser lhs, LuaParser rhs)
         {
             string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
@@ -270,7 +271,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicMultiplyVector2(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicMultiplyVector2(LuaParser lhs, LuaParser rhs)
         {
             string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
             string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
@@ -290,7 +291,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicDivide(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicDivide(LuaParser lhs, LuaParser rhs)
         {
             string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
@@ -307,7 +308,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicDivideVector2(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicDivideVector2(LuaParser lhs, LuaParser rhs)
         {
             string lx = GenId("__lhsx_"), ly = GenId("__lhsy_");
             string rx = GenId("__rhsx_"), ry = GenId("__rhsy_");
@@ -327,7 +328,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicModulo(LuaParser lhs, LuaParser rhs)
+        public LuaParser IntrinsicModulo(LuaParser lhs, LuaParser rhs)
         {
             string l = GenId("__lhs_"), r = GenId("__rhs_");
             return (inner) => Concat(
@@ -344,7 +345,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicNegate(LuaParser x)
+        public LuaParser IntrinsicNegate(LuaParser x)
         {
             string xv = GenId("__x_");
             return (inner) => Concat(
@@ -357,7 +358,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntrinsicNegateVector2(LuaParser x)
+        public LuaParser IntrinsicNegateVector2(LuaParser x)
         {
             string xv = GenId("__xv_"), yv = GenId("__yv_");
             return (inner) => Concat(
@@ -374,7 +375,7 @@ namespace LinqSTG.Expression.ToLua
         // Single-input scalar function: produces `local __val = <expr>(__x)`.
         // Uses a per-instance unique local name so a nested operand that also
         // binds `__x` (e.g. Negate, another ScalarFunc1) cannot shadow this one.
-        public static LuaParser ScalarFunc1(LuaParser x, Func<string, string> expr)
+        public LuaParser ScalarFunc1(LuaParser x, Func<string, string> expr)
         {
             string xVar = GenId("__x_");
             return (inner) => Concat(
@@ -389,7 +390,7 @@ namespace LinqSTG.Expression.ToLua
 
         // Two-input scalar function: produces `local __val = <expr>(__lhs, __rhs)`.
         // Uses per-instance unique local names (see ScalarFunc1 note).
-        public static LuaParser ScalarFunc2(LuaParser lhs, LuaParser rhs, Func<string, string, string> expr)
+        public LuaParser ScalarFunc2(LuaParser lhs, LuaParser rhs, Func<string, string, string> expr)
         {
             string lhsVar = GenId("__lhs_");
             string rhsVar = GenId("__rhs_");
@@ -409,7 +410,7 @@ namespace LinqSTG.Expression.ToLua
 
         // Three-input scalar function: produces `local __val = <expr>(__a, __b, __c)`.
         // Uses per-instance unique local names (see ScalarFunc1 note).
-        public static LuaParser ScalarFunc3(LuaParser a, LuaParser b, LuaParser c, Func<string, string, string, string> expr)
+        public LuaParser ScalarFunc3(LuaParser a, LuaParser b, LuaParser c, Func<string, string, string, string> expr)
         {
             string aVar = GenId("__a_");
             string bVar = GenId("__b_");
@@ -434,29 +435,29 @@ namespace LinqSTG.Expression.ToLua
 
         // --- Scalar math helpers (LuaSTG runtime globals, degree-based trig) ---
 
-        public static LuaParser Sin(LuaParser x) => ScalarFunc1(x, a => $"sin({a})");
-        public static LuaParser Cos(LuaParser x) => ScalarFunc1(x, a => $"cos({a})");
-        public static LuaParser Tan(LuaParser x) => ScalarFunc1(x, a => $"tan({a})");
-        public static LuaParser ASin(LuaParser x) => ScalarFunc1(x, a => $"asin({a})");
-        public static LuaParser ACos(LuaParser x) => ScalarFunc1(x, a => $"acos({a})");
-        public static LuaParser ATan(LuaParser x) => ScalarFunc1(x, a => $"atan({a})");
-        public static LuaParser ATan2(LuaParser y, LuaParser x) => ScalarFunc2(y, x, (a, b) => $"atan2({a}, {b})");
-        public static LuaParser DegToRad(LuaParser x) => ScalarFunc1(x, a => $"{a} * math.pi / 180");
-        public static LuaParser RadToDeg(LuaParser x) => ScalarFunc1(x, a => $"{a} * 180 / math.pi");
-        public static LuaParser Abs(LuaParser x) => ScalarFunc1(x, a => $"abs({a})");
-        public static LuaParser Sqrt(LuaParser x) => ScalarFunc1(x, a => $"sqrt({a})");
-        public static LuaParser Floor(LuaParser x) => ScalarFunc1(x, a => $"floor({a})");
-        public static LuaParser Ceil(LuaParser x) => ScalarFunc1(x, a => $"ceil({a})");
-        public static LuaParser Sign(LuaParser x) => ScalarFunc1(x, a => $"sign({a})");
-        public static LuaParser Exp(LuaParser x) => ScalarFunc1(x, a => $"exp({a})");
-        public static LuaParser Log(LuaParser x) => ScalarFunc1(x, a => $"log({a})");
-        public static LuaParser Pow(LuaParser b, LuaParser e) => ScalarFunc2(b, e, (a, c) => $"{a} ^ {c}");
-        public static LuaParser Min(LuaParser a, LuaParser b) => ScalarFunc2(a, b, (x, y) => $"min({x}, {y})");
-        public static LuaParser Max(LuaParser a, LuaParser b) => ScalarFunc2(a, b, (x, y) => $"max({x}, {y})");
-        public static LuaParser Clamp(LuaParser x, LuaParser lo, LuaParser hi) => ScalarFunc3(x, lo, hi, (a, b, c) => $"min(max({a}, {b}), {c})");
-        public static LuaParser Lerp(LuaParser a, LuaParser b, LuaParser t) => ScalarFunc3(a, b, t, (x, y, z) => $"{x} + ({y} - {x}) * {z}");
+        public LuaParser Sin(LuaParser x) => ScalarFunc1(x, a => $"sin({a})");
+        public LuaParser Cos(LuaParser x) => ScalarFunc1(x, a => $"cos({a})");
+        public LuaParser Tan(LuaParser x) => ScalarFunc1(x, a => $"tan({a})");
+        public LuaParser ASin(LuaParser x) => ScalarFunc1(x, a => $"asin({a})");
+        public LuaParser ACos(LuaParser x) => ScalarFunc1(x, a => $"acos({a})");
+        public LuaParser ATan(LuaParser x) => ScalarFunc1(x, a => $"atan({a})");
+        public LuaParser ATan2(LuaParser y, LuaParser x) => ScalarFunc2(y, x, (a, b) => $"atan2({a}, {b})");
+        public LuaParser DegToRad(LuaParser x) => ScalarFunc1(x, a => $"{a} * math.pi / 180");
+        public LuaParser RadToDeg(LuaParser x) => ScalarFunc1(x, a => $"{a} * 180 / math.pi");
+        public LuaParser Abs(LuaParser x) => ScalarFunc1(x, a => $"abs({a})");
+        public LuaParser Sqrt(LuaParser x) => ScalarFunc1(x, a => $"sqrt({a})");
+        public LuaParser Floor(LuaParser x) => ScalarFunc1(x, a => $"floor({a})");
+        public LuaParser Ceil(LuaParser x) => ScalarFunc1(x, a => $"ceil({a})");
+        public LuaParser Sign(LuaParser x) => ScalarFunc1(x, a => $"sign({a})");
+        public LuaParser Exp(LuaParser x) => ScalarFunc1(x, a => $"exp({a})");
+        public LuaParser Log(LuaParser x) => ScalarFunc1(x, a => $"log({a})");
+        public LuaParser Pow(LuaParser b, LuaParser e) => ScalarFunc2(b, e, (a, c) => $"{a} ^ {c}");
+        public LuaParser Min(LuaParser a, LuaParser b) => ScalarFunc2(a, b, (x, y) => $"min({x}, {y})");
+        public LuaParser Max(LuaParser a, LuaParser b) => ScalarFunc2(a, b, (x, y) => $"max({x}, {y})");
+        public LuaParser Clamp(LuaParser x, LuaParser lo, LuaParser hi) => ScalarFunc3(x, lo, hi, (a, b, c) => $"min(max({a}, {b}), {c})");
+        public LuaParser Lerp(LuaParser a, LuaParser b, LuaParser t) => ScalarFunc3(a, b, t, (x, y, z) => $"{x} + ({y} - {x}) * {z}");
 
-        public static LuaParser UniformVelocityMovement(LuaParser vec)
+        public LuaParser UniformVelocityMovement(LuaParser vec)
         {
             string vx = GenId("__vx_"), vy = GenId("__vy_");
             return (inner) => Concat(
@@ -470,7 +471,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser VectorFromAngleLength(LuaParser angle, LuaParser length)
+        public LuaParser VectorFromAngleLength(LuaParser angle, LuaParser length)
         {
             return (inner) => Concat(
                 Single("local __angle, __length"),
@@ -487,12 +488,12 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser TakeVariableFromContext(LuaParser key)
+        public LuaParser TakeVariableFromContext(LuaParser key)
         {
             return (inner) => Single($"local __val = {FlatText(key(inner))}");
         }
 
-        public static LuaParser MovementAfterTime(LuaParser m1, LuaParser time, LuaParser m2)
+        public LuaParser MovementAfterTime(LuaParser m1, LuaParser time, LuaParser m2)
         {
             return (inner) => Concat(
                 Single("local __ts"),
@@ -528,7 +529,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser Assign(LuaParser prev, LuaParser value, LuaParser key)
+        public LuaParser Assign(LuaParser prev, LuaParser value, LuaParser key)
         {
             return (inner) => Concat(
                 prev(inner),
@@ -541,12 +542,12 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser MapPattern(LuaParser pattern, LuaParser transformation)
+        public LuaParser MapPattern(LuaParser pattern, LuaParser transformation)
         {
             return (inner) => pattern(Concat(transformation(inner), inner));
         }
 
-        public static LuaParser ExtrudePattern(LuaParser pattern, LuaParser transformation)
+        public LuaParser ExtrudePattern(LuaParser pattern, LuaParser transformation)
         {
             return (inner) => pattern(Concat(
                 Single("__new_task(function(self)"),
@@ -555,7 +556,7 @@ namespace LinqSTG.Expression.ToLua
             ));
         }
 
-        public static LuaParser ExtrudeConcatPattern(LuaParser pattern, LuaParser subPattern)
+        public LuaParser ExtrudeConcatPattern(LuaParser pattern, LuaParser subPattern)
         {
             return (inner) => pattern(Concat(
                 Single("do"),
@@ -564,7 +565,7 @@ namespace LinqSTG.Expression.ToLua
             ));
         }
 
-        public static LuaParser Vector2(LuaParser x, LuaParser y)
+        public LuaParser Vector2(LuaParser x, LuaParser y)
         {
             string vx = GenId("__vx_"), vy = GenId("__vy_");
             return (inner) => Concat(
@@ -582,7 +583,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser FloatToInt(LuaParser f)
+        public LuaParser FloatToInt(LuaParser f)
         {
             return (inner) => Concat(
                 Single("local __f"),
@@ -594,12 +595,12 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser IntToFloat(LuaParser f)
+        public LuaParser IntToFloat(LuaParser f)
         {
             return f;
         }
 
-        public static LuaParser StationaryMovement(LuaParser position)
+        public LuaParser StationaryMovement(LuaParser position)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -610,7 +611,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser UniformAccelerationMovement(LuaParser initialVelocity, LuaParser acceleration)
+        public LuaParser UniformAccelerationMovement(LuaParser initialVelocity, LuaParser acceleration)
         {
             return (inner) => Concat(
                 Single("local __ivx, __ivy"),
@@ -630,7 +631,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser MovementSum(LuaParser m1, LuaParser m2)
+        public LuaParser MovementSum(LuaParser m1, LuaParser m2)
         {
             return (inner) => Concat(
                 Single("local __sx, __sy"),
@@ -651,7 +652,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser MovementOffset(LuaParser movement, LuaParser offset)
+        public LuaParser MovementOffset(LuaParser movement, LuaParser offset)
         {
             return (inner) => Concat(
                 Single("local __sx, __sy"),
@@ -669,7 +670,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser MovementRotate(LuaParser movement, LuaParser angle)
+        public LuaParser MovementRotate(LuaParser movement, LuaParser angle)
         {
             return (inner) => Concat(
                 Single("local __sx, __sy"),
@@ -687,7 +688,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser MovementScale(LuaParser movement, LuaParser scale)
+        public LuaParser MovementScale(LuaParser movement, LuaParser scale)
         {
             return (inner) => Concat(
                 Single("local __sx, __sy"),
@@ -711,7 +712,7 @@ namespace LinqSTG.Expression.ToLua
         /// 把上游运动预测点 p 当作 (角度θ=q.X 度, 半径r=q.Y) 的极坐标，
         /// 展开回笛卡尔坐标：p' = center + (r·cos(θ), r·sin(θ))，其中 q = p - center。
         /// </summary>
-        public static LuaParser MovementCartesianToPolar(LuaParser movement, LuaParser center)
+        public LuaParser MovementCartesianToPolar(LuaParser movement, LuaParser center)
         {
             return (inner) => Concat(
                 Single("local __sx, __sy"),
@@ -736,7 +737,7 @@ namespace LinqSTG.Expression.ToLua
         /// 转成极坐标 (半径r, 角度θ度)，p' = center + (√(x²+y²), atan2(y,x))，
         /// 其中 q = p - center，atan2 返回度（LuaSTG 运行时度制）。
         /// </summary>
-        public static LuaParser MovementPolarToCartesian(LuaParser movement, LuaParser center)
+        public LuaParser MovementPolarToCartesian(LuaParser movement, LuaParser center)
         {
             return (inner) => Concat(
                 Single("local __sx, __sy"),
@@ -770,7 +771,7 @@ namespace LinqSTG.Expression.ToLua
         /// 内联展开 transform 子图：先求 p（上游 movement 的 __x,__y），注入为 __tpx/__tpy，
         /// 再展开 transform 子图（FromPoint 收口写 __tqx/__tqy），最后写回 __x,__y。
         /// </summary>
-        public static LuaParser MovementMap(LuaParser movement, LuaParser transform)
+        public LuaParser MovementMap(LuaParser movement, LuaParser transform)
         {
             return (inner) => Concat(
                 Single("local __sx, __sy"),
@@ -793,7 +794,7 @@ namespace LinqSTG.Expression.ToLua
         /// 分量原语：输出当前正在被变换的点 p（由 MovementMap 注入到 __tpx/__tpy）。
         /// 暴露为标准 Vector2 产出（__valx/__valy）。
         /// </summary>
-        public static LuaParser MovementTransformInputPoint()
+        public LuaParser MovementTransformInputPoint()
         {
             return (inner) => Concat(
                 Single("local __valx = __tpx"),
@@ -805,7 +806,7 @@ namespace LinqSTG.Expression.ToLua
         /// 收口原语：消费一个 Vector2 子图结果（__valx/__valy），赋给 MovementMap
         /// 声明的收口变量 __tqx/__tqy。本身输出为 Transform（副作用，不写 __x/__y）。
         /// </summary>
-        public static LuaParser MovementTransformFromPoint(LuaParser point)
+        public LuaParser MovementTransformFromPoint(LuaParser point)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -819,7 +820,7 @@ namespace LinqSTG.Expression.ToLua
         /// <summary>
         /// Vector2Split 的 X 分量输出：消费输入 Vector2（__valx/__valy），产出 scalar __val = X。
         /// </summary>
-        public static LuaParser Vector2SplitX(LuaParser vec)
+        public LuaParser Vector2SplitX(LuaParser vec)
         {
             string vx = GenId("__vx_"), vy = GenId("__vy_");
             return (inner) => Concat(
@@ -835,7 +836,7 @@ namespace LinqSTG.Expression.ToLua
         /// <summary>
         /// Vector2Split 的 Y 分量输出：消费输入 Vector2（__valx/__valy），产出 scalar __val = Y。
         /// </summary>
-        public static LuaParser Vector2SplitY(LuaParser vec)
+        public LuaParser Vector2SplitY(LuaParser vec)
         {
             string vx = GenId("__vx_"), vy = GenId("__vy_");
             return (inner) => Concat(
@@ -848,7 +849,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser SingleDataPattern(LuaParser transformation)
+        public LuaParser SingleDataPattern(LuaParser transformation)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -858,7 +859,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser SingleIntervalPattern(LuaParser interval)
+        public LuaParser SingleIntervalPattern(LuaParser interval)
         {
             return (inner) => Concat(
                 Single("local __intv"),
@@ -870,7 +871,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser ConcatPattern(LuaParser p1, LuaParser p2)
+        public LuaParser ConcatPattern(LuaParser p1, LuaParser p2)
         {
             return (inner) => Concat(
                 p1(inner),
@@ -878,7 +879,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser FilterPattern(LuaParser pattern, LuaParser predicate)
+        public LuaParser FilterPattern(LuaParser pattern, LuaParser predicate)
         {
             return (inner) => pattern(
                 Concat(
@@ -892,7 +893,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser SkipPattern(LuaParser pattern, LuaParser count)
+        public LuaParser SkipPattern(LuaParser pattern, LuaParser count)
         {
             return (inner) => Concat(
                 Single("local __skip"),
@@ -912,7 +913,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser TakePattern(LuaParser pattern, LuaParser count)
+        public LuaParser TakePattern(LuaParser pattern, LuaParser count)
         {
             return (inner) => Concat(
                 Single("local __take"),
@@ -933,7 +934,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser SkipWhilePattern(LuaParser pattern, LuaParser predicate)
+        public LuaParser SkipWhilePattern(LuaParser pattern, LuaParser predicate)
         {
             return (inner) => Concat(
                 Single("local __sw_skip = true"),
@@ -957,7 +958,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser TakeWhilePattern(LuaParser pattern, LuaParser predicate)
+        public LuaParser TakeWhilePattern(LuaParser pattern, LuaParser predicate)
         {
             return (inner) => Concat(
                 Single("local __tw_take = true"),
@@ -979,7 +980,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser ReversePattern(LuaParser pattern)
+        public LuaParser ReversePattern(LuaParser pattern)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -1033,7 +1034,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser TrimStartPattern(LuaParser pattern)
+        public LuaParser TrimStartPattern(LuaParser pattern)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -1053,7 +1054,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser TrimEndPattern(LuaParser pattern)
+        public LuaParser TrimEndPattern(LuaParser pattern)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -1074,7 +1075,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser TrimPattern(LuaParser pattern)
+        public LuaParser TrimPattern(LuaParser pattern)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -1099,7 +1100,7 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser Unknown()
+        public LuaParser Unknown()
         {
             return (inner) => Concat(
                 Single("--[[ Unknown node type ]]"),
@@ -1107,30 +1108,30 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        public static LuaParser Empty()
+        public LuaParser Empty()
         {
             return _ => System.Linq.Enumerable.Empty<LuaCodeLine>();
         }
 
-        private static IEnumerable<LuaCodeLine> Single(string text, int indent = 0)
+        private IEnumerable<LuaCodeLine> Single(string text, int indent = 0)
         {
             yield return new LuaCodeLine(text, indent);
         }
 
-        private static IEnumerable<LuaCodeLine> Concat(params IEnumerable<LuaCodeLine>[] sources)
+        private IEnumerable<LuaCodeLine> Concat(params IEnumerable<LuaCodeLine>[] sources)
         {
             foreach (var source in sources)
                 foreach (var line in source)
                     yield return line;
         }
 
-        private static IEnumerable<LuaCodeLine> Shift(IEnumerable<LuaCodeLine> lines, int delta)
+        private IEnumerable<LuaCodeLine> Shift(IEnumerable<LuaCodeLine> lines, int delta)
         {
             foreach (var line in lines)
                 yield return line with { Indent = line.Indent + delta };
         }
 
-        private static string FlatText(IEnumerable<LuaCodeLine> lines)
+        private string FlatText(IEnumerable<LuaCodeLine> lines)
             => string.Join("", lines.Select(l => l.Text));
     }
 }

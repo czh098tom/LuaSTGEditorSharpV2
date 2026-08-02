@@ -61,7 +61,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
             }
 
             var shooterMap = BuildShooterMap(node);
-            var (rootParser, warnings) = NetworkCodeGenerator.ResolveRootParser(model, this, shooterMap, context);
+            // One Parser per blueprint so its unique-id counter is scoped to this
+            // single LinqSTG blueprint node rather than growing across the process.
+            var parser = new Parser();
+            var translator = new NodeTranslator(parser);
+            var (rootParser, warnings) = NetworkCodeGenerator.ResolveRootParser(model, this, translator, shooterMap, context);
             if (rootParser == null)
             {
                 yield return new CodeData("--[[ no root node found in LinqSTG network ]]", node);
@@ -167,6 +171,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
         public static (LuaParser? rootParser, List<string> warnings) ResolveRootParser(
             NetworkModel model,
             LinqSTGBlueprintPatternGenerator generator,
+            NodeTranslator translator,
             IReadOnlyDictionary<string, NodeData> shooterMap,
             CodeGenerationContext context)
         {
@@ -202,7 +207,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                 if (!resolving.Add(idx)) return null;
                 var nodeModel = model.Nodes[idx];
                 var inputs = ResolveInputs(idx);
-                var typed = NodeTranslator.TranslateOutput(nodeModel, inputs, portName);
+                var typed = translator.TranslateOutput(nodeModel, inputs, portName);
                 // Shoot wrapping applies to the node's primary output regardless of port:
                 // Shoot is single-output, so TranslateOutput delegates to Translate here.
                 if (nodeModel.NodeType == "Shoot" && IsEligibleShooter(idx))
@@ -226,7 +231,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                 if (!resolving.Add(idx)) return null;
                 var nodeModel = model.Nodes[idx];
                 var inputs = ResolveInputs(idx);
-                var typed = NodeTranslator.Translate(nodeModel, inputs);
+                var typed = translator.Translate(nodeModel, inputs);
                 if (nodeModel.NodeType == "Shoot" && IsEligibleShooter(idx))
                 {
                     var wrapped = generator.WrapShootParser(nodeModel, typed.LuaParser, shooterMap, context, warnings);
