@@ -21,7 +21,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
         {
             InputX = LinqSTGNodeInputViewModel.Float("X", XEditor);
             InputY = LinqSTGNodeInputViewModel.Float("Y", YEditor);
-            OutputVector2 = LinqSTGNodeOutputViewModel.Vector2("Vector2");
+            OutputVector2 = LinqSTGNodeOutputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_vector2);
 
             AddInput("x", InputX);
             AddInput("y", InputY);
@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
             AddEditor("x", XEditor);
             AddEditor("y", YEditor);
 
-            Name = "Vector2";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_vector2;
             TitleColor = NodeColors.Data;
 
             OutputVector2.Value = InputX.ValueChanged

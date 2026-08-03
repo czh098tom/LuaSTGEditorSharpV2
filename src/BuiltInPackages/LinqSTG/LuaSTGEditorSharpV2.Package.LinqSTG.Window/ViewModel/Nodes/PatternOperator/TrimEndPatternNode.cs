@@ -12,13 +12,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOpe
 
         public TrimEndPatternNode()
         {
-            InputPattern = LinqSTGNodeInputViewModel.Pattern("Pattern");
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputPattern = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("pattern", InputPattern);
             AddOutput("pattern", OutputPattern);
 
-            Name = "Trim End";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_trimEnd;
 
             TitleColor = NodeColors.PatternOperator;
 

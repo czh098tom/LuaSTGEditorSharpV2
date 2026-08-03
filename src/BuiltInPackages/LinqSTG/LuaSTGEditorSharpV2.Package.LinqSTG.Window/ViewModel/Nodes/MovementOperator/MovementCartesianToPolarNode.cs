@@ -21,15 +21,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
 
         public MovementCartesianToPolarNode()
         {
-            InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
-            InputCenter = LinqSTGNodeInputViewModel.Vector2("Center");
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
+            InputCenter = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_center);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("movement", InputMovement);
             AddInput("center", InputCenter);
             AddOutput("movement", OutputMovement);
 
-            Name = "Movement Cartesian To Polar";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_movementCartesianToPolar;
             TitleColor = NodeColors.Movement;
 
             OutputMovement.Value = InputMovement.ValueChanged

@@ -23,7 +23,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
             AddOutput("value", OutputValue);
             AddEditor("value", ValueEditor);
 
-            Name = "Int";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_int;
 
             TitleColor = NodeColors.Data;
         }

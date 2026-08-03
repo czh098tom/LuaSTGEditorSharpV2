@@ -20,13 +20,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
 
         public TakeVariableFromContextNode()
         {
-            InputValue = LinqSTGNodeInputViewModel.String("Key");
-            OutputValue = LinqSTGNodeOutputViewModel.Float("Value");
+            InputValue = LinqSTGNodeInputViewModel.String(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_key);
+            OutputValue = LinqSTGNodeOutputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value);
 
             AddInput("key", InputValue);
             AddOutput("value", OutputValue);
 
-            Name = "Take Variable";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_takeVariable;
 
             TitleColor = NodeColors.Operator;
 

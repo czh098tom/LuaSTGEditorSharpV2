@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!-- Category D: Host window -->
+  <data name="linqstg_window_title" xml:space="preserve">
+    <value>Blueprint Pattern</value>
+  </data>
+  <data name="linqstg_window_label_time" xml:space="preserve">
+    <value>Time:</value>
+  </data>
+  <data name="linqstg_window_label_start" xml:space="preserve">
+    <value>Start:</value>
+  </data>
+  <data name="linqstg_window_label_end" xml:space="preserve">
+    <value>End:</value>
+  </data>
+  <!-- Category A: Third-party library built-in (NodeNetworkToolkit) -->
+  <data name="linqstg_window_nodeList_title" xml:space="preserve">
+    <value>Add node</value>
+  </data>
+  <data name="linqstg_window_nodeList_empty" xml:space="preserve">
+    <value>No matching nodes found.</value>
+  </data>
+  <data name="linqstg_window_nodeList_searchHint" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <!-- Category C: Editor tooltips -->
+  <data name="linqstg_window_intervalEditor_headClosed" xml:space="preserve">
+    <value>Head closed</value>
+  </data>
+  <data name="linqstg_window_intervalEditor_tailClosed" xml:space="preserve">
+    <value>Tail closed</value>
+  </data>
+  <!-- Category B-1: Node titles -->
+  <data name="linqstg_window_node_float" xml:space="preserve">
+    <value>Float</value>
+  </data>
+  <data name="linqstg_window_node_int" xml:space="preserve">
+    <value>Int</value>
+  </data>
+  <data name="linqstg_window_node_string" xml:space="preserve">
+    <value>String</value>
+  </data>
+  <data name="linqstg_window_node_repeaterKey" xml:space="preserve">
+    <value>Repeater Key</value>
+  </data>
+  <data name="linqstg_window_node_vector2" xml:space="preserve">
+    <value>Vector2</value>
+  </data>
+  <data name="linqstg_window_node_vector2Split" xml:space="preserve">
+    <value>Vector2 Split</value>
+  </data>
+  <data name="linqstg_window_node_floatToInt" xml:space="preserve">
+    <value>Float To Int</value>
+  </data>
+  <data name="linqstg_window_node_intToFloat" xml:space="preserve">
+    <value>Int To Float</value>
+  </data>
+  <data name="linqstg_window_node_minMax" xml:space="preserve">
+    <value>MinMax</value>
+  </data>
+  <data name="linqstg_window_node_sample01MinMax" xml:space="preserve">
+    <value>Sample01 MinMax</value>
+  </data>
+  <data name="linqstg_window_node_takeRepeaterFromContext" xml:space="preserve">
+    <value>Take Repeater From Context</value>
+  </data>
+  <data name="linqstg_window_node_takeVariable" xml:space="preserve">
+    <value>Take Variable</value>
+  </data>
+  <data name="linqstg_window_node_stationaryMovement" xml:space="preserve">
+    <value>Stationary Movement</value>
+  </data>
+  <data name="linqstg_window_node_uniformVelocityMovement" xml:space="preserve">
+    <value>Uniform Velocity Movement</value>
+  </data>
+  <data name="linqstg_window_node_uniformAccelerationMovement" xml:space="preserve">
+    <value>Uniform Acceleration Movement</value>
+  </data>
+  <data name="linqstg_window_node_movementAfterTime" xml:space="preserve">
+    <value>Movement After Time</value>
+  </data>
+  <data name="linqstg_window_node_movementCartesianToPolar" xml:space="preserve">
+    <value>Movement Cartesian To Polar</value>
+  </data>
+  <data name="linqstg_window_node_movementPolarToCartesian" xml:space="preserve">
+    <value>Movement Polar To Cartesian</value>
+  </data>
+  <data name="linqstg_window_node_movementMap" xml:space="preserve">
+    <value>Movement Map</value>
+  </data>
+  <data name="linqstg_window_node_movementOffset" xml:space="preserve">
+    <value>Movement Offset</value>
+  </data>
+  <data name="linqstg_window_node_movementRotate" xml:space="preserve">
+    <value>Movement Rotate</value>
+  </data>
+  <data name="linqstg_window_node_movementScale" xml:space="preserve">
+    <value>Movement Scale</value>
+  </data>
+  <data name="linqstg_window_node_movementSum" xml:space="preserve">
+    <value>Movement Sum</value>
+  </data>
+  <data name="linqstg_window_node_transformFromPoint" xml:space="preserve">
+    <value>Transform From Point</value>
+  </data>
+  <data name="linqstg_window_node_transformInputPoint" xml:space="preserve">
+    <value>Transform Input Point</value>
+  </data>
+  <data name="linqstg_window_node_emptyPattern" xml:space="preserve">
+    <value>Empty Pattern</value>
+  </data>
+  <data name="linqstg_window_node_repeatPattern" xml:space="preserve">
+    <value>Repeat Pattern</value>
+  </data>
+  <data name="linqstg_window_node_repeatWithIntervalPattern" xml:space="preserve">
+    <value>Repeat with Interval Pattern</value>
+  </data>
+  <data name="linqstg_window_node_singlePattern" xml:space="preserve">
+    <value>Single Pattern</value>
+  </data>
+  <data name="linqstg_window_node_singleIntervalPattern" xml:space="preserve">
+    <value>Single Interval Pattern</value>
+  </data>
+  <data name="linqstg_window_node_concatPattern" xml:space="preserve">
+    <value>Concat Pattern</value>
+  </data>
+  <data name="linqstg_window_node_extrudeConcatPattern" xml:space="preserve">
+    <value>Extrude Concat Pattern</value>
+  </data>
+  <data name="linqstg_window_node_extrudePattern" xml:space="preserve">
+    <value>Extrude Pattern</value>
+  </data>
+  <data name="linqstg_window_node_filterPattern" xml:space="preserve">
+    <value>Filter Pattern</value>
+  </data>
+  <data name="linqstg_window_node_mapPattern" xml:space="preserve">
+    <value>Map Pattern</value>
+  </data>
+  <data name="linqstg_window_node_reversePattern" xml:space="preserve">
+    <value>Reverse Pattern</value>
+  </data>
+  <data name="linqstg_window_node_skipPattern" xml:space="preserve">
+    <value>Skip Pattern</value>
+  </data>
+  <data name="linqstg_window_node_skipWhilePattern" xml:space="preserve">
+    <value>Skip While Pattern</value>
+  </data>
+  <data name="linqstg_window_node_takePattern" xml:space="preserve">
+    <value>Take Pattern</value>
+  </data>
+  <data name="linqstg_window_node_takeWhilePattern" xml:space="preserve">
+    <value>Take While Pattern</value>
+  </data>
+  <data name="linqstg_window_node_trimEnd" xml:space="preserve">
+    <value>Trim End</value>
+  </data>
+  <data name="linqstg_window_node_trim" xml:space="preserve">
+    <value>Trim</value>
+  </data>
+  <data name="linqstg_window_node_trimStart" xml:space="preserve">
+    <value>Trim Start</value>
+  </data>
+  <data name="linqstg_window_node_assign" xml:space="preserve">
+    <value>Assign</value>
+  </data>
+  <data name="linqstg_window_node_shoot" xml:space="preserve">
+    <value>Shoot</value>
+  </data>
+  <!-- Category B-2: Port labels -->
+  <data name="linqstg_window_port_idKey" xml:space="preserve">
+    <value>ID Key</value>
+  </data>
+  <data name="linqstg_window_port_totalKey" xml:space="preserve">
+    <value>Total Key</value>
+  </data>
+  <data name="linqstg_window_port_repeaterKey" xml:space="preserve">
+    <value>Repeater Key</value>
+  </data>
+  <data name="linqstg_window_port_repeater" xml:space="preserve">
+    <value>Repeater</value>
+  </data>
+  <data name="linqstg_window_port_vector2" xml:space="preserve">
+    <value>Vector2</value>
+  </data>
+  <data name="linqstg_window_port_float" xml:space="preserve">
+    <value>Float</value>
+  </data>
+  <data name="linqstg_window_port_int" xml:space="preserve">
+    <value>Int</value>
+  </data>
+  <data name="linqstg_window_port_value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="linqstg_window_port_lowerBound" xml:space="preserve">
+    <value>Lower Bound</value>
+  </data>
+  <data name="linqstg_window_port_upperBound" xml:space="preserve">
+    <value>Upper Bound</value>
+  </data>
+  <data name="linqstg_window_port_sampleMethod" xml:space="preserve">
+    <value>Sample Method</value>
+  </data>
+  <data name="linqstg_window_port_key" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="linqstg_window_port_position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="linqstg_window_port_initialVelocity" xml:space="preserve">
+    <value>Initial Velocity</value>
+  </data>
+  <data name="linqstg_window_port_acceleration" xml:space="preserve">
+    <value>Acceleration</value>
+  </data>
+  <data name="linqstg_window_port_velocity" xml:space="preserve">
+    <value>Velocity</value>
+  </data>
+  <data name="linqstg_window_port_movement" xml:space="preserve">
+    <value>Movement</value>
+  </data>
+  <data name="linqstg_window_port_switchTime" xml:space="preserve">
+    <value>Switch Time</value>
+  </data>
+  <data name="linqstg_window_port_after" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="linqstg_window_port_center" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="linqstg_window_port_transform" xml:space="preserve">
+    <value>Transform</value>
+  </data>
+  <data name="linqstg_window_port_offset" xml:space="preserve">
+    <value>Offset</value>
+  </data>
+  <data name="linqstg_window_port_angle" xml:space="preserve">
+    <value>Angle</value>
+  </data>
+  <data name="linqstg_window_port_scale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="linqstg_window_port_point" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="linqstg_window_port_times" xml:space="preserve">
+    <value>Times</value>
+  </data>
+  <data name="linqstg_window_port_interval" xml:space="preserve">
+    <value>Interval</value>
+  </data>
+  <data name="linqstg_window_port_pattern" xml:space="preserve">
+    <value>Pattern</value>
+  </data>
+  <data name="linqstg_window_port_pattern1" xml:space="preserve">
+    <value>Pattern 1</value>
+  </data>
+  <data name="linqstg_window_port_pattern2" xml:space="preserve">
+    <value>Pattern 2</value>
+  </data>
+  <data name="linqstg_window_port_subPattern" xml:space="preserve">
+    <value>Sub Pattern</value>
+  </data>
+  <data name="linqstg_window_port_transformation" xml:space="preserve">
+    <value>Transformation</value>
+  </data>
+  <data name="linqstg_window_port_predicate" xml:space="preserve">
+    <value>Predicate</value>
+  </data>
+  <data name="linqstg_window_port_count" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="linqstg_window_port_shooterName" xml:space="preserve">
+    <value>Shooter Name</value>
+  </data>
+  <data name="linqstg_window_port_shape" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="linqstg_window_port_diameter" xml:space="preserve">
+    <value>Diameter</value>
+  </data>
+  <data name="linqstg_window_port_rotation" xml:space="preserve">
+    <value>Rotation</value>
+  </data>
+  <data name="linqstg_window_port_distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="linqstg_window_port_base" xml:space="preserve">
+    <value>Base</value>
+  </data>
+  <data name="linqstg_window_port_exponent" xml:space="preserve">
+    <value>Exponent</value>
+  </data>
+</root>

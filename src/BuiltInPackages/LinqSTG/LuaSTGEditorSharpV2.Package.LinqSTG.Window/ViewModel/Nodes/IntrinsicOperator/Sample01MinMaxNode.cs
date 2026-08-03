@@ -23,11 +23,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
 
         public Sample01MinMaxNode()
         {
-            InputRepeater = LinqSTGNodeInputViewModel.Repeater("Repeater");
-            InputLowerBound = LinqSTGNodeInputViewModel.Float("Lower Bound", InputLowerBoundEditor);
-            InpuUpperBound = LinqSTGNodeInputViewModel.Float("Upper Bound", InpuUpperBoundEditor);
-            InputIntervalType = LinqSTGNodeInputViewModel.IntervalType("Sample Method", IntervalTypeEditor);
-            OutputValue = LinqSTGNodeOutputViewModel.Float("Value");
+            InputRepeater = LinqSTGNodeInputViewModel.Repeater(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_repeater);
+            InputLowerBound = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_lowerBound, InputLowerBoundEditor);
+            InpuUpperBound = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_upperBound, InpuUpperBoundEditor);
+            InputIntervalType = LinqSTGNodeInputViewModel.IntervalType(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_sampleMethod, IntervalTypeEditor);
+            OutputValue = LinqSTGNodeOutputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value);
 
             AddInput("repeater", InputRepeater);
             AddInput("lower_bound", InputLowerBound);
@@ -38,7 +38,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
             AddEditor("upper_bound", InpuUpperBoundEditor);
             AddEditor("interval_type", IntervalTypeEditor);
 
-            Name = "Sample01 MinMax";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_sample01MinMax;
             TitleColor = NodeColors.Operator;
 
             OutputValue.Value = InputRepeater.ValueChanged

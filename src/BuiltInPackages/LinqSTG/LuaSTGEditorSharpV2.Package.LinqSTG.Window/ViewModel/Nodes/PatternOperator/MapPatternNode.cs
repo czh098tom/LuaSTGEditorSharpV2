@@ -19,15 +19,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOpe
 
         public MapPatternNode()
         {
-            InputPattern = LinqSTGNodeInputViewModel.Pattern("Pattern");
-            InputMapper = LinqSTGNodeInputViewModel.Transformation("Transformation");
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputPattern = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
+            InputMapper = LinqSTGNodeInputViewModel.Transformation(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_transformation);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("pattern", InputPattern);
             AddInput("mapper", InputMapper);
             AddOutput("pattern", OutputPattern);
 
-            Name = "Map Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_mapPattern;
 
             TitleColor = NodeColors.PatternOperator;
 

@@ -19,7 +19,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
 
         public Vector2SplitNode()
         {
-            InputVector2 = LinqSTGNodeInputViewModel.Vector2("Vector2");
+            InputVector2 = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_vector2);
             OutputX = LinqSTGNodeOutputViewModel.Float("X");
             OutputY = LinqSTGNodeOutputViewModel.Float("Y");
 
@@ -27,7 +27,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
             AddOutput("x", OutputX);
             AddOutput("y", OutputY);
 
-            Name = "Vector2 Split";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_vector2Split;
             TitleColor = NodeColors.Data;
 
             OutputX.Value = InputVector2.ValueChanged

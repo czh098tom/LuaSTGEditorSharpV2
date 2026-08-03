@@ -1,6 +1,7 @@
 ﻿using DynamicData;
 using LinqSTG.Expression.ToLua.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes;
@@ -173,6 +174,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             shootNode = new ShootNode();
             network.Nodes.Add(shootNode);
             network.ConnectionFactory = (input, output) => new LinqSTGConnectionViewModel(network, input, output);
+
+            NodeList.Title = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_nodeList_title;
+            NodeList.EmptyLabel = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_nodeList_empty;
 
             var modifyNodes = network.Nodes
                 .Connect()

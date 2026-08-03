@@ -14,9 +14,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
 
         public PowNode()
         {
-            InputBase = LinqSTGNodeInputViewModel.Float("Base", InputBaseEditor);
-            InputExponent = LinqSTGNodeInputViewModel.Float("Exponent", InputExponentEditor);
-            OutputValue = LinqSTGNodeOutputViewModel.Float("Value");
+            InputBase = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_base, InputBaseEditor);
+            InputExponent = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_exponent, InputExponentEditor);
+            OutputValue = LinqSTGNodeOutputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value);
             AddInput("base", InputBase);
             AddInput("exponent", InputExponent);
             AddOutput("value", OutputValue);

@@ -15,15 +15,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
 
         public MovementScaleNode()
         {
-            InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
-            InputScale = LinqSTGNodeInputViewModel.Vector2("Scale");
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
+            InputScale = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_scale);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("movement", InputMovement);
             AddInput("scale", InputScale);
             AddOutput("movement", OutputMovement);
 
-            Name = "Movement Scale";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_movementScale;
 
             TitleColor = NodeColors.Movement;
 

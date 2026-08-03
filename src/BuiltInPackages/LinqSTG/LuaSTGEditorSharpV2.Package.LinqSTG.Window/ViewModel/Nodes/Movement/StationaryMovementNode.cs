@@ -18,13 +18,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
 
         public StationaryMovementNode()
         {
-            InputPosition = LinqSTGNodeInputViewModel.Vector2("Position");
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputPosition = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_position);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("position", InputPosition);
             AddOutput("movement", OutputMovement);
 
-            Name = "Stationary Movement";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_stationaryMovement;
             TitleColor = NodeColors.Movement;
 
             OutputMovement.Value = InputPosition.ValueChanged

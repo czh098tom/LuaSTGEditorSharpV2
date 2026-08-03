@@ -21,13 +21,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
 
         public UniformVelocityMovementNode()
         {
-            InputVelocity = LinqSTGNodeInputViewModel.Vector2("Velocity");
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputVelocity = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_velocity);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("velocity", InputVelocity);
             AddOutput("movement", OutputMovement);
 
-            Name = "Uniform Velocity Movement";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_uniformVelocityMovement;
 
             TitleColor = NodeColors.Movement;
 

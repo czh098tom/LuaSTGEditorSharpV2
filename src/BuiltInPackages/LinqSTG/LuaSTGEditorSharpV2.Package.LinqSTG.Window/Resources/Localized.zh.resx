@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <!-- Category D: Host window -->
+  <data name="linqstg_window_title" xml:space="preserve">
+    <value>展开蓝图</value>
+  </data>
+  <data name="linqstg_window_label_time" xml:space="preserve">
+    <value>时间：</value>
+  </data>
+  <data name="linqstg_window_label_start" xml:space="preserve">
+    <value>起始：</value>
+  </data>
+  <data name="linqstg_window_label_end" xml:space="preserve">
+    <value>结束：</value>
+  </data>
+  <!-- Category A: Third-party library built-in (NodeNetworkToolkit) -->
+  <data name="linqstg_window_nodeList_title" xml:space="preserve">
+    <value>添加节点</value>
+  </data>
+  <data name="linqstg_window_nodeList_empty" xml:space="preserve">
+    <value>未找到匹配的节点。</value>
+  </data>
+  <data name="linqstg_window_nodeList_searchHint" xml:space="preserve">
+    <value>搜索...</value>
+  </data>
+  <!-- Category C: Editor tooltips -->
+  <data name="linqstg_window_intervalEditor_headClosed" xml:space="preserve">
+    <value>闭头</value>
+  </data>
+  <data name="linqstg_window_intervalEditor_tailClosed" xml:space="preserve">
+    <value>闭尾</value>
+  </data>
+  <!-- Category B-1: Node titles -->
+  <data name="linqstg_window_node_float" xml:space="preserve">
+    <value>浮点数</value>
+  </data>
+  <data name="linqstg_window_node_int" xml:space="preserve">
+    <value>整数</value>
+  </data>
+  <data name="linqstg_window_node_string" xml:space="preserve">
+    <value>字符串</value>
+  </data>
+  <data name="linqstg_window_node_repeaterKey" xml:space="preserve">
+    <value>循环变量名</value>
+  </data>
+  <data name="linqstg_window_node_vector2" xml:space="preserve">
+    <value>二维向量</value>
+  </data>
+  <data name="linqstg_window_node_vector2Split" xml:space="preserve">
+    <value>二维向量拆分</value>
+  </data>
+  <data name="linqstg_window_node_floatToInt" xml:space="preserve">
+    <value>浮点转整数</value>
+  </data>
+  <data name="linqstg_window_node_intToFloat" xml:space="preserve">
+    <value>整数转浮点</value>
+  </data>
+  <data name="linqstg_window_node_minMax" xml:space="preserve">
+    <value>最小最大值</value>
+  </data>
+  <data name="linqstg_window_node_sample01MinMax" xml:space="preserve">
+    <value>采样01 最小最大值</value>
+  </data>
+  <data name="linqstg_window_node_takeRepeaterFromContext" xml:space="preserve">
+    <value>从上下文取出循环变量</value>
+  </data>
+  <data name="linqstg_window_node_takeVariable" xml:space="preserve">
+    <value>取出变量</value>
+  </data>
+  <data name="linqstg_window_node_stationaryMovement" xml:space="preserve">
+    <value>静止运动</value>
+  </data>
+  <data name="linqstg_window_node_uniformVelocityMovement" xml:space="preserve">
+    <value>匀速运动</value>
+  </data>
+  <data name="linqstg_window_node_uniformAccelerationMovement" xml:space="preserve">
+    <value>匀加速运动</value>
+  </data>
+  <data name="linqstg_window_node_movementAfterTime" xml:space="preserve">
+    <value>定时切换运动</value>
+  </data>
+  <data name="linqstg_window_node_movementCartesianToPolar" xml:space="preserve">
+    <value>运动 直角转极坐标</value>
+  </data>
+  <data name="linqstg_window_node_movementPolarToCartesian" xml:space="preserve">
+    <value>运动 极坐标转直角</value>
+  </data>
+  <data name="linqstg_window_node_movementMap" xml:space="preserve">
+    <value>运动映射</value>
+  </data>
+  <data name="linqstg_window_node_movementOffset" xml:space="preserve">
+    <value>运动偏移</value>
+  </data>
+  <data name="linqstg_window_node_movementRotate" xml:space="preserve">
+    <value>运动旋转</value>
+  </data>
+  <data name="linqstg_window_node_movementScale" xml:space="preserve">
+    <value>运动缩放</value>
+  </data>
+  <data name="linqstg_window_node_movementSum" xml:space="preserve">
+    <value>运动求和</value>
+  </data>
+  <data name="linqstg_window_node_transformFromPoint" xml:space="preserve">
+    <value>从点生成变换</value>
+  </data>
+  <data name="linqstg_window_node_transformInputPoint" xml:space="preserve">
+    <value>变换输入点</value>
+  </data>
+  <data name="linqstg_window_node_emptyPattern" xml:space="preserve">
+    <value>空展开</value>
+  </data>
+  <data name="linqstg_window_node_repeatPattern" xml:space="preserve">
+    <value>重复展开</value>
+  </data>
+  <data name="linqstg_window_node_repeatWithIntervalPattern" xml:space="preserve">
+    <value>带间隔重复展开</value>
+  </data>
+  <data name="linqstg_window_node_singlePattern" xml:space="preserve">
+    <value>单值展开</value>
+  </data>
+  <data name="linqstg_window_node_singleIntervalPattern" xml:space="preserve">
+    <value>单间隔展开</value>
+  </data>
+  <data name="linqstg_window_node_concatPattern" xml:space="preserve">
+    <value>顺序展开</value>
+  </data>
+  <data name="linqstg_window_node_extrudeConcatPattern" xml:space="preserve">
+    <value>顺序挤出展开</value>
+  </data>
+  <data name="linqstg_window_node_extrudePattern" xml:space="preserve">
+    <value>挤出展开</value>
+  </data>
+  <data name="linqstg_window_node_filterPattern" xml:space="preserve">
+    <value>过滤展开</value>
+  </data>
+  <data name="linqstg_window_node_mapPattern" xml:space="preserve">
+    <value>映射展开</value>
+  </data>
+  <data name="linqstg_window_node_reversePattern" xml:space="preserve">
+    <value>反转展开</value>
+  </data>
+  <data name="linqstg_window_node_skipPattern" xml:space="preserve">
+    <value>跳过展开</value>
+  </data>
+  <data name="linqstg_window_node_skipWhilePattern" xml:space="preserve">
+    <value>条件跳过展开</value>
+  </data>
+  <data name="linqstg_window_node_takePattern" xml:space="preserve">
+    <value>取出展开</value>
+  </data>
+  <data name="linqstg_window_node_takeWhilePattern" xml:space="preserve">
+    <value>条件取出展开</value>
+  </data>
+  <data name="linqstg_window_node_trimEnd" xml:space="preserve">
+    <value>裁剪结尾</value>
+  </data>
+  <data name="linqstg_window_node_trim" xml:space="preserve">
+    <value>裁剪</value>
+  </data>
+  <data name="linqstg_window_node_trimStart" xml:space="preserve">
+    <value>裁剪开头</value>
+  </data>
+  <data name="linqstg_window_node_assign" xml:space="preserve">
+    <value>赋值</value>
+  </data>
+  <data name="linqstg_window_node_shoot" xml:space="preserve">
+    <value>发射</value>
+  </data>
+  <!-- Category B-2: Port labels -->
+  <data name="linqstg_window_port_idKey" xml:space="preserve">
+    <value>ID 键</value>
+  </data>
+  <data name="linqstg_window_port_totalKey" xml:space="preserve">
+    <value>总数键</value>
+  </data>
+  <data name="linqstg_window_port_repeaterKey" xml:space="preserve">
+    <value>循环变量名</value>
+  </data>
+  <data name="linqstg_window_port_repeater" xml:space="preserve">
+    <value>循环变量</value>
+  </data>
+  <data name="linqstg_window_port_vector2" xml:space="preserve">
+    <value>二维向量</value>
+  </data>
+  <data name="linqstg_window_port_float" xml:space="preserve">
+    <value>浮点数</value>
+  </data>
+  <data name="linqstg_window_port_int" xml:space="preserve">
+    <value>整数</value>
+  </data>
+  <data name="linqstg_window_port_value" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="linqstg_window_port_lowerBound" xml:space="preserve">
+    <value>下界</value>
+  </data>
+  <data name="linqstg_window_port_upperBound" xml:space="preserve">
+    <value>上界</value>
+  </data>
+  <data name="linqstg_window_port_sampleMethod" xml:space="preserve">
+    <value>采样方式</value>
+  </data>
+  <data name="linqstg_window_port_key" xml:space="preserve">
+    <value>键</value>
+  </data>
+  <data name="linqstg_window_port_position" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="linqstg_window_port_initialVelocity" xml:space="preserve">
+    <value>初速度</value>
+  </data>
+  <data name="linqstg_window_port_acceleration" xml:space="preserve">
+    <value>加速度</value>
+  </data>
+  <data name="linqstg_window_port_velocity" xml:space="preserve">
+    <value>速度</value>
+  </data>
+  <data name="linqstg_window_port_movement" xml:space="preserve">
+    <value>运动</value>
+  </data>
+  <data name="linqstg_window_port_switchTime" xml:space="preserve">
+    <value>切换时间</value>
+  </data>
+  <data name="linqstg_window_port_after" xml:space="preserve">
+    <value>之后</value>
+  </data>
+  <data name="linqstg_window_port_center" xml:space="preserve">
+    <value>中心</value>
+  </data>
+  <data name="linqstg_window_port_transform" xml:space="preserve">
+    <value>变换</value>
+  </data>
+  <data name="linqstg_window_port_offset" xml:space="preserve">
+    <value>偏移</value>
+  </data>
+  <data name="linqstg_window_port_angle" xml:space="preserve">
+    <value>角度</value>
+  </data>
+  <data name="linqstg_window_port_scale" xml:space="preserve">
+    <value>缩放</value>
+  </data>
+  <data name="linqstg_window_port_point" xml:space="preserve">
+    <value>点</value>
+  </data>
+  <data name="linqstg_window_port_times" xml:space="preserve">
+    <value>次数</value>
+  </data>
+  <data name="linqstg_window_port_interval" xml:space="preserve">
+    <value>间隔</value>
+  </data>
+  <data name="linqstg_window_port_pattern" xml:space="preserve">
+    <value>展开</value>
+  </data>
+  <data name="linqstg_window_port_pattern1" xml:space="preserve">
+    <value>展开 1</value>
+  </data>
+  <data name="linqstg_window_port_pattern2" xml:space="preserve">
+    <value>展开 2</value>
+  </data>
+  <data name="linqstg_window_port_subPattern" xml:space="preserve">
+    <value>子展开</value>
+  </data>
+  <data name="linqstg_window_port_transformation" xml:space="preserve">
+    <value>变换</value>
+  </data>
+  <data name="linqstg_window_port_predicate" xml:space="preserve">
+    <value>条件</value>
+  </data>
+  <data name="linqstg_window_port_count" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="linqstg_window_port_shooterName" xml:space="preserve">
+    <value>发射器名</value>
+  </data>
+  <data name="linqstg_window_port_shape" xml:space="preserve">
+    <value>形状</value>
+  </data>
+  <data name="linqstg_window_port_diameter" xml:space="preserve">
+    <value>直径</value>
+  </data>
+  <data name="linqstg_window_port_rotation" xml:space="preserve">
+    <value>角度</value>
+  </data>
+  <data name="linqstg_window_port_distance" xml:space="preserve">
+    <value>长度</value>
+  </data>
+  <data name="linqstg_window_port_base" xml:space="preserve">
+    <value>底数</value>
+  </data>
+  <data name="linqstg_window_port_exponent" xml:space="preserve">
+    <value>指数</value>
+  </data>
+</root>

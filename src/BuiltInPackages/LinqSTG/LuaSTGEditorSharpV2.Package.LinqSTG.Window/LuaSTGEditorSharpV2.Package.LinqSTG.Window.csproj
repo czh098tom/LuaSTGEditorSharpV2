@@ -39,6 +39,21 @@
     <ProjectReference Include="..\LinqSTG.Expression.ToLua\LinqSTG.Expression.ToLua.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\Localized.Designer.cs">
+      <DependentUpon>Localized.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localized.resx">
+      <LastGenOutput>Localized.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <Target Name="CopyExtras" AfterTargets="CopyFilesToOutputDirectory">
     <PropertyGroup>
       <YourSourceDirectory>$(MSBuildProjectDirectory)\package</YourSourceDirectory>

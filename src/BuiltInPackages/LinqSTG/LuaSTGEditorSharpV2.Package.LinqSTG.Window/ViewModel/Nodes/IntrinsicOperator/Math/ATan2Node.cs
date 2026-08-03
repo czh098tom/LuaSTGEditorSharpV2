@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
         {
             InputY = LinqSTGNodeInputViewModel.Float("Y", InputYEditor);
             InputX = LinqSTGNodeInputViewModel.Float("X", InputXEditor);
-            OutputValue = LinqSTGNodeOutputViewModel.Float("Value");
+            OutputValue = LinqSTGNodeOutputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value);
             AddInput("y", InputY);
             AddInput("x", InputX);
             AddOutput("value", OutputValue);

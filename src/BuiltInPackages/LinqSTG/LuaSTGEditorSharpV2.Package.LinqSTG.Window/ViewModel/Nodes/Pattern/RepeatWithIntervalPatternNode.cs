@@ -24,10 +24,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 
         public RepeatWithIntervalPatternNode()
         {
-            InputTimes = LinqSTGNodeInputViewModel.Int("Times", InputTimesEditor);
-            InputInterval = LinqSTGNodeInputViewModel.Int("Interval", InputIntervalEditor);
-            InputRepeaterKey = LinqSTGNodeInputViewModel.RepeaterKey("Repeater Key");
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputTimes = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_times, InputTimesEditor);
+            InputInterval = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_interval, InputIntervalEditor);
+            InputRepeaterKey = LinqSTGNodeInputViewModel.RepeaterKey(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_repeaterKey);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("times", InputTimes);
             AddInput("interval", InputInterval);
@@ -36,7 +36,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
             AddEditor("times", InputTimesEditor);
             AddEditor("interval", InputIntervalEditor);
 
-            Name = "Repeat with Interval Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_repeatWithIntervalPattern;
 
             TitleColor = NodeColors.Pattern;
 

@@ -15,16 +15,16 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOpe
 
         public TakePatternNode()
         {
-            InputPattern = LinqSTGNodeInputViewModel.Pattern("Pattern");
-            InputCount = LinqSTGNodeInputViewModel.Int("Count", InputCountEditor);
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputPattern = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
+            InputCount = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_count, InputCountEditor);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("pattern", InputPattern);
             AddInput("count", InputCount);
             AddOutput("pattern", OutputPattern);
             AddEditor("count", InputCountEditor);
 
-            Name = "Take Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_takePattern;
 
             TitleColor = NodeColors.PatternOperator;
 

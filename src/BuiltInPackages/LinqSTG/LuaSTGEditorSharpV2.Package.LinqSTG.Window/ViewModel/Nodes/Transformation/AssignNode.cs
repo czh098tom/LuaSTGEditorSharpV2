@@ -21,17 +21,17 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transforma
 
         public AssignNode()
         {
-            InputTransformation = LinqSTGNodeInputViewModel.Transformation("Transformation");
-            InputValue = LinqSTGNodeInputViewModel.Float("Value", InputValueEditor);
-            InputKey = LinqSTGNodeInputViewModel.String("Key");
-            OutputTransformation = LinqSTGNodeOutputViewModel.Transformation("Transformation");
+            InputTransformation = LinqSTGNodeInputViewModel.Transformation(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_transformation);
+            InputValue = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value, InputValueEditor);
+            InputKey = LinqSTGNodeInputViewModel.String(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_key);
+            OutputTransformation = LinqSTGNodeOutputViewModel.Transformation(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_transformation);
 
             AddInput("transformation", InputTransformation);
             AddInput("value", InputValue);
             AddInput("key", InputKey);
             AddOutput("transformation", OutputTransformation);
 
-            Name = "Assign";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_assign;
 
             TitleColor = NodeColors.Transformation;
 

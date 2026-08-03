@@ -20,9 +20,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
 
         public Sample01Node()
         {
-            InputRepeater = LinqSTGNodeInputViewModel.Repeater("Repeater");
-            InputIntervalType = LinqSTGNodeInputViewModel.IntervalType("Sample Method", IntervalTypeEditor);
-            OutputValue = LinqSTGNodeOutputViewModel.Float("Value");
+            InputRepeater = LinqSTGNodeInputViewModel.Repeater(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_repeater);
+            InputIntervalType = LinqSTGNodeInputViewModel.IntervalType(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_sampleMethod, IntervalTypeEditor);
+            OutputValue = LinqSTGNodeOutputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value);
 
             AddInput("repeater", InputRepeater);
             AddInput("interval_type", InputIntervalType);

@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
@@ -59,9 +61,31 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             PreviewCanvas.Scale = scale;
             PreviewCanvas.TranslateOffset = new Point(width / 2.0, previewHeight / 2.0);
 
+            // Localize the hardcoded "Search..." watermark inside the third-party NodeListView.
+            if (FindDescendantByName(NodeListView, "emptySearchBoxMessage") is TextBlock watermark)
+            {
+                watermark.Text = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_nodeList_searchHint;
+            }
+
             // Fit the network viewport to the bounding box of all nodes after layout has settled.
             Dispatcher.BeginInvoke(new System.Action(() => NetworkView.CenterAndZoomView()),
                 DispatcherPriority.Loaded);
+        }
+
+        private static DependencyObject? FindDescendantByName(DependencyObject root, string name)
+        {
+            int count = VisualTreeHelper.GetChildrenCount(root);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(root, i);
+                if (child is FrameworkElement element && element.Name == name)
+                {
+                    return element;
+                }
+                var found = FindDescendantByName(child, name);
+                if (found != null) return found;
+            }
+            return null;
         }
     }
 }

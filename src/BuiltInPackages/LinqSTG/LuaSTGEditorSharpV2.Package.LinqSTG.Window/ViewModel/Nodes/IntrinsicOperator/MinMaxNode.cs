@@ -22,10 +22,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
 
         public MinMaxNode()
         {
-            InputValue = LinqSTGNodeInputViewModel.Float("Value", InputLowerBoundEditor);
-            InputLowerBound = LinqSTGNodeInputViewModel.Float("Lower Bound", InputLowerBoundEditor);
-            InpuUpperBound = LinqSTGNodeInputViewModel.Float("Upper Bound", InpuUpperBoundEditor);
-            OutputValue = LinqSTGNodeOutputViewModel.Float("Value");
+            InputValue = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value, InputLowerBoundEditor);
+            InputLowerBound = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_lowerBound, InputLowerBoundEditor);
+            InpuUpperBound = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_upperBound, InpuUpperBoundEditor);
+            OutputValue = LinqSTGNodeOutputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_value);
 
             AddInput("input_value", InputValue);
             AddInput("lower_bound", InputLowerBound);
@@ -34,7 +34,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
             AddEditor("lower_bound", InputLowerBoundEditor);
             AddEditor("upper_bound", InpuUpperBoundEditor);
 
-            Name = "MinMax";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_minMax;
 
             TitleColor = NodeColors.Operator;
 

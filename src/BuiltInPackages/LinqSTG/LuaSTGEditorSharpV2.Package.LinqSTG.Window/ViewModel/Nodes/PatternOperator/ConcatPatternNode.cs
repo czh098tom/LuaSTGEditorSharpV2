@@ -13,15 +13,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOpe
 
         public ConcatPatternNode()
         {
-            InputPattern1 = LinqSTGNodeInputViewModel.Pattern("Pattern 1");
-            InputPattern2 = LinqSTGNodeInputViewModel.Pattern("Pattern 2");
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputPattern1 = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern1);
+            InputPattern2 = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern2);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("pattern1", InputPattern1);
             AddInput("pattern2", InputPattern2);
             AddOutput("pattern", OutputPattern);
 
-            Name = "Concat Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_concatPattern;
 
             TitleColor = NodeColors.PatternOperator;
 

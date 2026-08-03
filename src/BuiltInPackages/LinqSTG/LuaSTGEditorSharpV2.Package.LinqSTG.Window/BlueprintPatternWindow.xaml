@@ -8,8 +8,11 @@
         xmlns:nodenetwork="clr-namespace:NodeNetwork.Views;assembly=NodeNetwork"
         xmlns:nodeList="clr-namespace:NodeNetwork.Toolkit.NodeList;assembly=NodeNetworkToolkit"
         xmlns:local="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows"
+        xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        lex:ResxLocalizationProvider.DefaultAssembly="LuaSTGEditorSharpV2.Package.LinqSTG.Window"
+        lex:ResxLocalizationProvider.DefaultDictionary="Localized"
         mc:Ignorable="d"
-        Title="Blueprint Pattern" Height="600" Width="1200"
+        Title="{lex:Loc linqstg_window_title}" Height="600" Width="1200"
         WindowStartupLocation="CenterOwner">
     <Window.DataContext>
         <local:MainViewModel/>
@@ -126,7 +129,7 @@
                     <Slider Grid.Column="1" Value="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Minimum="{Binding TimeMinimum}" Maximum="{Binding TimeMaximum}"
                             VerticalAlignment="Center" Margin="4,0" TickPlacement="None"/>
-                    <TextBlock Grid.Column="2" Text="Time:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                    <TextBlock Grid.Column="2" Text="{lex:Loc linqstg_window_label_time}" VerticalAlignment="Center" Margin="4,0,2,0"/>
                     <TextBlock Grid.Column="3" Text="{Binding Time}" VerticalAlignment="Center" Margin="2,0,4,0"/>
                 </Grid>
                 <Grid Grid.Row="1">
@@ -136,9 +139,9 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="60"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Start:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                    <TextBlock Grid.Column="0" Text="{lex:Loc linqstg_window_label_start}" VerticalAlignment="Center" Margin="4,0,2,0"/>
                     <TextBox Grid.Column="1" Text="{Binding TimeMinimum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
-                    <TextBlock Grid.Column="2" Text="End:" VerticalAlignment="Center" Margin="4,0,2,0"/>
+                    <TextBlock Grid.Column="2" Text="{lex:Loc linqstg_window_label_end}" VerticalAlignment="Center" Margin="4,0,2,0"/>
                     <TextBox Grid.Column="3" Text="{Binding TimeMaximum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="2,2,4,2"/>
                 </Grid>
             </Grid>
@@ -152,7 +155,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <nodeList:NodeListView ViewModel="{Binding NodeList}"/>
+                <nodeList:NodeListView x:Name="NodeListView" ViewModel="{Binding NodeList}"/>
             </Grid>
             <Grid Grid.Column="1">
                 <nodenetwork:NetworkView x:Name="NetworkView" ViewModel="{Binding Network}"/>

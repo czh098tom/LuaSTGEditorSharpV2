@@ -18,10 +18,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
 
         public MovementAfterTimeNode()
         {
-            InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
-            InputSwitchTime = LinqSTGNodeInputViewModel.Int("Switch Time", InputSwitchTimeEditor);
-            InputAfter = LinqSTGNodeInputViewModel.Movement("After");
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
+            InputSwitchTime = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_switchTime, InputSwitchTimeEditor);
+            InputAfter = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_after);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("movement", InputMovement);
             AddInput("switch_time", InputSwitchTime);
@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             AddOutput("movement", OutputMovement);
             AddEditor("switch_time", InputSwitchTimeEditor);
 
-            Name = "Movement After Time";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_movementAfterTime;
 
             TitleColor = NodeColors.Movement;
 

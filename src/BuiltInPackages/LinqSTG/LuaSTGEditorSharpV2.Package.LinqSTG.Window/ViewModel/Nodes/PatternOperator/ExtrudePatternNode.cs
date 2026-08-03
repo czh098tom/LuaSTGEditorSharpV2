@@ -17,15 +17,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOpe
 
         public ExtrudePatternNode()
         {
-            InputPattern = LinqSTGNodeInputViewModel.Pattern("Pattern");
-            InputSubPattern = LinqSTGNodeInputViewModel.Pattern("Sub Pattern");
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputPattern = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
+            InputSubPattern = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_subPattern);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("pattern", InputPattern);
             AddInput("sub_pattern", InputSubPattern);
             AddOutput("pattern", OutputPattern);
 
-            Name = "Extrude Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_extrudePattern;
 
             TitleColor = NodeColors.PatternOperator;
 

@@ -12,11 +12,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 
         public EmptyPatternNode()
         {
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddOutput("pattern", OutputPattern);
 
-            Name = "Empty Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_emptyPattern;
 
             TitleColor = NodeColors.Pattern;
 

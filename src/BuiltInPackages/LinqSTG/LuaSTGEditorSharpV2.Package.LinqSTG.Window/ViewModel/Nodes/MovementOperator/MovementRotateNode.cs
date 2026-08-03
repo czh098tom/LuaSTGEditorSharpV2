@@ -17,16 +17,16 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
 
         public MovementRotateNode()
         {
-            InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
-            InputAngle = LinqSTGNodeInputViewModel.Float("Angle", InputAngleEditor);
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
+            InputAngle = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_angle, InputAngleEditor);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("movement", InputMovement);
             AddInput("angle", InputAngle);
             AddOutput("movement", OutputMovement);
             AddEditor("angle", InputAngleEditor);
 
-            Name = "Movement Rotate";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_movementRotate;
 
             TitleColor = NodeColors.Movement;
 

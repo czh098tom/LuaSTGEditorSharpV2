@@ -41,24 +41,24 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 
             InputShooterName = new LinqSTGNodeInputViewModel<Contextual<string>?>
             {
-                Name = "Shooter Name",
+                Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_shooterName,
                 Editor = ShooterNameEditor,
                 Port = null
             };
             InputShape = new LinqSTGNodeInputViewModel<Contextual<BulletShape>?>
             {
-                Name = "Shape",
+                Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_shape,
                 Editor = ShapeEditor,
                 Port = null
             };
             InputDiameter = new LinqSTGNodeInputViewModel<Contextual<float>?>
             {
-                Name = "Diameter",
+                Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_diameter,
                 Editor = DiameterEditor,
                 Port = null
             };
-            InputPattern = LinqSTGNodeInputViewModel.Pattern("Pattern");
-            InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
+            InputPattern = LinqSTGNodeInputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
+            InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput(ShooterNameEditorKey, InputShooterName);
             AddInput(ShapeEditorKey, InputShape);
@@ -69,7 +69,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
             AddEditor(ShapeEditorKey, ShapeEditor);
             AddEditor(DiameterEditorKey, DiameterEditor);
 
-            Name = "Shoot";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_shoot;
 
             TitleColor = NodeColors.Shoot;
 

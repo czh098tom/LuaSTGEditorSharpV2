@@ -15,15 +15,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
 
         public UniformAccelerationMovementNode()
         {
-            InputInitialVelocity = LinqSTGNodeInputViewModel.Vector2("Initial Velocity");
-            InputAcceleration = LinqSTGNodeInputViewModel.Vector2("Acceleration");
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputInitialVelocity = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_initialVelocity);
+            InputAcceleration = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_acceleration);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("initial_velocity", InputInitialVelocity);
             AddInput("acceleration", InputAcceleration);
             AddOutput("movement", OutputMovement);
 
-            Name = "Uniform Acceleration Movement";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_uniformAccelerationMovement;
 
             TitleColor = NodeColors.Movement;
 

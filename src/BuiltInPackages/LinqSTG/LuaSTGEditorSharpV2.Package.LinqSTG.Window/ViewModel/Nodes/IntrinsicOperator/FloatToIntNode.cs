@@ -15,13 +15,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
 
         public FloatToIntNode()
         {
-            InputFloat = LinqSTGNodeInputViewModel.Float("Float");
-            OutputInt = LinqSTGNodeOutputViewModel.Int("Int");
+            InputFloat = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_float);
+            OutputInt = LinqSTGNodeOutputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_int);
 
             AddInput("float", InputFloat);
             AddOutput("int", OutputInt);
 
-            Name = "Float To Int";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_floatToInt;
             TitleColor = NodeColors.Operator;
 
             OutputInt.Value = InputFloat.ValueChanged

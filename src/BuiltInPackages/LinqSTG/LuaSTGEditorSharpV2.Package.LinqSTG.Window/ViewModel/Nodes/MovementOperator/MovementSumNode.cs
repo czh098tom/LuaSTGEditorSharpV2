@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             AddInput("movement2", InputMovement2);
             AddOutput("movement", OutputMovement);
 
-            Name = "Movement Sum";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_movementSum;
             TitleColor = NodeColors.Movement;
 
             OutputMovement.Value = InputMovement1.ValueChanged

@@ -16,14 +16,14 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 
         public SingleIntervalPatternNode()
         {
-            InputInterval = LinqSTGNodeInputViewModel.Int("Interval", InputIntervalEditor);
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputInterval = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_interval, InputIntervalEditor);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("interval", InputInterval);
             AddOutput("pattern", OutputPattern);
             AddEditor("interval", InputIntervalEditor);
 
-            Name = "Single Interval Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_singleIntervalPattern;
 
             TitleColor = NodeColors.Pattern;
 

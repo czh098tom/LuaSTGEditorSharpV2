@@ -20,15 +20,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
 
         public MovementMapNode()
         {
-            InputMovement = LinqSTGNodeInputViewModel.Movement("Movement");
-            InputTransform = LinqSTGNodeInputViewModel.MovementTransform("Transform");
-            OutputMovement = LinqSTGNodeOutputViewModel.Movement("Movement");
+            InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
+            InputTransform = LinqSTGNodeInputViewModel.MovementTransform(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_transform);
+            OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("movement", InputMovement);
             AddInput("transform", InputTransform);
             AddOutput("movement", OutputMovement);
 
-            Name = "Movement Map";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_movementMap;
 
             TitleColor = NodeColors.Movement;
 

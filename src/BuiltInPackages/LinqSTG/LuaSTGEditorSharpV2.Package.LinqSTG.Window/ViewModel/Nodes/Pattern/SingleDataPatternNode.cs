@@ -14,13 +14,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 
         public SingleDataPatternNode()
         {
-            InputTransformation = LinqSTGNodeInputViewModel.Transformation("Transformation");
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputTransformation = LinqSTGNodeInputViewModel.Transformation(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_transformation);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("transformation", InputTransformation);
             AddOutput("pattern", OutputPattern);
 
-            Name = "Single Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_singlePattern;
 
             TitleColor = NodeColors.Pattern;
 

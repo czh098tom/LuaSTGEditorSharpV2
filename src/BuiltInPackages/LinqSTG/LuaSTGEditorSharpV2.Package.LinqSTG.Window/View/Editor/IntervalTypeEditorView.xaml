@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             lex:ResxLocalizationProvider.DefaultAssembly="LuaSTGEditorSharpV2.Package.LinqSTG.Window"
+             lex:ResxLocalizationProvider.DefaultDictionary="Localized"
              mc:Ignorable="d"
              d:DesignHeight="40" d:DesignWidth="100">
     <UserControl.Resources>
@@ -51,7 +54,7 @@
     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
         <ToggleButton x:Name="HeadToggle"
                       Template="{StaticResource IntervalCircleToggle}"
-                      ToolTip="Head closed"
+                      ToolTip="{lex:Loc linqstg_window_intervalEditor_headClosed}"
                       IsChecked="{Binding HeadClosed, Mode=TwoWay}"/>
         <Rectangle Width="5" Height="1.5"
                    Style="{StaticResource HeadConnectorStyle}"
@@ -64,7 +67,7 @@
                    VerticalAlignment="Center"/>
         <ToggleButton x:Name="TailToggle"
                       Template="{StaticResource IntervalCircleToggle}"
-                      ToolTip="Tail closed"
+                      ToolTip="{lex:Loc linqstg_window_intervalEditor_tailClosed}"
                       IsChecked="{Binding TailClosed, Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>

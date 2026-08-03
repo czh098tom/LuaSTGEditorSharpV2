@@ -19,11 +19,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
 
         public MovementTransformInputPointNode()
         {
-            OutputPoint = LinqSTGNodeOutputViewModel.Vector2("Point");
+            OutputPoint = LinqSTGNodeOutputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_point);
 
             AddOutput("point", OutputPoint);
 
-            Name = "Transform Input Point";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_transformInputPoint;
             TitleColor = NodeColors.TransformInput;
 
             OutputPoint.Value = Observable.Return(

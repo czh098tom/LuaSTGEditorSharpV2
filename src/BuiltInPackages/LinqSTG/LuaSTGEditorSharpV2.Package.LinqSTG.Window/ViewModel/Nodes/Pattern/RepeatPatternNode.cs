@@ -17,16 +17,16 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 
         public RepeatPatternNode()
         {
-            InputTimes = LinqSTGNodeInputViewModel.Int("Times", InputTimesEditor);
-            InputRepeaterKey = LinqSTGNodeInputViewModel.RepeaterKey("Repeater Key");
-            OutputPattern = LinqSTGNodeOutputViewModel.Pattern("Pattern");
+            InputTimes = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_times, InputTimesEditor);
+            InputRepeaterKey = LinqSTGNodeInputViewModel.RepeaterKey(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_repeaterKey);
+            OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("times", InputTimes);
             AddInput("repeater", InputRepeaterKey);
             AddOutput("pattern", OutputPattern);
             AddEditor("times", InputTimesEditor);
 
-            Name = "Repeat Pattern";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_repeatPattern;
 
             TitleColor = NodeColors.Pattern;
 

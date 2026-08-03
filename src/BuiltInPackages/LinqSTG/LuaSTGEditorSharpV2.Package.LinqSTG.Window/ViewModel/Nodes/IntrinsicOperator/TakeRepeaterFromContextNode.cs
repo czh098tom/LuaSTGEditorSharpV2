@@ -16,13 +16,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
 
         public TakeRepeaterFromContextNode()
         {
-            InputRepeaterKey = LinqSTGNodeInputViewModel.RepeaterKey("Repeater Key");
-            OutputRepeater = LinqSTGNodeOutputViewModel.Repeater("Repeater");
+            InputRepeaterKey = LinqSTGNodeInputViewModel.RepeaterKey(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_repeaterKey);
+            OutputRepeater = LinqSTGNodeOutputViewModel.Repeater(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_repeater);
 
             AddInput("repeater_key", InputRepeaterKey);
             AddOutput("repeater", OutputRepeater);
 
-            Name = "Take Repeater From Context";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_takeRepeaterFromContext;
             TitleColor = NodeColors.Operator;
 
             OutputRepeater.Value = InputRepeaterKey.ValueChanged

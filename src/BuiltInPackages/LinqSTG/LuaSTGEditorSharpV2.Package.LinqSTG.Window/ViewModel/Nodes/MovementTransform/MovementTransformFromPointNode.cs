@@ -18,13 +18,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
 
         public MovementTransformFromPointNode()
         {
-            InputPoint = LinqSTGNodeInputViewModel.Vector2("Point");
-            OutputTransform = LinqSTGNodeOutputViewModel.MovementTransform("Transform");
+            InputPoint = LinqSTGNodeInputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_point);
+            OutputTransform = LinqSTGNodeOutputViewModel.MovementTransform(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_transform);
 
             AddInput("point", InputPoint);
             AddOutput("transform", OutputTransform);
 
-            Name = "Transform From Point";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_transformFromPoint;
             TitleColor = NodeColors.Transformation;
 
             OutputTransform.Value = InputPoint.ValueChanged
