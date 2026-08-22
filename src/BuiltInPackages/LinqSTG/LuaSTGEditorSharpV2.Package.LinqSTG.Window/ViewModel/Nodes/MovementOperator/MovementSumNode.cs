@@ -12,9 +12,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
 {
     public class MovementSumNode : LinqSTGNodeViewModel
     {
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement1 { get; }
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement2 { get; }
-        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement1 { get; }
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement2 { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> OutputMovement { get; }
 
         public MovementSumNode()
         {
@@ -32,7 +32,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             OutputMovement.Value = InputMovement1.ValueChanged
                 .CombineLatest(InputMovement2.ValueChanged, (m1, m2)
                     => Contextual.Create(dict
-                        => new Parametric<int, Vector2>(t
+                        => new Parametric<float, Vector2>(t
                             => (m1?.Invoke(dict)?.Predict(t) ?? Vector2.Zero) + (m2?.Invoke(dict)?.Predict(t) ?? Vector2.Zero))));
         }
     }

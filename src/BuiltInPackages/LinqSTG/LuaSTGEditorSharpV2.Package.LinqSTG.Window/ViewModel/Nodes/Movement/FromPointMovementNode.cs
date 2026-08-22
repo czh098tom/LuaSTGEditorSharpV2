@@ -22,7 +22,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
     public class FromPointMovementNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputPosition { get; }
-        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> OutputMovement { get; }
 
         public FromPointMovementNode()
         {
@@ -38,7 +38,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
             OutputMovement.Value = InputPosition.ValueChanged
                 .Select(vec
                     => Contextual.Create(dict
-                        => new Parametric<int, Vector2>(t
+                        => new Parametric<float, Vector2>(t
                             => vec?.Invoke(dict.WithTransform(new TransformContext { Time = t }))
                                 ?? Vector2.Zero)));
         }

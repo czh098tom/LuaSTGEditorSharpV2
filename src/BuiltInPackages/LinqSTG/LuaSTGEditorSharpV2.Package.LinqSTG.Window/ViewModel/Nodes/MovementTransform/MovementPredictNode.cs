@@ -18,14 +18,14 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
     /// </summary>
     public class MovementPredictNode : LinqSTGNodeViewModel
     {
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
-        public LinqSTGNodeInputViewModel<Contextual<int>?> InputTime { get; }
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<float>?> InputTime { get; }
         public LinqSTGNodeOutputViewModel<Contextual<Vector2>> OutputPoint { get; }
 
         public MovementPredictNode()
         {
             InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
-            InputTime = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_time);
+            InputTime = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_time);
             OutputPoint = LinqSTGNodeOutputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_point);
 
             AddInput("movement", InputMovement);
@@ -40,8 +40,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
                     => Contextual.Create(dict =>
                     {
                         var m = movement?.Invoke(dict)
-                            ?? new Parametric<int, Vector2>(_ => Vector2.Zero);
-                        var t = time?.Invoke(dict) ?? 0;
+                            ?? new Parametric<float, Vector2>(_ => Vector2.Zero);
+                        var t = time?.Invoke(dict) ?? 0f;
                         return m.Predict(t);
                     }));
         }

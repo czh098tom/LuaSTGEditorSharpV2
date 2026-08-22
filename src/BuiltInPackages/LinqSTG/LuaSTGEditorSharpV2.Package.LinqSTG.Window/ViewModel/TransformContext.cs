@@ -13,6 +13,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
     {
         /// <summary>点子图当前被采样的时间 t（新运动 Predict 的入参）。
         /// 供子图表达时间重映射 φ(t)（如 a·t、t+Δ）。</summary>
-        public int Time { get; init; }
+        public float Time { get; init; }
     }
 }

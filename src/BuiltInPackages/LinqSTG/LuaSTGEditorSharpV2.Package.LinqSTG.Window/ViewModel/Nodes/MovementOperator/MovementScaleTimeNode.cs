@@ -16,9 +16,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     public class MovementScaleTimeNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputFactorEditor { get; } = new();
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }
         public LinqSTGNodeInputViewModel<Contextual<float>?> InputFactor { get; }
-        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> OutputMovement { get; }
 
         public MovementScaleTimeNode()
         {
@@ -38,11 +38,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             OutputMovement.Value = InputMovement.ValueChanged
                 .CombineLatest(InputFactor.ValueChanged, (movement, factor)
                     => Contextual.Create(dict
-                        => new Parametric<int, Vector2>(t =>
+                        => new Parametric<float, Vector2>(t =>
                         {
-                            var m = movement?.Invoke(dict) ?? new Parametric<int, Vector2>(_ => Vector2.Zero);
+                            var m = movement?.Invoke(dict) ?? new Parametric<float, Vector2>(_ => Vector2.Zero);
                             var a = factor?.Invoke(dict) ?? 1f;
-                            return m.Predict((int)(a * t));
+                            return m.Predict(a * t);
                         })));
         }
     }

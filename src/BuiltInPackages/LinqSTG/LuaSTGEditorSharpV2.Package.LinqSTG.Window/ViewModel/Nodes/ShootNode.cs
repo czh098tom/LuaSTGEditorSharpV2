@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
         public LinqSTGNodeInputViewModel<Contextual<BulletShape>?> InputShape { get; }
         public LinqSTGNodeInputViewModel<Contextual<float>?> InputDiameter { get; }
         public LinqSTGNodeInputViewModel<Contextual<IPattern<Parameter, int>>?> InputPattern { get; }
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }
 
         public IObservable<Contextual<IEnumerable<PointPrediction>>> Result { get; }
 

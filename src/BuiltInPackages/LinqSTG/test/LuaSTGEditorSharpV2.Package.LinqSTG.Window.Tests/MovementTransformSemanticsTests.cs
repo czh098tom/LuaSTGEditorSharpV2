@@ -30,7 +30,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             return latest;
         }
 
-        private static Vector2 PredictAt(Contextual<IParametric<int, Vector2>> movement, Parameter parameter, int t)
+        private static Vector2 PredictAt(Contextual<IParametric<float, Vector2>> movement, Parameter parameter, float t)
             => movement(parameter).Predict(t);
 
         private static NetworkViewModel Network(params LinqSTGNodeViewModel[] nodes)
@@ -56,8 +56,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var node = new MovementTransformInputTimeNode();
             var time = Latest(node.OutputTime.Value);
 
-            Assert.Equal(7, time(new Parameter().WithTransform(new TransformContext { Time = 7 })));
-            Assert.Equal(0, time(Parameter.Empty));
+            Assert.Equal(7f, time(new Parameter().WithTransform(new TransformContext { Time = 7 })));
+            Assert.Equal(0f, time(Parameter.Empty));
         }
 
         [Fact]
@@ -142,20 +142,20 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                 new Vector2Node(),
                 new UniformVelocityMovementNode(),
                 new MovementTransformInputTimeNode(),
-                new ConstantIntNode(),
+                new ConstantFloatNode(),
                 new AddNode(),
                 new MovementPredictNode(),
                 new FromPointMovementNode());
             var vec = NodeAt<Vector2Node>(network, 0);
             var source = NodeAt<UniformVelocityMovementNode>(network, 1);
             var inputTime = NodeAt<MovementTransformInputTimeNode>(network, 2);
-            var one = NodeAt<ConstantIntNode>(network, 3);
+            var one = NodeAt<ConstantFloatNode>(network, 3);
             var add = NodeAt<AddNode>(network, 4);
             var predict = NodeAt<MovementPredictNode>(network, 5);
             var fromPoint = NodeAt<FromPointMovementNode>(network, 6);
             vec.XEditor.RawValue = 3f;
             vec.YEditor.RawValue = 5f;
-            one.ValueEditor.RawValue = 1;
+            one.ValueEditor.RawValue = 1f;
             Connect(network, source.InputVelocity, vec.OutputVector2);
             Connect(network, add.NumericA, inputTime.OutputTime);
             Connect(network, add.NumericB, one.OutputValue);
@@ -179,7 +179,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                 new Vector2Node(),
                 new UniformVelocityMovementNode(),
                 new MovementTransformInputTimeNode(),
-                new ConstantIntNode(),
+                new ConstantFloatNode(),
                 new AddNode(),
                 new MovementPredictNode(),
                 new FromPointMovementNode(),
@@ -188,7 +188,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var vec = NodeAt<Vector2Node>(network, 0);
             var source = NodeAt<UniformVelocityMovementNode>(network, 1);
             var inputTime = NodeAt<MovementTransformInputTimeNode>(network, 2);
-            var one = NodeAt<ConstantIntNode>(network, 3);
+            var one = NodeAt<ConstantFloatNode>(network, 3);
             var add = NodeAt<AddNode>(network, 4);
             var predict = NodeAt<MovementPredictNode>(network, 5);
             var fromPoint = NodeAt<FromPointMovementNode>(network, 6);
@@ -196,7 +196,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var offset = NodeAt<MovementOffsetNode>(network, 8);
             vec.XEditor.RawValue = 3f;
             vec.YEditor.RawValue = 5f;
-            one.ValueEditor.RawValue = 1;
+            one.ValueEditor.RawValue = 1f;
             offsetVec.XEditor.RawValue = 10f;
             offsetVec.YEditor.RawValue = 20f;
             Connect(network, source.InputVelocity, vec.OutputVector2);
@@ -224,15 +224,17 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var scaleTime = NodeAt<MovementScaleTimeNode>(network, 2);
             vec.XEditor.RawValue = 1f;
             vec.YEditor.RawValue = 2f;
-            scaleTime.InputFactorEditor.RawValue = 2f;
+            scaleTime.InputFactorEditor.RawValue = 0.5f;
             Connect(network, source.InputVelocity, vec.OutputVector2);
             Connect(network, scaleTime.InputMovement, source.OutputMovement);
 
             var movement = Latest(scaleTime.OutputMovement.Value);
 
-            // m(t) = (t, 2t); scale time by 2 -> result(t) = m(2t) = (2t, 4t).
+            // m(t) = (t, 2t); scale time by 0.5 -> result(t) = m(0.5t) = (t/2, t).
+            // Float time keeps fractional sample instants exact (no int truncation).
             Assert.Equal(new Vector2(0, 0), PredictAt(movement, Parameter.Empty, 0));
-            Assert.Equal(new Vector2(8, 16), PredictAt(movement, Parameter.Empty, 4));
+            Assert.Equal(new Vector2(0.5f, 1f), PredictAt(movement, Parameter.Empty, 1));
+            Assert.Equal(new Vector2(2, 4), PredictAt(movement, Parameter.Empty, 4));
         }
 
         [Fact]
@@ -244,7 +246,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var shiftTime = NodeAt<MovementShiftTimeNode>(network, 2);
             vec.XEditor.RawValue = 1f;
             vec.YEditor.RawValue = 2f;
-            shiftTime.InputDeltaEditor.RawValue = 3;
+            shiftTime.InputDeltaEditor.RawValue = 3f;
             Connect(network, source.InputVelocity, vec.OutputVector2);
             Connect(network, shiftTime.InputMovement, source.OutputMovement);
 

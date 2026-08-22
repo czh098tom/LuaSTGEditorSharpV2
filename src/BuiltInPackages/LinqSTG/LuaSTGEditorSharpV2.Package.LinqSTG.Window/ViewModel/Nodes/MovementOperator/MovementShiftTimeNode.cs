@@ -15,15 +15,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     /// </summary>
     public class MovementShiftTimeNode : LinqSTGNodeViewModel
     {
-        public IntegerValueEditorViewModel InputDeltaEditor { get; } = new();
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
-        public LinqSTGNodeInputViewModel<Contextual<int>?> InputDelta { get; }
-        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+        public FloatValueEditorViewModel InputDeltaEditor { get; } = new();
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<float>?> InputDelta { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> OutputMovement { get; }
 
         public MovementShiftTimeNode()
         {
             InputMovement = LinqSTGNodeInputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
-            InputDelta = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_delta, InputDeltaEditor);
+            InputDelta = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_delta, InputDeltaEditor);
             OutputMovement = LinqSTGNodeOutputViewModel.Movement(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_movement);
 
             AddInput("movement", InputMovement);
@@ -38,10 +38,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             OutputMovement.Value = InputMovement.ValueChanged
                 .CombineLatest(InputDelta.ValueChanged, (movement, delta)
                     => Contextual.Create(dict
-                        => new Parametric<int, Vector2>(t =>
+                        => new Parametric<float, Vector2>(t =>
                         {
-                            var m = movement?.Invoke(dict) ?? new Parametric<int, Vector2>(_ => Vector2.Zero);
-                            var d = delta?.Invoke(dict) ?? 0;
+                            var m = movement?.Invoke(dict) ?? new Parametric<float, Vector2>(_ => Vector2.Zero);
+                            var d = delta?.Invoke(dict) ?? 0f;
                             return m.Predict(t + d);
                         })));
         }

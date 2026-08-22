@@ -132,9 +132,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             };
         }
 
-        public static LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> Movement(string? name = null)
+        public static LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> Movement(string? name = null)
         {
-            return new LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>>()
+            return new LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>>()
             {
                 Name = name,
                 Port = new LinqSTGPortViewModel(PortColor.Movement),

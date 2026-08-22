@@ -14,11 +14,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
     /// </summary>
     public class MovementTransformInputTimeNode : LinqSTGNodeViewModel
     {
-        public LinqSTGNodeOutputViewModel<Contextual<int>> OutputTime { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<float>> OutputTime { get; }
 
         public MovementTransformInputTimeNode()
         {
-            OutputTime = LinqSTGNodeOutputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_time);
+            OutputTime = LinqSTGNodeOutputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_time);
 
             AddOutput("time", OutputTime);
 
@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
             TitleColor = NodeColors.TransformInput;
 
             OutputTime.Value = Observable.Return(
-                Contextual.Create(dict => dict.Transform?.Time ?? 0));
+                Contextual.Create(dict => dict.Transform?.Time ?? 0f));
         }
     }
 }

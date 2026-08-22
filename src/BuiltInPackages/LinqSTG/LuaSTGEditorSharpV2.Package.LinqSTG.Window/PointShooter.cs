@@ -5,7 +5,7 @@ using System.Numerics;
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 {
     public class PointShooter<TData>(
-        Func<TData?, IParametric<int, Vector2>?> createPrediction,
+        Func<TData?, IParametric<float, Vector2>?> createPrediction,
         BulletShape shape,
         float diameter)
         : IShooter<TData, int, IEnumerable<PointPrediction>>

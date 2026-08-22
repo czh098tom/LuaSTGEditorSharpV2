@@ -11,9 +11,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     public class MovementRotateNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputAngleEditor { get; } = new();
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }
         public LinqSTGNodeInputViewModel<Contextual<float>?> InputAngle { get; }
-        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> OutputMovement { get; }
 
         public MovementRotateNode()
         {
@@ -33,7 +33,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             OutputMovement.Value = InputMovement.ValueChanged
                 .CombineLatest(InputAngle.ValueChanged, (movement, angle)
                     => Contextual.Create(dict
-                        => new Parametric<int, Vector2>(t =>
+                        => new Parametric<float, Vector2>(t =>
                         {
                             var p = movement?.Invoke(dict)?.Predict(t) ?? Vector2.Zero;
                             var rad = (angle?.Invoke(dict) ?? 0f) * MathF.PI / 180f;

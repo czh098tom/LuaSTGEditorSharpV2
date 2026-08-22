@@ -15,9 +15,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     /// </summary>
     public class MovementPolarToCartesianNode : LinqSTGNodeViewModel
     {
-        public LinqSTGNodeInputViewModel<Contextual<IParametric<int, Vector2>>?> InputMovement { get; }
+        public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputCenter { get; }
-        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> OutputMovement { get; }
 
         public MovementPolarToCartesianNode()
         {
@@ -35,7 +35,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             OutputMovement.Value = InputMovement.ValueChanged
                 .CombineLatest(InputCenter.ValueChanged, (movement, center)
                     => Contextual.Create(dict
-                        => new Parametric<int, Vector2>(t =>
+                        => new Parametric<float, Vector2>(t =>
                         {
                             var p = movement?.Invoke(dict)?.Predict(t) ?? Vector2.Zero;
                             var c = center?.Invoke(dict) ?? Vector2.Zero;

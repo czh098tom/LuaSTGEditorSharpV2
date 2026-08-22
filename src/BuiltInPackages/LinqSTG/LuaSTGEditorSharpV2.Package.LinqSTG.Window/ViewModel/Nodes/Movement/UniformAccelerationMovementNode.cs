@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
     {
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputInitialVelocity { get; }
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputAcceleration { get; }
-        public LinqSTGNodeOutputViewModel<Contextual<IParametric<int, Vector2>>> OutputMovement { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<IParametric<float, Vector2>>> OutputMovement { get; }
 
         public UniformAccelerationMovementNode()
         {
@@ -30,7 +30,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
             OutputMovement.Value = InputInitialVelocity.ValueChanged
                 .CombineLatest(InputAcceleration.ValueChanged, (velocity, acceleration)
                     => Contextual.Create(dict
-                        => new Parametric<int, Vector2>(t =>
+                        => new Parametric<float, Vector2>(t =>
                         {
                             var v = velocity?.Invoke(dict) ?? Vector2.Zero;
                             var a = acceleration?.Invoke(dict) ?? Vector2.Zero;
