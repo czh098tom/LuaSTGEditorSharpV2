@@ -42,8 +42,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
             }
             if (x is Contextual<Vector2> cvec)
             {
-                return Contextual.Create(dict =>
-                    Parametric.Create<int, Vector2>(t => -cvec(dict)));
+                return Contextual.Create(dict => -cvec(dict));
             }
             return null;
         }

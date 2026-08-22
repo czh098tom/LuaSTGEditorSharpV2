@@ -184,8 +184,8 @@
   <data name="linqstg_window_node_takeVariable" xml:space="preserve">
     <value>取出变量</value>
   </data>
-  <data name="linqstg_window_node_stationaryMovement" xml:space="preserve">
-    <value>静止运动</value>
+  <data name="linqstg_window_node_fromPointMovement" xml:space="preserve">
+    <value>从点生成运动</value>
   </data>
   <data name="linqstg_window_node_uniformVelocityMovement" xml:space="preserve">
     <value>匀速运动</value>
@@ -202,9 +202,6 @@
   <data name="linqstg_window_node_movementPolarToCartesian" xml:space="preserve">
     <value>运动 极坐标转直角</value>
   </data>
-  <data name="linqstg_window_node_movementMap" xml:space="preserve">
-    <value>运动映射</value>
-  </data>
   <data name="linqstg_window_node_movementOffset" xml:space="preserve">
     <value>运动偏移</value>
   </data>
@@ -217,11 +214,17 @@
   <data name="linqstg_window_node_movementSum" xml:space="preserve">
     <value>运动求和</value>
   </data>
-  <data name="linqstg_window_node_transformFromPoint" xml:space="preserve">
-    <value>从点生成变换</value>
+  <data name="linqstg_window_node_transformInputTime" xml:space="preserve">
+    <value>变换输入时间</value>
   </data>
-  <data name="linqstg_window_node_transformInputPoint" xml:space="preserve">
-    <value>变换输入点</value>
+  <data name="linqstg_window_node_movementPredict" xml:space="preserve">
+    <value>运动采样</value>
+  </data>
+  <data name="linqstg_window_node_movementScaleTime" xml:space="preserve">
+    <value>时间缩放</value>
+  </data>
+  <data name="linqstg_window_node_movementShiftTime" xml:space="preserve">
+    <value>时间平移</value>
   </data>
   <data name="linqstg_window_node_emptyPattern" xml:space="preserve">
     <value>空展开</value>
@@ -344,9 +347,6 @@
   <data name="linqstg_window_port_center" xml:space="preserve">
     <value>中心</value>
   </data>
-  <data name="linqstg_window_port_transform" xml:space="preserve">
-    <value>变换</value>
-  </data>
   <data name="linqstg_window_port_offset" xml:space="preserve">
     <value>偏移</value>
   </data>
@@ -358,6 +358,15 @@
   </data>
   <data name="linqstg_window_port_point" xml:space="preserve">
     <value>点</value>
+  </data>
+  <data name="linqstg_window_port_time" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="linqstg_window_port_factor" xml:space="preserve">
+    <value>系数</value>
+  </data>
+  <data name="linqstg_window_port_delta" xml:space="preserve">
+    <value>偏移</value>
   </data>
   <data name="linqstg_window_port_times" xml:space="preserve">
     <value>次数</value>

@@ -184,8 +184,8 @@
   <data name="linqstg_window_node_takeVariable" xml:space="preserve">
     <value>Take Variable</value>
   </data>
-  <data name="linqstg_window_node_stationaryMovement" xml:space="preserve">
-    <value>Stationary Movement</value>
+  <data name="linqstg_window_node_fromPointMovement" xml:space="preserve">
+    <value>From Point Movement</value>
   </data>
   <data name="linqstg_window_node_uniformVelocityMovement" xml:space="preserve">
     <value>Uniform Velocity Movement</value>
@@ -202,9 +202,6 @@
   <data name="linqstg_window_node_movementPolarToCartesian" xml:space="preserve">
     <value>Movement Polar To Cartesian</value>
   </data>
-  <data name="linqstg_window_node_movementMap" xml:space="preserve">
-    <value>Movement Map</value>
-  </data>
   <data name="linqstg_window_node_movementOffset" xml:space="preserve">
     <value>Movement Offset</value>
   </data>
@@ -217,11 +214,17 @@
   <data name="linqstg_window_node_movementSum" xml:space="preserve">
     <value>Movement Sum</value>
   </data>
-  <data name="linqstg_window_node_transformFromPoint" xml:space="preserve">
-    <value>Transform From Point</value>
+  <data name="linqstg_window_node_transformInputTime" xml:space="preserve">
+    <value>Transform Input Time</value>
   </data>
-  <data name="linqstg_window_node_transformInputPoint" xml:space="preserve">
-    <value>Transform Input Point</value>
+  <data name="linqstg_window_node_movementPredict" xml:space="preserve">
+    <value>Movement Predict</value>
+  </data>
+  <data name="linqstg_window_node_movementScaleTime" xml:space="preserve">
+    <value>Scale Time</value>
+  </data>
+  <data name="linqstg_window_node_movementShiftTime" xml:space="preserve">
+    <value>Shift Time</value>
   </data>
   <data name="linqstg_window_node_emptyPattern" xml:space="preserve">
     <value>Empty Pattern</value>
@@ -344,9 +347,6 @@
   <data name="linqstg_window_port_center" xml:space="preserve">
     <value>Center</value>
   </data>
-  <data name="linqstg_window_port_transform" xml:space="preserve">
-    <value>Transform</value>
-  </data>
   <data name="linqstg_window_port_offset" xml:space="preserve">
     <value>Offset</value>
   </data>
@@ -358,6 +358,15 @@
   </data>
   <data name="linqstg_window_port_point" xml:space="preserve">
     <value>Point</value>
+  </data>
+  <data name="linqstg_window_port_time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="linqstg_window_port_factor" xml:space="preserve">
+    <value>Factor</value>
+  </data>
+  <data name="linqstg_window_port_delta" xml:space="preserve">
+    <value>Delta</value>
   </data>
   <data name="linqstg_window_port_times" xml:space="preserve">
     <value>Times</value>

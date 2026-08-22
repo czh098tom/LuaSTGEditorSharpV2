@@ -600,7 +600,12 @@ namespace LinqSTG.Expression.ToLua
             return f;
         }
 
-        public LuaParser StationaryMovement(LuaParser position)
+        /// <summary>
+        /// 从点生成运动（原名 StationaryMovement）：把 Vector2 子图结果包装成常量运动。
+        /// 是统一自定义变换路径 Movement-Predict-FromPointMovement 的收口半段：
+        /// 变换子图内 Predict 采样出点、经点级运算后由本组合子包装回运动。
+        /// </summary>
+        public LuaParser FromPointMovement(LuaParser position)
         {
             return (inner) => Concat(
                 Single("do"),
@@ -757,62 +762,103 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
-        // --- Abstract movement transform (inline-expanded, see MovementMapNode) ---
+        // --- Per-sample time scoping (see FromPointMovement / MovementPredict) ---
         //
-        // Variable layering convention within a MovementMap transform scope:
-        //   __x, __y        : current movement output point (established convention)
-        //   __tpx, __tpy    : the transform's input point p, declared by MovementMap
-        //   __tqx, __tqy    : the transform's result point p', written by FromPoint
-        //   __valx, __valy  : Vector2 product (established convention)
-        // __tpx/__tpy/__tqx/__tqy live only inside MovementMap's transform scope.
+        // Variable layering convention inside a FromPointMovement point subgraph:
+        //   __x, __y   : current movement output point (established convention)
+        //   __t        : current sample time; rebound by shadowing (`local __t = ...`)
+        //                inside do-blocks to sample movements at remapped times
+        //   __val      : scalar product (established convention)
+        //   __valx/__valy : Vector2 product (established convention)
+        // FromPointMovement expands its point subgraph once per frame with the
+        // ambient __t, so MovementTransformInputTime inside it reads the current
+        // sample time directly; MovementPredict rebinds __t to sample a wired
+        // movement at any t'. Together they form the unified custom-transform
+        // path Movement-Predict-FromPointMovement.
 
         /// <summary>
-        /// 收口节点：把上游 movement 预测点 p 经 transform 子图映射为 p'。
-        /// 内联展开 transform 子图：先求 p（上游 movement 的 __x,__y），注入为 __tpx/__tpy，
-        /// 再展开 transform 子图（FromPoint 收口写 __tqx/__tqy），最后写回 __x,__y。
+        /// 子图入口：读取当前采样时间 t（__t），暴露为标量 __val。
+        /// 仅在 FromPointMovement 的点子图内有意义；配合 Math 组合子可拼 φ(t)。
         /// </summary>
-        public LuaParser MovementMap(LuaParser movement, LuaParser transform)
+        public LuaParser MovementTransformInputTime()
         {
             return (inner) => Concat(
-                Single("local __sx, __sy"),
+                Single("local __val = __t")
+            );
+        }
+
+        /// <summary>
+        /// 运动采样：在指定时间 t' 处对运动子图采样，输出 __valx/__valy。
+        /// 在 do 块内以 local __x/__y/__t 遮蔽环境变量后展开运动子图，
+        /// 使其在 t' 处求值且不污染外层 __x/__y。
+        /// 是统一路径 Movement-Predict-FromPointMovement 的入口。
+        /// </summary>
+        public LuaParser MovementPredict(LuaParser movement, LuaParser time)
+        {
+            string tv = GenId("__tp_t_");
+            string px = GenId("__tp_x_"), py = GenId("__tp_y_");
+            return (inner) => Concat(
+                Single($"local {tv}"),
                 Single("do"),
+                Shift(time(inner), 1),
+                Single($"{tv} = __val", 1),
+                Single("end"),
+                Single($"local {px}, {py}"),
+                Single("do"),
+                Single("local __x, __y", 1),
+                Single($"local __t = {tv}", 1),
                 Shift(movement(inner), 1),
+                Single($"{px}, {py} = __x, __y", 1),
                 Single("end"),
-                Single("__sx, __sy = __x, __y"),
-                Single("local __tpx, __tpy"),
-                Single("local __tqx, __tqy"),
-                Single("__tpx, __tpy = __sx, __sy"),
-                Single("do"),
-                Shift(transform(inner), 1),
-                Single("end"),
-                Single("__x = __tqx"),
-                Single("__y = __tqy")
+                Single($"local __valx = {px}"),
+                Single($"local __valy = {py}")
             );
         }
 
         /// <summary>
-        /// 分量原语：输出当前正在被变换的点 p（由 MovementMap 注入到 __tpx/__tpy）。
-        /// 暴露为标准 Vector2 产出（__valx/__valy）。
+        /// 零点常量：Predict 的 movement 端口未连接时的降级输出（__valx/__valy = 0, 0）。
         /// </summary>
-        public LuaParser MovementTransformInputPoint()
+        public LuaParser ZeroVector2()
         {
             return (inner) => Concat(
-                Single("local __valx = __tpx"),
-                Single("local __valy = __tpy")
+                Single("local __valx, __valy = 0, 0")
             );
         }
 
         /// <summary>
-        /// 收口原语：消费一个 Vector2 子图结果（__valx/__valy），赋给 MovementMap
-        /// 声明的收口变量 __tqx/__tqy。本身输出为 Transform（副作用，不写 __x/__y）。
+        /// 时间缩放：<c>f(t) ↦ f(a·t)</c>。在 do 块内遮蔽 <c>__t = a·__t</c> 后展开运动子图。
         /// </summary>
-        public LuaParser MovementTransformFromPoint(LuaParser point)
+        public LuaParser MovementScaleTime(LuaParser movement, LuaParser factor)
         {
+            string a = GenId("__st_a_");
             return (inner) => Concat(
+                Single($"local {a}"),
                 Single("do"),
-                Shift(point(inner), 1),
-                Single("__tqx = __valx", 1),
-                Single("__tqy = __valy", 1),
+                Shift(factor(inner), 1),
+                Single($"{a} = __val", 1),
+                Single("end"),
+                Single("do"),
+                Single($"local __t = {a} * __t", 1),
+                Shift(movement(inner), 1),
+                Single("end")
+            );
+        }
+
+        /// <summary>
+        /// 时间平移：<c>f(t) ↦ f(t+Δ)</c>。在 do 块内遮蔽 <c>__t = __t+Δ</c> 后展开运动子图。
+        /// </summary>
+        public LuaParser MovementShiftTime(LuaParser movement, LuaParser delta)
+        {
+            string d = GenId("__st_d_");
+            return (inner) => Concat(
+                Single($"local {d}"),
+                Single("do"),
+                Shift(delta(inner), 1),
+                Single($"{d} = __val", 1),
+                Single("end"),
+                Single("do"),
+                Single($"local __t = __t + {d}", 1),
+                Shift(movement(inner), 1),
                 Single("end")
             );
         }

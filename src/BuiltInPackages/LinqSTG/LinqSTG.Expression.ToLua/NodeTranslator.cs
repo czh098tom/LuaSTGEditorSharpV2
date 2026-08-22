@@ -175,7 +175,7 @@ namespace LinqSTG.Expression.ToLua
                 "UniformVelocityMovement" => new TypedLuaParser(_parser.UniformVelocityMovement(
                     InputOrUnknown(node, inputs, "velocity").LuaParser), PortShape.Unknown),
 
-                "StationaryMovement" => new TypedLuaParser(_parser.StationaryMovement(
+                "FromPointMovement" => new TypedLuaParser(_parser.FromPointMovement(
                     InputOrUnknown(node, inputs, "position").LuaParser), PortShape.Unknown),
 
                 "UniformAccelerationMovement" => new TypedLuaParser(_parser.UniformAccelerationMovement(
@@ -214,15 +214,23 @@ namespace LinqSTG.Expression.ToLua
                     InputOrUnknown(node, inputs, "movement").LuaParser,
                     InputOrUnknown(node, inputs, "center").LuaParser), PortShape.Unknown),
 
-                "MovementMap" => new TypedLuaParser(_parser.MovementMap(
+                "MovementScaleTime" => new TypedLuaParser(_parser.MovementScaleTime(
                     InputOrUnknown(node, inputs, "movement").LuaParser,
-                    InputOrUnknown(node, inputs, "transform").LuaParser), PortShape.Unknown),
+                    InputOrConstant(node, inputs, "factor").LuaParser), PortShape.Unknown),
 
-                "MovementTransformInputPoint" => new TypedLuaParser(
-                    _parser.MovementTransformInputPoint(), PortShape.Vector2),
+                "MovementShiftTime" => new TypedLuaParser(_parser.MovementShiftTime(
+                    InputOrUnknown(node, inputs, "movement").LuaParser,
+                    InputOrConstant(node, inputs, "delta").LuaParser), PortShape.Unknown),
 
-                "MovementTransformFromPoint" => new TypedLuaParser(_parser.MovementTransformFromPoint(
-                    InputOrUnknown(node, inputs, "point").LuaParser), PortShape.Unknown),
+                "MovementTransformInputTime" => new TypedLuaParser(
+                    _parser.MovementTransformInputTime(), PortShape.Scalar),
+
+                // Movement with no connection degrades to sampling the zero movement.
+                "MovementPredict" => inputs.TryGetValue("movement", out var predictMovement) && predictMovement != null
+                    ? new TypedLuaParser(_parser.MovementPredict(
+                        predictMovement.LuaParser,
+                        InputOrDefaultScalar(inputs, "time", 0f)), PortShape.Vector2)
+                    : new TypedLuaParser(_parser.ZeroVector2(), PortShape.Vector2),
 
                 "MapPattern" => new TypedLuaParser(_parser.MapPattern(
                     InputOrUnknown(node, inputs, "pattern").LuaParser,
@@ -351,6 +359,19 @@ namespace LinqSTG.Expression.ToLua
                 return typed;
             }
             return ConstantFromEditor(node, key);
+        }
+
+        /// <summary>
+        /// Resolves a scalar port to a connected parser, or falls back to a constant.
+        /// Used for wire-first ports (e.g. <c>MovementPredict.time</c>) that carry no editor.
+        /// </summary>
+        private LuaParser InputOrDefaultScalar(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName, float fallback)
+        {
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
+            {
+                return typed.LuaParser;
+            }
+            return _parser.ConstantFloat(fallback);
         }
 
         private TypedLuaParser InputOrDefaultRepeater(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)

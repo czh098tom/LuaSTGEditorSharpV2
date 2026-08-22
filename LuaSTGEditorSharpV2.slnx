@@ -76,4 +76,8 @@
     <Project Path="test/LuaSTGEditorSharpV2.Core.Tests/LuaSTGEditorSharpV2.Core.Tests.csproj" />
     <Project Path="test/LuaSTGEditorSharpV2.PropertyView.Tests/LuaSTGEditorSharpV2.PropertyView.Tests.csproj" />
   </Folder>
+  <Folder Name="/src/BuiltInPackages/LinqSTG/test/">
+    <Project Path="src/BuiltInPackages/LinqSTG/test/LinqSTG.Expression.ToLua.Tests/LinqSTG.Expression.ToLua.Tests.csproj" />
+    <Project Path="src/BuiltInPackages/LinqSTG/test/LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests/LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests.csproj" />
+  </Folder>
 </Solution>

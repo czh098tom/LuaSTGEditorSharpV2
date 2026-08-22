@@ -94,7 +94,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<TakeRepeaterFromContextNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<TakeVariableFromContextNode>));
 
-            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<StationaryMovementNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<FromPointMovementNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<UniformVelocityMovementNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<UniformAccelerationMovementNode>));
 
@@ -105,10 +105,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementScaleNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementCartesianToPolarNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementPolarToCartesianNode>));
-            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementMapNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementScaleTimeNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementShiftTimeNode>));
 
-            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementTransformInputPointNode>));
-            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementTransformFromPointNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementTransformInputTimeNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MovementPredictNode>));
 
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<Vector2SplitNode>));
 

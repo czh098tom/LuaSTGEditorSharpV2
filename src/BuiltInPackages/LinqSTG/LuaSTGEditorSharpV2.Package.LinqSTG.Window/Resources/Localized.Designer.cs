@@ -259,15 +259,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
-        ///   查找类似 linqstg_window_node_movementMap 的本地化字符串。
-        /// </summary>
-        internal static string linqstg_window_node_movementMap {
-            get {
-                return ResourceManager.GetString("linqstg_window_node_movementMap", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   查找类似 linqstg_window_node_movementOffset 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_node_movementOffset {
@@ -403,11 +394,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
-        ///   查找类似 linqstg_window_node_stationaryMovement 的本地化字符串。
+        ///   查找类似 linqstg_window_node_fromPointMovement 的本地化字符串。
         /// </summary>
-        internal static string linqstg_window_node_stationaryMovement {
+        internal static string linqstg_window_node_fromPointMovement {
             get {
-                return ResourceManager.GetString("linqstg_window_node_stationaryMovement", resourceCulture);
+                return ResourceManager.GetString("linqstg_window_node_fromPointMovement", resourceCulture);
             }
         }
 
@@ -457,20 +448,38 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
-        ///   查找类似 linqstg_window_node_transformFromPoint 的本地化字符串。
+        ///   查找类似 linqstg_window_node_transformInputTime 的本地化字符串。
         /// </summary>
-        internal static string linqstg_window_node_transformFromPoint {
+        internal static string linqstg_window_node_transformInputTime {
             get {
-                return ResourceManager.GetString("linqstg_window_node_transformFromPoint", resourceCulture);
+                return ResourceManager.GetString("linqstg_window_node_transformInputTime", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   查找类似 linqstg_window_node_transformInputPoint 的本地化字符串。
+        ///   查找类似 linqstg_window_node_movementPredict 的本地化字符串。
         /// </summary>
-        internal static string linqstg_window_node_transformInputPoint {
+        internal static string linqstg_window_node_movementPredict {
             get {
-                return ResourceManager.GetString("linqstg_window_node_transformInputPoint", resourceCulture);
+                return ResourceManager.GetString("linqstg_window_node_movementPredict", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_node_movementScaleTime 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_movementScaleTime {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_movementScaleTime", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_node_movementShiftTime 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_movementShiftTime {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_movementShiftTime", resourceCulture);
             }
         }
 
@@ -736,6 +745,33 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_port_time 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_port_time {
+            get {
+                return ResourceManager.GetString("linqstg_window_port_time", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_port_factor 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_port_factor {
+            get {
+                return ResourceManager.GetString("linqstg_window_port_factor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_port_delta 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_port_delta {
+            get {
+                return ResourceManager.GetString("linqstg_window_port_delta", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_port_position 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_port_position {
@@ -849,15 +885,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         internal static string linqstg_window_port_totalKey {
             get {
                 return ResourceManager.GetString("linqstg_window_port_totalKey", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 linqstg_window_port_transform 的本地化字符串。
-        /// </summary>
-        internal static string linqstg_window_port_transform {
-            get {
-                return ResourceManager.GetString("linqstg_window_port_transform", resourceCulture);
             }
         }
 

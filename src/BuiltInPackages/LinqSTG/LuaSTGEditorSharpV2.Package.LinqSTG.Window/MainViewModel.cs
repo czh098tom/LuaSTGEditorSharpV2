@@ -234,7 +234,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeList.AddNodeType(() => new TakeRepeaterFromContextNode());
             NodeList.AddNodeType(() => new TakeVariableFromContextNode());
 
-            NodeList.AddNodeType(() => new StationaryMovementNode());
+            NodeList.AddNodeType(() => new FromPointMovementNode());
             NodeList.AddNodeType(() => new UniformVelocityMovementNode());
             NodeList.AddNodeType(() => new UniformAccelerationMovementNode());
 
@@ -245,10 +245,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeList.AddNodeType(() => new MovementScaleNode());
             NodeList.AddNodeType(() => new MovementCartesianToPolarNode());
             NodeList.AddNodeType(() => new MovementPolarToCartesianNode());
-            NodeList.AddNodeType(() => new MovementMapNode());
+            NodeList.AddNodeType(() => new MovementScaleTimeNode());
+            NodeList.AddNodeType(() => new MovementShiftTimeNode());
 
-            NodeList.AddNodeType(() => new MovementTransformInputPointNode());
-            NodeList.AddNodeType(() => new MovementTransformFromPointNode());
+            NodeList.AddNodeType(() => new MovementTransformInputTimeNode());
+            NodeList.AddNodeType(() => new MovementPredictNode());
 
             NodeList.AddNodeType(() => new RepeatPatternNode());
             NodeList.AddNodeType(() => new RepeatWithIntervalPatternNode());

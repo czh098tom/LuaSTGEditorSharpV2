@@ -47,8 +47,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
             }
             if (lhs is Contextual<Vector2> cvec1 && rhs is Contextual<Vector2> cvec2)
             {
-                return Contextual.Create(dict =>
-                    Parametric.Create<int, Vector2>(t => cvec1(dict) * cvec2(dict)));
+                return Contextual.Create(dict => cvec1(dict) * cvec2(dict));
             }
             return null;
         }
