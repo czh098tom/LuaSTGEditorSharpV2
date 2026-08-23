@@ -1,4 +1,4 @@
-﻿using DynamicData;
+using DynamicData;
 using NodeNetwork.Toolkit.ValueNode;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator
 {
+    [NodeCreationMenu("PatternOperator", TitleKey = "linqstg_window_node_extrudePattern")]
     public class ExtrudePatternNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IPattern<Parameter, int>>?> InputPattern { get; }

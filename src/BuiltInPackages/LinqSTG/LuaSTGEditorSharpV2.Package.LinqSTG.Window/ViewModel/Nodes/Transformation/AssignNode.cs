@@ -1,4 +1,4 @@
-﻿using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
 using log4net.Repository.Hierarchy;
 using Microsoft.VisualBasic.ApplicationServices;
 using NodeNetwork.Toolkit.ValueNode;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transformation
 {
+    [NodeCreationMenu("Transformation", TitleKey = "linqstg_window_node_assign")]
     public class AssignNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputValueEditor { get; } = new();

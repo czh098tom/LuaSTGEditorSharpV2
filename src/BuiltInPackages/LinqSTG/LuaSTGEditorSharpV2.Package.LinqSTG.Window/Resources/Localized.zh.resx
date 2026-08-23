@@ -416,4 +416,49 @@
   <data name="linqstg_window_port_exponent" xml:space="preserve">
     <value>指数</value>
   </data>
+  <data name="linqstg_window_menu_searchHint" xml:space="preserve">
+    <value>搜索节点</value>
+  </data>
+  <data name="linqstg_window_menu_noMatch" xml:space="preserve">
+    <value>没有匹配的节点</value>
+  </data>
+  <data name="linqstg_window_menu_category_data" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="linqstg_window_menu_category_movement" xml:space="preserve">
+    <value>运动</value>
+  </data>
+  <data name="linqstg_window_menu_category_movementoperator" xml:space="preserve">
+    <value>运动运算符</value>
+  </data>
+  <data name="linqstg_window_menu_category_movementtransform" xml:space="preserve">
+    <value>运动变换</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator" xml:space="preserve">
+    <value>运算符</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator_conversion" xml:space="preserve">
+    <value>类型转换</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator_context" xml:space="preserve">
+    <value>上下文</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator_math" xml:space="preserve">
+    <value>数学</value>
+  </data>
+  <data name="linqstg_window_menu_category_pattern" xml:space="preserve">
+    <value>展开</value>
+  </data>
+  <data name="linqstg_window_menu_category_patternoperator" xml:space="preserve">
+    <value>展开运算符</value>
+  </data>
+  <data name="linqstg_window_menu_category_transformation" xml:space="preserve">
+    <value>变换</value>
+  </data>
+  <data name="linqstg_window_menu_category_shoot" xml:space="preserve">
+    <value>发射</value>
+  </data>
+  <data name="linqstg_window_node_vector2FromRotationDistance" xml:space="preserve">
+    <value>由角度和距离创建二维向量</value>
+  </data>
 </root>

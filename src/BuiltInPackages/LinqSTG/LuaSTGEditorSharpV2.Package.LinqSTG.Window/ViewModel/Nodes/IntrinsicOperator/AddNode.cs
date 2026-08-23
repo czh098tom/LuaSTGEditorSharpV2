@@ -1,4 +1,4 @@
-﻿using global::LinqSTG.Kinematics;
+using global::LinqSTG.Kinematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
+    [NodeCreationMenu("Operator", EnglishTitle = "Add (+)", Order = 0)]
     public class AddNode : LinqSTGNodeViewModel
     {
         public ContextAwareNodeInputViewModel NumericA { get; }

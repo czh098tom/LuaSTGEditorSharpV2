@@ -1,4 +1,4 @@
-﻿using DynamicData;
+using DynamicData;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
 using NodeNetwork.Toolkit.ValueNode;
 using NodeNetwork.ViewModels;
@@ -13,6 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 {
     using Pattern = global::LinqSTG.Pattern;
 
+    [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_repeatWithIntervalPattern")]
     public class RepeatWithIntervalPatternNode : LinqSTGNodeViewModel
     {
         public IntegerValueEditorViewModel InputTimesEditor { get; } = new() { RawValue = 1 };

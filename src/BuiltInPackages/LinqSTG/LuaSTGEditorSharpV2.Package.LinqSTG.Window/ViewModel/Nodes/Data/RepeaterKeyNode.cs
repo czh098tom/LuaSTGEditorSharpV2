@@ -1,4 +1,4 @@
-﻿using NodeNetwork.Toolkit.ValueNode;
+using NodeNetwork.Toolkit.ValueNode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
 {
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_repeaterKey", Order = 3)]
     public class RepeaterKeyNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<string>?> InputIDKey { get; }

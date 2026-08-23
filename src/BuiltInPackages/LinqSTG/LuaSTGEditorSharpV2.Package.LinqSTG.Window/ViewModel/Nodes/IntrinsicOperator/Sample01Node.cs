@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
+    [NodeCreationMenu("Operator/Conversion", EnglishTitle = "Sample01")]
     public class Sample01Node : LinqSTGNodeViewModel
     {
         public IntervalTypeEditorViewModel IntervalTypeEditor { get; } = new();

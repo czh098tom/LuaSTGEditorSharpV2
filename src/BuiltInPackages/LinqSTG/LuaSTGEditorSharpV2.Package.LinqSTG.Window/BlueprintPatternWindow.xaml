@@ -8,6 +8,7 @@
         xmlns:nodenetwork="clr-namespace:NodeNetwork.Views;assembly=NodeNetwork"
         xmlns:nodeList="clr-namespace:NodeNetwork.Toolkit.NodeList;assembly=NodeNetworkToolkit"
         xmlns:local="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows"
+        xmlns:view="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows.View"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         lex:ResxLocalizationProvider.DefaultAssembly="LuaSTGEditorSharpV2.Package.LinqSTG.Window"
         lex:ResxLocalizationProvider.DefaultDictionary="Localized"
@@ -161,5 +162,14 @@
                 <nodenetwork:NetworkView x:Name="NetworkView" ViewModel="{Binding Network}"/>
             </Grid>
         </Grid>
+
+        <Popup x:Name="NodeCreationPopup"
+               PlacementTarget="{Binding ElementName=NetworkView}"
+               Placement="RelativePoint"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               PopupAnimation="Fade">
+            <view:NodeCreationMenuView x:Name="NodeCreationMenu" DataContext="{Binding NodeCreationMenu}"/>
+        </Popup>
     </Grid>
 </Window>

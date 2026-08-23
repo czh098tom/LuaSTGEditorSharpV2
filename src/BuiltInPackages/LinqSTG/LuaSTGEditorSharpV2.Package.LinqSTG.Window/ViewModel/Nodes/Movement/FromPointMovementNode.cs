@@ -19,6 +19,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
     /// 直接作为运动链的一环使用（无需独立的变换收口节点）。
     /// 点子图不含 InputTime 时退化为常量运动（原名 StationaryMovement 的语义）。
     /// </summary>
+    [NodeCreationMenu("Movement", TitleKey = "linqstg_window_node_fromPointMovement")]
     public class FromPointMovementNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputPosition { get; }

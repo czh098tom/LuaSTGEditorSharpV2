@@ -1,4 +1,4 @@
-﻿using NodeNetwork.Toolkit.ValueNode;
+using NodeNetwork.Toolkit.ValueNode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
+    [NodeCreationMenu("Operator/Conversion", TitleKey = "linqstg_window_node_intToFloat")]
     public class IntToFloatNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<int>?> InputInt { get; }

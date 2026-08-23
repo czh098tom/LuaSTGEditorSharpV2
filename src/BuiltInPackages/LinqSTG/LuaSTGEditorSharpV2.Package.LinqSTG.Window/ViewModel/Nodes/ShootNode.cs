@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 {
+    [NodeCreationMenu("Shoot", TitleKey = "linqstg_window_node_shoot")]
     public class ShootNode : LinqSTGNodeViewModel
     {
         public const string ShooterNameEditorKey = "shooter_name";

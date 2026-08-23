@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator
 {
+    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementOffset")]
     public class MovementOffsetNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }

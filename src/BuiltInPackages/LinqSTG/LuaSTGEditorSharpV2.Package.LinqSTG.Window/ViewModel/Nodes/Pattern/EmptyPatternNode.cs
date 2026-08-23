@@ -6,6 +6,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 {
     using Pattern = global::LinqSTG.Pattern;
 
+    [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_emptyPattern")]
     public class EmptyPatternNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeOutputViewModel<Contextual<IPattern<Parameter, int>>> OutputPattern { get; }

@@ -4,6 +4,7 @@ using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement;
@@ -165,6 +166,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 
         public NodeListViewModel NodeList { get; } = new();
 
+        public NodeCreationMenuViewModel NodeCreationMenu { get; } = new();
+
         private IEnumerable<PointPrediction> pointPredictions = [];
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -294,6 +297,17 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             }
             Points = list;
             RaisePropertyChanged(nameof(Points));
+        }
+
+        /// <summary>
+        /// Creates a new node of the given catalog entry at the specified network position,
+        /// as picked from the blueprint area right-click creation menu.
+        /// </summary>
+        public void AddNode(NodeCreationEntry entry, System.Windows.Point position)
+        {
+            var node = entry.CreateNode();
+            node.Position = position;
+            Network.Nodes.Add(node);
         }
 
         public void Save()

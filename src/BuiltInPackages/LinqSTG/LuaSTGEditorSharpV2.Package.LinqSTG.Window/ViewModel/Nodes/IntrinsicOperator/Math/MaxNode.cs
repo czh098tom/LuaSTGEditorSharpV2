@@ -1,9 +1,10 @@
-﻿using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
 using System;
 using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator.Math
 {
+    [NodeCreationMenu("Operator/Math", EnglishTitle = "Max")]
     public class MaxNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputAEditor { get; } = new();

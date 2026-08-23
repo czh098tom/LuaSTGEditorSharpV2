@@ -8,6 +8,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 {
     using Pattern = global::LinqSTG.Pattern;
 
+    [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_repeatPattern")]
     public class RepeatPatternNode : LinqSTGNodeViewModel
     {
         public IntegerValueEditorViewModel InputTimesEditor { get; } = new() { RawValue = 1 };

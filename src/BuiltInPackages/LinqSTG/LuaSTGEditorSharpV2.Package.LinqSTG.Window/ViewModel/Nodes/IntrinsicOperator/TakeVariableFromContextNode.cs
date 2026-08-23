@@ -1,4 +1,4 @@
-﻿using DynamicData;
+using DynamicData;
 using LinqSTG;
 using global::LinqSTG.Kinematics;
 using NodeNetwork.Toolkit.ValueNode;
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
+    [NodeCreationMenu("Operator/Context", TitleKey = "linqstg_window_node_takeVariable")]
     public class TakeVariableFromContextNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<string>?> InputValue { get; }

@@ -1,4 +1,4 @@
-﻿using LinqSTG;
+using LinqSTG;
 using NodeNetwork.Toolkit.ValueNode;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
+    [NodeCreationMenu("Operator/Context", TitleKey = "linqstg_window_node_takeRepeaterFromContext")]
     public class TakeRepeaterFromContextNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<RepeaterKey>?> InputRepeaterKey { get; }

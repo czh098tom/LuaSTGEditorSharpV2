@@ -1,4 +1,4 @@
-﻿using DynamicData;
+using DynamicData;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
 using global::LinqSTG.Easings;
 using NodeNetwork.Toolkit.ValueNode;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
+    [NodeCreationMenu("Operator/Conversion", TitleKey = "linqstg_window_node_minMax")]
     public class MinMaxNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputLowerBoundEditor { get; } = new();

@@ -1,4 +1,4 @@
-﻿using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
 {
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_vector2", Order = 4)]
     public class Vector2Node : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel XEditor { get; } = new();

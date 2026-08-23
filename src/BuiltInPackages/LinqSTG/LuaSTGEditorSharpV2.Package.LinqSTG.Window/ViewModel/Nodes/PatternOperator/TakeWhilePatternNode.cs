@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator
 {
+    [NodeCreationMenu("PatternOperator", TitleKey = "linqstg_window_node_takeWhilePattern")]
     public class TakeWhilePatternNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IPattern<Parameter, int>>?> InputPattern { get; }

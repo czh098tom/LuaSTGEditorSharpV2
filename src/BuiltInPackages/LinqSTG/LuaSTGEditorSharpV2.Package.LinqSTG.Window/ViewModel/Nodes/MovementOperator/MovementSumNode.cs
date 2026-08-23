@@ -1,4 +1,4 @@
-﻿using global::LinqSTG.Kinematics;
+using global::LinqSTG.Kinematics;
 using NodeNetwork.Toolkit.ValueNode;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator
 {
+    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementSum")]
     public class MovementSumNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement1 { get; }

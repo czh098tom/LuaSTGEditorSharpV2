@@ -13,6 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     /// 其中 θ = q.X（度），r = q.Y。即用户给定的 (p.y·cos(p.x), p.y·sin(p.x)) 形式。
     /// 角度单位为度，与 LuaSTG 运行时及 <see cref="MovementRotateNode"/> 的度制约定一致。
     /// </summary>
+    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementCartesianToPolar")]
     public class MovementCartesianToPolarNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }

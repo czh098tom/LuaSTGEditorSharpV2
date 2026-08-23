@@ -416,4 +416,49 @@
   <data name="linqstg_window_port_exponent" xml:space="preserve">
     <value>Exponent</value>
   </data>
+  <data name="linqstg_window_menu_searchHint" xml:space="preserve">
+    <value>Search nodes</value>
+  </data>
+  <data name="linqstg_window_menu_noMatch" xml:space="preserve">
+    <value>No matching nodes</value>
+  </data>
+  <data name="linqstg_window_menu_category_data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="linqstg_window_menu_category_movement" xml:space="preserve">
+    <value>Movement</value>
+  </data>
+  <data name="linqstg_window_menu_category_movementoperator" xml:space="preserve">
+    <value>Movement Operator</value>
+  </data>
+  <data name="linqstg_window_menu_category_movementtransform" xml:space="preserve">
+    <value>Movement Transform</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator_conversion" xml:space="preserve">
+    <value>Conversion</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator_context" xml:space="preserve">
+    <value>Context</value>
+  </data>
+  <data name="linqstg_window_menu_category_operator_math" xml:space="preserve">
+    <value>Math</value>
+  </data>
+  <data name="linqstg_window_menu_category_pattern" xml:space="preserve">
+    <value>Pattern</value>
+  </data>
+  <data name="linqstg_window_menu_category_patternoperator" xml:space="preserve">
+    <value>Pattern Operator</value>
+  </data>
+  <data name="linqstg_window_menu_category_transformation" xml:space="preserve">
+    <value>Transformation</value>
+  </data>
+  <data name="linqstg_window_menu_category_shoot" xml:space="preserve">
+    <value>Shoot</value>
+  </data>
+  <data name="linqstg_window_node_vector2FromRotationDistance" xml:space="preserve">
+    <value>Vector2 From Rotation Distance</value>
+  </data>
 </root>

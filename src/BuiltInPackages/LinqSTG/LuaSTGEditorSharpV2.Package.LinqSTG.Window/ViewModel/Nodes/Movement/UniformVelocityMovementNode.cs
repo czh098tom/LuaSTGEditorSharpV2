@@ -1,4 +1,4 @@
-﻿using DynamicData;
+using DynamicData;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Editor;
 using global::LinqSTG.Kinematics;
 using NodeNetwork.Toolkit.ValueNode;
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
 {
+    [NodeCreationMenu("Movement", TitleKey = "linqstg_window_node_uniformVelocityMovement")]
     public class UniformVelocityMovementNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputVelocity { get; }
