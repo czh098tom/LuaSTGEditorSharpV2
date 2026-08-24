@@ -20,9 +20,18 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
     /// </summary>
     public class BlueprintCreationMenuUITests
     {
+        /// <summary>Upper bound for draining the dispatcher queue; a calm machine needs well under a second.</summary>
+        private static readonly TimeSpan FlushTimeout = TimeSpan.FromSeconds(10);
+
+        /// <summary>Upper bound for the whole UI run; keeps a wedged STA thread from hanging the suite.</summary>
+        private static readonly TimeSpan RunTimeout = TimeSpan.FromSeconds(90);
+
         private sealed class UiResult
         {
             public Exception? Error { get; set; }
+
+            /// <summary>Names the last step the UI thread reached, reported when a flush times out.</summary>
+            public string Stage { get; set; } = string.Empty;
             public bool RightClickHandled { get; set; }
             public bool PopupOpened { get; set; }
             public int CategoryCount { get; set; }
@@ -45,20 +54,32 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         private static UiResult RunOnSta()
         {
             var result = new UiResult();
+            Popup? popup = null;
             var thread = new Thread(() =>
             {
                 // STA threads do not inherit the creating thread's culture; pin it so the
                 // English assertions below are deterministic regardless of the OS language.
                 Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
                 var window = new BlueprintPatternWindow { Width = 1200, Height = 600 };
+                void Flush(string stage)
+                {
+                    result.Stage = stage;
+                    if (!FlushDispatcher(FlushTimeout))
+                    {
+                        throw new TimeoutException(
+                            $"Dispatcher queue did not drain within {FlushTimeout.TotalSeconds:0}s at stage '{stage}'.");
+                    }
+                }
+
                 try
                 {
+                    result.Stage = "show";
                     window.Show();
                     window.UpdateLayout();
-                    FlushDispatcher();
+                    Flush("after-show");
 
                     var networkView = GetField<NetworkView>(window, "NetworkView");
-                    var popup = GetField<Popup>(window, "NodeCreationPopup");
+                    popup = GetField<Popup>(window, "NodeCreationPopup");
                     var menuView = GetField<FrameworkElement>(window, "NodeCreationMenu");
                     var mainViewModel = (MainViewModel)window.DataContext;
                     var network = mainViewModel.Network;
@@ -73,7 +94,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                     networkView.RaiseEvent(args);
                     result.RightClickHandled = args.Handled;
                     // the window defers opening to after the input event; flush the dispatcher queue
-                    FlushDispatcher();
+                    Flush("first-open");
                     result.PopupOpened = popup.IsOpen;
 
                     result.CategoryCount = menu.Categories.Count;
@@ -119,7 +140,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                         RoutedEvent = UIElement.PreviewMouseRightButtonUpEvent,
                         Source = networkView,
                     });
-                    FlushDispatcher();
+                    Flush("reopen");
                     result.ReopenedPopup = popup.IsOpen;
 
                     // while the cut-connections line is active, releasing the right button
@@ -134,7 +155,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                         RoutedEvent = UIElement.PreviewMouseRightButtonUpEvent,
                         Source = networkView,
                     });
-                    FlushDispatcher();
+                    Flush("cut-active");
                     result.CutActiveSuppressesPopup = !popup.IsOpen;
                     network.FinishCut();
 
@@ -143,7 +164,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                         RoutedEvent = UIElement.PreviewMouseRightButtonUpEvent,
                         Source = networkView,
                     });
-                    FlushDispatcher();
+                    Flush("after-cut");
                     result.PopupOpensAfterCutFinished = popup.IsOpen;
                 }
                 catch (Exception ex)
@@ -152,26 +173,56 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                 }
                 finally
                 {
+                    // Destroy the HWNDs in order while the dispatcher is still alive: tearing
+                    // down a window with a StaysOpen=False popup open leaves the popup's
+                    // HwndSource to be finalized after shutdown, which crashes the process.
+                    try { if (popup is not null) popup.IsOpen = false; } catch { /* already closing */ }
                     window.Close();
+                    try { FlushDispatcher(TimeSpan.FromSeconds(2)); } catch { /* best effort drain */ }
                     Dispatcher.CurrentDispatcher.InvokeShutdown();
                 }
             });
             thread.SetApartmentState(ApartmentState.STA);
+            // A wedged STA thread must fail the test instead of blocking the suite forever.
+            thread.IsBackground = true;
             thread.Start();
-            thread.Join();
+            if (!thread.Join(RunTimeout))
+            {
+                result.Error ??= new TimeoutException(
+                    $"UI thread did not finish within {RunTimeout.TotalSeconds:0}s; last stage '{result.Stage}'.");
+            }
             return result;
         }
 
         /// <summary>
         /// Pumps the STA thread's dispatcher until every queued operation above background
         /// priority has run (the window defers opening the popup through BeginInvoke).
+        /// A Send-priority watchdog timer bounds the wait: if animations or input keep
+        /// feeding the queue, the pump gives up after <paramref name="timeout"/> instead
+        /// of spinning forever. Returns false when the flush timed out.
         /// </summary>
-        private static void FlushDispatcher()
+        private static bool FlushDispatcher(TimeSpan timeout)
         {
             var frame = new DispatcherFrame();
+            var timedOut = false;
+            var watchdog = new DispatcherTimer(DispatcherPriority.Send) { Interval = timeout };
+            watchdog.Tick += (_, _) =>
+            {
+                timedOut = true;
+                frame.Continue = false;
+            };
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
                 new Action(() => frame.Continue = false));
-            Dispatcher.PushFrame(frame);
+            watchdog.Start();
+            try
+            {
+                Dispatcher.PushFrame(frame);
+            }
+            finally
+            {
+                watchdog.Stop();
+            }
+            return !timedOut;
         }
 
         private static T GetField<T>(object obj, string name) where T : class
@@ -186,7 +237,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         {
             var result = RunOnSta();
 
-            Assert.Null(result.Error);
+            Assert.True(result.Error is null,
+                $"UI run failed at stage '{result.Stage}': {result.Error}");
             Assert.True(result.RightClickHandled, "right-click should be handled by the window");
             Assert.True(result.PopupOpened, "the creation popup should open on right-click");
             Assert.True(result.CategoryCount >= 8, $"expected the main categories, got: {result.CategoryNames}");
