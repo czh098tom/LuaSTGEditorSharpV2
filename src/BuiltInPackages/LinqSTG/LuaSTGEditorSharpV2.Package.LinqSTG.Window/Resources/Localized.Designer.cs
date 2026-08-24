@@ -641,6 +641,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_node_rotateVector 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_rotateVector {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_rotateVector", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_port_acceleration 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_port_acceleration {

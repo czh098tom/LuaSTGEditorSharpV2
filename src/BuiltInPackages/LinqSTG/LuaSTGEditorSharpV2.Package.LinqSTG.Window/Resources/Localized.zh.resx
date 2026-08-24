@@ -156,6 +156,9 @@
   <data name="linqstg_window_node_vector2Split" xml:space="preserve">
     <value>二维向量拆分</value>
   </data>
+  <data name="linqstg_window_node_rotateVector" xml:space="preserve">
+    <value>旋转向量</value>
+  </data>
   <data name="linqstg_window_node_floatToInt" xml:space="preserve">
     <value>浮点转整数</value>
   </data>

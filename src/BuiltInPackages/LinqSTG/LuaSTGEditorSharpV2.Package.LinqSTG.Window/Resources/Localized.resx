@@ -156,6 +156,9 @@
   <data name="linqstg_window_node_vector2Split" xml:space="preserve">
     <value>Vector2 Split</value>
   </data>
+  <data name="linqstg_window_node_rotateVector" xml:space="preserve">
+    <value>Rotate Vector</value>
+  </data>
   <data name="linqstg_window_node_floatToInt" xml:space="preserve">
     <value>Float To Int</value>
   </data>

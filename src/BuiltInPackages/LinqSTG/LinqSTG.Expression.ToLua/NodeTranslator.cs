@@ -96,6 +96,12 @@ namespace LinqSTG.Expression.ToLua
                     InputOrConstant(node, inputs, "x").LuaParser,
                     InputOrConstant(node, inputs, "y").LuaParser), PortShape.Vector2),
 
+                // Vector2 with no connection degrades to the zero vector,
+                // matching the ViewModel preview's Vector2.Zero fallback.
+                "RotateVector" => new TypedLuaParser(_parser.Vector2Rotate(
+                    InputOrZeroVector2(inputs, "vector2"),
+                    InputOrConstant(node, inputs, "angle").LuaParser), PortShape.Vector2),
+
                 "ConstantFloat" => ConstantFromEditor(node, "value"),
 
                 "ConstantInt" => ConstantFromEditor(node, "value"),
@@ -372,6 +378,19 @@ namespace LinqSTG.Expression.ToLua
                 return typed.LuaParser;
             }
             return _parser.ConstantFloat(fallback);
+        }
+
+        /// <summary>
+        /// Resolves a Vector2 port to a connected parser, or falls back to the
+        /// zero vector (e.g. <c>RotateVector.vector2</c> with no wire).
+        /// </summary>
+        private LuaParser InputOrZeroVector2(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)
+        {
+            if (inputs.TryGetValue(portName, out var typed) && typed != null)
+            {
+                return typed.LuaParser;
+            }
+            return _parser.ZeroVector2();
         }
 
         private TypedLuaParser InputOrDefaultRepeater(IReadOnlyDictionary<string, TypedLuaParser> inputs, string portName)

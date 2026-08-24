@@ -583,6 +583,30 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
+        /// <summary>
+        /// RotateVector：把输入 Vector2（__valx/__valy）绕原点旋转角度制的角度，
+        /// 产出旋转后的 __valx/__valy。cos/sin 为 LuaSTG 运行时的角度制三角函数，
+        /// 旋转方向与 MovementRotate 的 C# 求值一致（正角度在数学坐标系下逆时针）。
+        /// </summary>
+        public LuaParser Vector2Rotate(LuaParser vec, LuaParser angle)
+        {
+            string vx = GenId("__vx_"), vy = GenId("__vy_");
+            return (inner) => Concat(
+                Single($"local {vx}, {vy}"),
+                Single("do"),
+                Shift(vec(inner), 1),
+                Single($"{vx}, {vy} = __valx, __valy", 1),
+                Single("end"),
+                Single("local __angle"),
+                Single("do"),
+                Shift(angle(inner), 1),
+                Single("__angle = __val", 1),
+                Single("end"),
+                Single($"local __valx = {vx} * cos(__angle) - {vy} * sin(__angle)"),
+                Single($"local __valy = {vx} * sin(__angle) + {vy} * cos(__angle)")
+            );
+        }
+
         public LuaParser FloatToInt(LuaParser f)
         {
             return (inner) => Concat(
