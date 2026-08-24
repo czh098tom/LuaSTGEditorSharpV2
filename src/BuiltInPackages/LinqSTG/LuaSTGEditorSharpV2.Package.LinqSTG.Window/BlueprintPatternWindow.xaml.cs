@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
@@ -28,6 +27,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             // Free the right mouse button for the node creation menu; cut moves to Ctrl+RightClick.
             NetworkView.StartCutGesture = new MouseGesture(MouseAction.RightClick, ModifierKeys.Control);
             NetworkView.PreviewMouseRightButtonUp += NetworkView_PreviewMouseRightButtonUp;
+
+            // Keep the content of both areas centered while the splitter or the window resizes them.
+            PreviewCanvas.SizeChanged += PreviewCanvas_SizeChanged;
+            NetworkView.SizeChanged += NetworkView_SizeChanged;
         }
 
         public string? NetworkJson
@@ -61,20 +64,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 
         private void BlueprintPatternWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            double width = PreviewHost.ActualWidth;
-            double previewHeight = PreviewArea.ActualHeight;
-            if (width <= 0 || previewHeight <= 0) return;
-
-            double scale = width / (2.0 * (PreviewHalfWidth + PreviewBuffer));
-            PreviewCanvas.Scale = scale;
-            PreviewCanvas.TranslateOffset = new Point(width / 2.0, previewHeight / 2.0);
-
-            // Localize the hardcoded "Search..." watermark inside the third-party NodeListView.
-            if (FindDescendantByName(NodeListView, "emptySearchBoxMessage") is TextBlock watermark)
-            {
-                watermark.Text = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_nodeList_searchHint;
-            }
-
             if (_nodeCreationMenu is null && NodeCreationMenu.DataContext is NodeCreationMenuViewModel menuViewModel)
             {
                 _nodeCreationMenu = menuViewModel;
@@ -85,6 +74,43 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             // Fit the network viewport to the bounding box of all nodes after layout has settled.
             Dispatcher.BeginInvoke(new System.Action(() => NetworkView.CenterAndZoomView()),
                 DispatcherPriority.Loaded);
+        }
+
+        /// <summary>
+        /// On the initial layout the play field (centered on the world origin) is fitted to the
+        /// viewport width and centered. On later resizes the scale is kept and the world point
+        /// that was at the viewport center before the resize stays centered.
+        /// </summary>
+        private void PreviewCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width <= 0 || e.NewSize.Height <= 0) return;
+
+            if (e.PreviousSize.Width <= 0 || e.PreviousSize.Height <= 0)
+            {
+                PreviewCanvas.Scale = e.NewSize.Width / (2.0 * (PreviewHalfWidth + PreviewBuffer));
+                PreviewCanvas.TranslateOffset = new Point(e.NewSize.Width / 2.0, e.NewSize.Height / 2.0);
+                return;
+            }
+
+            var offset = PreviewCanvas.TranslateOffset;
+            PreviewCanvas.TranslateOffset = new Point(
+                offset.X + (e.NewSize.Width - e.PreviousSize.Width) / 2.0,
+                offset.Y + (e.NewSize.Height - e.PreviousSize.Height) / 2.0);
+        }
+
+        /// <summary>
+        /// Keeps the world point under the view center fixed while the network area is resized:
+        /// the view center moves by half the size delta in screen pixels, so the content is
+        /// shifted by the same amount via the drag offset.
+        /// </summary>
+        private void NetworkView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.PreviousSize.Width <= 0 || e.PreviousSize.Height <= 0) return;
+
+            var network = _viewModel.Network;
+            network.DragOffset = new Point(
+                network.DragOffset.X + (e.NewSize.Width - e.PreviousSize.Width) / 2.0,
+                network.DragOffset.Y + (e.NewSize.Height - e.PreviousSize.Height) / 2.0);
         }
 
         private void NetworkView_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -161,22 +187,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         {
             NodeCreationPopup.IsOpen = false;
             _viewModel.AddNode(item.Entry, _pendingNodePosition);
-        }
-
-        private static DependencyObject? FindDescendantByName(DependencyObject root, string name)
-        {
-            int count = VisualTreeHelper.GetChildrenCount(root);
-            for (int i = 0; i < count; i++)
-            {
-                var child = VisualTreeHelper.GetChild(root, i);
-                if (child is FrameworkElement element && element.Name == name)
-                {
-                    return element;
-                }
-                var found = FindDescendantByName(child, name);
-                if (found != null) return found;
-            }
-            return null;
         }
     }
 }

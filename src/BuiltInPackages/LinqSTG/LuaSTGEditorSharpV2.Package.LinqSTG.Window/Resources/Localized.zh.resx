@@ -130,16 +130,6 @@
   <data name="linqstg_window_label_end" xml:space="preserve">
     <value>结束：</value>
   </data>
-  <!-- Category A: Third-party library built-in (NodeNetworkToolkit) -->
-  <data name="linqstg_window_nodeList_title" xml:space="preserve">
-    <value>添加节点</value>
-  </data>
-  <data name="linqstg_window_nodeList_empty" xml:space="preserve">
-    <value>未找到匹配的节点。</value>
-  </data>
-  <data name="linqstg_window_nodeList_searchHint" xml:space="preserve">
-    <value>搜索...</value>
-  </data>
   <!-- Category C: Editor tooltips -->
   <data name="linqstg_window_intervalEditor_headClosed" xml:space="preserve">
     <value>闭头</value>

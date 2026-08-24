@@ -6,7 +6,6 @@
         xmlns:rc="clr-namespace:RichCanvas;assembly=RichCanvas"
         xmlns:draw="clr-namespace:System.Drawing;assembly=netstandard"
         xmlns:nodenetwork="clr-namespace:NodeNetwork.Views;assembly=NodeNetwork"
-        xmlns:nodeList="clr-namespace:NodeNetwork.Toolkit.NodeList;assembly=NodeNetworkToolkit"
         xmlns:local="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows"
         xmlns:view="clr-namespace:LuaSTGEditorSharpV2.Package.LinqSTG.Windows.View"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -151,16 +150,7 @@
                       VerticalAlignment="Stretch" Background="#FF2A2A2A"
                       ResizeBehavior="PreviousAndNext" ResizeDirection="Columns"/>
         <Grid Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <nodeList:NodeListView x:Name="NodeListView" ViewModel="{Binding NodeList}"/>
-            </Grid>
-            <Grid Grid.Column="1">
-                <nodenetwork:NetworkView x:Name="NetworkView" ViewModel="{Binding Network}"/>
-            </Grid>
+            <nodenetwork:NetworkView x:Name="NetworkView" ViewModel="{Binding Network}"/>
         </Grid>
 
         <Popup x:Name="NodeCreationPopup"

@@ -225,32 +225,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
                 return ResourceManager.GetString("linqstg_window_node_vector2FromRotationDistance", resourceCulture);
             }
         }
-        /// <summary>
-        ///   查找类似 linqstg_window_nodeList_empty 的本地化字符串。
-        /// </summary>
-        internal static string linqstg_window_nodeList_empty {
-            get {
-                return ResourceManager.GetString("linqstg_window_nodeList_empty", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 linqstg_window_nodeList_searchHint 的本地化字符串。
-        /// </summary>
-        internal static string linqstg_window_nodeList_searchHint {
-            get {
-                return ResourceManager.GetString("linqstg_window_nodeList_searchHint", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   查找类似 linqstg_window_nodeList_title 的本地化字符串。
-        /// </summary>
-        internal static string linqstg_window_nodeList_title {
-            get {
-                return ResourceManager.GetString("linqstg_window_nodeList_title", resourceCulture);
-            }
-        }
 
         /// <summary>
         ///   查找类似 linqstg_window_node_assign 的本地化字符串。

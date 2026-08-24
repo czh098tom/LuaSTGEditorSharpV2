@@ -1,17 +1,10 @@
 ﻿using DynamicData;
 using LinqSTG.Expression.ToLua.Serialization;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transformation;
 using Newtonsoft.Json;
-using NodeNetwork.Toolkit.NodeList;
 using NodeNetwork.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -21,14 +14,8 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator.Math;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator;
-using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTransformOperator;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 {
@@ -164,8 +151,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 
         private ShootNode shootNode;
 
-        public NodeListViewModel NodeList { get; } = new();
-
         public NodeCreationMenuViewModel NodeCreationMenu { get; } = new();
 
         private IEnumerable<PointPrediction> pointPredictions = [];
@@ -177,9 +162,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             shootNode = new ShootNode();
             network.Nodes.Add(shootNode);
             network.ConnectionFactory = (input, output) => new LinqSTGConnectionViewModel(network, input, output);
-
-            NodeList.Title = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_nodeList_title;
-            NodeList.EmptyLabel = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_nodeList_empty;
 
             var modifyNodes = network.Nodes
                 .Connect()
@@ -193,90 +175,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
                     pointPredictions = ls.SelectMany(pred => pred.Invoke(Parameter.Empty));
                     UpdatePrediction();
                 });
-
-            NodeList.AddNodeType(() => new ConstantFloatNode());
-            NodeList.AddNodeType(() => new ConstantIntNode());
-            NodeList.AddNodeType(() => new ConstantStringNode());
-            NodeList.AddNodeType(() => new RepeaterKeyNode());
-            NodeList.AddNodeType(() => new Vector2FromRotationDistanceNode());
-            NodeList.AddNodeType(() => new Vector2Node());
-            NodeList.AddNodeType(() => new Vector2SplitNode());
-
-            NodeList.AddNodeType(() => new AddNode());
-            NodeList.AddNodeType(() => new SubtractNode());
-            NodeList.AddNodeType(() => new MultiplyNode());
-            NodeList.AddNodeType(() => new DivideNode());
-            NodeList.AddNodeType(() => new ModuloNode());
-            NodeList.AddNodeType(() => new NegateNode());
-            NodeList.AddNodeType(() => new SinNode());
-            NodeList.AddNodeType(() => new CosNode());
-            NodeList.AddNodeType(() => new TanNode());
-            NodeList.AddNodeType(() => new ASinNode());
-            NodeList.AddNodeType(() => new ACosNode());
-            NodeList.AddNodeType(() => new ATanNode());
-            NodeList.AddNodeType(() => new DegToRadNode());
-            NodeList.AddNodeType(() => new RadToDegNode());
-            NodeList.AddNodeType(() => new AbsNode());
-            NodeList.AddNodeType(() => new SqrtNode());
-            NodeList.AddNodeType(() => new FloorNode());
-            NodeList.AddNodeType(() => new CeilNode());
-            NodeList.AddNodeType(() => new SignNode());
-            NodeList.AddNodeType(() => new ExpNode());
-            NodeList.AddNodeType(() => new LogNode());
-            NodeList.AddNodeType(() => new ATan2Node());
-            NodeList.AddNodeType(() => new PowNode());
-            NodeList.AddNodeType(() => new MinNode());
-            NodeList.AddNodeType(() => new MaxNode());
-            NodeList.AddNodeType(() => new ClampNode());
-            NodeList.AddNodeType(() => new LerpNode());
-            NodeList.AddNodeType(() => new FloatToIntNode());
-            NodeList.AddNodeType(() => new IntToFloatNode());
-            NodeList.AddNodeType(() => new MinMaxNode());
-            NodeList.AddNodeType(() => new Sample01Node());
-            NodeList.AddNodeType(() => new Sample01MinMaxNode());
-            NodeList.AddNodeType(() => new TakeRepeaterFromContextNode());
-            NodeList.AddNodeType(() => new TakeVariableFromContextNode());
-
-            NodeList.AddNodeType(() => new FromPointMovementNode());
-            NodeList.AddNodeType(() => new UniformVelocityMovementNode());
-            NodeList.AddNodeType(() => new UniformAccelerationMovementNode());
-
-            NodeList.AddNodeType(() => new MovementSumNode());
-            NodeList.AddNodeType(() => new MovementOffsetNode());
-            NodeList.AddNodeType(() => new MovementAfterTimeNode());
-            NodeList.AddNodeType(() => new MovementRotateNode());
-            NodeList.AddNodeType(() => new MovementScaleNode());
-            NodeList.AddNodeType(() => new MovementCartesianToPolarNode());
-            NodeList.AddNodeType(() => new MovementPolarToCartesianNode());
-            NodeList.AddNodeType(() => new MovementScaleTimeNode());
-            NodeList.AddNodeType(() => new MovementShiftTimeNode());
-
-            NodeList.AddNodeType(() => new MovementTransformInputTimeNode());
-            NodeList.AddNodeType(() => new MovementPredictNode());
-
-            NodeList.AddNodeType(() => new RepeatPatternNode());
-            NodeList.AddNodeType(() => new RepeatWithIntervalPatternNode());
-            NodeList.AddNodeType(() => new SingleDataPatternNode());
-            NodeList.AddNodeType(() => new SingleIntervalPatternNode());
-            NodeList.AddNodeType(() => new EmptyPatternNode());
-
-            NodeList.AddNodeType(() => new MapPatternNode());
-            NodeList.AddNodeType(() => new ExtrudePatternNode());
-            NodeList.AddNodeType(() => new ExtrudeConcatPatternNode());
-            NodeList.AddNodeType(() => new FilterPatternNode());
-            NodeList.AddNodeType(() => new ConcatPatternNode());
-            NodeList.AddNodeType(() => new ReversePatternNode());
-            NodeList.AddNodeType(() => new SkipPatternNode());
-            NodeList.AddNodeType(() => new TakePatternNode());
-            NodeList.AddNodeType(() => new SkipWhilePatternNode());
-            NodeList.AddNodeType(() => new TakeWhilePatternNode());
-            NodeList.AddNodeType(() => new TrimStartPatternNode());
-            NodeList.AddNodeType(() => new TrimEndPatternNode());
-            NodeList.AddNodeType(() => new TrimPatternNode());
-
-            NodeList.AddNodeType(() => new AssignNode());
-
-            NodeList.AddNodeType(() => new ShootNode());
         }
 
         private void UpdatePrediction()
