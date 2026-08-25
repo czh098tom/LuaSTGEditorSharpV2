@@ -1,0 +1,24 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "Sentence",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "text" },
+          "Caption": {
+            "Neutral": "Text",
+            "Localized": {
+              "zh": "文本"
+            }
+          },
+          "Editor": {
+            "Name": "multilineText"
+          }
+        }
+      ]
+    }
+  ]
+}
