@@ -8,8 +8,7 @@ public interface IPropertyItemListTerm
     IReadOnlyList<PropertyItemViewModelBase> GetViewModels(
         EditorNode nodeData,
         PropertyViewContext context,
-        int count)
-        => GetViewModels([nodeData], context, count);
+        int count);
 
     IReadOnlyList<PropertyItemViewModelBase> GetViewModels(
         IReadOnlyList<EditorNode> nodes,

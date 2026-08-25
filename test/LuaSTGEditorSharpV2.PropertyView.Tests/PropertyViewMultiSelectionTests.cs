@@ -8,6 +8,7 @@ using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
+using LuaSTGEditorSharpV2.PropertyView.Converter;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 using Xunit;
@@ -120,12 +121,99 @@ public class PropertyViewMultiSelectionTests
             new LocalServiceParam(document));
 
         var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
-        Assert.True(viewModel.ValueConflicted);
-        Assert.Equal(string.Empty, viewModel.Value);
+        Assert.True(viewModel.ValueProperty.HasConflict);
+        Assert.Equal(string.Empty, viewModel.ValueProperty.Value);
+
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+        viewModel.Value = "shared";
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(nodes, node => Assert.Equal("shared", node.Source.Properties["value"]));
+        Assert.False(viewModel.ValueProperty.HasConflict);
+        Assert.Equal("shared", viewModel.ValueProperty.Value);
     }
 
     [Fact]
-    public void ChildRowsKeepTheirPositionAsPlaceholderAndSingleListTabsAreHidden()
+    public void ExternalSourceChangesRefreshValueAndConflictNotifications()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("value", "same")),
+            CreateNode("TestType", ("value", "same")));
+        var nodes = GetSelectedNodes(document, "TestType");
+
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreatePropertyTerm(environment.Services, "value")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        var changedProperties = new List<string?>();
+        viewModel.ValueProperty.PropertyChanged += (_, e) => changedProperties.Add(e.PropertyName);
+
+        nodes[0].ChangeProperty("value", "different");
+
+        Assert.True(viewModel.ValueProperty.HasConflict);
+        Assert.Equal(string.Empty, viewModel.ValueProperty.Value);
+        Assert.Contains(nameof(BoundProperty.HasConflict), changedProperties);
+        Assert.Contains(nameof(BoundProperty.Value), changedProperties);
+
+        changedProperties.Clear();
+        nodes[1].ChangeProperty("value", "different");
+
+        Assert.False(viewModel.ValueProperty.HasConflict);
+        Assert.Equal("different", viewModel.ValueProperty.Value);
+        Assert.Contains(nameof(BoundProperty.HasConflict), changedProperties);
+        Assert.Contains(nameof(BoundProperty.Value), changedProperties);
+    }
+
+    [Fact]
+    public void BooleanEditorValueIsIndeterminateDuringConflict()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("value", "true")),
+            CreateNode("TestType", ("value", "false")));
+        var nodes = GetSelectedNodes(document, "TestType");
+
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreatePropertyTerm(environment.Services, "value")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+
+        var converter = new BooleanConflictConverter();
+        Assert.Null(converter.Convert(
+            [viewModel.ValueProperty.Value, viewModel.ValueProperty.HasConflict],
+            typeof(bool?),
+            null!,
+            CultureInfo.InvariantCulture));
+
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+        var convertedValues = converter.ConvertBack(
+            true,
+            [typeof(string), typeof(bool)],
+            null!,
+            CultureInfo.InvariantCulture);
+        viewModel.ValueProperty.Value = Assert.IsType<string>(convertedValues[0]);
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(nodes, node => Assert.Equal("true", node.Source.Properties["value"]));
+        Assert.False(viewModel.ValueProperty.HasConflict);
+        Assert.Equal("true", viewModel.ValueProperty.Value);
+    }
+
+    [Fact]
+    public void ChildRowsKeepTheirPositionAsPlaceholderAndSingleListTabsUseMultiSourceFlow()
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
@@ -149,7 +237,7 @@ public class PropertyViewMultiSelectionTests
             nodes,
             new LocalServiceParam(document));
 
-        Assert.Equal(2, multipleTabs.Count);
+        Assert.Equal(3, multipleTabs.Count);
         Assert.Collection(
             multipleTabs[0].Properties,
             first => Assert.IsType<BasicPropertyItemViewModel>(first),
@@ -161,6 +249,9 @@ public class PropertyViewMultiSelectionTests
                 Assert.Equal("此属性区域不支持多选", unsupported.Value);
             },
             second => Assert.IsType<BasicPropertyItemViewModel>(second));
+        var multipleCount = Assert.IsType<BasicPropertyItemViewModel>(
+            Assert.Single(multipleTabs[1].Properties));
+        Assert.Equal(nodes, multipleCount.SourceNodes);
 
         var singleTabs = environment.PropertyViewProvider.GetPropertyViewModelOfNode(
             nodes[0],
@@ -169,6 +260,65 @@ public class PropertyViewMultiSelectionTests
         Assert.Equal(3, singleTabs.Count);
         Assert.IsType<PropertyTabWrapperItemViewModel>(singleTabs[0].Properties[1]);
         Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(singleTabs[1].Properties));
+    }
+
+    [Fact]
+    public void SameCountSingleListSelectionCreatesSharedIndexedRows()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("count", "2"), ("item_0", "a"), ("item_1", "b")),
+            CreateNode("TestType", ("count", "2"), ("item_0", "a"), ("item_1", "b")));
+        var nodes = GetSelectedNodes(document, "TestType");
+
+        using var registration = environment.Register(
+            "TestType",
+            CreateSingleListTab(environment, "count"));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+
+        Assert.Equal(2, tabs.Count);
+        Assert.Collection(
+            tabs[0].Properties,
+            count => Assert.IsType<BasicPropertyItemViewModel>(count),
+            first => Assert.IsType<BasicPropertyItemViewModel>(first),
+            second => Assert.IsType<BasicPropertyItemViewModel>(second));
+
+        var secondItem = Assert.IsType<BasicPropertyItemViewModel>(tabs[0].Properties[2]);
+        Assert.Equal(nodes, secondItem.SourceNodes);
+        EditResult? editResult = null;
+        secondItem.OnEdit += (_, result) => editResult = result;
+
+        secondItem.Value = "changed";
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(nodes, node => Assert.Equal("changed", node.Source.Properties["item_1"]));
+    }
+
+    [Fact]
+    public void DifferentCountSingleListSelectionKeepsOnlyConflictedCount()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("count", "1"), ("item_0", "a")),
+            CreateNode("TestType", ("count", "2"), ("item_0", "a"), ("item_1", "b")));
+        var nodes = GetSelectedNodes(document, "TestType");
+
+        using var registration = environment.Register(
+            "TestType",
+            CreateSingleListTab(environment, "count"));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+
+        Assert.Equal(2, tabs.Count);
+        var count = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.True(count.ValueProperty.HasConflict);
+        Assert.Equal(nodes, count.SourceNodes);
     }
 
     [Fact]
@@ -263,11 +413,12 @@ public class PropertyViewMultiSelectionTests
     {
         var tab = new SingleListTabTerm<TestPropertyItemListTerm>(
             environment.Services,
-            environment.PropertyViewProvider);
+            environment.PropertyViewProvider,
+            environment.Services.GetRequiredService<DefaultValueServiceProvider>());
         SetProperty(tab, nameof(SingleListTabTerm<TestPropertyItemListTerm>.Count),
             CreatePropertyTerm(environment.Services, countKey));
         SetProperty(tab, nameof(SingleListTabTerm<TestPropertyItemListTerm>.VariableProperty),
-            new TestPropertyItemListTerm());
+            new TestPropertyItemListTerm(environment.Services));
         return tab;
     }
 
@@ -286,19 +437,17 @@ public class PropertyViewMultiSelectionTests
         setter!.Invoke(target, [value]);
     }
 
-    private sealed class TestPropertyItemListTerm : IPropertyItemListTerm
+    private sealed class TestPropertyItemListTerm(IServiceProvider services)
+        : PropertyItemListTermBase(services)
     {
-        public IReadOnlyList<PropertyItemViewModelBase> GetViewModels(
-            EditorNode nodeData,
-            PropertyViewContext context,
-            int count)
-            => [];
-
-        public IReadOnlyList<PropertyItemViewModelBase> GetViewModels(
+        public override IReadOnlyList<PropertyItemViewModelBase> GetViewModels(
             IReadOnlyList<EditorNode> nodes,
             PropertyViewContext context,
             int count)
-            => [];
+            => Enumerable.Range(0, count)
+                .Select(index => CreatePropertyTerm(ServiceProvider, $"item_{index}")
+                    .GetViewModel(nodes, context))
+                .ToArray();
     }
 
     private sealed class TestEnvironment : IDisposable
@@ -312,12 +461,6 @@ public class PropertyViewMultiSelectionTests
             services.AddLogging();
             services.AddSingleton<LocalizationService>();
             services.AddSingleton<DefaultValueServiceProvider>();
-            var tokenFactoryType = typeof(NodePropertyAccessToken).Assembly.GetType(
-                "LuaSTGEditorSharpV2.Core.NodePropertyAccessTokenFactory");
-            if (tokenFactoryType != null)
-            {
-                services.AddSingleton(tokenFactoryType);
-            }
             services.AddSingleton<PropertyEditWizardProviderService>();
             services.AddSingleton(typeof(IPropertyItemViewModelFactory<,>),
                 typeof(PropertyItemViewModelFactory<,>));

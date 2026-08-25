@@ -10,7 +10,7 @@ namespace LuaSTGEditorSharpV2.PropertyView;
 
 [Inject(ServiceLifetime.Singleton, typeof(IPropertyItemViewModelFactory<,>))]
 public class PropertyItemViewModelFactory<TViewModel, TTerm>(
-    IServiceProvider serviceProvider,
+    DefaultValueServiceProvider defaultValueServiceProvider,
     PropertyEditWizardProviderService propertyEditWizardProviderService)
     : IPropertyItemViewModelFactory<TViewModel, TTerm>
     where TTerm : PropertyItemTermBase
@@ -23,8 +23,7 @@ public class PropertyItemViewModelFactory<TViewModel, TTerm>(
         PropertyViewContext context)
     {
         var sources = nodes.Select(node => new PropertySource(
-            node,
-            new NodePropertyAccessToken(serviceProvider, node.Source, context))).ToArray();
+            node, defaultValueServiceProvider.GetToken(node.Source, context))).ToArray();
         var viewModel = new TViewModel();
         viewModel.Initialize(sources, context.LocalParam, propertyEditWizardProviderService);
         viewModel.Type = type;

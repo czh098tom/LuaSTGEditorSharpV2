@@ -132,6 +132,9 @@
   <data name="multi_selection_not_supported" xml:space="preserve">
     <value>This property area does not support multiple selection</value>
   </data>
+  <data name="multi_selection_conflict" xml:space="preserve">
+    <value>Values differ</value>
+  </data>
   <data name="panel_property_title" xml:space="preserve">
     <value>Properties</value>
   </data>

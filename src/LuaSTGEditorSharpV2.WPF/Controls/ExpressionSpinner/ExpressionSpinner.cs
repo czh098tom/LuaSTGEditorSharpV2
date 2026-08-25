@@ -29,6 +29,16 @@ namespace LuaSTGEditorSharpV2.WPF.Controls
             set => SetValue(StepProperty, value);
         }
 
+        public static readonly DependencyProperty WatermarkProperty =
+            DependencyProperty.Register(nameof(Watermark), typeof(object), typeof(ExpressionSpinner),
+                new PropertyMetadata(null));
+
+        public object? Watermark
+        {
+            get => GetValue(WatermarkProperty);
+            set => SetValue(WatermarkProperty, value);
+        }
+
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(ExpressionSpinner),
                 new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged));

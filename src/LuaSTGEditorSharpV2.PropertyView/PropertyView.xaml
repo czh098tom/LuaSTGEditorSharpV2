@@ -3,6 +3,7 @@
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:ce="clr-namespace:CommunityToolkit.Mvvm.ComponentModel;assembly=CommunityToolkit.Mvvm"
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
                     xmlns:lpve="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
                     xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
@@ -11,16 +12,24 @@
                     xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView"
                     xmlns:lpvc="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Converter">
     <lpvc:BooleanToWaterMarkConverter x:Key="BooleanToWaterMarkConverter"/>
+    <lpvc:BooleanConflictConverter x:Key="BooleanConflictConverter"/>
+    <lwc:BoolToVisibilityConverter x:Key="ConflictToVisibilityConverter"/>
+    <lwc:BoolToVisibilityConverter x:Key="ConflictToCollapsedConverter"
+                                   PositiveVisibility="Collapsed"
+                                   NegativeVisibility="Visible"/>
     <DataTemplate x:Key="property:default">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
                        Margin="5,0,5,0" />
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
             <xctk:WatermarkTextBox Grid.Column="1" Grid.ColumnSpan="2" 
                                    MinWidth="150"
                                    HorizontalAlignment="Stretch"
                                    Padding="0"
-                                   Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                   Watermark="{Binding ValueConflicted, Converter={StaticResource BooleanToWaterMarkConverter}}">
+                                   Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}"
+                                   Text="{Binding ValueProperty.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
             </xctk:WatermarkTextBox>
         </lsv:PropertyItemGrid>
     </DataTemplate>
@@ -67,23 +76,41 @@
 		<lsv:PropertyItemGrid>
 			<TextBlock Margin="5,0,5,0" 
                        Text="{Binding Name}"/>
+			<TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
 			<CheckBox Grid.Column="1"
                       MinWidth="150"
                       HorizontalAlignment="Stretch"
-                      IsChecked="{Binding Value, Mode=TwoWay}"/>
+                      Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}"
+                      IsThreeState="True">
+                <CheckBox.IsChecked>
+                    <MultiBinding Mode="TwoWay"
+                                  Converter="{StaticResource BooleanConflictConverter}">
+                        <Binding Path="ValueProperty.Value" Mode="TwoWay"/>
+                        <Binding Path="ValueProperty.HasConflict" Mode="OneWay"/>
+                    </MultiBinding>
+                </CheckBox.IsChecked>
+            </CheckBox>
 		</lsv:PropertyItemGrid>
 	</DataTemplate>
     <DataTemplate x:Key="property:number">
         <lsv:PropertyItemGrid>
             <TextBlock Margin="5,0,5,0"
                        Text="{Binding Name}"/>
-            <lwctrl:ExpressionSpinner Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <lwctrl:ExpressionSpinner Text="{Binding ValueProperty.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                       Step="{Binding Type.Parameters[Step]}"
                                       Grid.Column="1" Grid.ColumnSpan="2"
                                       MinWidth="150"
                                       Padding="-1"
                                       HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"/>
+                                      VerticalAlignment="Stretch"
+                                      Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}"/>
         </lsv:PropertyItemGrid>
     </DataTemplate>
 	<DataTemplate x:Key="property:vector2">
@@ -128,11 +155,19 @@
         <lsv:PropertyItemGrid>
             <TextBlock Margin="5,0,5,0" 
                        Text="{Binding Name}"/>
-            <ComboBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay}" IsEditable="True"
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <xctk:WatermarkComboBox Grid.Column="1"
+                      Text="{Binding ValueProperty.Value, Mode=TwoWay}"
+                      IsEditable="True"
                       Padding="0" MinWidth="150"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                      Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}"
                       ItemsSource="{Binding Type.Parameters[Options], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
-            <Button Grid.Column="2" VerticalAlignment="Stretch">
+            <Button Grid.Column="2" VerticalAlignment="Stretch"
+                    Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                       Stretch="Uniform"
                       HorizontalAlignment="Stretch"
@@ -151,11 +186,17 @@
         <lsv:PropertyItemGrid>
             <TextBlock Margin="5,0,5,0"
                        Text="{Binding Name}"/>
-            <TextBox Grid.Column="1" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <xctk:WatermarkTextBox Grid.Column="1" Text="{Binding ValueProperty.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                      MinWidth="150"
                      HorizontalAlignment="Stretch"
+                     Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}"
                      AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
-            <Button Grid.Column="2" Height="16" VerticalAlignment="Top">
+            <Button Grid.Column="2" Height="16" VerticalAlignment="Top"
+                    Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                           Stretch="Uniform"
                           HorizontalAlignment="Stretch"
@@ -174,7 +215,11 @@
         <lsv:PropertyItemGrid>
             <TextBlock Margin="5,0,5,0"
                        Text="{Binding Name}"/>
-            <TextBox Grid.Column="1"
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <xctk:WatermarkTextBox Grid.Column="1"
                      MinWidth="150"
                      MinHeight="64"
                      MaxHeight="160"
@@ -183,8 +228,10 @@
                      AcceptsReturn="True"
                      AcceptsTab="True"
                      TextWrapping="Wrap"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-            <Button Grid.Column="2" Height="16" VerticalAlignment="Top">
+                     Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}"
+                     Text="{Binding ValueProperty.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <Button Grid.Column="2" Height="16" VerticalAlignment="Top"
+                    Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                       Stretch="Uniform"
                       HorizontalAlignment="Stretch"
@@ -202,16 +249,21 @@
         <lsv:PropertyItemGrid>
             <TextBlock Margin="5,0,5,0" 
                        Text="{Binding Name}"/>
-            <Grid Grid.Column="1" Grid.ColumnSpan="2">
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <Grid Grid.Column="1" Grid.ColumnSpan="2"
+                  Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="36"/>
                     <ColumnDefinition Width="36"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0"
+                <xctk:WatermarkTextBox Grid.Column="0"
                          MinWidth="150"
                          HorizontalAlignment="Stretch"
-                         Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                         Text="{Binding ValueProperty.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                 <Button Grid.Column="1" Content="+" Command="{Binding Increase}"/>
                 <Button Grid.Column="2" Content="-" Command="{Binding Decrease}"/>
             </Grid>
@@ -221,14 +273,20 @@
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
                        Margin="5,0,5,0" />
-            <Grid Grid.Column="1">
-                <TextBox
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <Grid Grid.Column="1"
+                  Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
+                <xctk:WatermarkTextBox
                      MinWidth="150"
                      HorizontalAlignment="Stretch"
                      TextWrapping="Wrap"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                     Text="{Binding ValueProperty.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
             </Grid>
-            <Button Grid.Column="2" VerticalAlignment="Top">
+            <Button Grid.Column="2" VerticalAlignment="Top"
+                    Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                           Stretch="Uniform"
                           HorizontalAlignment="Stretch"
@@ -248,12 +306,18 @@
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 
                        Margin="5,0,5,0" />
-            <TextBox Grid.Column="1"
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <xctk:WatermarkTextBox Grid.Column="1"
                      MinWidth="150"
                      HorizontalAlignment="Stretch"
                      TextWrapping="Wrap"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-            <Button Grid.Column="2" Height="16" VerticalAlignment="Top">
+                     Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}"
+                     Text="{Binding ValueProperty.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <Button Grid.Column="2" Height="16" VerticalAlignment="Top"
+                    Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                           Stretch="Uniform"
                           HorizontalAlignment="Stretch"
@@ -270,9 +334,14 @@
     </DataTemplate>
     <DataTemplate x:Key="property:imagePreview">
         <lsv:PropertyItemGrid>
-            <Grid Grid.Column="0" Grid.ColumnSpan="3">
-                <lw:FileButton Margin="10,10" FilePath="{Binding Value}"
-                               Visibility="{Binding Value, Converter={StaticResource PathValidToVisibilityConverter}}"
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+                       Margin="5,0,5,0"
+                       Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
+                       Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+            <Grid Grid.Column="0" Grid.ColumnSpan="3"
+                  Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
+                <lw:FileButton Margin="10,10" FilePath="{Binding ValueProperty.Value}"
+                               Visibility="{Binding ValueProperty.Value, Converter={StaticResource PathValidToVisibilityConverter}}"
                                VerticalContentAlignment="Center" 
                                HorizontalContentAlignment="Center"
                                OverridesDefaultStyle="True" Background="Transparent">
@@ -300,7 +369,7 @@
                             </Setter>
                         </Style>
                     </lw:FileButton.Style>
-                    <lw:AutoScaleImage Source="{Binding Value}"/>
+                    <lw:AutoScaleImage Source="{Binding ValueProperty.Value}"/>
                 </lw:FileButton>
             </Grid>
         </lsv:PropertyItemGrid>

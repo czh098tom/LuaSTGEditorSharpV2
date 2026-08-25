@@ -29,7 +29,16 @@ public class BoundProperty: INotifyPropertyChanged
         get => _hasConflict;
         set
         {
+            if (_hasConflict == value)
+            {
+                return;
+            }
+
             _hasConflict = value;
+            if (value && _value.Length > 0)
+            {
+                SetValueWithoutPushingCommand(string.Empty);
+            }
             PropertyChanged?.Invoke(this, ConflictChangedEventArgs);
         }
     }

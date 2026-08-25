@@ -18,7 +18,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.ViewModel
 {
     public class BasicPropertyItemViewModel : NamedPropertyItemViewModel<PropertyItemTerm>
     {
-        public readonly BoundProperty ValueProperty = new();
+        public BoundProperty ValueProperty { get; } = new();
 
         public string Value
         {

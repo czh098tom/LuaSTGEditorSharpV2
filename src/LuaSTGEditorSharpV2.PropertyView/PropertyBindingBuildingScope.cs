@@ -17,10 +17,14 @@ public class PropertyBindingBuildingScope<TTerm>(NodePropertyCapture nodePropert
             Capture: nodeProperty,
             BoundProperties: [boundProperty],
             PullAction: value => boundProperty.SetValueWithoutPushingCommand(convertBack?.Invoke(value) ?? value),
-            EditResultResolver: () => new EditResult(
-                Commands.FromEnumerable(vm.SourceNodes.Select(
-                    n => CheckedCommand.Property.Modify(n.Document, n.GetPath(), nodeProperty.Key, convert?.Invoke(boundProperty.Value) ?? boundProperty.Value))),
-                vm.LocalServiceParam));
+            EditResultResolver: () =>
+            {
+                var value = convert?.Invoke(boundProperty.Value) ?? boundProperty.Value;
+                return new EditResult(
+                    Commands.FromEnumerable(vm.SourceNodes.Select(
+                        n => CheckedCommand.Property.Modify(n.Document, n.GetPath(), nodeProperty.Key, value))),
+                    vm.LocalServiceParam);
+            });
         addBindingCallback.Invoke(nodeProperty.Key, binding);
     }
 
@@ -40,11 +44,14 @@ public class PropertyBindingBuildingScope<TTerm>(NodePropertyCapture nodePropert
                     boundProperties[i].SetValueWithoutPushingCommand(decomposed[i]);
                 }
             },
-            EditResultResolver: () => new EditResult(
-                Commands.FromEnumerable(vm.SourceNodes.Select(n => CheckedCommand.Property.Modify(n.Document,
-                    n.GetPath(), nodeProperty.Key,
-                    compose(boundProperties.Select(bp => bp.Value).ToArray())))),
-                vm.LocalServiceParam));
+            EditResultResolver: () =>
+            {
+                var value = compose(boundProperties.Select(bp => bp.Value).ToArray());
+                return new EditResult(
+                    Commands.FromEnumerable(vm.SourceNodes.Select(n => CheckedCommand.Property.Modify(n.Document,
+                        n.GetPath(), nodeProperty.Key, value))),
+                    vm.LocalServiceParam);
+            });
         addBindingCallback.Invoke(nodeProperty.Key, binding);
     }
 
