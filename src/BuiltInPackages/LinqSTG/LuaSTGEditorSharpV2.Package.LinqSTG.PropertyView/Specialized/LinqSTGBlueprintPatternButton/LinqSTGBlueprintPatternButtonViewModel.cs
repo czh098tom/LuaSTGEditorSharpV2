@@ -1,17 +1,23 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.DependencyInjection;
 
-using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
 using LuaSTGEditorSharpV2.PropertyView;
-using LuaSTGEditorSharpV2.PropertyView.ViewModel;
+using LuaSTGEditorSharpV2.PropertyView.Configurable;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView.Specialized.LinqSTGBlueprintPatternButton
 {
-    public class LinqSTGBlueprintPatternButtonViewModel : BasicPropertyItemViewModel
+    public class LinqSTGBlueprintPatternButtonViewModel
+        : NamedPropertyItemViewModel<LinqSTGBlueprintPatternButtonItemTerm>
     {
+        private readonly BoundProperty _valueProperty = new();
+
+        public string Value
+        {
+            get => _valueProperty.Value;
+            set => _valueProperty.Value = value;
+        }
+
         private string _buttonCaption = string.Empty;
         public string ButtonCaption
         {
@@ -25,10 +31,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView.Specialized.LinqSTGBl
 
         public ICommand OpenWindow { get; }
 
-        public LinqSTGBlueprintPatternButtonViewModel(IReadOnlyList<EditorNode> editorNode, string? key,
-            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam,
-            PropertyEditWizardProviderService propertyEditWizardProvider)
-            : base(editorNode, key, isBatchSame, localServiceParam, propertyEditWizardProvider)
+        public LinqSTGBlueprintPatternButtonViewModel()
         {
             OpenWindow = new RelayCommand(() =>
             {
@@ -40,17 +43,16 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.PropertyView.Specialized.LinqSTGBl
                 Value = window.NetworkJson ?? string.Empty;
             });
         }
-    }
 
-    [Inject(ServiceLifetime.Singleton, typeof(IBasicPropertyItemViewModelFactory<LinqSTGBlueprintPatternButtonViewModel>))]
-    public class LinqSTGBlueprintPatternButtonViewModelFactory(PropertyEditWizardProviderService propertyEditWizardProviderService)
-        : IBasicPropertyItemViewModelFactory<LinqSTGBlueprintPatternButtonViewModel>
-    {
-        public LinqSTGBlueprintPatternButtonViewModel Create(IReadOnlyList<EditorNode> nodeData, string? key,
-            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam)
+        protected override void ConfigureViewModel(LinqSTGBlueprintPatternButtonItemTerm term)
         {
-            return new LinqSTGBlueprintPatternButtonViewModel(nodeData, key, isBatchSame, localServiceParam,
-                propertyEditWizardProviderService);
+            base.ConfigureViewModel(term);
+            ButtonCaption = term.ResolvedCaption;
+        }
+
+        protected override void ConfigureBinding(LinqSTGBlueprintPatternButtonItemTerm term)
+        {
+            Bind(term.Mapping).ToOne(_valueProperty);
         }
     }
 }
