@@ -44,6 +44,28 @@ namespace LuaSTGEditorSharpV2.PropertyView
                     }
                     return null;
                 }),
+                PropertyEditWizard.Create("code", serviceProvider, (vm, p) =>
+                {
+                    var editedValue = serviceProvider
+                        .GetRequiredService<ICodeEditDialogService>()
+                        .EditCode(vm.Name, vm.Value);
+                    if (editedValue is not null)
+                    {
+                        vm.Value = editedValue;
+                    }
+                    return null;
+                }),
+                PropertyEditWizard.Create("multilineText", serviceProvider, (vm, p) =>
+                {
+                    var editedValue = serviceProvider
+                        .GetRequiredService<IMultilineTextEditDialogService>()
+                        .EditText(vm.Name, vm.Value);
+                    if (editedValue is not null)
+                    {
+                        vm.Value = editedValue;
+                    }
+                    return null;
+                }),
             };
 
             return arr;

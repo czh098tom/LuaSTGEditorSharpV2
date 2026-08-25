@@ -170,6 +170,34 @@
             </Button>
         </lsv:PropertyItemGrid>
     </DataTemplate>
+    <DataTemplate x:Key="property:multilineText">
+        <lsv:PropertyItemGrid>
+            <TextBlock Margin="5,0,5,0"
+                       Text="{Binding Name}"/>
+            <TextBox Grid.Column="1"
+                     MinWidth="150"
+                     MinHeight="64"
+                     MaxHeight="160"
+                     HorizontalAlignment="Stretch"
+                     VerticalScrollBarVisibility="Auto"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     TextWrapping="Wrap"
+                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <Button Grid.Column="2" Height="16" VerticalAlignment="Top">
+                <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Stretch"
+                      Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction PassEventArgsToCommand="True"
+                                               Command="{Binding ShowEditWindow}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
     <DataTemplate x:Key="property:collectionCount">
         <lsv:PropertyItemGrid>
             <TextBlock Margin="5,0,5,0" 

@@ -69,6 +69,40 @@ public class PropertyViewMultiSelectionTests
     }
 
     [Fact]
+    public void CodeWizardEditCreatesCommandForEverySource()
+    {
+        var dialogService = new TestCodeEditDialogService("changed");
+        using var environment = new TestEnvironment(dialogService);
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("value", "same")),
+            CreateNode("TestType", ("value", "same")));
+        var nodes = GetSelectedNodes(document, "TestType");
+        var term = CreatePropertyTerm(environment.Services, "value");
+        SetProperty(
+            term,
+            nameof(PropertyItemTermBase.Editor),
+            new PropertyViewEditorType("code"));
+
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, term));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.ShowEditWindow!.Execute(null);
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(nodes, node => Assert.Equal("changed", node.Source.Properties["value"]));
+        Assert.Equal("same", dialogService.InitialValue);
+    }
+
+    [Fact]
     public void DifferentValuesUseExistingBindingConflictState()
     {
         using var environment = new TestEnvironment();
@@ -270,8 +304,9 @@ public class PropertyViewMultiSelectionTests
     private sealed class TestEnvironment : IDisposable
     {
         private readonly CultureInfo _previousCulture = CultureInfo.CurrentUICulture;
+        private readonly IDisposable? _codeWizardRegistration;
 
-        public TestEnvironment()
+        public TestEnvironment(ICodeEditDialogService? codeEditDialogService = null)
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -288,7 +323,24 @@ public class PropertyViewMultiSelectionTests
                 typeof(PropertyItemViewModelFactory<,>));
             services.AddSingleton<EditorNodeFactory>();
             services.AddSingleton<PropertyViewServiceProvider>();
+            if (codeEditDialogService is not null)
+            {
+                services.AddSingleton(codeEditDialogService);
+            }
             Services = services.BuildServiceProvider();
+
+            if (codeEditDialogService is not null)
+            {
+                var codeWizard = Assert.Single(
+                    new PropertyEditWizardRegisterer().GetServiceInstances(Services),
+                    wizard => wizard.Name == "code");
+                _codeWizardRegistration = Services
+                    .GetRequiredService<PropertyEditWizardProviderService>()
+                    .Register(
+                        "code",
+                        new PackageInfo(PackageManifest.CORE, string.Empty),
+                        codeWizard);
+            }
 
             Services.GetRequiredService<LocalizationService>()
                 .SetUICulture(CultureInfo.GetCultureInfo("zh-CN"));
@@ -322,6 +374,7 @@ public class PropertyViewMultiSelectionTests
 
         public void Dispose()
         {
+            _codeWizardRegistration?.Dispose();
             Services.GetRequiredService<LocalizationService>().SetUICulture(_previousCulture);
             Services.Dispose();
         }
