@@ -35,14 +35,8 @@ public class LocalVariablePropertyViewItemListTerm(IServiceProvider serviceProvi
         return properties;
     }
 
-    public sealed class ItemTerm : PropertyItemTermBase
+	public sealed class ItemTerm(IServiceProvider serviceProvider, PropertyViewEditorType? editor) : PropertyItemTermBase(serviceProvider)
     {
-        public ItemTerm(IServiceProvider serviceProvider, PropertyViewEditorType? editor)
-            : base(serviceProvider)
-        {
-            Editor = editor;
-        }
-
         public NodePropertyCapture NameRule { get; init; } = null!;
         public NodePropertyCapture ValueRule { get; init; } = null!;
 
@@ -50,7 +44,7 @@ public class LocalVariablePropertyViewItemListTerm(IServiceProvider serviceProvi
         {
             var factory = ServiceProvider.GetRequiredService<
                 IPropertyItemViewModelFactory<VariableDefinitionPropertyItemViewModel, ItemTerm>>();
-            return factory.Create(nodes, this, Editor, context);
+            return factory.Create(nodes, this, editor, context);
         }
     }
 }

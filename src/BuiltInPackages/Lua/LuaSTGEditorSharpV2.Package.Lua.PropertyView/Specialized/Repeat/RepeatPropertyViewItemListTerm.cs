@@ -37,13 +37,8 @@ public class RepeatPropertyViewItemListTerm(IServiceProvider serviceProvider)
         return properties;
     }
 
-    public sealed class ItemTerm : PropertyItemTermBase
+    public sealed class ItemTerm(IServiceProvider serviceProvider, PropertyViewEditorType? editor) : PropertyItemTermBase(serviceProvider)
     {
-        public ItemTerm(IServiceProvider serviceProvider, PropertyViewEditorType? editor)
-            : base(serviceProvider)
-        {
-            Editor = editor;
-        }
 
         public NodePropertyCapture Name { get; init; } = null!;
         public NodePropertyCapture Initial { get; init; } = null!;
@@ -55,7 +50,7 @@ public class RepeatPropertyViewItemListTerm(IServiceProvider serviceProvider)
         {
             var factory = ServiceProvider.GetRequiredService<
                 IPropertyItemViewModelFactory<RepeatVariableDefinitionPropertyItemViewModel, ItemTerm>>();
-            return factory.Create(nodes, this, Editor, context);
+            return factory.Create(nodes, this, editor, context);
         }
     }
 }
