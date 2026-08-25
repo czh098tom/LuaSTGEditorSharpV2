@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable;
 
-public abstract class PropertyItemTermBase(IServiceProvider serviceProvider) : IPropertyItemTerm
+public abstract class PropertyItemTermBase(IServiceProvider serviceProvider) : IMultiSourcePropertyItemTerm
 {
     [JsonProperty] public PropertyViewEditorType? Editor { get; protected set; }
 

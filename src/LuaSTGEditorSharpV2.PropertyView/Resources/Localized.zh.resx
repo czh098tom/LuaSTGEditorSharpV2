@@ -129,6 +129,9 @@
   <data name="native_view" xml:space="preserve">
     <value>原生视图</value>
   </data>
+  <data name="multi_selection_not_supported" xml:space="preserve">
+    <value>此属性区域不支持多选</value>
+  </data>
   <data name="panel_property_title" xml:space="preserve">
     <value>属性</value>
   </data>
