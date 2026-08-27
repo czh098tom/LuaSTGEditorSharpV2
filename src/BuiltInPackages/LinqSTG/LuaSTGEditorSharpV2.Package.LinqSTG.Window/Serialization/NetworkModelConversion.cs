@@ -17,11 +17,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
     {
         private static readonly Dictionary<string, Type> _nodeTypeRegistry = BuildNodeTypeRegistry();
 
-        public static NetworkModel FromViewModel(NetworkViewModel network)
+        public static NetworkModel FromViewModel(NetworkViewModel network, VariableListViewModel? variables = null)
         {
             if (network is null)
             {
-                throw new ArgumentNullException(nameof(network), "NetworkViewModel cannot be null.");
+                throw new ArgumentNullException(nameof(network));
             }
             var nodeList = network.Nodes.Items.OfType<LinqSTGNodeViewModel>().ToList();
             var connectionList = network.Connections.Items.ToList();
@@ -36,7 +36,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
             {
                 connections[i] = FromConnectionViewModel(connectionList[i], nodeList);
             }
-            return new(nodes, connections);
+            return new(nodes, connections, variables?.ToModel());
         }
 
         public static void ApplyToNetwork(this NetworkModel model, NetworkViewModel network)

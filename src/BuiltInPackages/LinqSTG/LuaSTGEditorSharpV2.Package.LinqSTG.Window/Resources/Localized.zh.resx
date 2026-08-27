@@ -130,6 +130,19 @@
   <data name="linqstg_window_label_end" xml:space="preserve">
     <value>结束：</value>
   </data>
+  <!-- Category D-2: Variable list panel -->
+  <data name="linqstg_window_varList_title" xml:space="preserve">
+    <value>变量列表</value>
+  </data>
+  <data name="linqstg_window_varList_add" xml:space="preserve">
+    <value>添加变量</value>
+  </data>
+  <data name="linqstg_window_varList_remove" xml:space="preserve">
+    <value>删除变量</value>
+  </data>
+  <data name="linqstg_window_varList_drag" xml:space="preserve">
+    <value>拖动排序，或拖入右侧蓝图区生成变量节点</value>
+  </data>
   <!-- Category C: Editor tooltips -->
   <data name="linqstg_window_intervalEditor_headClosed" xml:space="preserve">
     <value>闭头</value>
@@ -175,7 +188,13 @@
     <value>从上下文取出循环变量</value>
   </data>
   <data name="linqstg_window_node_takeVariable" xml:space="preserve">
-    <value>取出变量</value>
+    <value>取变量</value>
+  </data>
+  <data name="linqstg_window_node_variableFloat" xml:space="preserve">
+    <value>变量（浮点）</value>
+  </data>
+  <data name="linqstg_window_node_variableInt" xml:space="preserve">
+    <value>变量（整数）</value>
   </data>
   <data name="linqstg_window_node_fromPointMovement" xml:space="preserve">
     <value>从点生成运动</value>

@@ -1,3 +1,4 @@
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu;
 using System.ComponentModel;
 using System.Windows;
@@ -13,9 +14,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         private const double PreviewHalfWidth = 192.0;
         private const double PreviewBuffer = 10.0;
 
+        /// <summary>Drag payload format for variable list entries.</summary>
+        private const string VariableDragFormat = "LinqSTG.VariableItem";
+
         private MainViewModel _viewModel = null!;
         private NodeCreationMenuViewModel? _nodeCreationMenu;
         private Point _pendingNodePosition;
+
+        private VariableItemViewModel? _variableDragItem;
+        private Point _variableDragStart;
 
         public BlueprintPatternWindow()
         {
@@ -188,5 +195,131 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             NodeCreationPopup.IsOpen = false;
             _viewModel.AddNode(item.Entry, _pendingNodePosition);
         }
+
+        #region Variable list
+
+        private void AddVariableButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.VariableList.AddItem();
+        }
+
+        private void RemoveVariableButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement { DataContext: VariableItemViewModel item })
+            {
+                _viewModel.VariableList.RemoveItem(item);
+            }
+        }
+
+        /// <summary>
+        /// Commits name/value edits on Enter (the text boxes otherwise commit on
+        /// LostFocus) and reverts the edit on Escape.
+        /// </summary>
+        private void VariableTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is not TextBox textBox) return;
+            if (e.Key == Key.Enter)
+            {
+                textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+                textBox.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateTarget();
+                e.Handled = true;
+            }
+        }
+
+        private void VariableGrip_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement { DataContext: VariableItemViewModel item })
+            {
+                _variableDragItem = item;
+                _variableDragStart = e.GetPosition(null);
+            }
+        }
+
+        private void VariableGrip_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_variableDragItem is null)
+            {
+                return;
+            }
+            if (e.LeftButton != MouseButtonState.Pressed)
+            {
+                _variableDragItem = null;
+                return;
+            }
+
+            var position = e.GetPosition(null);
+            if (Math.Abs(position.X - _variableDragStart.X) < SystemParameters.MinimumHorizontalDragDistance &&
+                Math.Abs(position.Y - _variableDragStart.Y) < SystemParameters.MinimumVerticalDragDistance)
+            {
+                return;
+            }
+
+            var item = _variableDragItem;
+            _variableDragItem = null;
+            // Locked entries cannot be reordered inside the list, but they may
+            // still be dropped into the blueprint area.
+            var data = new DataObject(VariableDragFormat, item);
+            DragDrop.DoDragDrop((FrameworkElement)sender, data, DragDropEffects.Move | DragDropEffects.Copy);
+        }
+
+        private void VariableItemsControl_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = e.Data.GetDataPresent(VariableDragFormat) ? DragDropEffects.Move : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void VariableItemsControl_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData(VariableDragFormat) is not VariableItemViewModel item)
+            {
+                return;
+            }
+            e.Handled = true;
+            var items = _viewModel.VariableList.Items;
+            _viewModel.VariableList.MoveItem(items.IndexOf(item), ComputeVariableDropIndex(e));
+        }
+
+        /// <summary>
+        /// Index at which a dropped entry should be inserted: before the row whose
+        /// vertical midpoint is below the drop position, or at the end.
+        /// </summary>
+        private int ComputeVariableDropIndex(DragEventArgs e)
+        {
+            var position = e.GetPosition(VariableItemsControl);
+            var items = _viewModel.VariableList.Items;
+            var generator = VariableItemsControl.ItemContainerGenerator;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (generator.ContainerFromIndex(i) is not FrameworkElement container) continue;
+                var top = container.TranslatePoint(new Point(0, 0), VariableItemsControl).Y;
+                if (position.Y < top + container.ActualHeight / 2) return i;
+            }
+            return items.Count;
+        }
+
+        private void NetworkView_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = e.Data.GetDataPresent(VariableDragFormat) ? DragDropEffects.Copy : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void NetworkView_PreviewDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetData(VariableDragFormat) is not VariableItemViewModel item)
+            {
+                return;
+            }
+            e.Handled = true;
+            var position = ScreenToNetwork(e.GetPosition(NetworkView));
+            // The entry's value type decides the generated node variant.
+            _viewModel.AddPatternVariableNode(item.Name, item.IsInteger, position);
+        }
+
+        #endregion
     }
 }

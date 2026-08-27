@@ -108,6 +108,12 @@ namespace LinqSTG.Expression.ToLua
 
                 "ConstantString" => ConstantFromEditor(node, "value"),
 
+                // Variable list references: the name is assumed to be a variable
+                // defined in the outer scope (e.g. _infinite), so it is emitted
+                // verbatim as the scalar value. Both variants are Lua numbers.
+                "PatternVariableFloat" => VariableFromEditor(node, "name"),
+                "PatternVariableInt" => VariableFromEditor(node, "name"),
+
                 "Add" => InputShapeOr(inputs, "a") == PortShape.Vector2
                     ? new TypedLuaParser(_parser.IntrinsicAddVector2(
                         ParserOf(node, inputs, "a"),
@@ -455,6 +461,23 @@ namespace LinqSTG.Expression.ToLua
                 return (IntervalType)token.ToObject<int>();
             }
             return IntervalType.HeadClosed;
+        }
+
+        /// <summary>
+        /// Resolves a <c>PatternVariableFloat</c>/<c>PatternVariableInt</c> node's
+        /// "name" editor into a scalar parser that reads the outer-scope Lua
+        /// variable of that name (<c>local __val = &lt;name&gt;</c>), matching the
+        /// preview's behavior of looking the name up in the variable list.
+        /// </summary>
+        private TypedLuaParser VariableFromEditor(NodeModel node, string key)
+        {
+            if (node.Editors.TryGetValue(key, out var token) && token != null
+                && token.Type == JTokenType.String
+                && token.ToObject<string>() is { Length: > 0 } name)
+            {
+                return new TypedLuaParser(_parser.TakeVariableFromContext(_parser.ConstantString(name)), PortShape.Scalar);
+            }
+            return Unknown(node, key);
         }
     }
 }

@@ -551,6 +551,24 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_node_variableFloat 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_variableFloat {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_variableFloat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_node_variableInt 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_variableInt {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_variableInt", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_node_movementPredict 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_node_movementPredict {
@@ -1042,6 +1060,42 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         internal static string linqstg_window_title {
             get {
                 return ResourceManager.GetString("linqstg_window_title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_varList_add 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_varList_add {
+            get {
+                return ResourceManager.GetString("linqstg_window_varList_add", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_varList_drag 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_varList_drag {
+            get {
+                return ResourceManager.GetString("linqstg_window_varList_drag", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_varList_remove 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_varList_remove {
+            get {
+                return ResourceManager.GetString("linqstg_window_varList_remove", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_varList_title 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_varList_title {
+            get {
+                return ResourceManager.GetString("linqstg_window_varList_title", resourceCulture);
             }
         }
     }

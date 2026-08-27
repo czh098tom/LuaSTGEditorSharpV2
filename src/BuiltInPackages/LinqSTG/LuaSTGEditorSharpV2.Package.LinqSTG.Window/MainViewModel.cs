@@ -4,6 +4,7 @@ using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data;
 using Newtonsoft.Json;
 using NodeNetwork.ViewModels;
 using System;
@@ -153,7 +154,16 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 
         public NodeCreationMenuViewModel NodeCreationMenu { get; } = new();
 
+        /// <summary>
+        /// The variable list docked at the left edge of the blueprint area. Its
+        /// entries act as outer-scope variables for the preview evaluation.
+        /// </summary>
+        public VariableListViewModel VariableList { get; } = new();
+
         private IEnumerable<PointPrediction> pointPredictions = [];
+
+        /// <summary>Latest pattern producers of all Shoot nodes; re-invoked whenever the variable list changes.</summary>
+        private IReadOnlyList<Contextual<IEnumerable<PointPrediction>>> shootResults = Array.Empty<Contextual<IEnumerable<PointPrediction>>>();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -172,9 +182,24 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
                     .CombineLatest())
                 .Subscribe(ls =>
                 {
-                    pointPredictions = ls.SelectMany(pred => pred.Invoke(Parameter.Empty));
-                    UpdatePrediction();
+                    shootResults = ls.ToArray();
+                    UpdatePattern();
                 });
+
+            VariableList.Changed += (_, _) => UpdatePattern();
+        }
+
+        /// <summary>
+        /// Re-materializes the Shoot patterns against the current variable list:
+        /// the list entries are seeded into the root parameter's float scope, so
+        /// <see cref="ViewModel.Nodes.Data.PatternVariableNode"/> reads them by
+        /// name during preview evaluation.
+        /// </summary>
+        private void UpdatePattern()
+        {
+            var root = new Parameter { Floats = new FloatScope(VariableList.ToFloats()) };
+            pointPredictions = shootResults.SelectMany(pred => pred.Invoke(root));
+            UpdatePrediction();
         }
 
         private void UpdatePrediction()
@@ -208,11 +233,27 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Network.Nodes.Add(node);
         }
 
+        /// <summary>
+        /// Creates a variable reference node for a variable list entry dropped
+        /// into the blueprint area: int-typed entries produce the int variant,
+        /// float-typed entries the float variant. The node starts bound to the
+        /// entry's name.
+        /// </summary>
+        public void AddPatternVariableNode(string name, bool isInteger, System.Windows.Point position)
+        {
+            PatternVariableNodeBase node = isInteger
+                ? new PatternVariableIntNode()
+                : new PatternVariableFloatNode();
+            node.Position = position;
+            node.NameEditor.RawValue = name;
+            Network.Nodes.Add(node);
+        }
+
         public void Save()
         {
             try
             {
-                NetworkJson = JsonConvert.SerializeObject(NetworkModelConversion.FromViewModel(network));
+                NetworkJson = JsonConvert.SerializeObject(NetworkModelConversion.FromViewModel(network, VariableList));
             }
             catch (Exception)
             {
@@ -230,6 +271,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             {
                 var model = JsonConvert.DeserializeObject<NetworkModel>(NetworkJson);
                 model?.ApplyToNetwork(network);
+                VariableList.LoadFrom(model?.Variables);
             }
             catch (Exception)
             {

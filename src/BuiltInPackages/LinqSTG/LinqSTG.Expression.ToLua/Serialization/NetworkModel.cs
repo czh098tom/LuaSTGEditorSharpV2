@@ -1,8 +1,12 @@
+using Newtonsoft.Json;
+
 namespace LinqSTG.Expression.ToLua.Serialization
 {
     public record class NetworkModel
     (
         NodeModel[] Nodes,
-        ConnectionModel[] Connections
+        ConnectionModel[] Connections,
+        [property: JsonProperty("variables", NullValueHandling = NullValueHandling.Ignore)]
+        VariableItemModel[]? Variables = null
     );
 }
