@@ -3,10 +3,10 @@ using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable;
 
-public interface IPropertyItemListTerm
+public interface IMultiSourcePropertyItemListTerm : IPropertyItemListTerm
 {
     IReadOnlyList<PropertyItemViewModelBase> GetViewModels(
-        EditorNode nodeData,
+        IReadOnlyList<EditorNode> nodes,
         PropertyViewContext context,
         int count);
 }

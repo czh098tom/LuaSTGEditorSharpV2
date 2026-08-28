@@ -75,9 +75,11 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
             {
                 var counts = nodeData.Select(node => GetCount(node, context)).ToArray();
                 properties.Add(Count.GetViewModel(nodeData, context));
-                if (counts.Length > 0 && counts.All(count => count == counts[0]))
+                if (counts.Length > 0
+                    && counts.All(count => count == counts[0])
+                    && VariableProperty is IMultiSourcePropertyItemListTerm multiSourceVariableProperty)
                 {
-                    properties.AddRange(VariableProperty.GetViewModels(
+                    properties.AddRange(multiSourceVariableProperty.GetViewModels(
                         nodeData,
                         context,
                         counts[0]));

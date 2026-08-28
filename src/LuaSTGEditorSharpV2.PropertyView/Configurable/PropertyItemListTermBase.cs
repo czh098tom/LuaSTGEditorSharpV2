@@ -4,7 +4,8 @@ using LuaSTGEditorSharpV2.Core.Editor;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Configurable;
 
-public abstract class PropertyItemListTermBase(IServiceProvider serviceProvider) : IPropertyItemListTerm
+public abstract class PropertyItemListTermBase(IServiceProvider serviceProvider)
+    : IMultiSourcePropertyItemListTerm
 {
     protected IServiceProvider ServiceProvider { get; } = serviceProvider;
 
