@@ -88,6 +88,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MaxNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<ClampNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<LerpNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<RandomFloatNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<RandomIntNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<RandomSignNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<FloatToIntNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<IntToFloatNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<MinMaxNode>));

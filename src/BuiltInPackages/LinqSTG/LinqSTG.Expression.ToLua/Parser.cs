@@ -457,6 +457,13 @@ namespace LinqSTG.Expression.ToLua
         public LuaParser Clamp(LuaParser x, LuaParser lo, LuaParser hi) => ScalarFunc3(x, lo, hi, (a, b, c) => $"min(max({a}, {b}), {c})");
         public LuaParser Lerp(LuaParser a, LuaParser b, LuaParser t) => ScalarFunc3(a, b, t, (x, y, z) => $"{x} + ({y} - {x}) * {z}");
 
+        // --- Random helpers (LuaSTG runtime `ran` random generator object) ---
+        // ran:Float(start, end) samples [start, end); ran:Int(start, end)
+        // samples [start, end] inclusive; ran:Sign() returns -1 or 1.
+        public LuaParser RandomFloat(LuaParser start, LuaParser end) => ScalarFunc2(start, end, (a, b) => $"ran:Float({a}, {b})");
+        public LuaParser RandomInt(LuaParser start, LuaParser end) => ScalarFunc2(start, end, (a, b) => $"ran:Int({a}, {b})");
+        public LuaParser RandomSign() => (inner) => Single("local __val = ran:Sign()");
+
         public LuaParser UniformVelocityMovement(LuaParser vec)
         {
             string vx = GenId("__vx_"), vy = GenId("__vy_");

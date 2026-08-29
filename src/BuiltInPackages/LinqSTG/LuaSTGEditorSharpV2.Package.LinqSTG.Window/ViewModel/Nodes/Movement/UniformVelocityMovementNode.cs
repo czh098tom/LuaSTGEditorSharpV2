@@ -32,8 +32,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
 
             TitleColor = NodeColors.Movement;
 
-            OutputMovement.Value = InputVelocity.ValueChanged.Select(vec 
-                => Contextual.Create(dict 
+            OutputMovement.Value = InputVelocity.ValueChanged.Select(vec
+                => Contextual.Create(dict
                     => new Parametric<float, Vector2>(t => (vec?.Invoke(dict) ?? Vector2.Zero) * t)));
         }
     }

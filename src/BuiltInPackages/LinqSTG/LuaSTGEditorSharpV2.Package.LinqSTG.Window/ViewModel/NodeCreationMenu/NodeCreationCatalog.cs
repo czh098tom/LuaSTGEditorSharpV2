@@ -197,7 +197,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
 
         private static string ToKeySegment(string segment)
         {
-            return char.ToLowerInvariant(segment[0]) + segment[1..];
+            // Multi-word camel-case segments ("MovementOperator") must map to
+            // the fully lower-cased resource keys ("...category_movementoperator");
+            // lower-casing only the first character would miss them.
+            return segment.ToLowerInvariant();
         }
 
         private static NodeCreationCategory ToCategory(CategoryNode node, CultureInfo culture, string parentPath)

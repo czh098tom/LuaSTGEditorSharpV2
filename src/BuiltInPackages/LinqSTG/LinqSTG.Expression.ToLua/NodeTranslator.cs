@@ -177,6 +177,13 @@ namespace LinqSTG.Expression.ToLua
                 "Max" => new TypedLuaParser(_parser.Max(InputOrConstant(node, inputs, "a").LuaParser, InputOrConstant(node, inputs, "b").LuaParser), PortShape.Scalar),
                 "Clamp" => new TypedLuaParser(_parser.Clamp(InputOrConstant(node, inputs, "x").LuaParser, InputOrConstant(node, inputs, "min").LuaParser, InputOrConstant(node, inputs, "max").LuaParser), PortShape.Scalar),
                 "Lerp" => new TypedLuaParser(_parser.Lerp(InputOrConstant(node, inputs, "a").LuaParser, InputOrConstant(node, inputs, "b").LuaParser, InputOrConstant(node, inputs, "t").LuaParser), PortShape.Scalar),
+                "RandomFloat" => new TypedLuaParser(_parser.RandomFloat(
+                    InputOrConstant(node, inputs, "start").LuaParser,
+                    InputOrConstant(node, inputs, "end").LuaParser), PortShape.Scalar),
+                "RandomInt" => new TypedLuaParser(_parser.RandomInt(
+                    InputOrConstant(node, inputs, "start").LuaParser,
+                    InputOrConstant(node, inputs, "end").LuaParser), PortShape.Scalar),
+                "RandomSign" => new TypedLuaParser(_parser.RandomSign(), PortShape.Scalar),
 
                 "FloatToInt" => new TypedLuaParser(_parser.FloatToInt(
                     InputOrUnknown(node, inputs, "float").LuaParser), PortShape.Scalar),

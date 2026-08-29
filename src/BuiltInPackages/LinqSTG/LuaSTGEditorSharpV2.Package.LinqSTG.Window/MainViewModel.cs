@@ -160,6 +160,25 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         /// </summary>
         public VariableListViewModel VariableList { get; } = new();
 
+        /// <summary>
+        /// Random seed for the preview evaluation, configured in the bar docked
+        /// to the bottom of the blueprint area. It is seeded into the root
+        /// parameter so every random node derives its values from it, making
+        /// the preview reproducible and stable while dragging the progress
+        /// slider.
+        /// </summary>
+        public int Seed
+        {
+            get => seed;
+            set
+            {
+                seed = value;
+                RaisePropertyChanged();
+                UpdatePattern();
+            }
+        }
+        private int seed;
+
         private IEnumerable<PointPrediction> pointPredictions = [];
 
         /// <summary>Latest pattern producers of all Shoot nodes; re-invoked whenever the variable list changes.</summary>
@@ -197,8 +216,18 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         /// </summary>
         private void UpdatePattern()
         {
-            var root = new Parameter { Floats = new FloatScope(VariableList.ToFloats()) };
-            pointPredictions = shootResults.SelectMany(pred => pred.Invoke(root));
+            // DemoScript 宿主的 GeneratePredictions：求值后立刻物化（ToArray），
+            // PointShooter.Shoot 是 yield 迭代器、SelectMany 也是惰性的——不物化的话
+            // UpdatePrediction 每次遍历（拖动进度条每一帧）都会重新枚举整个模式、
+            // 重新执行蓝图求值（含随机抽样）。
+            // 随机源对应 TestRandom 顶部的 var randomizer = new Random(seed)：
+            // 每次物化新建并挂到根环境，随机值只在模式枚举期抽取。
+            var root = new Parameter
+            {
+                Floats = new FloatScope(VariableList.ToFloats()),
+                Randomizer = new Random(seed),
+            };
+            pointPredictions = shootResults.SelectMany(pred => pred.Invoke(root)).ToArray();
             UpdatePrediction();
         }
 
@@ -253,7 +282,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         {
             try
             {
-                NetworkJson = JsonConvert.SerializeObject(NetworkModelConversion.FromViewModel(network, VariableList));
+                var model = NetworkModelConversion.FromViewModel(network, VariableList) with { Seed = seed };
+                NetworkJson = JsonConvert.SerializeObject(model);
             }
             catch (Exception)
             {
@@ -270,6 +300,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             try
             {
                 var model = JsonConvert.DeserializeObject<NetworkModel>(NetworkJson);
+                Seed = model?.Seed ?? 0;
                 model?.ApplyToNetwork(network);
                 VariableList.LoadFrom(model?.Variables);
             }

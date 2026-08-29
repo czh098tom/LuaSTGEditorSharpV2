@@ -7,6 +7,8 @@ namespace LinqSTG.Expression.ToLua.Serialization
         NodeModel[] Nodes,
         ConnectionModel[] Connections,
         [property: JsonProperty("variables", NullValueHandling = NullValueHandling.Ignore)]
-        VariableItemModel[]? Variables = null
+        VariableItemModel[]? Variables = null,
+        [property: JsonProperty("seed")]
+        int Seed = 0
     );
 }

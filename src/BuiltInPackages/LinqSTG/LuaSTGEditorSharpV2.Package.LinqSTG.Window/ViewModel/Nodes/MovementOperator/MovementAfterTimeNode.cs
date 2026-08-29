@@ -37,18 +37,21 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
             OutputMovement.Value = InputMovement.ValueChanged
                 .CombineLatest(InputSwitchTime.ValueChanged, InputAfter.ValueChanged,
                     (movement, switchTime, after)
-                        => Contextual.Create(dict =>
-                        {
-                            var source = movement?.Invoke(dict)
-                                ?? new Parametric<float, Vector2>(_ => Vector2.Zero);
-                            var afterMovement = after?.Invoke(dict)
-                                ?? new Parametric<float, Vector2>(_ => Vector2.Zero);
-                            var t = switchTime?.Invoke(dict) ?? 0f;
-                            return new Parametric<float, Vector2>(time =>
-                                time < t
+                        // 与 Lua 翻译一致：运动函数每帧执行（m1 在两个分支里展开、
+                        // 输入捕获 do-block 都在每帧循环内），所以输入链在每个
+                        // 采样时间重新求值——接到 Movement 侧的随机节点每帧重掷。
+                        => Contextual.Create(dict
+                            => new Parametric<float, Vector2>(time =>
+                            {
+                                var source = movement?.Invoke(dict)
+                                    ?? new Parametric<float, Vector2>(_ => Vector2.Zero);
+                                var afterMovement = after?.Invoke(dict)
+                                    ?? new Parametric<float, Vector2>(_ => Vector2.Zero);
+                                var t = switchTime?.Invoke(dict) ?? 0f;
+                                return time < t
                                     ? source.Predict(time)
-                                    : afterMovement.Predict(time - t) + source.Predict(t));
-                        }));
+                                    : afterMovement.Predict(time - t) + source.Predict(t);
+                            })));
         }
     }
 }

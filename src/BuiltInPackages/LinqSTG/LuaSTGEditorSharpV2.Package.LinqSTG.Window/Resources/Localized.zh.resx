@@ -130,6 +130,9 @@
   <data name="linqstg_window_label_end" xml:space="preserve">
     <value>结束：</value>
   </data>
+  <data name="linqstg_window_label_randomSeed" xml:space="preserve">
+    <value>随机种子：</value>
+  </data>
   <!-- Category D-2: Variable list panel -->
   <data name="linqstg_window_varList_title" xml:space="preserve">
     <value>变量列表</value>
