@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LuaSTGEditorSharpV2.PropertyView\LuaSTGEditorSharpV2.PropertyView.csproj" />
+    <ProjectReference Include="..\..\src\LuaSTGEditorSharpV2.Dialog\LuaSTGEditorSharpV2.Dialog.csproj" />
   </ItemGroup>
 
 </Project>
