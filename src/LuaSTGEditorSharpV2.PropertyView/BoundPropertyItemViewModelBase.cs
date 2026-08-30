@@ -19,6 +19,11 @@ public abstract class BoundPropertyItemViewModelBase<TTerm> : PropertyItemViewMo
         base.Initialize(sources.Select(ps => ps.Node).ToList(), localServiceParam,
             propertyEditWizardProviderService);
         _tokens = sources.Select(ps => ps.Token).ToList();
+        foreach (var source in sources)
+        {
+            source.Node.OnPropertyAdded += HandleEditorNodeOnPropertyAdded;
+            source.Node.OnPropertyRemoved += HandleEditorNodeOnPropertyRemoved;
+        }
     }
 
     public void Configure(TTerm term)
@@ -31,9 +36,15 @@ public abstract class BoundPropertyItemViewModelBase<TTerm> : PropertyItemViewMo
 
     protected abstract void ConfigureBinding(TTerm term);
 
-    protected PropertyBindingBuildingScope<TTerm> Bind(NodePropertyCapture capture)
+    protected PropertyBindingBuildingScope<TTerm> Bind(
+        NodePropertyCapture capture,
+        bool shouldRefreshView = false)
     {
-        return new PropertyBindingBuildingScope<TTerm>(capture, this, AddBinding);
+        return new PropertyBindingBuildingScope<TTerm>(
+            capture,
+            this,
+            shouldRefreshView,
+            AddBinding);
     }
 
     protected void ForwardValueChanges(BoundProperty boundProperty, string propertyName)
@@ -71,17 +82,51 @@ public abstract class BoundPropertyItemViewModelBase<TTerm> : PropertyItemViewMo
         }
     }
 
-    protected override void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e)
+    private void RefreshBinding(string key)
     {
-        if (_bindings.TryGetValue(e.Key, out var binding))
+        if (_bindings.TryGetValue(key, out var binding))
         {
             var values = _tokens.Select(binding.Capture.Capture).ToArray();
             var hasConflict = values.Any(v => v != values[0]);
             binding.HasConflict = hasConflict;
             if (!hasConflict)
             {
-                binding.PullAction.Invoke(e.NewValue);
+                binding.PullAction.Invoke(values[0]);
             }
         }
+    }
+
+    private void HandleEditorNodeOnPropertyAdded(
+        object? sender,
+        EditorNodePropertyAddedEventArgs e)
+    {
+        RefreshBinding(e.Key);
+    }
+
+    private void HandleEditorNodeOnPropertyRemoved(
+        object? sender,
+        EditorNodePropertyRemovedEventArgs e)
+    {
+        RefreshBinding(e.Key);
+    }
+
+    protected override void HandleEditorNodeOnPropertyChanged(
+        object? sender,
+        EditorNodePropertyChangedEventArgs e)
+    {
+        RefreshBinding(e.Key);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            foreach (var sourceNode in SourceNodes)
+            {
+                sourceNode.OnPropertyAdded -= HandleEditorNodeOnPropertyAdded;
+                sourceNode.OnPropertyRemoved -= HandleEditorNodeOnPropertyRemoved;
+            }
+        }
+        base.Dispose(disposing);
     }
 }

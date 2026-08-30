@@ -37,5 +37,10 @@ namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
                 }
             });
         }
+
+        protected override void ConfigureBinding(PropertyItemTerm term)
+        {
+            Bind(term.Mapping, shouldRefreshView: true).ToOne(ValueProperty);
+        }
     }
 }

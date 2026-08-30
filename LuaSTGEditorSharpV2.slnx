@@ -36,6 +36,7 @@
     <File Path="test/test.lstgxml" />
     <Project Path="test/LuaSTGEditorSharpV2.Core.Command.Tests/LuaSTGEditorSharpV2.Core.Command.Tests.csproj" />
     <Project Path="test/LuaSTGEditorSharpV2.Core.Tests/LuaSTGEditorSharpV2.Core.Tests.csproj" />
+    <Project Path="test/LuaSTGEditorSharpV2.PropertyView.Tests/LuaSTGEditorSharpV2.PropertyView.Tests.csproj" />
     <Project Path="test/LuaSTGEditorSharpV2.Core.CodeGenerator.Tests/LuaSTGEditorSharpV2.Core.CodeGenerator.Tests.csproj" />
   </Folder>
 </Solution>

@@ -6,10 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Core.Parsing.Facade;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.Converter;
+using LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount;
+using LuaSTGEditorSharpV2.PropertyView.Specialized.Vector;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
+using LuaSTGEditorSharpV2.ViewModel;
 
 using Xunit;
 
@@ -136,6 +140,57 @@ public class PropertyViewMultiSelectionTests
     }
 
     [Fact]
+    public void SameValueAssignmentDoesNotEmitEditWithoutConflict()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("value", "same")),
+            CreateNode("TestType", ("value", "same")));
+        var nodes = GetSelectedNodes(document, "TestType");
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreatePropertyTerm(environment.Services, "value")));
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.Value = "same";
+
+        Assert.Null(editResult);
+    }
+
+    [Fact]
+    public void SameDisplayedValueAssignmentStillResolvesConflict()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("value", "first")),
+            CreateNode("TestType", ("value", "second")));
+        var nodes = GetSelectedNodes(document, "TestType");
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreatePropertyTerm(environment.Services, "value")));
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.True(viewModel.ValueProperty.HasConflict);
+        Assert.Equal(string.Empty, viewModel.Value);
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.Value = string.Empty;
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(nodes, node => Assert.Equal(string.Empty, node.Source.Properties["value"]));
+        Assert.False(viewModel.ValueProperty.HasConflict);
+    }
+
+    [Fact]
     public void ExternalSourceChangesRefreshValueAndConflictNotifications()
     {
         using var environment = new TestEnvironment();
@@ -169,6 +224,196 @@ public class PropertyViewMultiSelectionTests
         Assert.Equal("different", viewModel.ValueProperty.Value);
         Assert.Contains(nameof(BoundProperty.HasConflict), changedProperties);
         Assert.Contains(nameof(BoundProperty.Value), changedProperties);
+    }
+
+    [Fact]
+    public void ExternalPropertyAddAndRemoveRefreshBoundValue()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(CreateNode("TestType"));
+        var node = Assert.Single(GetSelectedNodes(document, "TestType"));
+
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(
+                environment,
+                CreatePropertyTerm(environment.Services, "value", "fallback")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfNode(
+            node,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.Equal("fallback", viewModel.Value);
+
+        node.AddProperty("value", "added");
+
+        Assert.Equal("added", viewModel.Value);
+
+        node.RemoveProperty("value");
+
+        Assert.Equal("fallback", viewModel.Value);
+    }
+
+    [Fact]
+    public void BatchEditAddsMissingPropertyAndRefreshesThroughEvents()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("value", "same")),
+            CreateNode("TestType"));
+        var nodes = GetSelectedNodes(document, "TestType");
+
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(
+                environment,
+                CreatePropertyTerm(environment.Services, "value", "same")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.False(viewModel.ValueProperty.HasConflict);
+        Assert.Equal("same", viewModel.Value);
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.Value = "changed";
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(nodes, node => Assert.Equal("changed", node.Source.Properties["value"]));
+        Assert.False(viewModel.ValueProperty.HasConflict);
+        Assert.Equal("changed", viewModel.Value);
+    }
+
+    [Fact]
+    public void PropertyPagePublishesOrdinaryAndStructuralRefreshPolicies()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("value", "initial"), ("count", "1")));
+        var node = Assert.Single(GetSelectedNodes(document, "TestType"));
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(
+                environment,
+                CreatePropertyTerm(environment.Services, "value"),
+                CreateCollectionCountTerm(environment.Services, "count")));
+        using var page = new PropertyPageViewModel(environment.Services);
+        bool? shouldRefreshView = null;
+        page.OnCommandPublishing += (_, args) => shouldRefreshView = args.ShouldRefreshView;
+        page.HandleSelectedNodeChanged(
+            this,
+            new DockingViewModelBase.SelectedNodeChangedEventArgs
+            {
+                DocumentModel = document,
+                EditorNodes = [node],
+            });
+        var ordinary = Assert.IsType<BasicPropertyItemViewModel>(page.Tabs[0].Properties[0]);
+        var count = Assert.IsType<CollectionCountPropertyItemViewModel>(page.Tabs[0].Properties[1]);
+
+        ordinary.Value = "changed";
+
+        Assert.Equal(false, shouldRefreshView);
+
+        shouldRefreshView = null;
+        count.Increase.Execute(null);
+
+        Assert.Equal(true, shouldRefreshView);
+    }
+
+    [Fact]
+    public void Vector2ToManyPopulatesAndComposesComponentEdits()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("x", "y"))));
+        var node = Assert.Single(GetSelectedNodes(document, "TestType"));
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreateVector2Term(environment.Services, "vector")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfNode(
+            node,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.Equal("x", viewModel.X);
+        Assert.Equal("y", viewModel.Y);
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.X = "x";
+
+        Assert.Null(editResult);
+
+        viewModel.X = "changed";
+
+        Assert.NotNull(editResult?.Command);
+        Assert.False(editResult!.ShouldRefreshView);
+        document.ExecuteCommand(editResult.Command!);
+        Assert.Equal(
+            Vector2EditHelper.Compose("changed", "y"),
+            node.Source.Properties["vector"]);
+        Assert.Equal("changed", viewModel.X);
+        Assert.Equal("y", viewModel.Y);
+    }
+
+    [Fact]
+    public void ExternalVector2ChangePullsBothComponents()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("x", "y"))));
+        var node = Assert.Single(GetSelectedNodes(document, "TestType"));
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreateVector2Term(environment.Services, "vector")));
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfNode(
+            node,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+
+        node.ChangeProperty("vector", Vector2EditHelper.Compose("newX", "newY"));
+
+        Assert.Equal("newX", viewModel.X);
+        Assert.Equal("newY", viewModel.Y);
+    }
+
+    [Fact]
+    public void Vector2MultiSourceConflictUsesWholeValuePolicy()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("sameX", "firstY"))),
+            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("sameX", "secondY"))));
+        var nodes = GetSelectedNodes(document, "TestType");
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreateVector2Term(environment.Services, "vector")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.Equal(string.Empty, viewModel.X);
+        Assert.Equal(string.Empty, viewModel.Y);
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.X = "sharedX";
+        viewModel.Y = "sharedY";
+
+        Assert.NotNull(editResult?.Command);
+        Assert.False(editResult!.ShouldRefreshView);
+        document.ExecuteCommand(editResult.Command!);
+        Assert.All(
+            nodes,
+            node => Assert.Equal(
+                Vector2EditHelper.Compose("sharedX", "sharedY"),
+                node.Source.Properties["vector"]));
+        Assert.Equal("sharedX", viewModel.X);
+        Assert.Equal("sharedY", viewModel.Y);
     }
 
     [Fact]
@@ -392,10 +637,40 @@ public class PropertyViewMultiSelectionTests
             .Where(node => node.Source.TypeUID == typeUid)
             .ToArray();
 
-    private static PropertyItemTerm CreatePropertyTerm(IServiceProvider services, string key)
+    private static PropertyItemTerm CreatePropertyTerm(
+        IServiceProvider services,
+        string key,
+        string defaultValue = "")
     {
         var term = new PropertyItemTerm(services);
-        SetProperty(term, nameof(PropertyItemTerm.Mapping), NodePropertyCapture.FromKey(key));
+        SetProperty(
+            term,
+            nameof(PropertyItemTerm.Mapping),
+            NodePropertyCapture.FromKey(key, defaultValue));
+        return term;
+    }
+
+    private static CollectionCountPropertyItemTerm CreateCollectionCountTerm(
+        IServiceProvider services,
+        string key)
+    {
+        var term = new CollectionCountPropertyItemTerm(services);
+        SetProperty(
+            term,
+            nameof(PropertyItemTerm.Mapping),
+            NodePropertyCapture.FromKey(key));
+        return term;
+    }
+
+    private static Vector2PropertyItemTerm CreateVector2Term(
+        IServiceProvider services,
+        string key)
+    {
+        var term = new Vector2PropertyItemTerm(services);
+        SetProperty(
+            term,
+            nameof(PropertyItemTerm.Mapping),
+            NodePropertyCapture.FromKey(key));
         return term;
     }
 

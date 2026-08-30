@@ -7,7 +7,10 @@ using LuaSTGEditorSharpV2.PropertyView.Configurable;
 
 namespace LuaSTGEditorSharpV2.PropertyView;
 
-public class PropertyBindingBuildingScope<TTerm>(NodePropertyCapture nodeProperty, BoundPropertyItemViewModelBase<TTerm> vm,
+public class PropertyBindingBuildingScope<TTerm>(
+        NodePropertyCapture nodeProperty,
+        BoundPropertyItemViewModelBase<TTerm> vm,
+        bool shouldRefreshView,
         Action<string, PropertyBinding> addBindingCallback)
     where TTerm: class
 {
@@ -23,6 +26,7 @@ public class PropertyBindingBuildingScope<TTerm>(NodePropertyCapture nodePropert
                 return new EditResult(
                     Commands.FromEnumerable(vm.SourceNodes.Select(
                         n => CheckedCommand.Property.Modify(n.Document, n.GetPath(), nodeProperty.Key, value))),
+                    shouldRefreshView,
                     vm.LocalServiceParam);
             });
         addBindingCallback.Invoke(nodeProperty.Key, binding);
@@ -50,6 +54,7 @@ public class PropertyBindingBuildingScope<TTerm>(NodePropertyCapture nodePropert
                 return new EditResult(
                     Commands.FromEnumerable(vm.SourceNodes.Select(n => CheckedCommand.Property.Modify(n.Document,
                         n.GetPath(), nodeProperty.Key, value))),
+                    shouldRefreshView,
                     vm.LocalServiceParam);
             });
         addBindingCallback.Invoke(nodeProperty.Key, binding);

@@ -11,6 +11,10 @@ public class BoundProperty: INotifyPropertyChanged
         get => _value;
         set
         {
+            if (_value == value && !_hasConflict)
+            {
+                return;
+            }
             _value = value;
             PropertyChanged?.Invoke(this, ValueChangedEventArgs);
             EditRequested?.Invoke(this, EventArgs.Empty);
