@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:s="clr-namespace:System;assembly=mscorlib"
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:lwb="clr-namespace:LuaSTGEditorSharpV2.WPF.Behavior;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:swm="clr-namespace:System.Windows.Media;assembly=PresentationCore">
     <s:Double x:Key="inspector:text_size">15</s:Double>
     <swm:FontFamily x:Key="inspector:font_family"></swm:FontFamily>
@@ -13,12 +14,20 @@
 			</Style>
 			<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource font_setting}"/>
 			<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource font_setting}"/>
+			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource font_setting}">
+				<Setter Property="Padding" Value="3"/>
+				<Setter Property="VerticalAlignment" Value="Top"/>
+				<Setter Property="lwb:EditorLayoutBehavior.MeasureTextLineHeight" Value="True"/>
+				<Setter Property="Height"
+						Value="{Binding RelativeSource={RelativeSource Self},
+										Path=(lwb:EditorLayoutBehavior.MeasuredEditorHeight)}"/>
+			</Style>
 			<Style TargetType="{x:Type xctk:WatermarkTextBox}" BasedOn="{StaticResource font_setting}">
 				<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
 				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
 				<Setter Property="BorderThickness" Value="1"/>
-				<Setter Property="Padding" Value="3"/>
+				<Setter Property="Padding" Value="0"/>
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="{x:Type xctk:WatermarkTextBox}">
@@ -74,92 +83,13 @@
 				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
 				<Setter Property="BorderThickness" Value="1"/>
-				<Setter Property="Padding" Value="3"/>
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type xctk:WatermarkComboBox}">
-							<Grid>
-								<ToggleButton x:Name="ToggleButton"
-											  Focusable="False"
-											  ClickMode="Press"
-											  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-											  Background="{TemplateBinding Background}"
-											  BorderBrush="{TemplateBinding BorderBrush}"
-											  BorderThickness="{TemplateBinding BorderThickness}">
-									<ToggleButton.Template>
-										<ControlTemplate TargetType="ToggleButton">
-											<Border Background="{TemplateBinding Background}"
-													BorderBrush="{TemplateBinding BorderBrush}"
-													BorderThickness="{TemplateBinding BorderThickness}">
-												<Path x:Name="Arrow"
-													  Data="M0,0 L3,3 L6,0"
-													  HorizontalAlignment="Right"
-													  VerticalAlignment="Center"
-													  Margin="0,0,6,0"
-													  Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-											</Border>
-										</ControlTemplate>
-									</ToggleButton.Template>
-								</ToggleButton>
-								<ContentPresenter x:Name="ContentPresenter"
-												  Content="{TemplateBinding SelectionBoxItem}"
-												  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-												  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-												  ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
-												  Margin="{TemplateBinding Padding}"
-												  VerticalAlignment="Center"
-												  IsHitTestVisible="False"/>
-								<TextBox x:Name="PART_EditableTextBox"
-										 Margin="{TemplateBinding Padding}"
-										 VerticalAlignment="Center"
-										 HorizontalAlignment="Left"
-										 Background="Transparent"
-										 BorderThickness="0"
-										 Foreground="{TemplateBinding Foreground}"
-										 Visibility="Collapsed"
-										 Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-								<ContentControl x:Name="PART_WatermarkHost"
-												  Content="{TemplateBinding Watermark}"
-												  Margin="{TemplateBinding Padding}"
-												  VerticalAlignment="Center"
-												  HorizontalAlignment="Left"
-												  IsHitTestVisible="False"
-												  Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
-												  Visibility="Collapsed"/>
-								<Popup x:Name="PART_Popup"
-									   AllowsTransparency="True"
-									   IsOpen="{TemplateBinding IsDropDownOpen}"
-									   Placement="Bottom">
-									<Border Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-											BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
-											BorderThickness="1"
-											MinWidth="{TemplateBinding ActualWidth}"
-											MaxHeight="{TemplateBinding MaxDropDownHeight}">
-										<ScrollViewer>
-											<ItemsPresenter/>
-										</ScrollViewer>
-									</Border>
-								</Popup>
-							</Grid>
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsEditable" Value="True">
-									<Setter TargetName="ContentPresenter" Property="Visibility" Value="Collapsed"/>
-									<Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
-								</Trigger>
-								<Trigger Property="IsEnabled" Value="False">
-									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-								</Trigger>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="IsKeyboardFocusWithin" Value="False"/>
-										<Condition Property="Text" Value=""/>
-									</MultiTrigger.Conditions>
-									<Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible"/>
-								</MultiTrigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
+				<Setter Property="Padding" Value="0"/>
+				<Setter Property="lwb:EditorVisualBehavior.FlattenEditableBackground" Value="True"/>
+				<Style.Triggers>
+					<Trigger Property="IsEditable" Value="True">
+						<Setter Property="Padding" Value="0"/>
+					</Trigger>
+				</Style.Triggers>
 			</Style>
 			<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource font_setting}"/>
 			<Style TargetType="{x:Type xctk:IntegerUpDown}" BasedOn="{StaticResource font_setting}"/>

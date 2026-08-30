@@ -54,7 +54,7 @@
                               IsTabStop="False"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
-                              Padding="2">
+                              Padding="1">
                   <Path Data="{DynamicResource editor:spinIncrease}"
                         Stretch="Uniform"
                         Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -65,7 +65,7 @@
                               IsTabStop="False"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
-                              Padding="2">
+                              Padding="1">
                   <Path Data="{DynamicResource editor:spinDecrease}"
                         Stretch="Uniform"
                         Fill="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
