@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
                     xmlns:lwctrl="clr-namespace:LuaSTGEditorSharpV2.WPF.Controls;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View">
     <DataTemplate x:Key="property:nativePropertyTween">
@@ -9,12 +11,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox Grid.Column="0" Text="{Binding VariableName, Mode=TwoWay}" IsEditable="True"
+                <xctk:WatermarkComboBox Grid.Column="0" IsEditable="True"
                           Padding="0" MaxWidth="80"
                           VerticalAlignment="Top"
                           HorizontalAlignment="Stretch"
                           HorizontalContentAlignment="Left"
-                          ItemsSource="{Binding Type.Parameters[VariableNamePresets], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
+                          ItemsSource="{Binding Type.Parameters[VariableNamePresets], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"
+                          lpv:BoundEditor.Property="{Binding VariableNameProperty}"/>
 				<TextBlock Grid.Column="1" Text=" ▶" HorizontalAlignment="Right"/>
 			</Grid>
 			<Grid Grid.Column="1" Grid.ColumnSpan="2">
@@ -26,23 +29,25 @@
 					<ColumnDefinition/>
 					<ColumnDefinition/>
 				</Grid.ColumnDefinitions>
-				<lwctrl:ExpressionSpinner Text="{Binding TargetValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+				<lwctrl:ExpressionSpinner lpv:BoundEditor.Property="{Binding TargetValueProperty}"
 				                          Step="{Binding Type.Parameters[Step]}"
 				                          MinWidth="150"
 				                          Padding="-1"
 				                          Grid.ColumnSpan="2"
 				                          HorizontalAlignment="Stretch"
 				                          VerticalAlignment="Stretch"/>
-				<ComboBox Text="{Binding InterpolationMode, Mode=TwoWay}" IsEditable="True"
+				<xctk:WatermarkComboBox IsEditable="True"
                           Padding="0"
                           VerticalAlignment="Top"
                           Grid.Column="0" Grid.Row="1"
-                          ItemsSource="{Binding Type.Parameters[InterpolationModePresets], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
-				<ComboBox Text="{Binding ModificationMode, Mode=TwoWay}" IsEditable="True"
+                          ItemsSource="{Binding Type.Parameters[InterpolationModePresets], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"
+                          lpv:BoundEditor.Property="{Binding InterpolationModeProperty}"/>
+				<xctk:WatermarkComboBox IsEditable="True"
                           Padding="0"
                           VerticalAlignment="Top"
                           Grid.Column="1" Grid.Row="1"
-                          ItemsSource="{Binding Type.Parameters[ModificationModePresets], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"/>
+                          ItemsSource="{Binding Type.Parameters[ModificationModePresets], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"
+                          lpv:BoundEditor.Property="{Binding ModificationModeProperty}"/>
 			</Grid>
 		</lsv:PropertyItemGrid>
     </DataTemplate>
