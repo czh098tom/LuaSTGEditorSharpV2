@@ -15,6 +15,20 @@ namespace LuaSTGEditorSharpV2.Core
         [JsonProperty] public string Key { get; private set; } = string.Empty;
         [JsonProperty] public string DefaultValue { get; private set; } = string.Empty;
 
+        public static NodePropertyCapture FromKey(string key, string defaultValue = "")
+        {
+            return new NodePropertyCapture
+            {
+                Key = key,
+                DefaultValue = defaultValue
+            };
+        }
+
+        public NodePropertyCapture Format(params object?[] args)
+        {
+            return FromKey(string.Format(Key, args), DefaultValue);
+        }
+
         public string Capture(NodePropertyAccessToken token)
         {
             return token.GetValueWithDefault(Key, DefaultValue);

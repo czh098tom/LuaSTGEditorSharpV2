@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -20,6 +21,8 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public ObservableCollection<PropertyTabViewModel> Tabs { get; private set; } = [];
 
         private int _selectedIndex = 0;
+        private readonly NotifyCollectionChangedEventHandler _tabsCollectionChangedHandler;
+        private bool _disposedValue;
 
         public int SelectedIndex
         {
@@ -35,8 +38,24 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public PropertyPageViewModel(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            Tabs.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyTabViewModel>
-                (vm => vm.OnEdit += Tab_OnEdit);
+            _tabsCollectionChangedHandler = GetHookItemEventsMarshallingHandler<PropertyTabViewModel>(
+                HookTab);
+            Tabs.CollectionChanged += _tabsCollectionChangedHandler;
+        }
+
+        private void HookTab(PropertyTabViewModel tab)
+        {
+            tab.OnEdit += Tab_OnEdit;
+        }
+
+        private void DisposeTabs()
+        {
+            foreach (var tab in Tabs)
+            {
+                tab.OnEdit -= Tab_OnEdit;
+                tab.Dispose();
+            }
+            Tabs.Clear();
         }
 
         private void Tab_OnEdit(object? sender, EditResult e)
@@ -77,14 +96,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
         private void LoadProperties(IReadOnlyList<PropertyTabViewModel> viewModels)
         {
             var index = SelectedIndex;
-            foreach (var tab in Tabs)
-            {
-                foreach (var item in tab.Properties)
-                {
-                    item.Dispose();
-                }
-            }
-            Tabs.Clear();
+            DisposeTabs();
             for (int i = 0; i < viewModels.Count; i++)
             {
                 Tabs.Add(viewModels[i]);
@@ -101,6 +113,20 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 SelectedIndex = index;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    DisposeTabs();
+                    Tabs.CollectionChanged -= _tabsCollectionChangedHandler;
+                }
+                _disposedValue = true;
+            }
+            base.Dispose(disposing);
         }
     }
 }

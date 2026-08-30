@@ -126,8 +126,17 @@
   <data name="fileDialog_chooseImageFileExtension" xml:space="preserve">
     <value>图像文件(*.png;*.jpg;*.bmp)|*.png;*.jpg;*.bmp</value>
   </data>
+  <data name="image_preview_unavailable" xml:space="preserve">
+    <value>无法预览图片</value>
+  </data>
   <data name="native_view" xml:space="preserve">
     <value>原生视图</value>
+  </data>
+  <data name="multi_selection_not_supported" xml:space="preserve">
+    <value>此属性区域不支持多选</value>
+  </data>
+  <data name="multi_selection_conflict" xml:space="preserve">
+    <value>值不一致</value>
   </data>
   <data name="panel_property_title" xml:space="preserve">
     <value>属性</value>

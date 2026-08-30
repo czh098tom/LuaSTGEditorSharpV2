@@ -1,0 +1,6 @@
+{
+  "Name": "__Name__",
+  "Version": "1.0",
+  "Priority": __PrioritySymbol__,
+  "LibraryPath": "LuaSTGEditorSharpV2.Package.__Name__.dll"
+}

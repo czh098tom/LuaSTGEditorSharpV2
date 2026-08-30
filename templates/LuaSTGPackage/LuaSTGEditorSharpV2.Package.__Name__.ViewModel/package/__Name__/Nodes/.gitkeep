@@ -1,0 +1,2 @@
+# Drop `.vm` files here (ViewModel providers, one per TypeUID).
+# JSON schema: { "$type": "<view-model type>, <assembly>", "TypeUID": "<id>", "Icon": "pack://..." }

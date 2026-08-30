@@ -42,15 +42,17 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
                     return OfName?.Contains(FindProperty?.Capture(token)) ?? true;
                 });
 
-            return new PropertyTabWrapperItemViewModel(
+            var viewModel = new PropertyTabWrapperItemViewModel
+            {
+                Type = new PropertyViewEditorType("childNode")
+            };
+            viewModel.Initialize(
                 [.. pairs.Select(p => service.GetPropertyViewModelOfNode(
                     editorNodeFactory.GetOrCreate(p.NodeData, nodeData.Document), context)[0])],
                 nodeData,
                 context.LocalParam,
-                serviceProvider.GetRequiredService<PropertyEditWizardProviderService>())
-            {
-                Type = new PropertyViewEditorType("childNode")
-            };
+                serviceProvider.GetRequiredService<PropertyEditWizardProviderService>());
+            return viewModel;
         }
     }
 }

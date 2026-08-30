@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "LuaSTGEditorSharpV2",
+  "classifications": [ "LuaSTG" ],
+  "identity": "LuaSTGEditorSharpV2.Package",
+  "name": "LuaSTG Editor Package",
+  "shortName": "luastg-package",
+  "sourceName": "__Name__",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "description": "Generates a LuaSTG Editor V2 package with the standard 9-submodule structure (Building/CodeGenerator/PropertyView/Toolbox/ViewModel/Resources.Shared/BuildTaskFactory/CLIPluginProvider/SharpProjectConverter/Execution).",
+  "symbols": {
+    "Priority": {
+      "type": "parameter",
+      "datatype": "float",
+      "defaultValue": 1.0,
+      "replaces": "__PrioritySymbol__",
+      "description": "Package priority. Lower value wins in PackedService conflicts (built-in packages use 1.0-2.0)."
+    },
+    "IncludeMain": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include the main package csproj (with manifest). Always leave this on unless you know what you are doing."
+    },
+    "IncludeBuilding": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include Building sub-module (.resg files for resource gathering)."
+    },
+    "IncludeCodeGenerator": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include CodeGenerator sub-module (.cgen files). Generates PackageEntry.cs + SampleLanguage.cs skeleton."
+    },
+    "IncludePropertyView": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include PropertyView sub-module (.prop files, WPF)."
+    },
+    "IncludeToolbox": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include Toolbox sub-module (.tool files, WPF)."
+    },
+    "IncludeViewModel": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include ViewModel sub-module (.vm files)."
+    },
+    "IncludeResourcesShared": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include Resources.Shared sub-module (WPF resources, images)."
+    },
+    "IncludeBuildTaskFactory": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Include BuildTaskFactory sub-module (.build files for build pipeline)."
+    },
+    "IncludeCLI": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Include CLIPluginProvider sub-module (registers CLI subcommands)."
+    },
+    "IncludeSharpConverter": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Include SharpProjectConverter sub-module (.sharpconv files for legacy project migration)."
+    },
+    "IncludeExecution": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Include Execution sub-module (.execfg files for running external LuaSTG process)."
+    },
+    "AuthorName": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "LuaSTGEditorSharpV2",
+      "replaces": "__AuthorSymbol__",
+      "description": "Author name written into generated README and csproj metadata."
+    }
+  },
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "exclude": [
+        ".template.config/**",
+        "README.md"
+      ],
+      "modifiers": [
+        {
+          "condition": "!IncludeMain",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__/**"
+          ]
+        },
+        {
+          "condition": "!IncludeBuilding",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.Building/**"
+          ]
+        },
+        {
+          "condition": "!IncludeCodeGenerator",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.CodeGenerator/**"
+          ]
+        },
+        {
+          "condition": "!IncludePropertyView",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.PropertyView/**"
+          ]
+        },
+        {
+          "condition": "!IncludeToolbox",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.Toolbox/**"
+          ]
+        },
+        {
+          "condition": "!IncludeViewModel",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.ViewModel/**"
+          ]
+        },
+        {
+          "condition": "!IncludeResourcesShared",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.Resources.Shared/**"
+          ]
+        },
+        {
+          "condition": "!IncludeBuildTaskFactory",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.BuildTaskFactory/**"
+          ]
+        },
+        {
+          "condition": "!IncludeCLI",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.CLIPluginProvider/**"
+          ]
+        },
+        {
+          "condition": "!IncludeSharpConverter",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.SharpProjectConverter/**"
+          ]
+        },
+        {
+          "condition": "!IncludeExecution",
+          "exclude": [
+            "LuaSTGEditorSharpV2.Package.__Name__.Execution/**"
+          ]
+        }
+      ]
+    }
+  ]
+}

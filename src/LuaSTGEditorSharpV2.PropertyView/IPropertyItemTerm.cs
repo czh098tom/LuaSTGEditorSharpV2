@@ -15,4 +15,5 @@ namespace LuaSTGEditorSharpV2.PropertyView
     {
         public PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context);
     }
+
 }

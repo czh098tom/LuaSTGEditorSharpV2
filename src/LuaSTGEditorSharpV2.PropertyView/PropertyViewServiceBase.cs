@@ -44,5 +44,20 @@ namespace LuaSTGEditorSharpV2.PropertyView
             }
             return propertyTabViewModels;
         }
+
+        internal protected IReadOnlyList<PropertyTabViewModel> ResolvePropertyViewModelOfNodes(
+            IReadOnlyList<EditorNode> nodeData,
+            PropertyViewContext context)
+        {
+            List<PropertyTabViewModel> propertyTabViewModels = [];
+            for (int i = 0; i < Tabs.Length; i++)
+            {
+                if (Tabs[i] is IMultiSourcePropertyTabTerm multiSourceTab)
+                {
+                    propertyTabViewModels.Add(multiSourceTab.GetPropertyTabViewModel(nodeData, context));
+                }
+            }
+            return propertyTabViewModels;
+        }
     }
 }

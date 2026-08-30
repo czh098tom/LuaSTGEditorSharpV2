@@ -132,4 +132,58 @@
   <data name="viewCodeDialog_title" xml:space="preserve">
     <value>生成的代码</value>
   </data>
+  <data name="vector2EditDialog_label_expression" xml:space="preserve">
+    <value>表达式</value>
+  </data>
+  <data name="vector2EditDialog_title" xml:space="preserve">
+    <value>编辑二维向量</value>
+  </data>
+  <data name="vector2EditDialog_components" xml:space="preserve">
+    <value>分量</value>
+  </data>
+  <data name="vector2EditDialog_sync_xy" xml:space="preserve">
+    <value>同步 XY</value>
+  </data>
+  <data name="vector2EditDialog_sync_trigonometrics" xml:space="preserve">
+    <value>同步三角函数</value>
+  </data>
+  <data name="vector2EditDialog_open_vector_editor" xml:space="preserve">
+    <value>打开向量编辑器...</value>
+  </data>
+  <data name="vector2EditDialog_world_left" xml:space="preserve">
+    <value>插入左边界</value>
+  </data>
+  <data name="vector2EditDialog_world_right" xml:space="preserve">
+    <value>插入右边界</value>
+  </data>
+  <data name="vector2EditDialog_world_top" xml:space="preserve">
+    <value>插入上边界</value>
+  </data>
+  <data name="vector2EditDialog_world_bottom" xml:space="preserve">
+    <value>插入下边界</value>
+  </data>
+  <data name="vectorEditor_title" xml:space="preserve">
+    <value>向量编辑器</value>
+  </data>
+  <data name="vectorEditor_radius" xml:space="preserve">
+    <value>长度</value>
+  </data>
+  <data name="vectorEditor_theta" xml:space="preserve">
+    <value>角度</value>
+  </data>
+  <data name="vectorEditor_offset" xml:space="preserve">
+    <value>偏移</value>
+  </data>
+  <data name="vectorEditor_to" xml:space="preserve">
+    <value>到</value>
+  </data>
+  <data name="vectorEditor_do_not_clip" xml:space="preserve">
+    <value>不吸附</value>
+  </data>
+  <data name="vectorEditor_clip_to_1" xml:space="preserve">
+    <value>吸附到 1</value>
+  </data>
+  <data name="vectorEditor_clip_to_10" xml:space="preserve">
+    <value>吸附到 10</value>
+  </data>
 </root>

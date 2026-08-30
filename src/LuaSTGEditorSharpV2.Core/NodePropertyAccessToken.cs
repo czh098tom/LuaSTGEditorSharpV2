@@ -32,4 +32,5 @@ namespace LuaSTGEditorSharpV2.Core
             return _service.GetValueWithDefault(NodeData, Context, key, defaultValue);
         }
     }
+
 }

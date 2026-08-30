@@ -16,6 +16,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public ObservableCollection<PropertyItemViewModelBase> Properties { get; private set; } = [];
 
+        private readonly NotifyCollectionChangedEventHandler _propertiesCollectionChangedHandler;
         private bool disposedValue;
 
         public string Caption
@@ -34,9 +35,25 @@ namespace LuaSTGEditorSharpV2.PropertyView
 
         public PropertyTabViewModel(bool allowBatchEditing = false)
         {
-            Properties.CollectionChanged += GetHookItemEventsMarshallingHandler<PropertyItemViewModelBase>
-                (vm => vm.OnEdit += Item_OnEdit);
+            _propertiesCollectionChangedHandler =
+                GetHookItemEventsMarshallingHandler<PropertyItemViewModelBase>(HookItem);
+            Properties.CollectionChanged += _propertiesCollectionChangedHandler;
             AllowBatchEditing = allowBatchEditing;
+        }
+
+        private void HookItem(PropertyItemViewModelBase item)
+        {
+            item.OnEdit += Item_OnEdit;
+        }
+
+        private void DisposeItems()
+        {
+            foreach (var item in Properties)
+            {
+                item.OnEdit -= Item_OnEdit;
+                item.Dispose();
+            }
+            Properties.Clear();
         }
 
         private void Item_OnEdit(object? sender, EditResult e)
@@ -50,11 +67,9 @@ namespace LuaSTGEditorSharpV2.PropertyView
             {
                 if (disposing)
                 {
-                    foreach (var item in Properties)
-                    {
-                        item.Dispose();
-                    }
-                    Properties.Clear();
+                    DisposeItems();
+                    Properties.CollectionChanged -= _propertiesCollectionChangedHandler;
+                    OnEdit = null;
                 }
                 disposedValue = true;
             }
