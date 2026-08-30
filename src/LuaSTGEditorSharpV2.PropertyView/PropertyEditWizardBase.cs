@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 
 namespace LuaSTGEditorSharpV2.PropertyView
 {
@@ -15,7 +16,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     {
         public string Name { get; } = name;
 
-        public abstract EditResult? EditValue(PropertyItemViewModelBase viewModel, 
+        public abstract EditResult? EditValue(PropertyItemViewModelBase viewModel,
             LocalServiceParam localServiceParam);
     }
 }

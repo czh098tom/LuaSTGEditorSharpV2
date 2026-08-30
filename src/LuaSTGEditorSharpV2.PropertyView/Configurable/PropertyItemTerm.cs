@@ -20,35 +20,31 @@ namespace LuaSTGEditorSharpV2.PropertyView.Configurable
     [Inject(ServiceLifetime.Transient)]
     [JsonUseShortNaming]
     [JsonTypeShortName(typeof(IPropertyItemTerm), "Default")]
-    public class PropertyItemTerm(IServiceProvider serviceProvider): IPropertyItemTerm
+    public class PropertyItemTerm(IServiceProvider serviceProvider)
+        : PropertyItemTermBase(serviceProvider)
     {
-		[JsonProperty] public NodePropertyCapture? Mapping { get; private set; }
+        private string? _captionOverride;
+
+        [JsonProperty(Required = Required.Always)] public NodePropertyCapture Mapping { get; private set; } = null!;
         [JsonProperty] public LocalizableString Caption { get; private set; } = new();
-        [JsonProperty] public PropertyViewEditorType? Editor { get; protected set; }
-        [JsonProperty] public bool Enabled { get; private set; } = true;
 
-        public virtual PropertyItemViewModelBase GetViewModel(EditorNode nodeData, PropertyViewContext context)
+        [JsonIgnore]
+        public string ResolvedCaption => _captionOverride ?? Caption.GetLocalized();
+
+        internal static PropertyItemTerm CreateNative(IServiceProvider serviceProvider, string key)
         {
-            return GetViewModelImpl<BasicPropertyItemViewModel>(nodeData, context);
+            return new PropertyItemTerm(serviceProvider)
+            {
+                Mapping = NodePropertyCapture.FromKey(key),
+                _captionOverride = key,
+            };
         }
-        
-        protected PropertyItemViewModelBase GetViewModelImpl<TResult>(EditorNode nodeData, PropertyViewContext context)
-            where TResult : BasicPropertyItemViewModel
-            => GetViewModelImpl<TResult, IBasicPropertyItemViewModelFactory<TResult>>(nodeData, context);
 
-        protected PropertyItemViewModelBase GetViewModelImpl<TResult, TFactory>(EditorNode nodeData, PropertyViewContext context)
-            where TResult : BasicPropertyItemViewModel
-            where TFactory : IBasicPropertyItemViewModelFactory<TResult>
+        public override PropertyItemViewModelBase GetViewModel(IReadOnlyList<EditorNode> nodes, PropertyViewContext context)
         {
-            var token = new NodePropertyAccessToken(serviceProvider, nodeData.Source, context);
-            var factory = serviceProvider.GetRequiredService<TFactory>();
-            var vm = factory
-                .Create([nodeData], Mapping?.Key, BatchEditStatus.AllSame, context.LocalParam);
-            vm.Name = Caption.GetLocalized();
-            vm.Value = Mapping?.Capture(token) ?? string.Empty;
-            vm.Type = Editor;
-            vm.Enabled = Enabled;
-            return vm;
+            var factory = ServiceProvider.GetRequiredService<
+                IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>>();
+            return factory.Create(nodes, this, Editor, context);
         }
     }
 }

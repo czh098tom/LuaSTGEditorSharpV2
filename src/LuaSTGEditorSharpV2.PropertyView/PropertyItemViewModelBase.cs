@@ -15,33 +15,6 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public abstract class PropertyItemViewModelBase : ViewModelBase, IDisposable
     {
-        public virtual string Value
-        {
-            get => _value;
-            set
-            {
-                var oldValue = _value;
-                _value = value;
-                if (oldValue != value)
-                {
-                    RaisePropertyChanged();
-                    OnEdit?.Invoke(this, ResolveBatchEditingNodeCommand(SourceNodes, LocalServiceParam, value));
-                }
-            }
-        }
-        private string _value = string.Empty;
-
-        public BatchEditStatus BatchEditStatus
-        {
-            get => _batchEditStatus;
-            set
-            {
-                _batchEditStatus = value;
-                RaisePropertyChanged();
-            }
-        }
-        private BatchEditStatus _batchEditStatus = BatchEditStatus.AllSame;
-
         public bool Enabled
         {
             get => _enabled;
@@ -64,44 +37,44 @@ namespace LuaSTGEditorSharpV2.PropertyView
         }
         private PropertyViewEditorType? _type;
 
-        public IReadOnlyList<EditorNode> SourceNodes { get; private init; }
-        public LocalServiceParam LocalServiceParam { get; private init; }
-        public PropertyEditWizardProviderService WizardProviderService { get; }
+        public IReadOnlyList<EditorNode> SourceNodes { get; private set; } = [];
+        public LocalServiceParam LocalServiceParam { get; private set; } = null!;
+        public PropertyEditWizardProviderService WizardProviderService { get; private set; } = null!;
 
         public event EventHandler<EditResult>? OnEdit;
 
         public ICommand? ShowEditWindow { get; protected set; }
 
+        private bool initializedValue;
         private bool disposedValue;
 
-        public PropertyItemViewModelBase(IReadOnlyList<EditorNode> editorNode,
-            BatchEditStatus isBatchSame,
+        public void Initialize(IReadOnlyList<EditorNode> editorNode,
             LocalServiceParam localServiceParam, PropertyEditWizardProviderService wizardProviderService)
         {
+            if (initializedValue)
+            {
+                throw new InvalidOperationException($"{GetType().Name} has already been initialized.");
+            }
+            if (disposedValue)
+            {
+                throw new ObjectDisposedException(GetType().Name);
+            }
+
             SourceNodes = editorNode;
             LocalServiceParam = localServiceParam;
             WizardProviderService = wizardProviderService;
-            BatchEditStatus = isBatchSame;
             foreach (var sourceNode in SourceNodes)
             {
                 sourceNode.OnPropertyChanged += HandleEditorNodeOnPropertyChanged;
             }
+            initializedValue = true;
         }
 
         protected abstract void HandleEditorNodeOnPropertyChanged(object? sender, EditorNodePropertyChangedEventArgs e);
 
-        protected void RaiseOnEdit(EditResult editResult)
+        public void RaiseOnEdit(EditResult editResult)
         {
             OnEdit?.Invoke(this, editResult);
-        }
-
-        public abstract EditResult ResolveBatchEditingNodeCommand(IReadOnlyList<EditorNode> nodeData,
-            LocalServiceParam context, string edited);
-
-        protected void SetValueWithoutPushingEditCommand(string value)
-        {
-            _value = value;
-            RaisePropertyChanged(nameof(Value));
         }
 
         protected virtual void Dispose(bool disposing)

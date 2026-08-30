@@ -10,6 +10,7 @@ using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Core.Services;
+using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ResourceDictionaryService;
 
@@ -22,6 +23,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     {
         private static readonly string _nativeViewI18NKey = "native_view";
         private static readonly string _defaultViewI18NKey = "default_view";
+        private static readonly string _multiSelectionUnsupportedI18NKey = "multi_selection_not_supported";
 
         public string NativeViewI18NCaption => ServiceProvider
             .GetRequiredService<LocalizationService>()
@@ -29,6 +31,9 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public string DefaultViewI18NCaption => ServiceProvider
             .GetRequiredService<LocalizationService>()
             .GetString(_defaultViewI18NKey, typeof(PropertyViewServiceBase).Assembly);
+        public string MultiSelectionUnsupportedI18NText => ServiceProvider
+            .GetRequiredService<LocalizationService>()
+            .GetString(_multiSelectionUnsupportedI18NKey, typeof(PropertyViewServiceBase).Assembly);
 
         private readonly PropertyViewServiceBase _defaultService;
 
@@ -75,7 +80,23 @@ namespace LuaSTGEditorSharpV2.PropertyView
         public IReadOnlyList<PropertyTabViewModel> GetPropertyViewModelOfMultipleNodes(EditorNode[] nodeData
             , LocalServiceParam localParam)
         {
-            return [CreateDefaultViewModelForNodes(nodeData, localParam)];
+            if (nodeData.Length == 0)
+            {
+                return [];
+            }
+
+            var firstType = nodeData[0].Source.TypeUID;
+            if (nodeData.Any(n => n.Source.TypeUID != firstType))
+            {
+                return [CreateDefaultViewModelForNodes(nodeData, localParam)];
+            }
+
+            var context = GetContextOfNode(nodeData[0].Source, localParam, ServiceSettings);
+            var result = new List<PropertyTabViewModel>();
+            result.AddRange(GetServiceOfNode(nodeData[0].Source)
+                .ResolvePropertyViewModelOfNodes(nodeData, context));
+            result.Add(CreateDefaultViewModelForNodes(nodeData, context));
+            return result;
         }
 
         private PropertyTabViewModel CreateDefaultViewModel(EditorNode nodeData, PropertyViewContext context)
@@ -83,10 +104,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
             List<PropertyItemViewModelBase> result = new(nodeData.Source.Properties.Count);
             foreach (var prop in nodeData.Source.Properties)
             {
-                var vm = ServiceProvider.GetRequiredService<IBasicPropertyItemViewModelFactory<BasicPropertyItemViewModel>>()
-                    .Create([nodeData], prop.Key, BatchEditStatus.AllSame, context.LocalParam);
-                vm.Name = prop.Key;
-                vm.Value = prop.Value;
+                var vm = CreateNativePropertyViewModel([nodeData], prop.Key, context);
                 result.Add(vm);
             }
             PropertyTabViewModel tab = new(true)
@@ -108,18 +126,21 @@ namespace LuaSTGEditorSharpV2.PropertyView
                 };
             }
 
-            List<PropertyItemViewModelBase> result = [];
             var nodeList = nodes.ToList();
+            var context = GetContextOfNode(nodeList[0].Source, localServiceParam, ServiceSettings);
+            return CreateDefaultViewModelForNodes(nodeList, context);
+        }
+
+        private PropertyTabViewModel CreateDefaultViewModelForNodes(
+            IReadOnlyList<EditorNode> nodes,
+            PropertyViewContext context)
+        {
+            List<PropertyItemViewModelBase> result = [];
             var props = nodes.SelectMany(n => n.Source.Properties, (n, p) => (node: n, prop: p))
                 .GroupBy(p => p.prop.Key);
             foreach (var gp in props)
             {
-                var value = gp.First().prop.Value;
-                var allSame = gp.All(t => t.prop.Value == value);
-                var vm = ServiceProvider.GetRequiredService<BasicPropertyItemViewModelFactory>()
-                    .Create(nodeList, gp.Key, allSame ? BatchEditStatus.AllSame : BatchEditStatus.SomeDifferent, localServiceParam);
-                vm.Name = gp.Key;
-                vm.Value = allSame ? value : string.Empty;
+                var vm = CreateNativePropertyViewModel(nodes, gp.Key, context);
                 result.Add(vm);
             }
             PropertyTabViewModel tab = new(true)
@@ -128,6 +149,15 @@ namespace LuaSTGEditorSharpV2.PropertyView
             };
             result.ForEach(tab.Properties.Add);
             return tab;
+        }
+
+        private BasicPropertyItemViewModel CreateNativePropertyViewModel(
+            IReadOnlyList<EditorNode> nodes, string key, PropertyViewContext context)
+        {
+            var term = PropertyItemTerm.CreateNative(ServiceProvider, key);
+            var factory = ServiceProvider.GetRequiredService<
+                IPropertyItemViewModelFactory<BasicPropertyItemViewModel, PropertyItemTerm>>();
+            return factory.Create(nodes, term, null, context);
         }
     }
 }

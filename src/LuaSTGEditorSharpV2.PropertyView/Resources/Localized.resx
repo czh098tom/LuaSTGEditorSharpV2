@@ -126,8 +126,17 @@
   <data name="fileDialog_chooseImageFileExtension" xml:space="preserve">
     <value>Image File(*.png;*.jpg;*.bmp)|*.png;*.jpg;*.bmp</value>
   </data>
+  <data name="image_preview_unavailable" xml:space="preserve">
+    <value>Image preview unavailable</value>
+  </data>
   <data name="native_view" xml:space="preserve">
     <value>Native View</value>
+  </data>
+  <data name="multi_selection_not_supported" xml:space="preserve">
+    <value>This property area does not support multiple selection</value>
+  </data>
+  <data name="multi_selection_conflict" xml:space="preserve">
+    <value>Values differ</value>
   </data>
   <data name="panel_property_title" xml:space="preserve">
     <value>Properties</value>

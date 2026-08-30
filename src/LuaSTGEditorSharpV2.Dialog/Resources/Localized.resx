@@ -132,4 +132,58 @@
   <data name="viewCodeDialog_title" xml:space="preserve">
     <value>Generated code</value>
   </data>
+  <data name="vector2EditDialog_label_expression" xml:space="preserve">
+    <value>Expression</value>
+  </data>
+  <data name="vector2EditDialog_title" xml:space="preserve">
+    <value>Edit Vector2</value>
+  </data>
+  <data name="vector2EditDialog_components" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="vector2EditDialog_sync_xy" xml:space="preserve">
+    <value>Sync XY</value>
+  </data>
+  <data name="vector2EditDialog_sync_trigonometrics" xml:space="preserve">
+    <value>Sync Trigonometrics</value>
+  </data>
+  <data name="vector2EditDialog_open_vector_editor" xml:space="preserve">
+    <value>Open Vector Editor...</value>
+  </data>
+  <data name="vector2EditDialog_world_left" xml:space="preserve">
+    <value>Insert left boundary</value>
+  </data>
+  <data name="vector2EditDialog_world_right" xml:space="preserve">
+    <value>Insert right boundary</value>
+  </data>
+  <data name="vector2EditDialog_world_top" xml:space="preserve">
+    <value>Insert top boundary</value>
+  </data>
+  <data name="vector2EditDialog_world_bottom" xml:space="preserve">
+    <value>Insert bottom boundary</value>
+  </data>
+  <data name="vectorEditor_title" xml:space="preserve">
+    <value>Vector Editor</value>
+  </data>
+  <data name="vectorEditor_radius" xml:space="preserve">
+    <value>Radius</value>
+  </data>
+  <data name="vectorEditor_theta" xml:space="preserve">
+    <value>Theta</value>
+  </data>
+  <data name="vectorEditor_offset" xml:space="preserve">
+    <value>Offset</value>
+  </data>
+  <data name="vectorEditor_to" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="vectorEditor_do_not_clip" xml:space="preserve">
+    <value>Do not clip</value>
+  </data>
+  <data name="vectorEditor_clip_to_1" xml:space="preserve">
+    <value>Clip to 1</value>
+  </data>
+  <data name="vectorEditor_clip_to_10" xml:space="preserve">
+    <value>Clip to 10</value>
+  </data>
 </root>

@@ -13,13 +13,34 @@ namespace LuaSTGEditorSharpV2.ViewModel
     {
         protected static NotifyCollectionChangedEventHandler
             GetHookItemEventsMarshallingHandler<TItem>(Action<TItem> hook)
+            => GetHookItemEventsMarshallingHandler(hook, _ => { });
+
+        protected static NotifyCollectionChangedEventHandler
+            GetHookItemEventsMarshallingHandler<TItem>(
+                Action<TItem> hook,
+                Action<TItem> unhook)
         {
             return (sender, e) =>
             {
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
+                        foreach (var newItem in e.NewItems!)
+                        {
+                            if (newItem is TItem item)
+                            {
+                                hook(item);
+                            }
+                        }
+                        break;
                     case NotifyCollectionChangedAction.Replace:
+                        foreach (var oldItem in e.OldItems!)
+                        {
+                            if (oldItem is TItem item)
+                            {
+                                unhook(item);
+                            }
+                        }
                         foreach (var newItem in e.NewItems!)
                         {
                             if (newItem is TItem item)
@@ -29,6 +50,14 @@ namespace LuaSTGEditorSharpV2.ViewModel
                         }
                         break;
                     case NotifyCollectionChangedAction.Remove:
+                        foreach (var oldItem in e.OldItems!)
+                        {
+                            if (oldItem is TItem item)
+                            {
+                                unhook(item);
+                            }
+                        }
+                        break;
                     case NotifyCollectionChangedAction.Move:
                     case NotifyCollectionChangedAction.Reset:
                         break;

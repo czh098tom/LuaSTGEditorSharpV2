@@ -1,71 +1,76 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using CommunityToolkit.Mvvm.Input;
 using LuaSTGEditorSharpV2.Core;
+using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Parsing.Facade;
+using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Specialized.Vector
 {
-    public class Vector2PropertyItemViewModel(IReadOnlyList<EditorNode> nodeData, string? key, BatchEditStatus isBatchSame,
-            LocalServiceParam localServiceParam, PropertyEditWizardProviderService propertyEditWizardProviderService)
-        : BasicPropertyItemViewModel(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService)
+    public class Vector2PropertyItemViewModel : NamedPropertyItemViewModel<Vector2PropertyItemTerm>
     {
-        private string _x = string.Empty;
+        public BoundProperty XProperty { get; } = new();
+
         public string X
         {
-            get => _x;
-            set
-            {
-                if (_x == value) return;
-                _x = value;
-                RaisePropertyChanged();
-                if (!_isSyncing)
-                {
-                    Value = Vector2EditHelper.Compose(value, _y);
-                }
-            }
+            get => XProperty.Value;
+            set => XProperty.Value = value;
         }
 
-        private string _y = string.Empty;
+        public BoundProperty YProperty { get; } = new();
+
         public string Y
         {
-            get => _y;
-            set
+            get => YProperty.Value;
+            set => YProperty.Value = value;
+        }
+
+        private NodePropertyCapture _capture = null!;
+
+        public EditResult ApplyVector2Edit(string x, string y)
+        {
+            XProperty.SetValueWithoutPushingCommand(x);
+            YProperty.SetValueWithoutPushingCommand(y);
+            var value = Vector2EditHelper.Compose(x, y);
+            var command = Commands.FromEnumerable(
+                SourceNodes.Select(node => CheckedCommand.Property.Modify(
+                    node.Document,
+                    node.GetPath(),
+                    _capture.Key,
+                    value)));
+            return new EditResult(command, LocalServiceParam);
+        }
+
+        protected override void ConfigureViewModel(Vector2PropertyItemTerm term)
+        {
+            base.ConfigureViewModel(term);
+            ShowEditWindow = new RelayCommand(() =>
             {
-                if (_y == value) return;
-                _y = value;
-                RaisePropertyChanged();
-                if (!_isSyncing)
+                var result = WizardProviderService.GetEditResult(
+                    Type?.Name ?? string.Empty,
+                    this,
+                    LocalServiceParam);
+                if (result != null)
                 {
-                    Value = Vector2EditHelper.Compose(_x, value);
+                    RaiseOnEdit(result);
                 }
-            }
+            });
         }
 
-        public override string Value
+        protected override void ConfigureBinding(Vector2PropertyItemTerm term)
         {
-            get => base.Value;
-            set
-            {
-                _isSyncing = true;
-                base.Value = value;
-                (_x, _y) = Vector2EditHelper.Decompose(value);
-                _isSyncing = false;
-            }
-        }
-
-        private bool _isSyncing = false;
-    }
-
-    [Inject(ServiceLifetime.Singleton, typeof(IBasicPropertyItemViewModelFactory<Vector2PropertyItemViewModel>))]
-    public class Vector2PropertyItemViewModelFactory(
-        PropertyEditWizardProviderService propertyEditWizardProviderService)
-        : IBasicPropertyItemViewModelFactory<Vector2PropertyItemViewModel>
-    {
-        public Vector2PropertyItemViewModel Create(IReadOnlyList<EditorNode> nodeData, string? key, BatchEditStatus isBatchSame, LocalServiceParam localServiceParam)
-        {
-            return new Vector2PropertyItemViewModel(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService);
+            _capture = term.Mapping;
+            ForwardValueChanges(XProperty, nameof(X));
+            ForwardValueChanges(YProperty, nameof(Y));
+            Bind(term.Mapping).ToMany(
+                (XProperty, YProperty),
+                Vector2EditHelper.Compose,
+                Vector2EditHelper.Decompose);
         }
     }
 }

@@ -12,20 +12,15 @@ public static class FragmentParser
     /// </summary>
     public static Fragment[] Parse(string input)
     {
-        var fragments = new Fragment[input.Length];
-        uint depth = 0;
-        for (int i = 0; i < input.Length; i++)
-        {
-            var c = input[i];
-            fragments[i] = c switch
-            {
-                '(' => new Fragment(c, depth++),
-                ')' => new Fragment(c, --depth),
-                _ => new Fragment(c, depth)
-            };
-        }
+        ParseCore(input, requireBalancedParentheses: false, out var fragments);
         return fragments;
     }
+
+    /// <summary>
+    /// Parses a string into Fragments and rejects unbalanced parentheses.
+    /// </summary>
+    public static bool TryParse(string input, out Fragment[] fragments)
+        => ParseCore(input, requireBalancedParentheses: true, out fragments);
 
     /// <summary>
     /// Reconstructs a string from Fragment array.
@@ -36,5 +31,44 @@ public static class FragmentParser
         foreach (var f in fragments)
             sb.Append(f.Character);
         return sb.ToString();
+    }
+
+    private static bool ParseCore(
+        string input,
+        bool requireBalancedParentheses,
+        out Fragment[] fragments)
+    {
+        fragments = new Fragment[input.Length];
+        uint depth = 0;
+        for (var i = 0; i < input.Length; i++)
+        {
+            var character = input[i];
+            if (character == '(')
+            {
+                fragments[i] = new Fragment(character, depth++);
+            }
+            else if (character == ')')
+            {
+                if (requireBalancedParentheses && depth == 0)
+                {
+                    fragments = [];
+                    return false;
+                }
+
+                fragments[i] = new Fragment(character, --depth);
+            }
+            else
+            {
+                fragments[i] = new Fragment(character, depth);
+            }
+        }
+
+        if (requireBalancedParentheses && depth != 0)
+        {
+            fragments = [];
+            return false;
+        }
+
+        return true;
     }
 }

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
+using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,16 +11,17 @@ namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
 {
     public class CollectionCountPropertyItemViewModel : BasicPropertyItemViewModel
     {
-        private readonly ICommand _increase;
+        private ICommand _increase = null!;
         public ICommand Increase => _increase;
 
-        private readonly ICommand _decrease;
+        private ICommand _decrease = null!;
         public ICommand Decrease => _decrease;
 
-        public CollectionCountPropertyItemViewModel(IReadOnlyList<EditorNode> nodeData, string? key,
-            BatchEditStatus isBatchSame, LocalServiceParam localServiceParam, PropertyEditWizardProviderService propertyEditWizardProviderService)
-            : base(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService)
+        public override void Initialize(IReadOnlyList<PropertySource> sources,
+            LocalServiceParam localServiceParam,
+            PropertyEditWizardProviderService propertyEditWizardProviderService)
         {
+            base.Initialize(sources, localServiceParam, propertyEditWizardProviderService);
             _increase = new RelayCommand(() =>
             {
                 if (int.TryParse(Value, out var count))
@@ -36,22 +38,9 @@ namespace LuaSTGEditorSharpV2.PropertyView.Specialized.CollectionCount
             });
         }
 
-        public override EditResult ResolveBatchEditingNodeCommand(IReadOnlyList<EditorNode> nodeData, LocalServiceParam context, string edited)
+        protected override void ConfigureBinding(PropertyItemTerm term)
         {
-            return base.ResolveBatchEditingNodeCommand(nodeData, context, edited) with
-            {
-                ShouldRefreshView = true
-            };
-        }
-    }
-
-    [Inject(ServiceLifetime.Singleton, typeof(IBasicPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel>))]
-    public class CollectionCountPropertyItemViewModelFactory(PropertyEditWizardProviderService propertyEditWizardProviderService)
-        : IBasicPropertyItemViewModelFactory<CollectionCountPropertyItemViewModel>
-    {
-        public CollectionCountPropertyItemViewModel Create(IReadOnlyList<EditorNode> nodeData, string? key, BatchEditStatus isBatchSame, LocalServiceParam localServiceParam)
-        {
-            return new CollectionCountPropertyItemViewModel(nodeData, key, isBatchSame, localServiceParam, propertyEditWizardProviderService);
+            Bind(term.Mapping, shouldRefreshView: true).ToOne(ValueProperty);
         }
     }
 }
