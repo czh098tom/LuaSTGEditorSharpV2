@@ -1,23 +1,28 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView;assembly=LuaSTGEditorSharpV2.PropertyView"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View">
     <DataTemplate x:Key="property:name_value">
         <lsv:PropertyItemGrid>
-            <TextBox Grid.Column="0" Text="{Binding PropName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <xctk:WatermarkTextBox Grid.Column="0"
+                                   lpv:BoundEditor.Property="{Binding PropNameProperty}"/>
             <Grid Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="16"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="="/>
-                <TextBox Grid.Column="1" Text="{Binding PropValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <xctk:WatermarkTextBox Grid.Column="1"
+                                       lpv:BoundEditor.Property="{Binding PropValueProperty}"/>
             </Grid>
         </lsv:PropertyItemGrid>
     </DataTemplate>
     <DataTemplate x:Key="property:name_init_increment">
         <lsv:PropertyItemGrid>
-            <TextBox Grid.Column="0" Text="{Binding PropName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            <xctk:WatermarkTextBox Grid.Column="0"
+                                   lpv:BoundEditor.Property="{Binding PropNameProperty}"/>
             <Grid Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="16"/>
@@ -26,9 +31,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="="/>
-                <TextBox Grid.Column="1" Text="{Binding PropInit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <xctk:WatermarkTextBox Grid.Column="1"
+                                       lpv:BoundEditor.Property="{Binding PropInitProperty}"/>
                 <TextBlock Grid.Column="2" Text=",+"/>
-                <TextBox Grid.Column="3" Text="{Binding PropIncrement, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <xctk:WatermarkTextBox Grid.Column="3"
+                                       lpv:BoundEditor.Property="{Binding PropIncrementProperty}"/>
             </Grid>
         </lsv:PropertyItemGrid>
     </DataTemplate>

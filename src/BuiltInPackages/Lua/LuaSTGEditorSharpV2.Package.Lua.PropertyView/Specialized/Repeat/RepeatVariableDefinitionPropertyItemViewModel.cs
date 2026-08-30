@@ -8,39 +8,39 @@ namespace LuaSTGEditorSharpV2.Package.Lua.PropertyView.Specialized.Repeat;
 public class RepeatVariableDefinitionPropertyItemViewModel
     : BoundPropertyItemViewModelBase<RepeatPropertyViewItemListTerm.ItemTerm>
 {
-    private readonly BoundProperty _propNameProperty = new();
-    private readonly BoundProperty _propInitProperty = new();
-    private readonly BoundProperty _propIncrementProperty = new();
+    public BoundProperty PropNameProperty { get; } = new();
+    public BoundProperty PropInitProperty { get; } = new();
+    public BoundProperty PropIncrementProperty { get; } = new();
 
     public string PropName
     {
-        get => _propNameProperty.Value;
-        set => _propNameProperty.Value = value;
+        get => PropNameProperty.Value;
+        set => PropNameProperty.Value = value;
     }
 
     public string PropInit
     {
-        get => _propInitProperty.Value;
-        set => _propInitProperty.Value = value;
+        get => PropInitProperty.Value;
+        set => PropInitProperty.Value = value;
     }
 
     public string PropIncrement
     {
-        get => _propIncrementProperty.Value;
-        set => _propIncrementProperty.Value = value;
+        get => PropIncrementProperty.Value;
+        set => PropIncrementProperty.Value = value;
     }
 
     protected override void ConfigureViewModel(RepeatPropertyViewItemListTerm.ItemTerm term)
     {
-        ForwardValueChanges(_propNameProperty, nameof(PropName));
-        ForwardValueChanges(_propInitProperty, nameof(PropInit));
-        ForwardValueChanges(_propIncrementProperty, nameof(PropIncrement));
+        ForwardValueChanges(PropNameProperty, nameof(PropName));
+        ForwardValueChanges(PropInitProperty, nameof(PropInit));
+        ForwardValueChanges(PropIncrementProperty, nameof(PropIncrement));
     }
 
     protected override void ConfigureBinding(RepeatPropertyViewItemListTerm.ItemTerm term)
 	{
-		Bind(term.Name).ToOne(_propNameProperty);
-		Bind(term.Initial).ToOne(_propInitProperty);
-		Bind(term.Increment).ToOne(_propIncrementProperty);
+		Bind(term.Name).ToOne(PropNameProperty);
+		Bind(term.Initial).ToOne(PropInitProperty);
+		Bind(term.Increment).ToOne(PropIncrementProperty);
 	}
 }
