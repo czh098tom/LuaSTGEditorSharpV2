@@ -12,17 +12,17 @@ namespace LuaSTGEditorSharpV2.PropertyView
 {
     public class PropertyEditWizard(string name,
         IServiceProvider serviceProvider,
-        Func<BasicPropertyItemViewModel, LocalServiceParam, EditResult?> edit)
+        Func<PropertyItemViewModelBase, LocalServiceParam, EditResult?> edit)
         : PropertyEditWizardBase(name, serviceProvider)
     {
         public static PropertyEditWizard Create(string name,
             IServiceProvider serviceProvider,
-            Func<BasicPropertyItemViewModel, LocalServiceParam, EditResult?> edit)
+            Func<PropertyItemViewModelBase, LocalServiceParam, EditResult?> edit)
         {
             return new PropertyEditWizard(name, serviceProvider, edit);
         }
 
-        public override EditResult? EditValue(BasicPropertyItemViewModel viewModel, LocalServiceParam localServiceParam)
+        public override EditResult? EditValue(PropertyItemViewModelBase viewModel, LocalServiceParam localServiceParam)
         {
             return edit.Invoke(viewModel, localServiceParam);
         }

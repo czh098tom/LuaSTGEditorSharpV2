@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     public class PropertyEditWizardProviderService(IServiceProvider serviceProvider) 
         : PackedDataProviderServiceBase<PropertyEditWizardBase>(serviceProvider)
     {
-        public EditResult? GetEditResult(string key, BasicPropertyItemViewModel viewModel,
+        public EditResult? GetEditResult(string key, PropertyItemViewModelBase viewModel,
             LocalServiceParam localServiceParam)
         {
             var wizard = GetDataOfID(key);

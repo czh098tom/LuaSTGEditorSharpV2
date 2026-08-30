@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.PropertyView
     {
         public string Name { get; } = name;
 
-        public abstract EditResult? EditValue(BasicPropertyItemViewModel viewModel,
+        public abstract EditResult? EditValue(PropertyItemViewModelBase viewModel,
             LocalServiceParam localServiceParam);
     }
 }
