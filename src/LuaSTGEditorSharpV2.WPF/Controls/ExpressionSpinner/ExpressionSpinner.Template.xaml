@@ -17,16 +17,13 @@
     <Setter Property="VerticalContentAlignment"
             Value="Center" />
     <Setter Property="Padding"
-            Value="1" />
+            Value="0" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:ExpressionSpinner}">
-          <Border x:Name="Border"
-                  SnapsToDevicePixels="True"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
-            <Grid>
+          <Grid SnapsToDevicePixels="True"
+                Background="{TemplateBinding Background}">
+            <Grid Margin="{TemplateBinding BorderThickness}">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -72,7 +69,11 @@
                 </RepeatButton>
               </Grid>
             </Grid>
-          </Border>
+            <Border x:Name="Border"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    IsHitTestVisible="False"/>
+          </Grid>
           <ControlTemplate.Triggers>
             <Trigger Property="ShowSpinner"
                      Value="False">
