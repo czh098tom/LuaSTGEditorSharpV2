@@ -32,7 +32,6 @@
 				<lwctrl:ExpressionSpinner lpv:BoundEditor.Property="{Binding TargetValueProperty}"
 				                          Step="{Binding Type.Parameters[Step]}"
 				                          MinWidth="150"
-				                          Padding="-1"
 				                          Grid.ColumnSpan="2"
 				                          HorizontalAlignment="Stretch"
 				                          VerticalAlignment="Stretch"/>
