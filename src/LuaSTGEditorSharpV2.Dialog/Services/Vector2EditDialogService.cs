@@ -5,12 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Dialog;
-using LuaSTGEditorSharpV2.PropertyView;
 
-namespace LuaSTGEditorSharpV2.Services;
+namespace LuaSTGEditorSharpV2.Dialog.Services;
 
-[Inject(ServiceLifetime.Singleton, typeof(IVector2EditDialogService))]
-public sealed class Vector2EditDialogService : IVector2EditDialogService
+public record struct Vector2EditResult(string X, string Y);
+
+[Inject(ServiceLifetime.Singleton)]
+public sealed class Vector2EditDialogService
 {
     public Vector2EditResult? EditVector2(string title, string initialX, string initialY)
     {
@@ -26,7 +27,7 @@ public sealed class Vector2EditDialogService : IVector2EditDialogService
             dialog.Owner = owner;
         }
         return dialog.ShowDialog() == true
-            ? new Vector2EditResult(dialog.Expression, dialog.X, dialog.Y)
+            ? new Vector2EditResult(dialog.X, dialog.Y)
             : null;
     }
 }

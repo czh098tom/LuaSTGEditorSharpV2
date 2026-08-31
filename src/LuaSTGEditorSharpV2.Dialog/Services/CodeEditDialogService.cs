@@ -1,16 +1,15 @@
-using System.Windows;
 using System.Linq;
+using System.Windows;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Dialog;
-using LuaSTGEditorSharpV2.PropertyView;
 
-namespace LuaSTGEditorSharpV2.Services;
+namespace LuaSTGEditorSharpV2.Dialog.Services;
 
-[Inject(ServiceLifetime.Singleton, typeof(ICodeEditDialogService))]
-public sealed class CodeEditDialogService : ICodeEditDialogService
+[Inject(ServiceLifetime.Singleton)]
+public sealed class CodeEditDialogService
 {
     public string? EditCode(string title, string initialValue)
     {

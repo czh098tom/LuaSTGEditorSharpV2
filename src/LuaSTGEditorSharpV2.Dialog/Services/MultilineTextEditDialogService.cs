@@ -5,12 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Dialog;
-using LuaSTGEditorSharpV2.PropertyView;
 
-namespace LuaSTGEditorSharpV2.Services;
+namespace LuaSTGEditorSharpV2.Dialog.Services;
 
-[Inject(ServiceLifetime.Singleton, typeof(IMultilineTextEditDialogService))]
-public sealed class MultilineTextEditDialogService : IMultilineTextEditDialogService
+[Inject(ServiceLifetime.Singleton)]
+public sealed class MultilineTextEditDialogService
 {
     public string? EditText(string title, string initialValue)
     {
