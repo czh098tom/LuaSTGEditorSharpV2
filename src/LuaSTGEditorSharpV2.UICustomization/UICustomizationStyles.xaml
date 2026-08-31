@@ -15,7 +15,7 @@
 			<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource font_setting}"/>
 			<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource font_setting}"/>
 			<Style TargetType="{x:Type Button}" BasedOn="{StaticResource font_setting}">
-				<Setter Property="Padding" Value="3"/>
+				<Setter Property="Padding" Value="0"/>
 				<Setter Property="VerticalAlignment" Value="Top"/>
 				<Setter Property="lwb:EditorLayoutBehavior.MeasureTextLineHeight" Value="True"/>
 				<Setter Property="Height"
@@ -24,72 +24,21 @@
 			</Style>
 			<Style TargetType="{x:Type xctk:WatermarkTextBox}" BasedOn="{StaticResource font_setting}">
 				<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+				<Setter Property="lwb:EditorVisualBehavior.EnabledBackground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+				<Setter Property="lwb:EditorVisualBehavior.DisabledBackground" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
 				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
 				<Setter Property="BorderThickness" Value="1"/>
 				<Setter Property="Padding" Value="0"/>
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type xctk:WatermarkTextBox}">
-							<Border x:Name="Border"
-									Background="{TemplateBinding Background}"
-									BorderBrush="{TemplateBinding BorderBrush}"
-									BorderThickness="{TemplateBinding BorderThickness}">
-								<Grid>
-									<ScrollViewer x:Name="PART_ContentHost"
-												  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-									<ContentControl x:Name="PART_WatermarkHost"
-													  Content="{TemplateBinding Watermark}"
-													  Margin="{TemplateBinding Padding}"
-													  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-													  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-													  IsHitTestVisible="False"
-													  Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
-													  Visibility="Collapsed"/>
-								</Grid>
-							</Border>
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsMouseOver" Value="True">
-									<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
-								</Trigger>
-								<Trigger Property="IsKeyboardFocusWithin" Value="True">
-									<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-								</Trigger>
-								<Trigger Property="IsEnabled" Value="False">
-									<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-								</Trigger>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="KeepWatermarkOnGotFocus" Value="False"/>
-										<Condition Property="IsFocused" Value="False"/>
-										<Condition Property="Text" Value=""/>
-									</MultiTrigger.Conditions>
-									<Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible"/>
-								</MultiTrigger>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="KeepWatermarkOnGotFocus" Value="True"/>
-										<Condition Property="Text" Value=""/>
-									</MultiTrigger.Conditions>
-									<Setter TargetName="PART_WatermarkHost" Property="Visibility" Value="Visible"/>
-								</MultiTrigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
 			</Style>
 			<Style TargetType="{x:Type xctk:WatermarkComboBox}" BasedOn="{StaticResource font_setting}">
 				<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+				<Setter Property="lwb:EditorVisualBehavior.EnabledBackground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+				<Setter Property="lwb:EditorVisualBehavior.DisabledBackground" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
 				<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
 				<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
 				<Setter Property="BorderThickness" Value="1"/>
 				<Setter Property="Padding" Value="0"/>
-				<Setter Property="lwb:EditorVisualBehavior.FlattenEditableBackground" Value="True"/>
-				<Style.Triggers>
-					<Trigger Property="IsEditable" Value="True">
-						<Setter Property="Padding" Value="0"/>
-					</Trigger>
-				</Style.Triggers>
 			</Style>
 			<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource font_setting}"/>
 			<Style TargetType="{x:Type xctk:IntegerUpDown}" BasedOn="{StaticResource font_setting}"/>

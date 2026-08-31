@@ -1,179 +1,141 @@
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.Xaml.Behaviors;
+using Xceed.Wpf.Toolkit;
 
 namespace LuaSTGEditorSharpV2.WPF.Behavior
 {
     public static class EditorVisualBehavior
     {
-        private static readonly DependencyPropertyDescriptor ComboBoxTemplateDescriptor =
-            DependencyPropertyDescriptor.FromProperty(Control.TemplateProperty, typeof(ComboBox))!;
-
-        public static readonly DependencyProperty FlattenEditableBackgroundProperty =
+        public static readonly DependencyProperty EnabledBackgroundProperty =
             DependencyProperty.RegisterAttached(
-                "FlattenEditableBackground",
-                typeof(bool),
+                "EnabledBackground",
+                typeof(Brush),
                 typeof(EditorVisualBehavior),
-                new PropertyMetadata(false, OnFlattenEditableBackgroundChanged));
+                new PropertyMetadata(null, OnBackgroundChanged));
 
-        private static readonly DependencyProperty IsComboBoxTemplateObserverAttachedProperty =
+        public static readonly DependencyProperty DisabledBackgroundProperty =
             DependencyProperty.RegisterAttached(
-                "IsComboBoxTemplateObserverAttached",
-                typeof(bool),
+                "DisabledBackground",
+                typeof(Brush),
                 typeof(EditorVisualBehavior),
-                new PropertyMetadata(false));
+                new PropertyMetadata(null, OnBackgroundChanged));
 
-        public static void SetFlattenEditableBackground(DependencyObject element, bool value) =>
-            element.SetValue(FlattenEditableBackgroundProperty, value);
+        private static readonly DependencyProperty BackgroundBehaviorProperty =
+            DependencyProperty.RegisterAttached(
+                "BackgroundBehavior",
+                typeof(ControlBackgroundBehavior),
+                typeof(EditorVisualBehavior));
 
-        public static bool GetFlattenEditableBackground(DependencyObject element) =>
-            (bool)element.GetValue(FlattenEditableBackgroundProperty);
+        public static void SetEnabledBackground(
+            DependencyObject element,
+            Brush? value) =>
+            element.SetValue(EnabledBackgroundProperty, value);
 
-        private static void OnFlattenEditableBackgroundChanged(
+        public static Brush? GetEnabledBackground(DependencyObject element) =>
+            (Brush?)element.GetValue(EnabledBackgroundProperty);
+
+        public static void SetDisabledBackground(
+            DependencyObject element,
+            Brush? value) =>
+            element.SetValue(DisabledBackgroundProperty, value);
+
+        public static Brush? GetDisabledBackground(DependencyObject element) =>
+            (Brush?)element.GetValue(DisabledBackgroundProperty);
+
+        private static void OnBackgroundChanged(
             DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs e)
+            DependencyPropertyChangedEventArgs eventArgs)
         {
-            if (dependencyObject is not ComboBox comboBox)
+            if (dependencyObject is not Control control)
             {
                 return;
             }
 
-            if ((bool)e.OldValue)
+            var behavior = (ControlBackgroundBehavior?)
+                control.GetValue(BackgroundBehaviorProperty);
+            var shouldAttach =
+                GetEnabledBackground(control) is not null ||
+                GetDisabledBackground(control) is not null;
+
+            if (shouldAttach && behavior is null)
             {
-                DetachComboBox(comboBox);
+                behavior = new ControlBackgroundBehavior();
+                Interaction.GetBehaviors(control).Add(behavior);
+                control.SetValue(BackgroundBehaviorProperty, behavior);
             }
 
-            if ((bool)e.NewValue)
+            if (!shouldAttach && behavior is not null)
             {
-                AttachComboBox(comboBox);
-            }
-        }
-
-        private static void AttachComboBox(ComboBox comboBox)
-        {
-            comboBox.Loaded += OnComboBoxLoaded;
-            comboBox.Unloaded += OnComboBoxUnloaded;
-            comboBox.IsEnabledChanged += OnComboBoxIsEnabledChanged;
-            if (comboBox.IsLoaded)
-            {
-                AttachComboBoxTemplateObserver(comboBox);
-            }
-
-            UpdateEditableBackground(comboBox);
-        }
-
-        private static void DetachComboBox(ComboBox comboBox)
-        {
-            comboBox.Loaded -= OnComboBoxLoaded;
-            comboBox.Unloaded -= OnComboBoxUnloaded;
-            comboBox.IsEnabledChanged -= OnComboBoxIsEnabledChanged;
-            DetachComboBoxTemplateObserver(comboBox);
-            ClearEditableBackground(comboBox);
-        }
-
-        private static void OnComboBoxLoaded(object sender, RoutedEventArgs e)
-        {
-            var comboBox = (ComboBox)sender;
-            AttachComboBoxTemplateObserver(comboBox);
-            UpdateEditableBackground(comboBox);
-        }
-
-        private static void OnComboBoxUnloaded(object sender, RoutedEventArgs e) =>
-            DetachComboBoxTemplateObserver((ComboBox)sender);
-
-        private static void OnComboBoxIsEnabledChanged(
-            object sender,
-            DependencyPropertyChangedEventArgs e) =>
-            UpdateEditableBackground((ComboBox)sender);
-
-        private static void AttachComboBoxTemplateObserver(ComboBox comboBox)
-        {
-            if ((bool)comboBox.GetValue(IsComboBoxTemplateObserverAttachedProperty))
-            {
+                control.ClearValue(BackgroundBehaviorProperty);
+                Interaction.GetBehaviors(control).Remove(behavior);
                 return;
             }
 
-            ComboBoxTemplateDescriptor.AddValueChanged(comboBox, OnComboBoxTemplateChanged);
-            comboBox.SetValue(IsComboBoxTemplateObserverAttachedProperty, true);
+            behavior?.UpdateBackground();
         }
 
-        private static void DetachComboBoxTemplateObserver(ComboBox comboBox)
+        private sealed class ControlBackgroundBehavior : Behavior<Control>
         {
-            if (!(bool)comboBox.GetValue(IsComboBoxTemplateObserverAttachedProperty))
+            protected override void OnAttached()
             {
-                return;
+                base.OnAttached();
+                AssociatedObject.IsEnabledChanged += OnIsEnabledChanged;
+                UpdateBackground();
             }
 
-            ComboBoxTemplateDescriptor.RemoveValueChanged(comboBox, OnComboBoxTemplateChanged);
-            comboBox.ClearValue(IsComboBoxTemplateObserverAttachedProperty);
-        }
-
-        private static void OnComboBoxTemplateChanged(object? sender, EventArgs e)
-        {
-            if (sender is ComboBox comboBox)
+            protected override void OnDetaching()
             {
-                UpdateEditableBackground(comboBox);
-            }
-        }
-
-        private static void UpdateEditableBackground(ComboBox comboBox)
-        {
-            if (!GetFlattenEditableBackground(comboBox))
-            {
-                return;
+                AssociatedObject.IsEnabledChanged -= OnIsEnabledChanged;
+                ClearBackground();
+                base.OnDetaching();
             }
 
-            comboBox.ApplyTemplate();
-            if (FindEditableBackground(comboBox) is not Border border)
+            internal void UpdateBackground()
             {
-                return;
-            }
+                var background = AssociatedObject.IsEnabled
+                    ? GetEnabledBackground(AssociatedObject)
+                    : GetDisabledBackground(AssociatedObject);
 
-            border.SetResourceReference(
-                Border.BackgroundProperty,
-                comboBox.IsEnabled
-                    ? SystemColors.WindowBrushKey
-                    : SystemColors.ControlBrushKey);
-        }
-
-        private static void ClearEditableBackground(ComboBox comboBox)
-        {
-            comboBox.ApplyTemplate();
-            FindEditableBackground(comboBox)?.ClearValue(Border.BackgroundProperty);
-        }
-
-        private static Border? FindEditableBackground(ComboBox comboBox)
-        {
-            var textBox = FindVisualDescendant<TextBox>(
-                comboBox,
-                "PART_EditableTextBox");
-            return textBox is null
-                ? null
-                : VisualTreeHelper.GetParent(textBox) as Border;
-        }
-
-        private static T? FindVisualDescendant<T>(
-            DependencyObject parent,
-            string name)
-            where T : FrameworkElement
-        {
-            for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, index);
-                if (child is T element && element.Name == name)
+                if (background is null)
                 {
-                    return element;
+                    ClearBackground();
                 }
-
-                var descendant = FindVisualDescendant<T>(child, name);
-                if (descendant is not null)
+                else
                 {
-                    return descendant;
+                    SetBackground(background);
                 }
             }
 
-            return null;
+            private void OnIsEnabledChanged(
+                object sender,
+                DependencyPropertyChangedEventArgs eventArgs) =>
+                UpdateBackground();
+
+            private void SetBackground(Brush? background)
+            {
+                if (background is null)
+                {
+                    ClearBackground();
+                }
+                else
+                {
+                    AssociatedObject.SetValue(Control.BackgroundProperty, background);
+                    // investigated that WatermarkComboBox is the only control that does not use the Background property but uses WatermarkBackground property instead.
+                    if (AssociatedObject is WatermarkComboBox watermarkCombo) {
+                        watermarkCombo.SetValue(WatermarkComboBox.WatermarkBackgroundProperty, background);
+                    }
+                }
+            }
+
+            private void ClearBackground()
+            {
+                AssociatedObject.ClearValue(Control.BackgroundProperty);
+                if (AssociatedObject is WatermarkComboBox watermarkCombo) {
+                    watermarkCombo.ClearValue(WatermarkComboBox.WatermarkBackgroundProperty);
+                }
+            }
         }
     }
 }
