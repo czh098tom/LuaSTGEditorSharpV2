@@ -13,6 +13,7 @@
                     xmlns:lpvc="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Converter">
     <lpvc:BooleanToWaterMarkConverter x:Key="BooleanToWaterMarkConverter"/>
     <lpvc:BooleanConflictConverter x:Key="BooleanConflictConverter"/>
+    <lpvc:ConflictsToEnabledConverter x:Key="ConflictsToEnabledConverter"/>
     <lwc:BoolNegationConverter x:Key="ConflictToEnabledConverter"/>
     <lwc:BoolToVisibilityConverter x:Key="ConflictToVisibilityConverter"/>
     <lwc:BoolToVisibilityConverter x:Key="ConflictToCollapsedConverter"
@@ -108,7 +109,6 @@
                                       Grid.ColumnSpan="2"
                                       MinWidth="150"
                                       Step="{Binding Type.Parameters[Step]}"
-                                      Padding="0"
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Stretch"
                                       lpv:BoundEditor.Property="{Binding ValueProperty}"/>
@@ -124,18 +124,22 @@
                 </Grid.ColumnDefinitions>
                 <lwctrl:ExpressionSpinner Grid.Column="0"
                                           Step="{Binding Type.Parameters[Step]}"
-                                          Padding="0"
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Stretch"
                                           lpv:BoundEditor.Property="{Binding XProperty}"/>
                 <lwctrl:ExpressionSpinner Grid.Column="1"
                                           Step="{Binding Type.Parameters[Step]}"
-                                          Padding="0"
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Stretch"
                                           lpv:BoundEditor.Property="{Binding YProperty}"/>
             </Grid>
-            <Button Grid.Column="2">
+            <Button Grid.Column="2" Padding="3">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource ConflictsToEnabledConverter}">
+                        <Binding Path="XProperty.HasConflict"/>
+                        <Binding Path="YProperty.HasConflict"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                       Stretch="Uniform"
                       HorizontalAlignment="Stretch"
@@ -164,7 +168,7 @@
                                     VerticalAlignment="Top"
                                     ItemsSource="{Binding Type.Parameters[Options], Mode=OneWay, Converter={StaticResource comboBoxConverter}}"
                                     lpv:BoundEditor.Property="{Binding ValueProperty}"/>
-            <Button Grid.Column="2"
+			<Button Grid.Column="2" Padding="3"
                     IsEnabled="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToEnabledConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                       Stretch="Uniform"
@@ -191,7 +195,7 @@
                                    AcceptsTab="True"
                                    TextWrapping="Wrap"
                                    lpv:BoundEditor.Property="{Binding ValueProperty}"/>
-            <Button Grid.Column="2"
+			<Button Grid.Column="2" Padding="3"
                     IsEnabled="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToEnabledConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                           Stretch="Uniform"
@@ -221,7 +225,7 @@
                                    AcceptsTab="True"
                                    TextWrapping="Wrap"
                                    lpv:BoundEditor.Property="{Binding ValueProperty}"/>
-            <Button Grid.Column="2"
+			<Button Grid.Column="2" Padding="3"
                     IsEnabled="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToEnabledConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                       Stretch="Uniform"
@@ -271,7 +275,7 @@
                                        TextWrapping="Wrap"
                                        lpv:BoundEditor.Property="{Binding ValueProperty}"/>
             </Grid>
-            <Button Grid.Column="2"
+			<Button Grid.Column="2" Padding="3"
                     IsEnabled="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToEnabledConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                           Stretch="Uniform"
@@ -297,7 +301,7 @@
                                    HorizontalAlignment="Stretch"
                                    TextWrapping="Wrap"
                                    lpv:BoundEditor.Property="{Binding ValueProperty}"/>
-            <Button Grid.Column="2"
+			<Button Grid.Column="2" Padding="3"
                     IsEnabled="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToEnabledConverter}}">
                 <Path Data="{DynamicResource ResourceKey=editor:browseIcon}"
                           Stretch="Uniform"
