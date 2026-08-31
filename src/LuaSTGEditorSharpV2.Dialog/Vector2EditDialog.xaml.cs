@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 using LuaSTGEditorSharpV2.Dialog.ViewModel;
 using LuaSTGEditorSharpV2.WPF;
 
@@ -9,9 +10,7 @@ namespace LuaSTGEditorSharpV2.Dialog;
 
 public partial class Vector2EditDialog : OKCancelWindow
 {
-    private TextBox? _previousTextBox;
-    private int _previousSelectionStart;
-    private int _previousSelectionLength;
+    private TextBox? _activeTextBox;
 
     public Vector2EditDialogViewModel ViewModel
         => (DataContext as Vector2EditDialogViewModel) ?? throw new InvalidCastException();
@@ -27,6 +26,8 @@ public partial class Vector2EditDialog : OKCancelWindow
             TextBoxBase.SelectionChangedEvent,
             new RoutedEventHandler(TextBox_SelectionChanged),
             handledEventsToo: true);
+        ViewModel.TextInserted += OnTextInserted;
+        ViewModel.VectorEditorAppended += OnVectorEditorAppended;
     }
 
     public Vector2EditDialog(string x, string y)
@@ -42,52 +43,50 @@ public partial class Vector2EditDialog : OKCancelWindow
     public string Y => ViewModel.Y;
 
     private void TextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        => RememberTextBox(e.OriginalSource as TextBox);
+        => ReportTextBoxSelection(e.OriginalSource as TextBox);
 
     private void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
-        => RememberTextBox(e.OriginalSource as TextBox);
+        => ReportTextBoxSelection(e.OriginalSource as TextBox);
 
-    private void RememberTextBox(TextBox? textBox)
+    private void ReportTextBoxSelection(TextBox? textBox)
     {
-        if (textBox is null)
+        if (textBox is null || GetTextBoxTarget(textBox) is not { } target)
         {
             return;
         }
 
-        _previousTextBox = textBox;
-        _previousSelectionStart = textBox.SelectionStart;
-        _previousSelectionLength = textBox.SelectionLength;
+        _activeTextBox = textBox;
+        ViewModel.SetTextSelection(target, textBox.SelectionStart, textBox.SelectionLength);
     }
 
-    private void InsertButton_Click(object sender, RoutedEventArgs e)
+    private void OnTextInserted(int caretIndex)
     {
-        if (sender is not Button button || button.Tag is not string insertion)
+        if (_activeTextBox is null)
         {
             return;
         }
 
-        var textBox = _previousTextBox ?? expressionTextBox;
-        var start = Math.Clamp(_previousSelectionStart, 0, textBox.Text.Length);
-        var length = Math.Clamp(_previousSelectionLength, 0, textBox.Text.Length - start);
-        textBox.Select(start, length);
-        textBox.SelectedText = insertion;
-        textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-        textBox.Focus();
-        textBox.CaretIndex = start + insertion.Length;
-        RememberTextBox(textBox);
+        _activeTextBox.Focus();
+        _activeTextBox.CaretIndex = caretIndex;
     }
 
-    private void OpenVectorEditor_Click(object sender, RoutedEventArgs e)
+    private void OnVectorEditorAppended()
     {
-        var editor = new VectorEditorDialog
+        expressionTextBox.Focus();
+        expressionTextBox.CaretIndex = expressionTextBox.Text.Length;
+    }
+
+    private static Vector2EditTextBoxTarget? GetTextBoxTarget(TextBox textBox)
+    {
+        for (DependencyObject? current = textBox; current is not null; current = VisualTreeHelper.GetParent(current))
         {
-            Owner = this,
-        };
-        if (editor.ShowDialog() == true)
-        {
-            ViewModel.AppendVector(editor.OffsetX, editor.OffsetY);
-            expressionTextBox.Focus();
-            expressionTextBox.CaretIndex = expressionTextBox.Text.Length;
+            if (current is FrameworkElement { Tag: string tag }
+                && Enum.TryParse<Vector2EditTextBoxTarget>(tag, out var target))
+            {
+                return target;
+            }
         }
+
+        return null;
     }
 }

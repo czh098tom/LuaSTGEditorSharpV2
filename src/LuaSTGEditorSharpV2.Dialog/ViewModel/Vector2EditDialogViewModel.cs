@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using LuaSTGEditorSharpV2.Core.Parsing.Facade;
@@ -16,6 +18,9 @@ public sealed class Vector2EditDialogViewModel : INotifyPropertyChanged
     private VectorComponent? _selectedComponent;
     private string _lastEditedComponent = "Y";
     private bool _synchronizing;
+    private Vector2EditTextBoxTarget _activeTextBoxTarget = Vector2EditTextBoxTarget.Expression;
+    private int _selectionStart;
+    private int _selectionLength;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -202,11 +207,18 @@ public sealed class Vector2EditDialogViewModel : INotifyPropertyChanged
 
     public ICommand SyncXYCommand { get; }
     public ICommand SyncTrigonometricsCommand { get; }
+    public ICommand InsertTextCommand { get; }
+    public ICommand OpenVectorEditorCommand { get; }
+
+    public event Action<int>? TextInserted;
+    public event Action? VectorEditorAppended;
 
     public Vector2EditDialogViewModel()
     {
         SyncXYCommand = new RelayCommand(SyncXY);
         SyncTrigonometricsCommand = new RelayCommand(SyncTrigonometrics);
+        InsertTextCommand = new RelayCommand<string>(InsertText);
+        OpenVectorEditorCommand = new RelayCommand(OpenVectorEditor);
         SetInitialValues(string.Empty, string.Empty);
     }
 
@@ -236,6 +248,59 @@ public sealed class Vector2EditDialogViewModel : INotifyPropertyChanged
         var yText = FormatNumber(y);
         X = AppendTerm(X, xText);
         Y = AppendTerm(Y, yText);
+    }
+
+    public void SetTextSelection(Vector2EditTextBoxTarget target, int selectionStart, int selectionLength)
+    {
+        _activeTextBoxTarget = target;
+        _selectionStart = selectionStart;
+        _selectionLength = selectionLength;
+    }
+
+    private void InsertText(string? insertion)
+    {
+        if (string.IsNullOrEmpty(insertion))
+        {
+            return;
+        }
+
+        var (text, setText) = GetActiveTextTarget();
+        var start = Math.Clamp(_selectionStart, 0, text.Length);
+        var length = Math.Clamp(_selectionLength, 0, text.Length - start);
+        setText(text[..start] + insertion + text[(start + length)..]);
+        SetTextSelection(_activeTextBoxTarget, start + insertion.Length, 0);
+        TextInserted?.Invoke(start + insertion.Length);
+    }
+
+    private (string Text, Action<string> SetText) GetActiveTextTarget()
+    {
+        return _activeTextBoxTarget switch
+        {
+            Vector2EditTextBoxTarget.Expression => (Expression, value => Expression = value),
+            Vector2EditTextBoxTarget.X => (X, value => X = value),
+            Vector2EditTextBoxTarget.Y => (Y, value => Y = value),
+            Vector2EditTextBoxTarget.CurrentX => (CurrentX, value => CurrentX = value),
+            Vector2EditTextBoxTarget.CurrentY => (CurrentY, value => CurrentY = value),
+            Vector2EditTextBoxTarget.CurrentRadius => (CurrentRadius, value => CurrentRadius = value),
+            Vector2EditTextBoxTarget.CurrentAngle => (CurrentAngle, value => CurrentAngle = value),
+            _ => throw new ArgumentOutOfRangeException(nameof(_activeTextBoxTarget)),
+        };
+    }
+
+    private void OpenVectorEditor()
+    {
+        var editor = new LuaSTGEditorSharpV2.Dialog.VectorEditorDialog
+        {
+            Owner = Application.Current?.Windows
+                .OfType<Window>()
+                .FirstOrDefault(window => window.IsActive),
+        };
+
+        if (editor.ShowDialog() == true)
+        {
+            AppendVector(editor.OffsetX, editor.OffsetY);
+            VectorEditorAppended?.Invoke();
+        }
     }
 
     private void SetComponentsFromExpression(string expression)
@@ -551,6 +616,17 @@ public sealed class Vector2EditDialogViewModel : INotifyPropertyChanged
 
     private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+}
+
+public enum Vector2EditTextBoxTarget
+{
+    Expression,
+    X,
+    Y,
+    CurrentX,
+    CurrentY,
+    CurrentRadius,
+    CurrentAngle,
 }
 
 public enum VectorComponentEditMode
