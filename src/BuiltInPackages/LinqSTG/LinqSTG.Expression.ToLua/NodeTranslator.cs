@@ -114,6 +114,14 @@ namespace LinqSTG.Expression.ToLua
                 "PatternVariableFloat" => VariableFromEditor(node, "name"),
                 "PatternVariableInt" => VariableFromEditor(node, "name"),
 
+                // The locked built-ins translate to their fixed outer-scope targets.
+                "Infinite" => new TypedLuaParser(
+                    _parser.TakeVariableFromContext(_parser.ConstantString("_infinite")), PortShape.Scalar),
+                // self reads the Shoot-header redirect __self: the raw `self` is
+                // rebound to the bullet inside create_and_attach_movement.
+                "SelfPosition" => new TypedLuaParser(_parser.OuterPosition("__self"), PortShape.Vector2),
+                "PlayerPosition" => new TypedLuaParser(_parser.OuterPosition("player"), PortShape.Vector2),
+
                 "Add" => InputShapeOr(inputs, "a") == PortShape.Vector2
                     ? new TypedLuaParser(_parser.IntrinsicAddVector2(
                         ParserOf(node, inputs, "a"),

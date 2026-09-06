@@ -2,6 +2,7 @@ using LinqSTG.Expression.ToLua.Serialization;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
 {
@@ -10,9 +11,14 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
     /// Each entry binds a unique name to a numeric value (integer or float).
     /// The entries act as outer-scope variables: the preview seeds them into the
     /// root pattern parameter, and translation assumes they exist outside the
-    /// generated code. The first <see cref="LockedCount"/> entries are locked:
-    /// fixed position, not deletable, not renamable (but still draggable into
-    /// the blueprint area as <see cref="Nodes.Data.PatternVariableNodeBase"/>).
+    /// generated code.
+    /// The first <see cref="LockedCount"/> entries are locked: fixed position,
+    /// not deletable, not renamable, type not changeable (but still draggable
+    /// into the blueprint area, where each generates its dedicated node type).
+    /// The locked prefix is fixed to three built-ins:
+    ///   - <see cref="InfiniteName"/> (_infinite = integer 10, the Shoot loop bound)
+    ///   - <see cref="SelfName"/> (self, vector2: the shooter's own position)
+    ///   - <see cref="PlayerName"/> (player, vector2: the player's position)
     /// </summary>
     public class VariableListViewModel : INotifyPropertyChanged
     {
@@ -21,7 +27,20 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
 
         public const double InfiniteDefaultValue = 10.0;
 
-        private int _lockedCount = 1;
+        /// <summary>The locked self entry: the shooter's own position (vector2).</summary>
+        public const string SelfName = "self";
+
+        /// <summary>The locked player entry: the player's position (vector2).</summary>
+        public const string PlayerName = "player";
+
+        /// <summary>Preview positions of the vector2 built-ins: the shooter sits in the upper half of the play field, the player near the bottom.</summary>
+        public const double SelfDefaultX = 0.0, SelfDefaultY = 120.0;
+        public const double PlayerDefaultX = 0.0, PlayerDefaultY = -180.0;
+
+        /// <summary>Index of the vector2 entry in the list's type picker.</summary>
+        public const int Vector2TypeIndex = 2;
+
+        private int _lockedCount = 3;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -30,7 +49,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
 
         public ObservableCollection<VariableItemViewModel> Items { get; } = [];
 
-        /// <summary>Number of locked entries at the head of the list.</summary>
+        /// <summary>Number of locked entries at the head of the list (the built-in prefix).</summary>
         public int LockedCount
         {
             get => _lockedCount;
@@ -45,12 +64,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
 
         public VariableListViewModel()
         {
-            // The fixed first entry: _infinite = integer 10, locked.
-            var infinite = new VariableItemViewModel(this);
-            infinite.SetNameInternal(InfiniteName);
-            infinite.SetIntegerInternal(true);
-            infinite.SetValueInternal(InfiniteDefaultValue, FormatValue(InfiniteDefaultValue, isInteger: true));
-            Items.Add(infinite);
+            AddLockedDefault(InfiniteName, isInteger: true, InfiniteDefaultValue, y: null);
+            AddLockedDefault(SelfName, isInteger: false, SelfDefaultX, SelfDefaultY);
+            AddLockedDefault(PlayerName, isInteger: false, PlayerDefaultX, PlayerDefaultY);
             RefreshLocks();
         }
 
@@ -59,7 +75,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             var item = new VariableItemViewModel(this);
             item.SetNameInternal(NextFreeGeneratedName());
             item.SetValueInternal(0, FormatValue(0, isInteger: false));
-            item.SetIntegerInternal(false);
+            item.SetTypeIndexInternal(0);
             Items.Add(item);
             RefreshLocks();
             OnChanged();
@@ -123,10 +139,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             OnChanged();
         }
 
-        /// <summary>Parses and commits the value text; unparseable text reverts to the last valid value.</summary>
+        /// <summary>Parses and commits the value text; unparseable text reverts to the last valid value. Vector2 entries are read-only.</summary>
         public void CommitValue(VariableItemViewModel item, string? text)
         {
             if (!Items.Contains(item)) return;
+            if (item.IsVector2)
+            {
+                item.NotifyValueReset();
+                return;
+            }
 
             var parsed = (text ?? string.Empty).Trim();
             if (TryParseValue(parsed, item.IsInteger, out var value))
@@ -140,24 +161,59 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             }
         }
 
-        /// <summary>Switches the value between integer and float authoring, normalizing the stored value.</summary>
-        public void SetInteger(VariableItemViewModel item, bool isInteger)
+        /// <summary>
+        /// Commits a type pick: locked entries keep their type, and vector2 is
+        /// reserved for the locked built-ins; rejected picks snap back. Switching
+        /// between int and float normalizes the stored value.
+        /// </summary>
+        public void SetTypeIndex(VariableItemViewModel item, int typeIndex)
         {
-            if (!Items.Contains(item) || item.IsInteger == isInteger) return;
+            if (!Items.Contains(item)) return;
 
+            var index = Items.IndexOf(item);
+            if (index < _lockedCount || typeIndex == Vector2TypeIndex)
+            {
+                item.NotifyTypeReset();
+                return;
+            }
+
+            if (item.TypeIndex == typeIndex)
+            {
+                item.NotifyTypeReset();
+                return;
+            }
+
+            var isInteger = typeIndex == 1;
             var value = isInteger ? Math.Round(item.Value, MidpointRounding.AwayFromZero) : item.Value;
-            item.SetIntegerInternal(isInteger);
+            item.SetTypeIndexInternal(typeIndex);
             item.SetValueInternal(value, FormatValue(value, isInteger));
             OnChanged();
         }
 
-        /// <summary>Snapshot of the entries as name-to-float bindings, seeded into the root pattern parameter.</summary>
+        /// <summary>Snapshot of the scalar entries as name-to-float bindings, seeded into the root pattern parameter.</summary>
         public Dictionary<string, float> ToFloats()
         {
             var result = new Dictionary<string, float>(Items.Count, StringComparer.Ordinal);
             foreach (var item in Items)
             {
-                result[item.Name] = (float)item.Value;
+                if (!item.IsVector2)
+                {
+                    result[item.Name] = (float)item.Value;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>Snapshot of the vector2 entries as name-to-position bindings, seeded into the root parameter's vector scope.</summary>
+        public Dictionary<string, Vector2> ToVectors()
+        {
+            var result = new Dictionary<string, Vector2>(StringComparer.Ordinal);
+            foreach (var item in Items)
+            {
+                if (item.IsVector2)
+                {
+                    result[item.Name] = new Vector2((float)item.Value, (float)(item.ValueY ?? 0));
+                }
             }
             return result;
         }
@@ -168,31 +224,48 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             for (int i = 0; i < Items.Count; i++)
             {
                 var item = Items[i];
-                models[i] = new VariableItemModel(item.Name, item.Value, item.IsInteger);
+                models[i] = item.IsVector2
+                    ? new VariableItemModel(item.Name, item.Value, IsInteger: false, ValueY: item.ValueY)
+                    : new VariableItemModel(item.Name, item.Value, item.IsInteger);
             }
             return models;
         }
 
         /// <summary>
         /// Replaces the list with deserialized entries. The locked prefix is
-        /// restored as-is (or seeded with the defaults when absent/invalid);
-        /// names are de-duplicated defensively for hand-edited documents.
+        /// rebuilt from the built-in defaults (its names are reserved); the
+        /// remaining document entries are restored as unlocked entries with
+        /// defensively de-duplicated names.
         /// </summary>
         public void LoadFrom(VariableItemModel[]? models)
         {
             Items.Clear();
 
-            var usedNames = new HashSet<string>(StringComparer.Ordinal);
+            var usedNames = new HashSet<string>(StringComparer.Ordinal) { InfiniteName, SelfName, PlayerName };
             if (models is { Length: > 0 })
             {
                 foreach (var model in models)
                 {
                     if (model is null) continue;
-                    var name = UniqueName((model.Name ?? string.Empty).Trim(), usedNames);
-                    usedNames.Add(name);
+                    var candidate = (model.Name ?? string.Empty).Trim();
+                    if (candidate.Length == 0)
+                    {
+                        continue;
+                    }
+                    if (IsReservedName(candidate))
+                    {
+                        // Reserved built-in names are re-seeded from the defaults below.
+                        continue;
+                    }
+                    // Duplicates within the document are uniquified defensively.
+                    while (usedNames.Contains(candidate))
+                    {
+                        candidate = NextFreeGeneratedName();
+                    }
+                    usedNames.Add(candidate);
                     var item = new VariableItemViewModel(this);
-                    item.SetNameInternal(name);
-                    item.SetIntegerInternal(model.IsInteger);
+                    item.SetNameInternal(candidate);
+                    item.SetTypeIndexInternal(model.IsInteger ? 1 : 0);
                     item.SetValueInternal(model.Value, FormatValue(model.Value, model.IsInteger));
                     Items.Add(item);
                 }
@@ -203,22 +276,43 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             OnChanged();
         }
 
+        /// <summary>Whether the name belongs to the locked built-in prefix.</summary>
+        public static bool IsReservedName(string name)
+        {
+            return string.Equals(name, InfiniteName, StringComparison.Ordinal)
+                || string.Equals(name, SelfName, StringComparison.Ordinal)
+                || string.Equals(name, PlayerName, StringComparison.Ordinal);
+        }
+
         private void EnsureLockedDefaults()
         {
-            // Keep _infinite as the fixed first entry: promote it to the head when the
-            // document carries it at another position, or seed it when it is missing.
-            var existing = Items.FirstOrDefault(item => string.Equals(item.Name, InfiniteName, StringComparison.Ordinal));
-            if (existing is null)
+            AddLockedDefault(InfiniteName, isInteger: true, InfiniteDefaultValue, y: null, insertAt: 0);
+            AddLockedDefault(SelfName, isInteger: false, SelfDefaultX, SelfDefaultY, insertAt: 1);
+            AddLockedDefault(PlayerName, isInteger: false, PlayerDefaultX, PlayerDefaultY, insertAt: 2);
+        }
+
+        /// <summary>Creates one built-in locked entry; <paramref name="y"/> non-null marks a vector2 entry.</summary>
+        private void AddLockedDefault(string name, bool isInteger, double x, double? y, int? insertAt = null)
+        {
+            var item = new VariableItemViewModel(this);
+            item.SetNameInternal(name);
+            if (y is null)
             {
-                var item = new VariableItemViewModel(this);
-                item.SetNameInternal(InfiniteName);
-                item.SetIntegerInternal(true);
-                item.SetValueInternal(InfiniteDefaultValue, FormatValue(InfiniteDefaultValue, isInteger: true));
-                Items.Insert(0, item);
+                item.SetTypeIndexInternal(isInteger ? 1 : 0);
+                item.SetValueInternal(x, FormatValue(x, isInteger));
             }
-            else if (Items.IndexOf(existing) != 0)
+            else
             {
-                Items.Move(Items.IndexOf(existing), 0);
+                item.SetTypeIndexInternal(Vector2TypeIndex);
+                item.SetVectorInternal(x, y.Value, FormatVector(x, y.Value));
+            }
+            if (insertAt is int index)
+            {
+                Items.Insert(Math.Min(index, Items.Count), item);
+            }
+            else
+            {
+                Items.Add(item);
             }
         }
 
@@ -242,22 +336,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
             return false;
         }
 
-        private string UniqueName(string candidate, HashSet<string> usedNames)
-        {
-            if (candidate.Length == 0 || usedNames.Contains(candidate))
-            {
-                candidate = NextFreeGeneratedName(usedNames);
-            }
-            return candidate;
-        }
-
-        private string NextFreeGeneratedName(HashSet<string>? extraUsed = null)
+        private string NextFreeGeneratedName()
         {
             for (int n = 1; ; n++)
             {
                 var candidate = $"_{n}";
-                var taken = extraUsed?.Contains(candidate) == true
-                    || Items.Any(item => string.Equals(item.Name, candidate, StringComparison.Ordinal));
+                var taken = Items.Any(item => string.Equals(item.Name, candidate, StringComparison.Ordinal));
                 if (!taken) return candidate;
             }
         }
@@ -295,6 +379,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                 return ((long)Math.Round(value, MidpointRounding.AwayFromZero)).ToString(CultureInfo.CurrentCulture);
             }
             return ((float)value).ToString("R", CultureInfo.CurrentCulture);
+        }
+
+        private static string FormatVector(double x, double y)
+        {
+            return string.Create(CultureInfo.CurrentCulture, $"{(float)x}, {(float)y}");
         }
 
         private void OnChanged()

@@ -317,6 +317,33 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_node_infinite 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_infinite {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_infinite", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_node_selfPosition 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_selfPosition {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_selfPosition", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_node_playerPosition 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_playerPosition {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_playerPosition", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_node_mapPattern 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_node_mapPattern {

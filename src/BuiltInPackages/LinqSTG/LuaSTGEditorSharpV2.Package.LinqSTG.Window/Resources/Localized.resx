@@ -135,7 +135,7 @@
   </data>
   <!-- Category D-2: Variable list panel -->
   <data name="linqstg_window_varList_title" xml:space="preserve">
-    <value>Variables</value>
+    <value>External Variables</value>
   </data>
   <data name="linqstg_window_varList_add" xml:space="preserve">
     <value>Add variable</value>
@@ -198,6 +198,15 @@
   </data>
   <data name="linqstg_window_node_variableInt" xml:space="preserve">
     <value>Variable (Int)</value>
+  </data>
+  <data name="linqstg_window_node_infinite" xml:space="preserve">
+    <value>Infinite</value>
+  </data>
+  <data name="linqstg_window_node_selfPosition" xml:space="preserve">
+    <value>Self Position</value>
+  </data>
+  <data name="linqstg_window_node_playerPosition" xml:space="preserve">
+    <value>Player Position</value>
   </data>
   <data name="linqstg_window_node_fromPointMovement" xml:space="preserve">
     <value>From Point Movement</value>

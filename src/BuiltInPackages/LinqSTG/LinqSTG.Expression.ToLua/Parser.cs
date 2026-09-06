@@ -44,6 +44,11 @@ namespace LinqSTG.Expression.ToLua
                     Single("end)")
                 );
                 return Concat(
+                    // Redirect the shooter's self before any nested scope rebinds it:
+                    // the movement function's (self) parameter, __create_and_attach_movement's
+                    // `local self = last`, and ExtrudePattern's __new_task(function(self) ...)
+                    // all shadow it with the bullet object. SelfPosition reads __self.
+                    Single("local __self = self"),
                     Single("local __new_task = function(fn) task.New(self, fn) end"),
                     Single("local __wait = task.Wait"),
                     Single("local __create_and_attach_movement = function(fn)"),
@@ -498,6 +503,19 @@ namespace LinqSTG.Expression.ToLua
         public LuaParser TakeVariableFromContext(LuaParser key)
         {
             return (inner) => Single($"local __val = {FlatText(key(inner))}");
+        }
+
+        /// <summary>
+        /// 外部坐标变量：把目标的 .x/.y 字段读取为 __valx/__valy 二维向量输出。
+        /// self 走 Shoot 头部重定向的 __self 别名（原始 self 在运动函数内被子弹对象遮蔽），
+        /// player 是宿主全局对象，直接读取。仅用于变量列表的锁定项。
+        /// </summary>
+        public LuaParser OuterPosition(string target)
+        {
+            return (inner) => Concat(
+                Single($"local __valx = {target}.x"),
+                Single($"local __valy = {target}.y")
+            );
         }
 
         public LuaParser MovementAfterTime(LuaParser m1, LuaParser time, LuaParser m2)

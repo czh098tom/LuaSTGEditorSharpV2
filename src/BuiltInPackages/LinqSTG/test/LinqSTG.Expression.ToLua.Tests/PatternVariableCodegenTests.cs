@@ -52,6 +52,76 @@ namespace LinqSTG.Expression.ToLua.Tests
         }
 
         [Fact]
+        public void InfiniteNode_EmitsOuterScopeInfiniteAsScalar()
+        {
+            var lua = TranslateSingle(new NodeModel("Infinite", 0, 0, new JObject()));
+
+            Assert.Equal("local __val = _infinite", lua);
+        }
+
+        [Fact]
+        public void SelfPositionNode_EmitsRedirectedSelfComponentsAsVector()
+        {
+            var lua = TranslateSingle(new NodeModel("SelfPosition", 0, 0, new JObject()));
+
+            Assert.Equal("local __valx = __self.x\nlocal __valy = __self.y", lua);
+        }
+
+        [Fact]
+        public void PlayerPositionNode_EmitsPlayerComponentsAsVector()
+        {
+            var lua = TranslateSingle(new NodeModel("PlayerPosition", 0, 0, new JObject()));
+
+            Assert.Equal("local __valx = player.x\nlocal __valy = player.y", lua);
+        }
+
+        [Fact]
+        public void Shoot_RedirectsSelfBeforeCreateAndAttachMovementShadowsIt()
+        {
+            // A real pattern connection is needed: only then does the Shoot
+            // expansion contain the movement function that shadows self.
+            var g = new TestGraph();
+            var repeat = g.Add("RepeatPattern", new JObject { ["times"] = 1 });
+            var shoot = g.Add("Shoot");
+            g.Connect(repeat, "pattern", shoot, "pattern");
+            var lua = g.BuildLua();
+
+            var lines = lua.Split('\n').Select(l => l.TrimStart('\t')).ToArray();
+            // The alias is emitted first, in the scope where self is still the
+            // shooter; every later rebinding (the movement function's (self)
+            // parameter, `local self = last`) only shadows `self`, not __self.
+            var aliasIndex = Array.IndexOf(lines, "local __self = self");
+            var shadowIndex = Array.IndexOf(lines, "__create_and_attach_movement(function(self)");
+            Assert.True(aliasIndex >= 0, "Shoot must emit `local __self = self`");
+            Assert.True(shadowIndex > aliasIndex, "the __self alias must precede the shadowing movement function");
+        }
+
+        [Fact]
+        public void PositionNodes_CarryVectorShape_ForArithmeticDispatch()
+        {
+            var parser = new Parser();
+            var translator = new NodeTranslator(parser);
+            var self = translator.Translate(new NodeModel("SelfPosition", 0, 0, new JObject()), new Dictionary<string, TypedLuaParser>());
+            var player = translator.Translate(new NodeModel("PlayerPosition", 0, 0, new JObject()), new Dictionary<string, TypedLuaParser>());
+            var add = translator.Translate(
+                new NodeModel("Add", 0, 0, new JObject()),
+                new Dictionary<string, TypedLuaParser>
+                {
+                    ["a"] = self,
+                    ["b"] = player,
+                });
+
+            var text = string.Join("\n", add.LuaParser(Enumerable.Empty<LuaCodeLine>()).Select(l => l.Text));
+
+            // Vector shape dispatches to the Vector2 variant of Add.
+            Assert.Contains("local __valx = __self.x", text);
+            Assert.Contains("local __valy = __self.y", text);
+            Assert.Contains("local __valx = player.x", text);
+            Assert.Contains("local __valx = __lhsx_1 + __rhsx_3", text);
+            Assert.Contains("local __valy = __lhsy_2 + __rhsy_4", text);
+        }
+
+        [Fact]
         public void ScalarShape_FeedsArithmeticCombinators()
         {
             var parser = new Parser();
@@ -80,18 +150,28 @@ namespace LinqSTG.Expression.ToLua.Tests
             var model = new NetworkModel(
                 [new NodeModel("PatternVariableFloat", 0, 0, NameEditor("speed"))],
                 [],
-                [new VariableItemModel("_infinite", 10, true), new VariableItemModel("speed", 2.5, false)]);
+                [
+                    new VariableItemModel("_infinite", 10, true),
+                    new VariableItemModel("self", 0, false, ValueY: 0),
+                    new VariableItemModel("player", 0, false, ValueY: -180),
+                    new VariableItemModel("speed", 2.5, false),
+                ]);
 
             var json = JsonConvert.SerializeObject(model);
             Assert.Contains("\"variables\"", json);
 
             var roundTripped = JsonConvert.DeserializeObject<NetworkModel>(json)!;
             Assert.NotNull(roundTripped.Variables);
-            Assert.Equal(2, roundTripped.Variables!.Length);
+            Assert.Equal(4, roundTripped.Variables!.Length);
             Assert.Equal("_infinite", roundTripped.Variables[0].Name);
             Assert.True(roundTripped.Variables[0].IsInteger);
             Assert.Equal(10, roundTripped.Variables[0].Value);
-            Assert.False(roundTripped.Variables[1].IsInteger);
+            // Vector2 entries round-trip their Y component and keep it absent
+            // for scalar entries.
+            Assert.Null(roundTripped.Variables[0].ValueY);
+            Assert.Null(roundTripped.Variables[3].ValueY);
+            Assert.Equal(-180, roundTripped.Variables[2].ValueY);
+            Assert.False(roundTripped.Variables[3].IsInteger);
 
             // Documents saved before the variable list existed still load: the
             // optional property deserializes to null.

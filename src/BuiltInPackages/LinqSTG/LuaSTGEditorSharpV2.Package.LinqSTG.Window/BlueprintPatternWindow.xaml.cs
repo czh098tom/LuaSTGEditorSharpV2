@@ -316,8 +316,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             }
             e.Handled = true;
             var position = ScreenToNetwork(e.GetPosition(NetworkView));
-            // The entry's value type decides the generated node variant.
-            _viewModel.AddPatternVariableNode(item.Name, item.IsInteger, position);
+            // Locked built-ins generate their dedicated node types; the entry's
+            // value type picks the generic node variant otherwise.
+            _viewModel.AddNodeForVariable(item, position);
         }
 
         #endregion

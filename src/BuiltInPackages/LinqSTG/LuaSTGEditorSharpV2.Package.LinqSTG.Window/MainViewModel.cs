@@ -225,6 +225,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             var root = new Parameter
             {
                 Floats = new FloatScope(VariableList.ToFloats()),
+                Vectors = new VectorScope(VariableList.ToVectors()),
                 Randomizer = new Random(seed),
             };
             pointPredictions = shootResults.SelectMany(pred => pred.Invoke(root)).ToArray();
@@ -263,18 +264,35 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         }
 
         /// <summary>
-        /// Creates a variable reference node for a variable list entry dropped
-        /// into the blueprint area: int-typed entries produce the int variant,
-        /// float-typed entries the float variant. The node starts bound to the
-        /// entry's name.
+        /// Creates the node for a variable list entry dropped into the blueprint
+        /// area. Locked built-ins generate their dedicated node types (无限 /
+        /// 自身坐标 / 玩家坐标); unlocked entries generate the generic variable
+        /// reference nodes, int-typed entries the int variant, float-typed
+        /// entries the float variant.
         /// </summary>
-        public void AddPatternVariableNode(string name, bool isInteger, System.Windows.Point position)
+        public void AddNodeForVariable(VariableItemViewModel item, System.Windows.Point position)
         {
-            PatternVariableNodeBase node = isInteger
-                ? new PatternVariableIntNode()
-                : new PatternVariableFloatNode();
+            LinqSTGNodeViewModel node;
+            if (item.IsLocked)
+            {
+                node = item.Name switch
+                {
+                    VariableListViewModel.InfiniteName => new InfiniteNode(),
+                    VariableListViewModel.SelfName => new SelfPositionNode(),
+                    VariableListViewModel.PlayerName => new PlayerPositionNode(),
+                    // Unknown locked entries degrade to the generic references.
+                    _ => item.IsInteger ? new PatternVariableIntNode() : new PatternVariableFloatNode(),
+                };
+            }
+            else
+            {
+                node = item.IsInteger ? new PatternVariableIntNode() : new PatternVariableFloatNode();
+            }
             node.Position = position;
-            node.NameEditor.RawValue = name;
+            if (node is PatternVariableNodeBase variable)
+            {
+                variable.NameEditor.RawValue = item.Name;
+            }
             Network.Nodes.Add(node);
         }
 

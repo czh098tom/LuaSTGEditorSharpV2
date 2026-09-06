@@ -1,42 +1,71 @@
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LinqSTG.Expression.ToLua.Serialization;
+using System.Numerics;
 using Xunit;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
 {
     /// <summary>
-    /// Semantics of the blueprint window's variable list: locking, unique names
-    /// with forced _{n} renames, add/remove/move and value commits.
+    /// Semantics of the blueprint window's variable list: the locked built-in
+    /// prefix (_infinite/self/player), locking, unique names with forced _{n}
+    /// renames, add/remove/move, value commits and the locked-only vector2 type.
     /// </summary>
     public class VariableListTests
     {
         private static VariableItemViewModel ItemAt(VariableListViewModel list, int index) => list.Items[index];
 
         [Fact]
-        public void DefaultList_HasLockedInfiniteIntegerTen()
+        public void DefaultList_HasLockedBuiltInPrefix()
         {
             var list = new VariableListViewModel();
 
-            Assert.Single(list.Items);
-            var first = list.Items[0];
-            Assert.Equal("_infinite", first.Name);
-            Assert.True(first.IsInteger);
-            Assert.Equal(10.0, first.Value);
-            Assert.True(first.IsLocked);
+            Assert.Equal(3, list.Items.Count);
+            Assert.Equal(3, list.LockedCount);
+
+            var infinite = list.Items[0];
+            Assert.Equal("_infinite", infinite.Name);
+            Assert.True(infinite.IsInteger);
+            Assert.Equal(10.0, infinite.Value);
+            Assert.True(infinite.IsLocked);
+
+            var self = list.Items[1];
+            Assert.Equal("self", self.Name);
+            Assert.True(self.IsVector2);
+            Assert.True(self.IsLocked);
+
+            var player = list.Items[2];
+            Assert.Equal("player", player.Name);
+            Assert.True(player.IsVector2);
+            Assert.True(player.IsLocked);
         }
 
         [Fact]
-        public void Add_CreatesUnlockedItemWithGeneratedName()
+        public void VectorBuiltIns_CarryPreviewPositions()
+        {
+            var list = new VariableListViewModel();
+
+            var vectors = list.ToVectors();
+
+            Assert.Equal(new Vector2(0f, 120f), vectors["self"]);
+            Assert.Equal(new Vector2(0f, -180f), vectors["player"]);
+            // Scalar entries only: the built-in vector2s stay out of the float scope.
+            Assert.DoesNotContain("self", list.ToFloats().Keys);
+            Assert.DoesNotContain("player", list.ToFloats().Keys);
+        }
+
+        [Fact]
+        public void Add_CreatesUnlockedFloatItemWithGeneratedName()
         {
             var list = new VariableListViewModel();
             var added = list.AddItem();
 
             Assert.Equal("_1", added.Name);
             Assert.False(added.IsInteger);
+            Assert.False(added.IsVector2);
             Assert.Equal(0.0, added.Value);
             Assert.False(added.IsLocked);
-            Assert.Equal(2, list.Items.Count);
-            Assert.True(list.Items[0].IsLocked);
+            Assert.Equal(4, list.Items.Count);
+            Assert.All(list.Items.Take(3), i => Assert.True(i.IsLocked));
         }
 
         [Fact]
@@ -58,7 +87,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             item.IsInteger = true;
             Assert.Equal(4, count);
 
-            list.MoveItem(1, 1);
+            list.MoveItem(3, 3);
             Assert.Equal(4, count);
 
             list.RemoveItem(item);
@@ -82,6 +111,17 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         }
 
         [Fact]
+        public void Rename_ReservedBuiltInName_IsForcedToGeneratedName()
+        {
+            var list = new VariableListViewModel();
+            var a = list.AddItem();
+            // a already occupies _1, so the forced name is the next free one.
+            a.Name = "self";
+
+            Assert.Equal("_2", a.Name);
+        }
+
+        [Fact]
         public void Rename_Empty_IsForcedToGeneratedName()
         {
             var list = new VariableListViewModel();
@@ -97,11 +137,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         public void Rename_LockedItem_IsIgnored()
         {
             var list = new VariableListViewModel();
-            var locked = ItemAt(list, 0);
 
-            locked.Name = "other";
-
-            Assert.Equal("_infinite", locked.Name);
+            foreach (var locked in list.Items)
+            {
+                locked.Name = "other";
+                Assert.Contains(locked.Name, new[] { "_infinite", "self", "player" });
+            }
         }
 
         [Fact]
@@ -122,9 +163,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var a = list.AddItem();
 
             Assert.False(list.RemoveItem(ItemAt(list, 0)));
-            Assert.Equal(2, list.Items.Count);
+            Assert.False(list.RemoveItem(ItemAt(list, 1)));
+            Assert.False(list.RemoveItem(ItemAt(list, 2)));
+            Assert.Equal(4, list.Items.Count);
             Assert.True(list.RemoveItem(a));
-            Assert.Single(list.Items);
+            Assert.Equal(3, list.Items.Count);
         }
 
         [Fact]
@@ -136,22 +179,22 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             a.Name = "a";
             b.Name = "b";
 
-            // Insertion index 3: drop below b moves a to the end.
-            list.MoveItem(1, 3);
-            Assert.Equal(["_infinite", "b", "a"], list.Items.Select(i => i.Name).ToArray());
+            // Insertion index 5: drop below b moves a to the end.
+            list.MoveItem(3, 5);
+            Assert.Equal(["_infinite", "self", "player", "b", "a"], list.Items.Select(i => i.Name).ToArray());
 
-            // Insertion index 1: drop above b moves a back, still below _infinite.
-            list.MoveItem(2, 1);
-            Assert.Equal(["_infinite", "a", "b"], list.Items.Select(i => i.Name).ToArray());
+            // Insertion index 3: drop above b moves a back, below the locked prefix.
+            list.MoveItem(4, 3);
+            Assert.Equal(["_infinite", "self", "player", "a", "b"], list.Items.Select(i => i.Name).ToArray());
 
             // Insertion index 0 is clamped below the locked prefix: b lands
-            // right below _infinite, above a.
-            list.MoveItem(2, 0);
-            Assert.Equal(["_infinite", "b", "a"], list.Items.Select(i => i.Name).ToArray());
+            // right below player, above a.
+            list.MoveItem(4, 0);
+            Assert.Equal(["_infinite", "self", "player", "b", "a"], list.Items.Select(i => i.Name).ToArray());
 
             // Locked entries cannot move at all.
-            list.MoveItem(0, 2);
-            Assert.Equal(["_infinite", "b", "a"], list.Items.Select(i => i.Name).ToArray());
+            list.MoveItem(0, 3);
+            Assert.Equal(["_infinite", "self", "player", "b", "a"], list.Items.Select(i => i.Name).ToArray());
         }
 
         [Fact]
@@ -179,6 +222,18 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         }
 
         [Fact]
+        public void CommitValue_Vector2Entry_IsReadOnly()
+        {
+            var list = new VariableListViewModel();
+            var self = ItemAt(list, 1);
+
+            self.ValueText = "5, 5";
+
+            Assert.Equal(0.0, self.Value);
+            Assert.Equal("0, 120", self.ValueText);
+        }
+
+        [Fact]
         public void SetInteger_RoundsValue()
         {
             var list = new VariableListViewModel();
@@ -193,7 +248,53 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         }
 
         [Fact]
-        public void ToFloats_SnapshotsNameValueBindings()
+        public void SetTypeIndex_LockedEntry_IsRejected()
+        {
+            var list = new VariableListViewModel();
+            var infinite = ItemAt(list, 0);
+            var self = ItemAt(list, 1);
+
+            infinite.TypeIndex = 0;
+            Assert.Equal(1, infinite.TypeIndex);
+            Assert.True(infinite.IsInteger);
+
+            self.TypeIndex = 0;
+            Assert.Equal(2, self.TypeIndex);
+            Assert.True(self.IsVector2);
+        }
+
+        [Fact]
+        public void SetTypeIndex_Vector2_UnlockedEntry_IsRejected()
+        {
+            var list = new VariableListViewModel();
+            var a = list.AddItem();
+
+            a.TypeIndex = 2;
+
+            Assert.Equal(0, a.TypeIndex);
+            Assert.False(a.IsVector2);
+        }
+
+        [Fact]
+        public void SetTypeIndex_UnlockedEntry_SwitchesIntAndFloat()
+        {
+            var list = new VariableListViewModel();
+            var a = list.AddItem();
+            a.ValueText = "2.5";
+
+            a.TypeIndex = 1;
+            Assert.True(a.IsInteger);
+            Assert.Equal(3.0, a.Value);
+            Assert.Equal("3", a.ValueText);
+
+            a.TypeIndex = 0;
+            Assert.False(a.IsInteger);
+            Assert.Equal(3.0, a.Value);
+            Assert.Equal("3", a.ValueText);
+        }
+
+        [Fact]
+        public void ToFloats_SnapshotsScalarNameValueBindings()
         {
             var list = new VariableListViewModel();
             var a = list.AddItem();
@@ -204,6 +305,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
 
             Assert.Equal(10f, floats["_infinite"]);
             Assert.Equal(3.5f, floats["speed"]);
+            Assert.Equal(2, floats.Count);
         }
 
         [Fact]
@@ -221,51 +323,58 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             restored.LoadFrom(list.ToModel());
 
             Assert.Equal(
-                list.Items.Select(i => (i.Name, i.Value, i.IsInteger, i.IsLocked)).ToArray(),
-                restored.Items.Select(i => (i.Name, i.Value, i.IsInteger, i.IsLocked)).ToArray());
+                list.Items.Select(i => (i.Name, i.Value, i.IsInteger, i.IsVector2, i.IsLocked)).ToArray(),
+                restored.Items.Select(i => (i.Name, i.Value, i.IsInteger, i.IsVector2, i.IsLocked)).ToArray());
+            // The vector2 built-ins keep their components through serialization.
+            Assert.Equal(list.ToVectors(), restored.ToVectors());
         }
 
         [Fact]
-        public void LoadFrom_Null_KeepsLockedDefault()
+        public void LoadFrom_Null_KeepsLockedPrefix()
         {
             var list = new VariableListViewModel();
             list.AddItem();
 
             list.LoadFrom(null);
 
-            Assert.Single(list.Items);
-            Assert.Equal("_infinite", list.Items[0].Name);
-            Assert.True(list.Items[0].IsLocked);
+            Assert.Equal(3, list.Items.Count);
+            Assert.Equal(["_infinite", "self", "player"], list.Items.Select(i => i.Name).ToArray());
+            Assert.All(list.Items, i => Assert.True(i.IsLocked));
         }
 
         [Fact]
-        public void LoadFrom_MissingInfinite_SeedsItFirst()
+        public void LoadFrom_MissingBuiltIns_SeedsLockedPrefix()
         {
             var list = new VariableListViewModel();
 
             list.LoadFrom([new VariableItemModel("speed", 2.5, false)]);
 
+            Assert.Equal(4, list.Items.Count);
             Assert.Equal("_infinite", list.Items[0].Name);
-            Assert.True(list.Items[0].IsLocked);
-            Assert.Equal("speed", list.Items[1].Name);
-            Assert.False(list.Items[1].IsLocked);
+            Assert.Equal("self", list.Items[1].Name);
+            Assert.Equal("player", list.Items[2].Name);
+            Assert.Equal("speed", list.Items[3].Name);
+            Assert.False(list.Items[3].IsLocked);
         }
 
         [Fact]
-        public void LoadFrom_DuplicateNames_AreUniquified()
+        public void LoadFrom_DocumentBuiltIns_AreReplacedByDefaults()
         {
             var list = new VariableListViewModel();
 
+            // Hand-edited document: a tampered _infinite and self among unlocked entries.
             list.LoadFrom([
-                new VariableItemModel("_infinite", 10, true),
+                new VariableItemModel("_infinite", 999, false),
                 new VariableItemModel("speed", 1, false),
+                new VariableItemModel("self", 5, false),
                 new VariableItemModel("speed", 2, false),
-                new VariableItemModel("_infinite", 3, false),
             ]);
 
-            Assert.Equal(4, list.Items.Count);
-            Assert.Equal(list.Items.Count, list.Items.Select(i => i.Name).ToHashSet().Count);
-            Assert.Equal("_infinite", list.Items[0].Name);
+            Assert.Equal(["_infinite", "self", "player", "speed", "_1"], list.Items.Select(i => i.Name).ToArray());
+            Assert.Equal(10.0, list.Items[0].Value);
+            Assert.True(list.Items[1].IsVector2);
+            // The duplicate 'speed' was uniquified instead of dropped.
+            Assert.Equal(1.0, list.Items[3].Value);
         }
     }
 }

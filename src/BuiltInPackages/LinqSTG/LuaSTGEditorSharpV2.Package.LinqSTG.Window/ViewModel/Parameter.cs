@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
 {
     /// <summary>
     /// 求值环境，作为 <see cref="Contextual{T}"/> 的通道。
-    /// 由三层强类型隔间组成：
+    /// 由多个强类型隔间组成：
     ///   - <see cref="Floats"/>：命名浮点参数层（原 Dictionary 职责，AssignNode/Repeat 写入，TakeVariable 读取）。
+    ///   - <see cref="Vectors"/>：命名二维向量层（变量列表的 vector2 锁定项 self/player 的预览坐标）。
     ///   - <see cref="Transform"/>：采样求值层（FromPointMovementNode 按采样时间求值点子图时设置，InputTimeNode 读取），默认 null。
     ///   - <see cref="Randomizer"/>：脚本级随机源（对应 DemoScript.TestRandom 顶部的 var randomizer），
     ///     MainViewModel 每次物化按当前种子新建并挂到根环境，随拷贝构造传播；随机节点从这里抽取。
     /// 各层不共享存储，强类型隔离，无字符串 key 冲突。
-    /// 拷贝语义沿袭原 Dictionary 实现：<see cref="Parameter(Parameter)"/> 拷贝 Floats。
+    /// 拷贝语义沿袭原 Dictionary 实现：<see cref="Parameter(Parameter)"/> 拷贝 Floats 与 Vectors。
     /// </summary>
     public class Parameter
     {
@@ -19,6 +21,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
 
         /// <summary>命名浮点参数层（角色 C：参数存取 / pattern 元素载体）。</summary>
         public FloatScope Floats { get; internal set; }
+
+        /// <summary>命名二维向量层：变量列表锁定项 self/player 的预览坐标。</summary>
+        public VectorScope Vectors { get; internal set; }
 
         /// <summary>采样求值层（角色 D），仅在 FromPointMovementNode 按采样时间求值点子图期间非 null。</summary>
         public TransformContext? Transform { get; internal set; }
@@ -32,6 +37,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
         public Parameter()
         {
             Floats = new FloatScope();
+            Vectors = new VectorScope();
             Randomizer = new Random(0);
         }
 
@@ -39,6 +45,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
         public Parameter(Parameter outer)
         {
             Floats = new FloatScope(outer.Floats);
+            Vectors = new VectorScope(outer.Vectors);
             Transform = outer.Transform;
             Randomizer = outer.Randomizer;
         }

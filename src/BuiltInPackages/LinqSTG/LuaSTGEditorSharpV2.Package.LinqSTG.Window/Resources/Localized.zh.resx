@@ -135,7 +135,7 @@
   </data>
   <!-- Category D-2: Variable list panel -->
   <data name="linqstg_window_varList_title" xml:space="preserve">
-    <value>变量列表</value>
+    <value>外部变量列表</value>
   </data>
   <data name="linqstg_window_varList_add" xml:space="preserve">
     <value>添加变量</value>
@@ -198,6 +198,15 @@
   </data>
   <data name="linqstg_window_node_variableInt" xml:space="preserve">
     <value>变量（整数）</value>
+  </data>
+  <data name="linqstg_window_node_infinite" xml:space="preserve">
+    <value>无限</value>
+  </data>
+  <data name="linqstg_window_node_selfPosition" xml:space="preserve">
+    <value>自身坐标</value>
+  </data>
+  <data name="linqstg_window_node_playerPosition" xml:space="preserve">
+    <value>玩家坐标</value>
   </data>
   <data name="linqstg_window_node_fromPointMovement" xml:space="preserve">
     <value>从点生成运动</value>

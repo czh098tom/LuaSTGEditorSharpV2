@@ -15,7 +15,7 @@
         Title="{lex:Loc linqstg_window_title}" Height="600" Width="1200"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
-        <view:BooleanToIndexConverter x:Key="BooleanToIndexConverter"/>
+        <view:VariableTypeTextConverter x:Key="VariableTypeTextConverter"/>
         <view:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     </Window.Resources>
     <Window.DataContext>
@@ -204,9 +204,36 @@
                                         <TextBox Grid.Column="2" Margin="1,1,2,1" Padding="2,0"
                                                  VerticalContentAlignment="Center"
                                                  Text="{Binding ValueText, Mode=TwoWay}"
+                                                 IsReadOnly="{Binding IsVector2}"
                                                  KeyDown="VariableTextBox_KeyDown"/>
+                                        <!-- Locked rows show a read-only type label; vector2 is a locked-only
+                                             type and therefore never appears in the picker. -->
+                                        <TextBlock Grid.Column="3" Margin="4,1,2,1"
+                                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                   Text="{Binding TypeIndex, Converter={StaticResource VariableTypeTextConverter}}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsLocked}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                         <ComboBox Grid.Column="3" Margin="1,1,2,1"
-                                                  SelectedIndex="{Binding IsInteger, Mode=TwoWay, Converter={StaticResource BooleanToIndexConverter}}">
+                                                  SelectedIndex="{Binding TypeIndex, Mode=TwoWay}">
+                                            <ComboBox.Style>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsLocked}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBox.Style>
                                             <ComboBoxItem Content="{lex:Loc linqstg_window_node_float}"/>
                                             <ComboBoxItem Content="{lex:Loc linqstg_window_node_int}"/>
                                         </ComboBox>
