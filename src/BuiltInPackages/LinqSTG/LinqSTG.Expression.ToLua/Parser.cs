@@ -26,6 +26,14 @@ namespace LinqSTG.Expression.ToLua
             return prefix + n;
         }
 
+        /// <summary>
+        /// 单个发射器（Shoot 节点）的剩余部分：__new_task/__wait 别名、
+        /// __create_and_attach_movement 定义（函数体内联该发射器子树生成的 inner 代码）
+        /// 加上 pattern 展开。别名声明在发射器自己的 task 作用域内而非共享前缀里：
+        /// 发射器子代码是任意生成的 Lua，无法保证不会对 __new_task/__wait
+        /// 非 local 赋值而覆盖别名，按发射器隔离后覆盖至多影响这一个发射器。
+        /// 共享的 local __self = self 前置部分由 <see cref="ShootGroup"/> 统一输出。
+        /// </summary>
         public LuaParser Shoot(LuaParser pattern, LuaParser movement)
         {
             return (inner) =>
@@ -44,11 +52,6 @@ namespace LinqSTG.Expression.ToLua
                     Single("end)")
                 );
                 return Concat(
-                    // Redirect the shooter's self before any nested scope rebinds it:
-                    // the movement function's (self) parameter, __create_and_attach_movement's
-                    // `local self = last`, and ExtrudePattern's __new_task(function(self) ...)
-                    // all shadow it with the bullet object. SelfPosition reads __self.
-                    Single("local __self = self"),
                     Single("local __new_task = function(fn) task.New(self, fn) end"),
                     Single("local __wait = task.Wait"),
                     Single("local __create_and_attach_movement = function(fn)"),
@@ -59,6 +62,31 @@ namespace LinqSTG.Expression.ToLua
                     pattern(constructedInner)
                 );
             };
+        }
+
+        /// <summary>
+        /// 把全部发射器（Shoot 节点）的翻译组合成一段自包含代码：
+        /// 整体套一层 do...end 隔离局部变量；随后是共享的 local __self = self 前置部分；
+        /// 在它之后每一个发射器节点输出各自的剩余部分（<see cref="Shoot"/>），
+        /// 并在外面套一层 task.New(self, function() ... end)，
+        /// 使多个发射器作为独立协程并发运行（各自内部的 __wait 互不阻塞）。
+        /// </summary>
+        public LuaParser ShootGroup(IReadOnlyList<LuaParser> shooters)
+        {
+            return (inner) => Concat(
+                Single("do"),
+                // Redirect the shooter's self before any nested scope rebinds it:
+                // the movement function's (self) parameter, __create_and_attach_movement's
+                // `local self = last`, and ExtrudePattern's __new_task(function(self) ...)
+                // all shadow it with the bullet object. SelfPosition reads __self.
+                Single("local __self = self", 1),
+                shooters.SelectMany(shooter => Concat(
+                    Single("task.New(self, function()", 1),
+                    Shift(shooter(inner), 2),
+                    Single("end)", 1)
+                )),
+                Single("end")
+            );
         }
 
         public LuaParser RepeatWithIntervalPattern(LuaParser times, LuaParser interval, LuaParser repeater)

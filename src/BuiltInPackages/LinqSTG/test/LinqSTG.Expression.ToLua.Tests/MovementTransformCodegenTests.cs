@@ -70,13 +70,30 @@ namespace LinqSTG.Expression.ToLua.Tests
                 return result;
             }
 
+            string Join(IEnumerable<LuaCodeLine> lines)
+                => string.Join("\n", lines.Select(l => new string('\t', l.Indent) + l.Text));
+
+            // Mirrors production root selection: every Shoot node becomes one
+            // emitter combined by ShootGroup (without the generator's shooter
+            // children wrapping, which TestGraph does not replicate).
+            if (forcedRoot is null)
+            {
+                var shooters = Enumerable.Range(0, model.Nodes.Length)
+                    .Where(i => model.Nodes[i].NodeType == "Shoot")
+                    .Select(i => translator.Translate(model.Nodes[i], ResolveInputs(i)).LuaParser)
+                    .ToList();
+                if (shooters.Count > 0)
+                {
+                    return Join(parser.ShootGroup(shooters)(Enumerable.Empty<LuaCodeLine>()));
+                }
+            }
+
             var rootIdx = forcedRoot
                 ?? Enumerable.Range(0, model.Nodes.Length).FirstOrDefault(i => !hasOutgoing.Contains(i), -1);
             Assert.True(rootIdx >= 0, "graph has no root (all nodes have outgoing connections)");
             var rootInputs = ResolveInputs(rootIdx);
             var root = translator.Translate(model.Nodes[rootIdx], rootInputs);
-            var lines = root.LuaParser(Enumerable.Empty<LuaCodeLine>());
-            return string.Join("\n", lines.Select(l => new string('\t', l.Indent) + l.Text));
+            return Join(root.LuaParser(Enumerable.Empty<LuaCodeLine>()));
         }
     }
 

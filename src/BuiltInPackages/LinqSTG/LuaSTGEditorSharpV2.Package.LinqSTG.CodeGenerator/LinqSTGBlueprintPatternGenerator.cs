@@ -65,7 +65,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
             // single LinqSTG blueprint node rather than growing across the process.
             var parser = new Parser();
             var translator = new NodeTranslator(parser);
-            var (rootParser, warnings) = NetworkCodeGenerator.ResolveRootParser(model, this, translator, shooterMap, context);
+            var (rootParser, warnings) = NetworkCodeGenerator.ResolveRootParser(model, this, parser, translator, shooterMap, context);
             if (rootParser == null)
             {
                 yield return new CodeData("--[[ no root node found in LinqSTG network ]]", node);
@@ -171,6 +171,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
         public static (LuaParser? rootParser, List<string> warnings) ResolveRootParser(
             NetworkModel model,
             LinqSTGBlueprintPatternGenerator generator,
+            Parser parser,
             NodeTranslator translator,
             IReadOnlyDictionary<string, NodeData> shooterMap,
             CodeGenerationContext context)
@@ -258,24 +259,35 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                 return result;
             }
 
+            // Every Shoot node is one emitter of the blueprint: they all get
+            // translated (each with its own shooter-name-bound children code via
+            // ResolveNode's WrapShootParser) and combined by ShootGroup into
+            // do...end + shared __self prelude + one task.New per emitter.
+            var shootIndices = new List<int>();
+            for (int i = 0; i < model.Nodes.Length; i++)
+            {
+                if (model.Nodes[i].NodeType == "Shoot") shootIndices.Add(i);
+            }
+            if (shootIndices.Count > 0)
+            {
+                var shooters = shootIndices
+                    .Select(i => ResolveNode(i)?.LuaParser)
+                    .Where(p => p != null)
+                    .Cast<LuaParser>()
+                    .ToList();
+                if (shooters.Count > 0)
+                {
+                    return (parser.ShootGroup(shooters), warnings);
+                }
+            }
+
             int rootIdx = -1;
             for (int i = 0; i < model.Nodes.Length; i++)
             {
-                if (model.Nodes[i].NodeType == "Shoot")
+                if (!hasOutgoing.Contains(i))
                 {
                     rootIdx = i;
                     break;
-                }
-            }
-            if (rootIdx < 0)
-            {
-                for (int i = 0; i < model.Nodes.Length; i++)
-                {
-                    if (!hasOutgoing.Contains(i))
-                    {
-                        rootIdx = i;
-                        break;
-                    }
                 }
             }
             if (rootIdx < 0) return (null, warnings);
