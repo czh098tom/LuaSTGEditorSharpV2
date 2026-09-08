@@ -141,6 +141,12 @@
   <data name="vector2EditDialog_components" xml:space="preserve">
     <value>分量</value>
   </data>
+  <data name="vector2EditDialog_add_component" xml:space="preserve">
+    <value>添加分量</value>
+  </data>
+  <data name="vector2EditDialog_remove_component" xml:space="preserve">
+    <value>删除分量</value>
+  </data>
   <data name="vector2EditDialog_sync_xy" xml:space="preserve">
     <value>同步 XY</value>
   </data>

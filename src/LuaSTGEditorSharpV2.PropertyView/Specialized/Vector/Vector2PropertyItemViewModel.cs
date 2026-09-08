@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Command;
 using LuaSTGEditorSharpV2.Core.Editor;
-using LuaSTGEditorSharpV2.Core.Parsing.Facade;
+using LuaSTGEditorSharpV2.Core.Parsing.Vector2;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +36,7 @@ namespace LuaSTGEditorSharpV2.PropertyView.Specialized.Vector
         {
             XProperty.SetValueWithoutPushingCommand(x);
             YProperty.SetValueWithoutPushingCommand(y);
-            var value = Vector2EditHelper.Compose(x, y);
+            var value = Vector2ExpressionCodec.Compose(x, y);
             var command = Commands.FromEnumerable(
                 SourceNodes.Select(node => CheckedCommand.Property.Modify(
                     node.Document,
@@ -69,8 +69,12 @@ namespace LuaSTGEditorSharpV2.PropertyView.Specialized.Vector
             ForwardValueChanges(YProperty, nameof(Y));
             Bind(term.Mapping).ToMany(
                 (XProperty, YProperty),
-                Vector2EditHelper.Compose,
-                Vector2EditHelper.Decompose);
+                Vector2ExpressionCodec.Compose,
+                value =>
+                {
+                    var pair = Vector2ExpressionCodec.Decompose(value);
+                    return (pair.X, pair.Y);
+                });
         }
     }
 }

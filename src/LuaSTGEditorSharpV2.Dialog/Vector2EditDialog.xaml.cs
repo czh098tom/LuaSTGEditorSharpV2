@@ -1,6 +1,5 @@
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using LuaSTGEditorSharpV2.Dialog.ViewModel;
@@ -10,23 +9,29 @@ namespace LuaSTGEditorSharpV2.Dialog;
 
 public partial class Vector2EditDialog : OKCancelWindow
 {
+    public static readonly RoutedUICommand InsertTextCommand = new(
+        "Insert text",
+        nameof(InsertTextCommand),
+        typeof(Vector2EditDialog));
+
     private TextBox? _activeTextBox;
 
     public Vector2EditDialogViewModel ViewModel
-        => (DataContext as Vector2EditDialogViewModel) ?? throw new InvalidCastException();
+        => DataContext as Vector2EditDialogViewModel
+           ?? throw new InvalidCastException();
 
     public Vector2EditDialog()
     {
         InitializeComponent();
+        CommandBindings.Add(new CommandBinding(
+            InsertTextCommand,
+            InsertTextCommand_Executed,
+            InsertTextCommand_CanExecute));
         AddHandler(
             Keyboard.GotKeyboardFocusEvent,
-            new KeyboardFocusChangedEventHandler(TextBox_GotKeyboardFocus),
+            new KeyboardFocusChangedEventHandler(
+                TextBox_GotKeyboardFocus),
             handledEventsToo: true);
-        AddHandler(
-            TextBoxBase.SelectionChangedEvent,
-            new RoutedEventHandler(TextBox_SelectionChanged),
-            handledEventsToo: true);
-        ViewModel.TextInserted += OnTextInserted;
         ViewModel.VectorEditorAppended += OnVectorEditorAppended;
     }
 
@@ -39,54 +44,68 @@ public partial class Vector2EditDialog : OKCancelWindow
     }
 
     public string Expression => ViewModel.Expression;
+
     public string X => ViewModel.X;
+
     public string Y => ViewModel.Y;
 
-    private void TextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        => ReportTextBoxSelection(e.OriginalSource as TextBox);
-
-    private void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
-        => ReportTextBoxSelection(e.OriginalSource as TextBox);
-
-    private void ReportTextBoxSelection(TextBox? textBox)
+    private void TextBox_GotKeyboardFocus(
+        object sender,
+        KeyboardFocusChangedEventArgs e)
     {
-        if (textBox is null || GetTextBoxTarget(textBox) is not { } target)
+        if (e.OriginalSource is TextBox textBox)
         {
-            return;
+            _activeTextBox = textBox;
+            CommandManager.InvalidateRequerySuggested();
         }
-
-        _activeTextBox = textBox;
-        ViewModel.SetTextSelection(target, textBox.SelectionStart, textBox.SelectionLength);
     }
 
-    private void OnTextInserted(int caretIndex)
+    private void InsertTextCommand_CanExecute(
+        object sender,
+        CanExecuteRoutedEventArgs e)
     {
-        if (_activeTextBox is null)
+        e.CanExecute = e.Parameter is string { Length: > 0 }
+            && _activeTextBox is { } textBox
+            && ContainsVisual(textBox);
+        e.Handled = true;
+    }
+
+    private void InsertTextCommand_Executed(
+        object sender,
+        ExecutedRoutedEventArgs e)
+    {
+        if (e.Parameter is not string { Length: > 0 } insertion
+            || _activeTextBox is not { } textBox
+            || !ContainsVisual(textBox))
         {
             return;
         }
 
-        _activeTextBox.Focus();
-        _activeTextBox.CaretIndex = caretIndex;
+        var caretIndex = textBox.SelectionStart + insertion.Length;
+        textBox.SelectedText = insertion;
+        textBox.Select(caretIndex, 0);
+        textBox.Focus();
+        e.Handled = true;
+    }
+
+    private bool ContainsVisual(DependencyObject visual)
+    {
+        for (var current = visual;
+             current is not null;
+             current = VisualTreeHelper.GetParent(current))
+        {
+            if (ReferenceEquals(current, this))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void OnVectorEditorAppended()
     {
         expressionTextBox.Focus();
         expressionTextBox.CaretIndex = expressionTextBox.Text.Length;
-    }
-
-    private static Vector2EditTextBoxTarget? GetTextBoxTarget(TextBox textBox)
-    {
-        for (DependencyObject? current = textBox; current is not null; current = VisualTreeHelper.GetParent(current))
-        {
-            if (current is FrameworkElement { Tag: string tag }
-                && Enum.TryParse<Vector2EditTextBoxTarget>(tag, out var target))
-            {
-                return target;
-            }
-        }
-
-        return null;
     }
 }

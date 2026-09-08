@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Core.Parsing.Facade;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.Converter;
@@ -16,6 +15,7 @@ using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ViewModel;
 
 using Xunit;
+using LuaSTGEditorSharpV2.Core.Parsing.Vector2;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
@@ -294,7 +294,7 @@ public class PropertyViewMultiSelectionTests
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("x", "y"))));
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("x", "y"))));
         var node = Assert.Single(GetSelectedNodes(document, "TestType"));
         using var registration = environment.Register(
             "TestType",
@@ -319,7 +319,7 @@ public class PropertyViewMultiSelectionTests
         Assert.False(editResult!.ShouldRefreshView);
         document.ExecuteCommand(editResult.Command!);
         Assert.Equal(
-            Vector2EditHelper.Compose("changed", "y"),
+            Vector2ExpressionCodec.Compose("changed", "y"),
             node.Source.Properties["vector"]);
         Assert.Equal("changed", viewModel.X);
         Assert.Equal("y", viewModel.Y);
@@ -330,7 +330,7 @@ public class PropertyViewMultiSelectionTests
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("x", "y"))));
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("x", "y"))));
         var node = Assert.Single(GetSelectedNodes(document, "TestType"));
         using var registration = environment.Register(
             "TestType",
@@ -340,7 +340,7 @@ public class PropertyViewMultiSelectionTests
             new LocalServiceParam(document));
         var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
 
-        node.ChangeProperty("vector", Vector2EditHelper.Compose("newX", "newY"));
+        node.ChangeProperty("vector", Vector2ExpressionCodec.Compose("newX", "newY"));
 
         Assert.Equal("newX", viewModel.X);
         Assert.Equal("newY", viewModel.Y);
@@ -351,8 +351,8 @@ public class PropertyViewMultiSelectionTests
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("sameX", "firstY"))),
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("sameX", "secondY"))));
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("sameX", "firstY"))),
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("sameX", "secondY"))));
         var nodes = GetSelectedNodes(document, "TestType");
         using var registration = environment.Register(
             "TestType",
@@ -378,7 +378,7 @@ public class PropertyViewMultiSelectionTests
         Assert.All(
             nodes,
             node => Assert.Equal(
-                Vector2EditHelper.Compose("sharedX", "sharedY"),
+                Vector2ExpressionCodec.Compose("sharedX", "sharedY"),
                 node.Source.Properties["vector"]));
         Assert.Equal("sharedX", viewModel.X);
         Assert.Equal("sharedY", viewModel.Y);
