@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using LuaSTGEditorSharpV2.Core.Parsing;
+using LuaSTGEditorSharpV2.Core.Parsing.Legacy;
 using Xceed.Wpf.Toolkit;
 
 namespace LuaSTGEditorSharpV2.WPF.Controls

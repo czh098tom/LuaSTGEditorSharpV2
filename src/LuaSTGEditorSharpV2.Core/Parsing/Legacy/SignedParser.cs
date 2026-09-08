@@ -1,4 +1,4 @@
-namespace LuaSTGEditorSharpV2.Core.Parsing;
+namespace LuaSTGEditorSharpV2.Core.Parsing.Legacy;
 
 /// <summary>
 /// Static parser for signed terms (optional leading +/- followed by an atom).

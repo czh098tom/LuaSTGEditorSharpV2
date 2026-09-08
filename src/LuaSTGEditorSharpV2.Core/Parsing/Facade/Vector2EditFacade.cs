@@ -1,3 +1,5 @@
+using LuaSTGEditorSharpV2.Core.Parsing.Legacy;
+
 namespace LuaSTGEditorSharpV2.Core.Parsing.Facade;
 
 /// <summary>

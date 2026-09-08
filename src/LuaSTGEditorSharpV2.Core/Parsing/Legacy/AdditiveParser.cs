@@ -1,4 +1,4 @@
-namespace LuaSTGEditorSharpV2.Core.Parsing;
+namespace LuaSTGEditorSharpV2.Core.Parsing.Legacy;
 
 /// <summary>
 /// Static parser for additive expressions (terms separated by + or -).

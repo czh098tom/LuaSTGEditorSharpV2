@@ -1,4 +1,4 @@
-namespace LuaSTGEditorSharpV2.Core.Parsing;
+namespace LuaSTGEditorSharpV2.Core.Parsing.Legacy;
 
 /// <summary>
 /// Splits expressions into factors separated by top-level multiplication signs.
