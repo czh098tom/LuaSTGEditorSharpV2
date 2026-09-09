@@ -31,7 +31,19 @@ public sealed class LuaExpressionAtom : LuaExpressionToken
         Kind = kind;
     }
 
+    internal LuaExpressionAtom(
+        string text,
+        LuaExpressionAtomKind kind,
+        object value)
+        : base(text)
+    {
+        Kind = kind;
+        Value = value;
+    }
+
     public LuaExpressionAtomKind Kind { get; }
+
+    public object? Value { get; }
 }
 
 public enum LuaExpressionGroupKind
