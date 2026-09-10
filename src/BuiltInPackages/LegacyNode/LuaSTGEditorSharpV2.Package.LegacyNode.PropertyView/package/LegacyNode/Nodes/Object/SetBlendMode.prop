@@ -1,0 +1,44 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "SetBlendMode",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "target" },
+          "Caption": {
+            "Neutral": "Target",
+            "Localized": { "zh": "目标" }
+          },
+          "Editor": {
+            "Name": "comboBox",
+            "Parameters": {
+              "Options": "gameobject_target"
+            }
+          }
+        },
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "blend_mode" },
+          "Caption": {
+            "Neutral": "Blend Mode",
+            "Localized": { "zh": "混合模式" }
+          }
+        },
+        {
+          "$type": "Argb",
+          "Mapping": { "Key": "argb" },
+          "Caption": {
+            "Neutral": "Color",
+            "Localized": { "zh": "颜色" }
+          },
+          "Editor": {
+            "Name": "argb"
+          }
+        }
+      ]
+    }
+  ]
+}
