@@ -9,14 +9,14 @@ public static class ArgbExpressionCodec
         var result = LuaExpressionLexer.Tokenize(expression);
         if (!result.Success)
         {
-            return Invalid(expression);
+            return Invalid();
         }
 
         var components = SplitComponents(result.Value);
         if (components.Length != 4 ||
             components.Any(component => component.Length == 0))
         {
-            return Invalid(expression);
+            return Invalid();
         }
 
         var values = components
@@ -27,16 +27,9 @@ public static class ArgbExpressionCodec
             values[1],
             values[2],
             values[3]);
-        var preview = new ArgbPreview(
-            ToPreviewChannel(components[0]),
-            ToPreviewChannel(components[1]),
-            ToPreviewChannel(components[2]),
-            ToPreviewChannel(components[3]));
+        var preview = BuildPreview(components);
 
-        return new ArgbExpressionForm(
-            expression,
-            argb,
-            preview);
+        return new ArgbExpressionForm(argb, preview);
     }
 
     public static string Compose(ArgbExpression expression)
@@ -45,11 +38,8 @@ public static class ArgbExpressionCodec
            $"{expression.Green.Trim()}, " +
            $"{expression.Blue.Trim()}";
 
-    private static ArgbExpressionForm Invalid(string expression)
-        => new(
-            expression,
-            null,
-            null);
+    private static ArgbExpressionForm Invalid()
+        => new(null, null);
 
     private static LuaExpressionToken[][] SplitComponents(
         IReadOnlyList<LuaExpressionToken> tokens)
@@ -83,15 +73,48 @@ public static class ArgbExpressionCodec
             Text: ",",
         };
 
-    private static ArgbPreviewChannel ToPreviewChannel(
-        LuaExpressionToken[] tokens)
-        => TryGetByte(tokens, out var value)
-            ? new ArgbPreviewChannel(value, false)
-            : new ArgbPreviewChannel(byte.MaxValue, true);
+    private static ArgbPreview? BuildPreview(
+        LuaExpressionToken[][] components)
+    {
+        var channels = new ArgbPreviewChannel[components.Length];
+        var hasNumber = false;
 
-    private static bool TryGetByte(
+        for (var i = 0; i < components.Length; i++)
+        {
+            if (TryGetNumber(components[i], out var value))
+            {
+                hasNumber = true;
+                if (double.IsNaN(value) ||
+                    value < 0 ||
+                    value > byte.MaxValue)
+                {
+                    return null;
+                }
+
+                channels[i] = new ArgbPreviewChannel(
+                    (byte)Math.Floor(value),
+                    false);
+            }
+            else
+            {
+                channels[i] = new ArgbPreviewChannel(
+                    byte.MaxValue,
+                    true);
+            }
+        }
+
+        return hasNumber
+            ? new ArgbPreview(
+                channels[0],
+                channels[1],
+                channels[2],
+                channels[3])
+            : null;
+    }
+
+    private static bool TryGetNumber(
         LuaExpressionToken[] tokens,
-        out byte value)
+        out double value)
     {
         value = default;
         if (tokens is not
@@ -106,22 +129,12 @@ public static class ArgbExpressionCodec
             return false;
         }
 
-        switch (atom.Value)
+        value = atom.Value switch
         {
-            case long integer
-                when integer is >= byte.MinValue and <= byte.MaxValue:
-                value = (byte)integer;
-                return true;
-
-            case double floating
-                when double.IsFinite(floating) &&
-                     floating is >= byte.MinValue and <= byte.MaxValue &&
-                     floating == Math.Truncate(floating):
-                value = (byte)floating;
-                return true;
-
-            default:
-                return false;
-        }
+            long integer => integer,
+            double floating => floating,
+            _ => double.NaN,
+        };
+        return true;
     }
 }

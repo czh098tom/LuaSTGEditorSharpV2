@@ -8,14 +8,11 @@ namespace LuaSTGEditorSharpV2.Core.Tests.Parsing;
 public class ArgbExpressionCodecTests
 {
     [Fact]
-    public void Decode_FourLiteralComponents_ProducesStructuredPreview()
+    public void Decode_FourLiteralComponents_ProducesPreview()
     {
-        const string input = " 255 , 0x80 , 1e2 , 0x1p7 ";
+        var result = ArgbExpressionCodec.Decode(
+            " 255 , 0x80 , 1e2 , 0x1p7 ");
 
-        var result = ArgbExpressionCodec.Decode(input);
-
-        result.OriginalText.Should().Be(input);
-        result.IsStructured.Should().BeTrue();
         result.Components.Should().Be(new ArgbExpression(
             "255",
             "0x80",
@@ -35,7 +32,6 @@ public class ArgbExpressionCodecTests
         var result = ArgbExpressionCodec.Decode(
             "alpha, 128, blue(), 0");
 
-        result.IsStructured.Should().BeTrue();
         result.Components.Should().Be(new ArgbExpression(
             "alpha",
             "128",
@@ -56,12 +52,12 @@ public class ArgbExpressionCodecTests
             "alpha, clamp(red, 0, 255), " +
             "table[index(1, 2)], { blue, other }[1]");
 
-        result.IsStructured.Should().BeTrue();
         result.Components.Should().Be(new ArgbExpression(
             "alpha",
             "clamp(red, 0, 255)",
             "table[index(1, 2)]",
             "{ blue, other }[1]"));
+        result.Preview.Should().BeNull();
     }
 
     [Theory]
@@ -73,38 +69,87 @@ public class ArgbExpressionCodecTests
     [InlineData("1, 2, 3,")]
     [InlineData("1, (2, 3, 4")]
     [InlineData("1, 2, @, 4")]
-    public void Decode_InvalidStructure_PreservesOriginalText(
+    public void Decode_InvalidStructure_ReturnsNoComponentsOrPreview(
         string input)
     {
         var result = ArgbExpressionCodec.Decode(input);
 
-        result.OriginalText.Should().Be(input);
-        result.IsStructured.Should().BeFalse();
         result.Components.Should().BeNull();
         result.Preview.Should().BeNull();
     }
 
     [Fact]
-    public void Decode_NonByteLiteralsAndGroupedValue_UseFallback()
+    public void Decode_OutOfRangeNumber_ReturnsNoPreview()
     {
         var result = ArgbExpressionCodec.Decode(
-            "-1, 1.5, 256, (0)");
+            "0, 0, 256, 0");
 
-        result.Preview.Should().Be(new ArgbPreview(
-            new ArgbPreviewChannel(255, true),
-            new ArgbPreviewChannel(255, true),
-            new ArgbPreviewChannel(255, true),
-            new ArgbPreviewChannel(255, true)));
+        result.Components.Should().Be(new ArgbExpression(
+            "0",
+            "0",
+            "256",
+            "0"));
+        result.Preview.Should().BeNull();
     }
 
     [Fact]
-    public void Decode_InfiniteLiteral_UsesFallback()
+    public void Decode_InfiniteLiteral_ReturnsNoPreview()
     {
         var result = ArgbExpressionCodec.Decode(
             "1e9999, 0, 0, 0");
 
-        result.Preview!.Value.Alpha.Should().Be(
-            new ArgbPreviewChannel(255, true));
+        result.Components.Should().Be(new ArgbExpression(
+            "1e9999",
+            "0",
+            "0",
+            "0"));
+        result.Preview.Should().BeNull();
+    }
+
+    [Fact]
+    public void Decode_InRangeNonIntegerLiteral_FloorToByte()
+    {
+        var result = ArgbExpressionCodec.Decode(
+            "1.5, 0, 0, 0");
+
+        result.Preview.Should().Be(new ArgbPreview(
+            new ArgbPreviewChannel(1, false),
+            new ArgbPreviewChannel(0, false),
+            new ArgbPreviewChannel(0, false),
+            new ArgbPreviewChannel(0, false)));
+        result.Preview!.Value.UsesExpressionFallback.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Decode_NegativeNumber_IsNonNumberExpression()
+    {
+        var result = ArgbExpressionCodec.Decode(
+            "-1, 0, 0, 0");
+
+        result.Components.Should().Be(new ArgbExpression(
+            "-1",
+            "0",
+            "0",
+            "0"));
+        result.Preview.Should().Be(new ArgbPreview(
+            new ArgbPreviewChannel(255, true),
+            new ArgbPreviewChannel(0, false),
+            new ArgbPreviewChannel(0, false),
+            new ArgbPreviewChannel(0, false)));
+    }
+
+    [Fact]
+    public void Decode_AllNonNumberComponents_ReturnsNoPreview()
+    {
+        var result = ArgbExpressionCodec.Decode(
+            "alpha, red, green, blue");
+
+        result.Components.Should().Be(new ArgbExpression(
+            "alpha",
+            "red",
+            "green",
+            "blue"));
+        result.Preview.Should().BeNull();
     }
 
     [Fact]

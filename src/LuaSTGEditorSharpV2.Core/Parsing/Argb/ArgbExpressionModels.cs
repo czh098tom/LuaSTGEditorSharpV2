@@ -24,9 +24,5 @@ public readonly record struct ArgbPreview(
 }
 
 public sealed record ArgbExpressionForm(
-    string OriginalText,
     ArgbExpression? Components,
-    ArgbPreview? Preview)
-{
-    public bool IsStructured => Components.HasValue;
-}
+    ArgbPreview? Preview);
