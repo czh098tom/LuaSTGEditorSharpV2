@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using LuaSTGEditorSharpV2.Core;
-using LuaSTGEditorSharpV2.Core.Command;
-using LuaSTGEditorSharpV2.PropertyView.Configurable;
 
 namespace LuaSTGEditorSharpV2.PropertyView;
 
 public class PropertyBindingBuildingScope<TTerm>(
         NodePropertyCapture nodeProperty,
-        BoundPropertyItemViewModelBase<TTerm> vm,
         bool shouldRefreshView,
         Action<string, PropertyBinding> addBindingCallback)
     where TTerm: class
@@ -19,16 +15,9 @@ public class PropertyBindingBuildingScope<TTerm>(
         PropertyBinding binding = new(
             Capture: nodeProperty,
             BoundProperties: [boundProperty],
-            PullAction: value => boundProperty.SetValueWithoutPushingCommand(convertBack?.Invoke(value) ?? value),
-            EditResultResolver: () =>
-            {
-                var value = convert?.Invoke(boundProperty.Value) ?? boundProperty.Value;
-                return new EditResult(
-                    Commands.FromEnumerable(vm.SourceNodes.Select(
-                        n => CheckedCommand.Property.Modify(n.Document, n.GetPath(), nodeProperty.Key, value))),
-                    shouldRefreshView,
-                    vm.LocalServiceParam);
-            });
+            Decompose: value => [convertBack?.Invoke(value) ?? value],
+            Compose: values => convert?.Invoke(values[0]) ?? values[0],
+            ShouldRefreshView: shouldRefreshView);
         addBindingCallback.Invoke(nodeProperty.Key, binding);
     }
 
@@ -40,23 +29,9 @@ public class PropertyBindingBuildingScope<TTerm>(
         PropertyBinding binding = new(
             Capture: nodeProperty,
             BoundProperties: boundProperties,
-            PullAction: value =>
-            {
-                var decomposed = decompose.Invoke(value);
-                for (var i = 0; i < boundProperties.Count; i++)
-                {
-                    boundProperties[i].SetValueWithoutPushingCommand(decomposed[i]);
-                }
-            },
-            EditResultResolver: () =>
-            {
-                var value = compose(boundProperties.Select(bp => bp.Value).ToArray());
-                return new EditResult(
-                    Commands.FromEnumerable(vm.SourceNodes.Select(n => CheckedCommand.Property.Modify(n.Document,
-                        n.GetPath(), nodeProperty.Key, value))),
-                    shouldRefreshView,
-                    vm.LocalServiceParam);
-            });
+            Decompose: decompose,
+            Compose: compose,
+            ShouldRefreshView: shouldRefreshView);
         addBindingCallback.Invoke(nodeProperty.Key, binding);
     }
 

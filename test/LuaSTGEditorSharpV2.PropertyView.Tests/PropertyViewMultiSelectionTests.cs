@@ -381,7 +381,7 @@ public class PropertyViewMultiSelectionTests
     }
 
     [Fact]
-    public void Vector2MultiSourceConflictUsesWholeValuePolicy()
+    public void Vector2MultiSourceConflictResolvesPerFieldAndComposesEdits()
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
@@ -396,8 +396,10 @@ public class PropertyViewMultiSelectionTests
             nodes,
             new LocalServiceParam(document));
         var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
-        Assert.Equal(string.Empty, viewModel.X);
+        Assert.Equal("sameX", viewModel.X);
         Assert.Equal(string.Empty, viewModel.Y);
+        Assert.False(viewModel.XProperty.HasConflict);
+        Assert.True(viewModel.YProperty.HasConflict);
         EditResult? editResult = null;
         viewModel.OnEdit += (_, result) => editResult = result;
 
@@ -414,6 +416,54 @@ public class PropertyViewMultiSelectionTests
                 node.Source.Properties["vector"]));
         Assert.Equal("sharedX", viewModel.X);
         Assert.Equal("sharedY", viewModel.Y);
+    }
+
+    [Fact]
+    public void Vector2SingleFieldEditPreservesEachSourceUneditedComponent()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("1", "2"))),
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("1", "3"))));
+        var nodes = GetSelectedNodes(document, "TestType");
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreateVector2Term(environment.Services, "vector")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.Equal("1", viewModel.X);
+        Assert.Equal(string.Empty, viewModel.Y);
+        Assert.True(viewModel.YProperty.HasConflict);
+
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.X = "4";
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.Equal(
+            Vector2ExpressionCodec.Compose("4", "2"),
+            nodes[0].Source.Properties["vector"]);
+        Assert.Equal(
+            Vector2ExpressionCodec.Compose("4", "3"),
+            nodes[1].Source.Properties["vector"]);
+        Assert.Equal("4", viewModel.X);
+        Assert.True(viewModel.YProperty.HasConflict);
+
+        viewModel.Y = "9";
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(
+            nodes,
+            node => Assert.Equal(
+                Vector2ExpressionCodec.Compose("4", "9"),
+                node.Source.Properties["vector"]));
+        Assert.Equal("4", viewModel.X);
+        Assert.Equal("9", viewModel.Y);
     }
 
     [Fact]
