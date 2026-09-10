@@ -154,6 +154,66 @@
             </Button>
         </lsv:PropertyItemGrid>
     </DataTemplate>
+    <DataTemplate x:Key="property:argb">
+        <lsv:PropertyItemGrid>
+            <TextBlock Margin="5,0,5,0" Text="{Binding Name}"/>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <lwctrl:ExpressionSpinner Grid.Column="0"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          lpv:BoundEditor.Property="{Binding AlphaProperty}"/>
+                <lwctrl:ExpressionSpinner Grid.Column="1"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          lpv:BoundEditor.Property="{Binding RedProperty}"/>
+                <lwctrl:ExpressionSpinner Grid.Column="2"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          lpv:BoundEditor.Property="{Binding GreenProperty}"/>
+                <lwctrl:ExpressionSpinner Grid.Column="3"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          lpv:BoundEditor.Property="{Binding BlueProperty}"/>
+            </Grid>
+                <Button Grid.Column="2"
+                        Width="14"
+                        Height="14"
+                        Padding="0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        IsEnabled="{Binding IsPreviewAvailable}">
+                    <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border Width="12"
+                                    Height="12"
+                                    BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                    BorderThickness="1"
+                                    CornerRadius="1"
+                                    Visibility="{Binding IsPreviewAvailable, Converter={StaticResource ConflictToVisibilityConverter}}">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{Binding PreviewColor}"/>
+                                </Border.Background>
+                            </Border>
+                            <Border Width="12"
+                                    Height="12"
+                                    Background="Transparent"
+                                    BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                    BorderThickness="1"
+                                    CornerRadius="1"
+                                    Visibility="{Binding IsPreviewAvailable, Converter={StaticResource ConflictToCollapsedConverter}}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
     <lpve:ComboBoxItemConverter x:Key="comboBoxConverter" 
                              ServiceProvider="{DynamicResource ResourceKey=HostServices}"/>
     <DataTemplate x:Key="property:comboBox">
