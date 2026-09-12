@@ -1,5 +1,7 @@
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LinqSTG.Expression.ToLua.Serialization;
+using Newtonsoft.Json;
 using System.Numerics;
 using Xunit;
 
@@ -358,23 +360,91 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         }
 
         [Fact]
-        public void LoadFrom_DocumentBuiltIns_AreReplacedByDefaults()
+        public void LoadFrom_DocumentBuiltIns_KeepFixedIdentityButRestoreValues()
         {
             var list = new VariableListViewModel();
 
-            // Hand-edited document: a tampered _infinite and self among unlocked entries.
+            // Document: an edited _infinite, proper vector2 entries for self and
+            // player, plus a duplicate unlocked name.
             list.LoadFrom([
-                new VariableItemModel("_infinite", 999, false),
+                new VariableItemModel("_infinite", 3, true),
                 new VariableItemModel("speed", 1, false),
-                new VariableItemModel("self", 5, false),
+                new VariableItemModel("self", -5, false, ValueY: 200),
                 new VariableItemModel("speed", 2, false),
+                new VariableItemModel("player", 7, false, ValueY: -90),
             ]);
 
             Assert.Equal(["_infinite", "self", "player", "speed", "_1"], list.Items.Select(i => i.Name).ToArray());
-            Assert.Equal(10.0, list.Items[0].Value);
+            // Identity stays fixed (locked prefix, built-in types)...
+            Assert.True(list.Items[0].IsLocked);
+            Assert.True(list.Items[0].IsInteger);
             Assert.True(list.Items[1].IsVector2);
+            Assert.True(list.Items[2].IsVector2);
+            // ...while the values round-trip from the document.
+            Assert.Equal(3.0, list.Items[0].Value);
+            Assert.Equal(new Vector2(-5f, 200f), list.ToVectors()["self"]);
+            Assert.Equal(new Vector2(7f, -90f), list.ToVectors()["player"]);
             // The duplicate 'speed' was uniquified instead of dropped.
             Assert.Equal(1.0, list.Items[3].Value);
+        }
+
+        [Fact]
+        public void LoadFrom_ScalarBuiltInEntry_FallsBackToDefaultVector()
+        {
+            var list = new VariableListViewModel();
+
+            // A malformed scalar 'self' entry (no valueY) cannot restore a
+            // position: the built-in preview position is used instead.
+            list.LoadFrom([new VariableItemModel("self", 5, false)]);
+
+            Assert.Equal(new Vector2(0f, 120f), list.ToVectors()["self"]);
+        }
+
+        [Fact]
+        public void Values_RoundTrip_ThroughModel_ForAllItems()
+        {
+            var list = new VariableListViewModel();
+            list.Items[0].ValueText = "3";
+            var speed = list.AddItem();
+            speed.Name = "speed";
+            speed.ValueText = "2.5";
+
+            var restored = new VariableListViewModel();
+            restored.LoadFrom(list.ToModel());
+
+            Assert.Equal(3.0, restored.Items[0].Value);
+            Assert.Equal(2.5, restored.Items[3].Value);
+            Assert.Equal(list.ToVectors(), restored.ToVectors());
+        }
+
+        [Fact]
+        public void WindowJson_RoundTrips_AllItemValues()
+        {
+            var viewModel = new MainViewModel();
+            viewModel.VariableList.Items[0].ValueText = "3";
+            var speed = viewModel.VariableList.AddItem();
+            speed.Name = "speed";
+            speed.ValueText = "2.5";
+
+            viewModel.Save();
+            Assert.NotNull(viewModel.NetworkJson);
+
+            // Every entry — locked built-ins included — carries its value in the
+            // JSON the window hands back to the document.
+            var model = JsonConvert.DeserializeObject<NetworkModel>(viewModel.NetworkJson!)!;
+            var variables = model.Variables!.ToDictionary(v => v.Name, v => v, StringComparer.Ordinal);
+            Assert.Equal(3, variables["_infinite"].Value);
+            Assert.Equal(0, variables["self"].Value);
+            Assert.Equal(120, variables["self"].ValueY);
+            Assert.Equal(-180, variables["player"].ValueY);
+            Assert.Equal(2.5, variables["speed"].Value);
+
+            // And the values survive reopening the window.
+            var reopened = new MainViewModel { NetworkJson = viewModel.NetworkJson };
+            reopened.Load();
+            Assert.Equal(3.0, reopened.VariableList.Items[0].Value);
+            Assert.Equal(new Vector2(0f, 120f), reopened.VariableList.ToVectors()["self"]);
+            Assert.Equal(2.5, reopened.VariableList.Items.First(i => i.Name == "speed").Value);
         }
     }
 }

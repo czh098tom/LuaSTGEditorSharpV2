@@ -232,14 +232,19 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
         }
 
         /// <summary>
-        /// Replaces the list with deserialized entries. The locked prefix is
-        /// rebuilt from the built-in defaults (its names are reserved); the
-        /// remaining document entries are restored as unlocked entries with
-        /// defensively de-duplicated names.
+        /// Replaces the list with deserialized entries. The locked prefix keeps
+        /// its fixed names/types/positions but restores its values from the
+        /// document like every other entry (falling back to the built-in
+        /// defaults when absent); the remaining document entries are restored
+        /// as unlocked entries with defensively de-duplicated names.
         /// </summary>
         public void LoadFrom(VariableItemModel[]? models)
         {
             Items.Clear();
+
+            VariableItemModel? documentInfinite = null;
+            VariableItemModel? documentSelf = null;
+            VariableItemModel? documentPlayer = null;
 
             var usedNames = new HashSet<string>(StringComparer.Ordinal) { InfiniteName, SelfName, PlayerName };
             if (models is { Length: > 0 })
@@ -252,9 +257,19 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                     {
                         continue;
                     }
-                    if (IsReservedName(candidate))
+                    if (string.Equals(candidate, InfiniteName, StringComparison.Ordinal))
                     {
-                        // Reserved built-in names are re-seeded from the defaults below.
+                        documentInfinite ??= model;
+                        continue;
+                    }
+                    if (string.Equals(candidate, SelfName, StringComparison.Ordinal))
+                    {
+                        documentSelf ??= model;
+                        continue;
+                    }
+                    if (string.Equals(candidate, PlayerName, StringComparison.Ordinal))
+                    {
+                        documentPlayer ??= model;
                         continue;
                     }
                     // Duplicates within the document are uniquified defensively.
@@ -271,7 +286,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                 }
             }
 
-            EnsureLockedDefaults();
+            EnsureLockedDefaults(documentInfinite, documentSelf, documentPlayer);
             RefreshLocks();
             OnChanged();
         }
@@ -284,11 +299,21 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                 || string.Equals(name, PlayerName, StringComparison.Ordinal);
         }
 
-        private void EnsureLockedDefaults()
+        private void EnsureLockedDefaults(
+            VariableItemModel? documentInfinite = null,
+            VariableItemModel? documentSelf = null,
+            VariableItemModel? documentPlayer = null)
         {
-            AddLockedDefault(InfiniteName, isInteger: true, InfiniteDefaultValue, y: null, insertAt: 0);
-            AddLockedDefault(SelfName, isInteger: false, SelfDefaultX, SelfDefaultY, insertAt: 1);
-            AddLockedDefault(PlayerName, isInteger: false, PlayerDefaultX, PlayerDefaultY, insertAt: 2);
+            AddLockedDefault(InfiniteName, isInteger: true,
+                documentInfinite?.Value ?? InfiniteDefaultValue, y: null, insertAt: 0);
+            // A proper vector2 document entry carries both components; a scalar or
+            // missing entry falls back to the built-in preview position.
+            var selfY = documentSelf?.ValueY;
+            AddLockedDefault(SelfName, isInteger: false,
+                selfY is null ? SelfDefaultX : documentSelf!.Value, selfY ?? SelfDefaultY, insertAt: 1);
+            var playerY = documentPlayer?.ValueY;
+            AddLockedDefault(PlayerName, isInteger: false,
+                playerY is null ? PlayerDefaultX : documentPlayer!.Value, playerY ?? PlayerDefaultY, insertAt: 2);
         }
 
         /// <summary>Creates one built-in locked entry; <paramref name="y"/> non-null marks a vector2 entry.</summary>
