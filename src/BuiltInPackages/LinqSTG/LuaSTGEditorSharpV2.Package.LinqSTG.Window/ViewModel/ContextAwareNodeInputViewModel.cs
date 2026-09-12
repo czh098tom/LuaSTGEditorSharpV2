@@ -33,7 +33,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                 var result = originalValidator(pending);
                 if (result.IsValid) return result;
 
-                return new ConnectionValidationResult(true, null);
+                // 类型不匹配时上下文感知输入放宽为允许（类型随所连输出自适应），
+                // 但成环拒绝必须保留：成环的值流会同步互相递归直至栈溢出。
+                return new ConnectionValidationResult(
+                    !ConnectionCycleDetector.WouldCreateCycle(this, pending.Output), null);
             };
 
             TypeChanged = ValueChanged.Select(v => v?.GetType());

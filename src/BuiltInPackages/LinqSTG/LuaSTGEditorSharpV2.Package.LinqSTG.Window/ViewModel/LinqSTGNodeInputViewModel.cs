@@ -61,7 +61,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                 {
                     sameType = ctx.CurrentType == typeof(T);
                 }
-                return new ConnectionValidationResult(sameType, null);
+                // 成环的连接会让双方的值流同步互相递归（栈溢出），与类型检查
+                // 一起在建立连接前拒绝。
+                var cyclic = ConnectionCycleDetector.WouldCreateCycle(this, pending.Output);
+                return new ConnectionValidationResult(sameType && !cyclic, null);
             };
 
             var connectedValues = GenerateConnectedValuesBinding(connectionChangedValidationAction, connectedValueChangedValidationAction);
@@ -120,28 +123,34 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                 if (connectionChangedValidationAction == ValidationAction.PushDefaultValue)
                 {
                     //Or push a single default(T) if the validation fails
-                    connectionObservables = postValidation.Select(validation =>
-                    {
-                        if (Connections.Count == 0)
-                        {
-                            return Observable.Return(default(T));
-                        }
-                        else if (validation.NetworkIsTraversable)
-                        {
-                            IObservable<T>? connectedObservable =
-                                ((IValueNodeOutput<object>)Connections.Items.First().Output).Value
-                                    ?.OfType<T>();
-                            if (connectedObservable == null)
-                            {
-                                throw new Exception($"The value observable for output '{Connections.Items.First().Output.Name}' is null.");
-                            }
-                            return connectedObservable;
-                        }
-                        else
-                        {
-                            return Observable.Return(default(T));
-                        }
-                    });
+                    //连接变化集直接驱动值流切换：移除连接时同步（不经过验证回路）
+                    //切到 default(T)，并用 Switch 释放对旧输出值流的订阅。
+                    //不能把历次取得的值流合并且从不退订：断开的连接仍会向下游脉冲，
+                    //此时若把连线反接（原 A→B 移除后接 B→A），双方会经由陈旧订阅
+                    //互相重发射，同步递归直至栈溢出。建立连接仍先走网络验证，
+                    //验证通过才切到所连输出的值流。
+                    connectionObservables = onConnectionChanged
+                        .Select(con => con is null
+                            ? Observable.Return(default(T))
+                            : (Parent?.Parent?.UpdateValidation.Execute()
+                                ?? Observable.Return(new NetworkValidationResult(true, true, null)))
+                                .Select(validation =>
+                                {
+                                    if (Connections.Count == 0 || !validation.NetworkIsTraversable)
+                                    {
+                                        return Observable.Return(default(T));
+                                    }
+
+                                    IObservable<T>? connectedObservable =
+                                        ((IValueNodeOutput<object>)Connections.Items.First().Output).Value
+                                            ?.OfType<T>();
+                                    if (connectedObservable == null)
+                                    {
+                                        throw new Exception($"The value observable for output '{Connections.Items.First().Output.Name}' is null.");
+                                    }
+                                    return connectedObservable;
+                                })
+                                .Switch());
                 }
                 else
                 {
@@ -189,7 +198,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                     }
                 });
             }
-            IObservable<T?> connectedValues = connectionObservables.SelectMany(c => c);
+            //Switch（而非 SelectMany 合并）：连接变化集只保留最新一条值流，并释放
+            //之前那条的订阅。合并语义从不退订旧连接取得的值流，断开的连接会一直向
+            //下游脉冲；此时若反接连线（原 A→B 移除后接 B→A），双方经陈旧订阅互相
+            //重发射，同步递归直至栈溢出。输入 MaxConnections = 1，任一时刻至多一条
+            //连接，Switch 即正确语义。
+            IObservable<T?> connectedValues = connectionObservables.Switch();
 
             //On connected output value change, either just push the value as is
             if (connectedValueChangedValidationAction != ValidationAction.DontValidate)
