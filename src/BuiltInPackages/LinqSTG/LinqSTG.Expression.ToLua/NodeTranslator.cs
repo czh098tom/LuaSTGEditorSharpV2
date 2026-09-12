@@ -358,8 +358,31 @@ namespace LinqSTG.Expression.ToLua
                         InputOrConstant(node, inputs, "key").LuaParser), PortShape.Scalar),
                     _ => Unknown(node, portName)
                 },
+                // The angle/length node's x/y ports expose single components as
+                // scalars, reusing the split primitives over the same vector body;
+                // the vector2 port keeps the __valx/__valy two-local form.
+                "Vector2FromRotationDistance" => portName switch
+                {
+                    "x" => new TypedLuaParser(_parser.Vector2SplitX(
+                        AngleLengthVector(node, inputs)), PortShape.Scalar),
+                    "y" => new TypedLuaParser(_parser.Vector2SplitY(
+                        AngleLengthVector(node, inputs)), PortShape.Scalar),
+                    _ => Translate(node, inputs)
+                },
                 _ => Translate(node, inputs)
             };
+        }
+
+        /// <summary>
+        /// The vector body shared by all <c>Vector2FromRotationDistance</c> output
+        /// ports: rotation/distance inputs (connected wire or editor constant)
+        /// resolved into the <c>__valx</c>/<c>__valy</c> two-local form.
+        /// </summary>
+        private LuaParser AngleLengthVector(NodeModel node, IReadOnlyDictionary<string, TypedLuaParser> inputs)
+        {
+            return _parser.VectorFromAngleLength(
+                InputOrConstant(node, inputs, "rotation").LuaParser,
+                InputOrConstant(node, inputs, "distance").LuaParser);
         }
 
         public TypedLuaParser Unknown(NodeModel node, string? portName = null)

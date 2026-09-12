@@ -13,27 +13,33 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
     public class Vector2FromRotationDistanceNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel RotationEditor { get; } = new();
-        public FloatValueEditorViewModel DistanceEditor { get; } = new();
+        public FloatValueEditorViewModel DistanceEditor { get; } = new() { RawValue = 1 };
         public LinqSTGNodeInputViewModel<Contextual<float>?> InputRotation { get; }
         public LinqSTGNodeInputViewModel<Contextual<float>?> InputDistance { get; }
         public LinqSTGNodeOutputViewModel<Contextual<Vector2>> OutputVector2 { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<float>> OutputX { get; }
+        public LinqSTGNodeOutputViewModel<Contextual<float>> OutputY { get; }
 
         public Vector2FromRotationDistanceNode()
         {
             InputRotation = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_rotation, RotationEditor);
             InputDistance = LinqSTGNodeInputViewModel.Float(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_distance, DistanceEditor);
             OutputVector2 = LinqSTGNodeOutputViewModel.Vector2(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_vector2);
+            OutputX = LinqSTGNodeOutputViewModel.Float("X");
+            OutputY = LinqSTGNodeOutputViewModel.Float("Y");
 
             AddInput("rotation", InputRotation);
             AddInput("distance", InputDistance);
             AddOutput("vector2", OutputVector2);
+            AddOutput("x", OutputX);
+            AddOutput("y", OutputY);
             AddEditor("rotation", RotationEditor);
             AddEditor("distance", DistanceEditor);
 
             Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_vector2;
             TitleColor = NodeColors.Data;
 
-            OutputVector2.Value = InputRotation.ValueChanged
+            var polar = InputRotation.ValueChanged
                 .CombineLatest(InputDistance.ValueChanged, (rotation, distance) =>
                     Contextual.Create(dict =>
                     {
@@ -44,6 +50,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
                             DegreeMaths.Cos(rotationValue) * distanceValue,
                             DegreeMaths.Sin(rotationValue) * distanceValue);
                     }));
+
+            OutputVector2.Value = polar;
+            OutputX.Value = polar.Select(v => Contextual.Create(dict => (v?.Invoke(dict) ?? Vector2.Zero).X));
+            OutputY.Value = polar.Select(v => Contextual.Create(dict => (v?.Invoke(dict) ?? Vector2.Zero).Y));
         }
     }
 }
