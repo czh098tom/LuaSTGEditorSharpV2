@@ -236,6 +236,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_node_vector2Assignment 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_vector2Assignment {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_vector2Assignment", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_node_concatPattern 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_node_concatPattern {
@@ -695,6 +704,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_node_vector2Variable 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_vector2Variable {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_vector2Variable", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_node_rotateVector 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_node_rotateVector {
@@ -835,6 +853,24 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         internal static string linqstg_window_port_key {
             get {
                 return ResourceManager.GetString("linqstg_window_port_key", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_port_xKey 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_port_xKey {
+            get {
+                return ResourceManager.GetString("linqstg_window_port_xKey", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_port_yKey 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_port_yKey {
+            get {
+                return ResourceManager.GetString("linqstg_window_port_yKey", resourceCulture);
             }
         }
 

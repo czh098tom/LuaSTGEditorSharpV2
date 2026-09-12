@@ -172,6 +172,9 @@
   <data name="linqstg_window_node_vector2Split" xml:space="preserve">
     <value>二维向量拆分</value>
   </data>
+  <data name="linqstg_window_node_vector2Variable" xml:space="preserve">
+    <value>二维变量</value>
+  </data>
   <data name="linqstg_window_node_rotateVector" xml:space="preserve">
     <value>旋转向量</value>
   </data>
@@ -310,6 +313,9 @@
   <data name="linqstg_window_node_assign" xml:space="preserve">
     <value>赋值</value>
   </data>
+  <data name="linqstg_window_node_vector2Assignment" xml:space="preserve">
+    <value>二维向量赋值</value>
+  </data>
   <data name="linqstg_window_node_shoot" xml:space="preserve">
     <value>发射</value>
   </data>
@@ -349,6 +355,12 @@
   </data>
   <data name="linqstg_window_port_key" xml:space="preserve">
     <value>键</value>
+  </data>
+  <data name="linqstg_window_port_xKey" xml:space="preserve">
+    <value>X 键</value>
+  </data>
+  <data name="linqstg_window_port_yKey" xml:space="preserve">
+    <value>Y 键</value>
   </data>
   <data name="linqstg_window_port_position" xml:space="preserve">
     <value>位置</value>

@@ -534,6 +534,18 @@ namespace LinqSTG.Expression.ToLua
         }
 
         /// <summary>
+        /// Vector2Variable 的 vector2 输出：把两个外层作用域变量名直接读取为
+        /// __valx/__valy 二维向量输出，即 TakeVariableFromContext 的二维版本。
+        /// </summary>
+        public LuaParser Vector2FromVariables(LuaParser xKey, LuaParser yKey)
+        {
+            return (inner) => Concat(
+                Single($"local __valx = {FlatText(xKey(inner))}"),
+                Single($"local __valy = {FlatText(yKey(inner))}")
+            );
+        }
+
+        /// <summary>
         /// 外部坐标变量：把目标的 .x/.y 字段读取为 __valx/__valy 二维向量输出。
         /// self 走 Shoot 头部重定向的 __self 别名（原始 self 在运动函数内被子弹对象遮蔽），
         /// player 是宿主全局对象，直接读取。仅用于变量列表的锁定项。
@@ -592,6 +604,26 @@ namespace LinqSTG.Expression.ToLua
                 Single("__v = __val", 1),
                 Single("end"),
                 Single($"local {FlatText(key(inner))} = __v")
+            );
+        }
+
+        /// <summary>
+        /// Vector2Assignment：求值 Vector2 输入（__valx/__valy）后，把两个分量分别
+        /// 赋给两个外层作用域变量名（local &lt;x&gt; = vx; local &lt;y&gt; = vy），
+        /// 是 <see cref="Assign"/> 的二维版本。
+        /// </summary>
+        public LuaParser AssignVector2(LuaParser prev, LuaParser value, LuaParser xKey, LuaParser yKey)
+        {
+            string vx = GenId("__vx_"), vy = GenId("__vy_");
+            return (inner) => Concat(
+                prev(inner),
+                Single($"local {vx}, {vy}"),
+                Single("do"),
+                Shift(value(inner), 1),
+                Single($"{vx}, {vy} = __valx, __valy", 1),
+                Single("end"),
+                Single($"local {FlatText(xKey(inner))} = {vx}"),
+                Single($"local {FlatText(yKey(inner))} = {vy}")
             );
         }
 

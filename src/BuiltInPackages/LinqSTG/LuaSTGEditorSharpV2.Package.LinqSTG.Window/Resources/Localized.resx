@@ -172,6 +172,9 @@
   <data name="linqstg_window_node_vector2Split" xml:space="preserve">
     <value>Vector2 Split</value>
   </data>
+  <data name="linqstg_window_node_vector2Variable" xml:space="preserve">
+    <value>Vector2 Variable</value>
+  </data>
   <data name="linqstg_window_node_rotateVector" xml:space="preserve">
     <value>Rotate Vector</value>
   </data>
@@ -310,6 +313,9 @@
   <data name="linqstg_window_node_assign" xml:space="preserve">
     <value>Assign</value>
   </data>
+  <data name="linqstg_window_node_vector2Assignment" xml:space="preserve">
+    <value>Vector2 Assignment</value>
+  </data>
   <data name="linqstg_window_node_shoot" xml:space="preserve">
     <value>Shoot</value>
   </data>
@@ -349,6 +355,12 @@
   </data>
   <data name="linqstg_window_port_key" xml:space="preserve">
     <value>Key</value>
+  </data>
+  <data name="linqstg_window_port_xKey" xml:space="preserve">
+    <value>X Key</value>
+  </data>
+  <data name="linqstg_window_port_yKey" xml:space="preserve">
+    <value>Y Key</value>
   </data>
   <data name="linqstg_window_port_position" xml:space="preserve">
     <value>Position</value>

@@ -59,6 +59,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<PatternVariableFloatNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<PatternVariableIntNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<VariableNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<Vector2VariableNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<InfiniteNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<SelfPositionNode>));
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<PlayerPositionNode>));
@@ -144,6 +145,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<TrimPatternNode>));
 
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<AssignNode>));
+            Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<Vector2AssignmentNode>));
 
             Splat.Locator.CurrentMutable.Register(() => new LinqSTGNodeView(), typeof(IViewFor<ShootNode>));
         }

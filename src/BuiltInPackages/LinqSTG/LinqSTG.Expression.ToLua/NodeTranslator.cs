@@ -327,6 +327,16 @@ namespace LinqSTG.Expression.ToLua
                     InputOrConstant(node, inputs, "value").LuaParser,
                     InputOrUnknown(node, inputs, "key").LuaParser), PortShape.Unknown),
 
+                // Vector2Assignment aggregates two Assign nodes over one vector
+                // input: the value's components are written to the two editor-backed
+                // keys (defaults x/y); an unconnected value degrades to the zero
+                // vector, matching the ViewModel preview's Vector2.Zero fallback.
+                "Vector2Assignment" => new TypedLuaParser(_parser.AssignVector2(
+                    InputOrEmpty(inputs, "transformation").LuaParser,
+                    InputOrZeroVector2(inputs, "value"),
+                    InputOrConstant(node, inputs, "key_x").LuaParser,
+                    InputOrConstant(node, inputs, "key_y").LuaParser), PortShape.Unknown),
+
                 _ => Unknown(node)
             };
         }
@@ -356,6 +366,24 @@ namespace LinqSTG.Expression.ToLua
                     "key" => InputOrConstant(node, inputs, "key"),
                     "value" => new TypedLuaParser(_parser.TakeVariableFromContext(
                         InputOrConstant(node, inputs, "key").LuaParser), PortShape.Scalar),
+                    _ => Unknown(node, portName)
+                },
+                // The vector2 variable node aggregates two Variable nodes: the
+                // key_x/key_y outputs pass the resolved names through as bare Lua
+                // text, the x/y outputs bind them via TakeVariableFromContext, and
+                // the vector2 output reads both outer-scope variables directly into
+                // the __valx/__valy two-local form.
+                "Vector2Variable" => portName switch
+                {
+                    "key_x" => InputOrConstant(node, inputs, "key_x"),
+                    "key_y" => InputOrConstant(node, inputs, "key_y"),
+                    "x" => new TypedLuaParser(_parser.TakeVariableFromContext(
+                        InputOrConstant(node, inputs, "key_x").LuaParser), PortShape.Scalar),
+                    "y" => new TypedLuaParser(_parser.TakeVariableFromContext(
+                        InputOrConstant(node, inputs, "key_y").LuaParser), PortShape.Scalar),
+                    "vector2" => new TypedLuaParser(_parser.Vector2FromVariables(
+                        InputOrConstant(node, inputs, "key_x").LuaParser,
+                        InputOrConstant(node, inputs, "key_y").LuaParser), PortShape.Vector2),
                     _ => Unknown(node, portName)
                 },
                 // The angle/length node's x/y ports expose single components as
