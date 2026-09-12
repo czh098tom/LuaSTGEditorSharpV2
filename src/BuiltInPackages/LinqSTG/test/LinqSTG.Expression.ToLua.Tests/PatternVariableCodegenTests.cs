@@ -60,6 +60,17 @@ namespace LinqSTG.Expression.ToLua.Tests
         }
 
         [Fact]
+        public void InfiniteNode_EditorValue_IsPreviewOnly_TranslationUnchanged()
+        {
+            // The on-node editor only feeds the preview: no matter its value,
+            // translation still emits the outer-scope variable verbatim.
+            var lua = TranslateSingle(new NodeModel("Infinite", 0, 0, new JObject { ["preview_value"] = 3 }));
+
+            Assert.Equal("local __val = _infinite", lua);
+            Assert.DoesNotContain("3", lua);
+        }
+
+        [Fact]
         public void SelfPositionNode_EmitsRedirectedSelfComponentsAsVector()
         {
             var lua = TranslateSingle(new NodeModel("SelfPosition", 0, 0, new JObject()));

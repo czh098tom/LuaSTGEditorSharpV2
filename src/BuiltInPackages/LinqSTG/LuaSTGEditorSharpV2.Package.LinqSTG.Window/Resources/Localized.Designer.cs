@@ -938,6 +938,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_port_previewValue 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_port_previewValue {
+            get {
+                return ResourceManager.GetString("linqstg_window_port_previewValue", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_port_repeater 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_port_repeater {

@@ -15,16 +15,23 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
     /// The first <see cref="LockedCount"/> entries are locked: fixed position,
     /// not deletable, not renamable, type not changeable (but still draggable
     /// into the blueprint area, where each generates its dedicated node type).
-    /// The locked prefix is fixed to three built-ins:
-    ///   - <see cref="InfiniteName"/> (_infinite = integer 10, the Shoot loop bound)
-    ///   - <see cref="SelfName"/> (self, vector2: the shooter's own position)
-    ///   - <see cref="PlayerName"/> (player, vector2: the player's position)
+    /// The locked prefix is fixed to two vector2 built-ins:
+    ///   - <see cref="SelfName"/> (self: the shooter's own position)
+    ///   - <see cref="PlayerName"/> (player: the player's position)
+    /// <see cref="InfiniteName"/> is no longer a list entry: it is inserted as
+    /// an <see cref="Nodes.Data.InfiniteNode"/> from the right-click menu, with
+    /// the preview value adjusted on each node instance.
     /// </summary>
     public class VariableListViewModel : INotifyPropertyChanged
     {
-        /// <summary>The name of the fixed first entry used by the generated Shoot loop.</summary>
+        /// <summary>
+        /// The outer-scope Lua variable emitted by <see cref="Nodes.Data.InfiniteNode"/>
+        /// (the Shoot loop bound). Kept as a reserved list name so legacy documents
+        /// that stored it as an entry do not materialize a stale item.
+        /// </summary>
         public const string InfiniteName = "_infinite";
 
+        /// <summary>Default preview value of <see cref="Nodes.Data.InfiniteNode"/>'s on-node editor.</summary>
         public const double InfiniteDefaultValue = 10.0;
 
         /// <summary>The locked self entry: the shooter's own position (vector2).</summary>
@@ -40,7 +47,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
         /// <summary>Index of the vector2 entry in the list's type picker.</summary>
         public const int Vector2TypeIndex = 2;
 
-        private int _lockedCount = 3;
+        private int _lockedCount = 2;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -64,7 +71,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
 
         public VariableListViewModel()
         {
-            AddLockedDefault(InfiniteName, isInteger: true, InfiniteDefaultValue, y: null);
             AddLockedDefault(SelfName, isInteger: false, SelfDefaultX, SelfDefaultY);
             AddLockedDefault(PlayerName, isInteger: false, PlayerDefaultX, PlayerDefaultY);
             RefreshLocks();
@@ -236,13 +242,14 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
         /// its fixed names/types/positions but restores its values from the
         /// document like every other entry (falling back to the built-in
         /// defaults when absent); the remaining document entries are restored
-        /// as unlocked entries with defensively de-duplicated names.
+        /// as unlocked entries with defensively de-duplicated names. Legacy
+        /// <see cref="InfiniteName"/> entries are dropped: the loop bound moved
+        /// onto the menu-inserted Infinite node.
         /// </summary>
         public void LoadFrom(VariableItemModel[]? models)
         {
             Items.Clear();
 
-            VariableItemModel? documentInfinite = null;
             VariableItemModel? documentSelf = null;
             VariableItemModel? documentPlayer = null;
 
@@ -257,11 +264,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                     {
                         continue;
                     }
-                    if (string.Equals(candidate, InfiniteName, StringComparison.Ordinal))
-                    {
-                        documentInfinite ??= model;
-                        continue;
-                    }
                     if (string.Equals(candidate, SelfName, StringComparison.Ordinal))
                     {
                         documentSelf ??= model;
@@ -270,6 +272,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                     if (string.Equals(candidate, PlayerName, StringComparison.Ordinal))
                     {
                         documentPlayer ??= model;
+                        continue;
+                    }
+                    // _infinite and other non-list names are skipped.
+                    if (IsReservedName(candidate))
+                    {
                         continue;
                     }
                     // Duplicates within the document are uniquified defensively.
@@ -286,12 +293,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
                 }
             }
 
-            EnsureLockedDefaults(documentInfinite, documentSelf, documentPlayer);
+            EnsureLockedDefaults(documentSelf, documentPlayer);
             RefreshLocks();
             OnChanged();
         }
 
-        /// <summary>Whether the name belongs to the locked built-in prefix.</summary>
+        /// <summary>Whether the name belongs to the system-reserved set (the locked built-ins plus <see cref="InfiniteName"/>).</summary>
         public static bool IsReservedName(string name)
         {
             return string.Equals(name, InfiniteName, StringComparison.Ordinal)
@@ -300,20 +307,17 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel
         }
 
         private void EnsureLockedDefaults(
-            VariableItemModel? documentInfinite = null,
             VariableItemModel? documentSelf = null,
             VariableItemModel? documentPlayer = null)
         {
-            AddLockedDefault(InfiniteName, isInteger: true,
-                documentInfinite?.Value ?? InfiniteDefaultValue, y: null, insertAt: 0);
             // A proper vector2 document entry carries both components; a scalar or
             // missing entry falls back to the built-in preview position.
             var selfY = documentSelf?.ValueY;
             AddLockedDefault(SelfName, isInteger: false,
-                selfY is null ? SelfDefaultX : documentSelf!.Value, selfY ?? SelfDefaultY, insertAt: 1);
+                selfY is null ? SelfDefaultX : documentSelf!.Value, selfY ?? SelfDefaultY, insertAt: 0);
             var playerY = documentPlayer?.ValueY;
             AddLockedDefault(PlayerName, isInteger: false,
-                playerY is null ? PlayerDefaultX : documentPlayer!.Value, playerY ?? PlayerDefaultY, insertAt: 2);
+                playerY is null ? PlayerDefaultX : documentPlayer!.Value, playerY ?? PlayerDefaultY, insertAt: 1);
         }
 
         /// <summary>Creates one built-in locked entry; <paramref name="y"/> non-null marks a vector2 entry.</summary>

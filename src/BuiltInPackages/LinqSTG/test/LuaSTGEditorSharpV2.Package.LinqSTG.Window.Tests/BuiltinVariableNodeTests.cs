@@ -1,3 +1,4 @@
+using DynamicData;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes;
@@ -8,10 +9,10 @@ using Xunit;
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
 {
     /// <summary>
-    /// Preview semantics of the locked built-in variable nodes and the drag
-    /// dispatch that creates them: _infinite → 无限 (int), self → 自身坐标
-    /// (vector2), player → 玩家坐标 (vector2). Unlocked entries keep generating
-    /// the generic PatternVariable nodes.
+    /// Preview semantics of the built-in variable nodes: the menu-inserted
+    /// 无限 node (int, preview value adjusted per node instance) and the
+    /// drag-created self → 自身坐标 / player → 玩家坐标 nodes (vector2).
+    /// Unlocked entries keep generating the generic PatternVariable nodes.
     /// </summary>
     public class BuiltinVariableNodeTests
     {
@@ -39,21 +40,38 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         }
 
         [Fact]
-        public void InfiniteNode_ReadsListValue()
+        public void InfiniteNode_PreviewUsesItsOwnEditorValue()
         {
             var node = new InfiniteNode();
+            node.PreviewValueEditor.RawValue = 3;
             var value = Latest(node.OutputValue.Value);
 
-            Assert.Equal(10, value(RootParameterWithVectors()));
+            Assert.Equal(3, value(RootParameterWithVectors()));
+            Assert.Equal(3, value(new Parameter()));
         }
 
         [Fact]
-        public void InfiniteNode_FallsBackToDefault_WhenScopeEmpty()
+        public void InfiniteNode_DefaultsToTen()
         {
             var node = new InfiniteNode();
             var value = Latest(node.OutputValue.Value);
 
             Assert.Equal(10, value(new Parameter()));
+        }
+
+        [Fact]
+        public void InfiniteNode_EachInstanceTunesItsOwnPreviewValue()
+        {
+            var first = new InfiniteNode();
+            var second = new InfiniteNode();
+            first.PreviewValueEditor.RawValue = 3;
+            second.PreviewValueEditor.RawValue = 25;
+
+            var firstValue = Latest(first.OutputValue.Value);
+            var secondValue = Latest(second.OutputValue.Value);
+
+            Assert.Equal(3, firstValue(new Parameter()));
+            Assert.Equal(25, secondValue(new Parameter()));
         }
 
         [Fact]
@@ -103,15 +121,13 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
 
             viewModel.AddNodeForVariable(list.Items[0], new System.Windows.Point(0, 0));
             viewModel.AddNodeForVariable(list.Items[1], new System.Windows.Point(0, 0));
-            viewModel.AddNodeForVariable(list.Items[2], new System.Windows.Point(0, 0));
 
             var added = viewModel.Network.Nodes.Items
                 .OfType<LinqSTGNodeViewModel>()
                 .Skip(1) // the default Shoot node
                 .ToArray();
-            Assert.IsType<InfiniteNode>(added[0]);
-            Assert.IsType<SelfPositionNode>(added[1]);
-            Assert.IsType<PlayerPositionNode>(added[2]);
+            Assert.IsType<SelfPositionNode>(added[0]);
+            Assert.IsType<PlayerPositionNode>(added[1]);
         }
 
         [Fact]
@@ -126,6 +142,26 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var added = viewModel.Network.Nodes.Items.OfType<PatternVariableFloatNode>().SingleOrDefault();
             Assert.NotNull(added);
             Assert.Equal("speed", added.NameEditor.RawValue);
+        }
+
+        [Fact]
+        public void InfiniteNode_IsListedInCreationMenu_AndSerializesItsEditorValue()
+        {
+            var viewModel = new MainViewModel();
+            var node = new InfiniteNode();
+            node.PreviewValueEditor.RawValue = 3;
+            node.Position = new System.Windows.Point(5, 5);
+            viewModel.Network.Nodes.Add(node);
+
+            viewModel.Save();
+            Assert.NotNull(viewModel.NetworkJson);
+
+            // Round-trip: the node type comes back with its per-node preview value.
+            var reopened = new MainViewModel { NetworkJson = viewModel.NetworkJson };
+            reopened.Load();
+            var restored = reopened.Network.Nodes.Items.OfType<InfiniteNode>().SingleOrDefault();
+            Assert.NotNull(restored);
+            Assert.Equal(3, restored.PreviewValueEditor.RawValue);
         }
     }
 }

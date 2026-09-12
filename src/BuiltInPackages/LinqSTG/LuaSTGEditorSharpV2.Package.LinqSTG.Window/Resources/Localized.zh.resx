@@ -350,6 +350,9 @@
   <data name="linqstg_window_port_position" xml:space="preserve">
     <value>位置</value>
   </data>
+  <data name="linqstg_window_port_previewValue" xml:space="preserve">
+    <value>预览值</value>
+  </data>
   <data name="linqstg_window_port_initialVelocity" xml:space="preserve">
     <value>初速度</value>
   </data>

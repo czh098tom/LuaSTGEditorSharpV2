@@ -265,10 +265,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 
         /// <summary>
         /// Creates the node for a variable list entry dropped into the blueprint
-        /// area. Locked built-ins generate their dedicated node types (无限 /
-        /// 自身坐标 / 玩家坐标); unlocked entries generate the generic variable
-        /// reference nodes, int-typed entries the int variant, float-typed
-        /// entries the float variant.
+        /// area. Locked built-ins generate their dedicated node types (自身坐标 /
+        /// 玩家坐标); unlocked entries generate the generic variable reference
+        /// nodes, int-typed entries the int variant, float-typed entries the float
+        /// variant. (无限 is not a list entry: it is inserted from the right-click
+        /// menu as an <see cref="InfiniteNode"/>.)
         /// </summary>
         public void AddNodeForVariable(VariableItemViewModel item, System.Windows.Point position)
         {
@@ -277,7 +278,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             {
                 node = item.Name switch
                 {
-                    VariableListViewModel.InfiniteName => new InfiniteNode(),
                     VariableListViewModel.SelfName => new SelfPositionNode(),
                     VariableListViewModel.PlayerName => new PlayerPositionNode(),
                     // Unknown locked entries degrade to the generic references.
