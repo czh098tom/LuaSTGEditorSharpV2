@@ -470,11 +470,29 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_node_sample01 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_sample01 {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_sample01", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_node_sample01MinMax 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_node_sample01MinMax {
             get {
                 return ResourceManager.GetString("linqstg_window_node_sample01MinMax", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 linqstg_window_node_sample01MinMaxVector2 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_sample01MinMaxVector2 {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_sample01MinMaxVector2", resourceCulture);
             }
         }
 

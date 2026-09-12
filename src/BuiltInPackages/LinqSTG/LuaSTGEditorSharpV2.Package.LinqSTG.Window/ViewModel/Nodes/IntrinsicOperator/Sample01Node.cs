@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
-    [NodeCreationMenu("Operator/Conversion", EnglishTitle = "Sample01")]
+    [NodeCreationMenu("Operator/Conversion", TitleKey = "linqstg_window_node_sample01")]
     public class Sample01Node : LinqSTGNodeViewModel
     {
         public IntervalTypeEditorViewModel IntervalTypeEditor { get; } = new();
@@ -30,7 +30,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
             AddOutput("value", OutputValue);
             AddEditor("interval_type", IntervalTypeEditor);
 
-            Name = "Sample01";
+            Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_sample01;
             TitleColor = NodeColors.Operator;
 
             OutputValue.Value = InputRepeater.ValueChanged

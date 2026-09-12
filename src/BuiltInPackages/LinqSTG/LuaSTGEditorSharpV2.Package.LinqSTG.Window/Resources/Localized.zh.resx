@@ -187,8 +187,14 @@
   <data name="linqstg_window_node_minMax" xml:space="preserve">
     <value>最小最大值</value>
   </data>
+  <data name="linqstg_window_node_sample01" xml:space="preserve">
+    <value>循环变量标准化</value>
+  </data>
   <data name="linqstg_window_node_sample01MinMax" xml:space="preserve">
-    <value>采样01 最小最大值</value>
+    <value>循环变量重映射</value>
+  </data>
+  <data name="linqstg_window_node_sample01MinMaxVector2" xml:space="preserve">
+    <value>循环变量重映射（二维向量）</value>
   </data>
   <data name="linqstg_window_node_takeRepeaterFromContext" xml:space="preserve">
     <value>从上下文取出循环变量</value>

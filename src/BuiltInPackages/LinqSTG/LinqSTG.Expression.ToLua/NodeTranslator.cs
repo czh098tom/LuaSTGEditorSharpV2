@@ -83,6 +83,14 @@ namespace LinqSTG.Expression.ToLua
                     InputOrConstant(node, inputs, "upper_bound").LuaParser,
                     ReadIntervalType(node, "interval_type")), PortShape.Scalar),
 
+                // The Vector2 variant's unconnected bounds degrade to the zero
+                // vector, matching the ViewModel preview's Vector2.Zero fallback.
+                "Sample01MinMaxVector2" => new TypedLuaParser(_parser.Sample01MinMaxVector2(
+                    InputOrDefaultRepeater(inputs, "repeater").LuaParser,
+                    InputOrZeroVector2(inputs, "lower_bound"),
+                    InputOrZeroVector2(inputs, "upper_bound"),
+                    ReadIntervalType(node, "interval_type")), PortShape.Vector2),
+
                 "Sample01" => new TypedLuaParser(_parser.Sample01(
                     InputOrDefaultRepeater(inputs, "repeater").LuaParser,
                     ReadIntervalType(node, "interval_type")), PortShape.Scalar),

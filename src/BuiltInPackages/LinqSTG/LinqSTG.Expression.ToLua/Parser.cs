@@ -138,6 +138,31 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
+        /// <summary>
+        /// <see cref="Sample01MinMax"/> 的二维向量版本：把循环变量归一化到 [0,1] 后，
+        /// 在两个二维向量端点之间做分量线性插值，产出 __valx/__valy。
+        /// 端点输入为 Vector2（__valx/__valy 二局部约定）。
+        /// </summary>
+        public LuaParser Sample01MinMaxVector2(LuaParser repeater, LuaParser lb, LuaParser ub, IntervalType intervalType)
+        {
+            return (inner) => Concat(
+                Single("local __lbx, __lby"),
+                Single("do"),
+                Shift(lb(inner), 1),
+                Single("__lbx, __lby = __valx, __valy", 1),
+                Single("end"),
+                Single("local __ubx, __uby"),
+                Single("do"),
+                Shift(ub(inner), 1),
+                Single("__ubx, __uby = __valx, __valy", 1),
+                Single("end"),
+                Single($"local __max, __curr = {FlatText(repeater(inner))}"),
+                GetIntervalManipulater("__u", intervalType)(inner),
+                Single("local __valx = __u * (__ubx - __lbx) + __lbx"),
+                Single("local __valy = __u * (__uby - __lby) + __lby")
+            );
+        }
+
         public LuaParser Sample01(LuaParser repeater, IntervalType intervalType)
         {
             return (inner) => Concat(
