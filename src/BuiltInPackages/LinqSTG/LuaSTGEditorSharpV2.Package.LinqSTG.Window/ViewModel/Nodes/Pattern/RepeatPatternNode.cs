@@ -11,19 +11,24 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
     [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_repeatPattern")]
     public class RepeatPatternNode : LinqSTGNodeViewModel
     {
+        private static readonly Contextual<Parameter> DefaultMapper = dict => new(dict);
+
         public IntegerValueEditorViewModel InputTimesEditor { get; } = new() { RawValue = 1 };
         public LinqSTGNodeInputViewModel<Contextual<RepeaterKey>?> InputRepeaterKey { get; }
         public LinqSTGNodeInputViewModel<Contextual<int>?> InputTimes { get; }
+        public LinqSTGNodeInputViewModel<Contextual<Parameter>?> InputMapper { get; }
         public LinqSTGNodeOutputViewModel<Contextual<IPattern<Parameter, int>>> OutputPattern { get; }
 
         public RepeatPatternNode()
         {
             InputTimes = LinqSTGNodeInputViewModel.Int(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_times, InputTimesEditor);
             InputRepeaterKey = LinqSTGNodeInputViewModel.RepeaterKey(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_repeaterKey);
+            InputMapper = LinqSTGNodeInputViewModel.Transformation(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_transformation);
             OutputPattern = LinqSTGNodeOutputViewModel.Pattern(global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_port_pattern);
 
             AddInput("times", InputTimes);
             AddInput("repeater", InputRepeaterKey);
+            AddInput("mapper", InputMapper);
             AddOutput("pattern", OutputPattern);
             AddEditor("times", InputTimesEditor);
 
@@ -32,8 +37,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
             TitleColor = NodeColors.Pattern;
 
             OutputPattern.Value = InputTimes.ValueChanged
-                .CombineLatest(InputRepeaterKey.ValueChanged,
-                    (times, repeater) => Contextual.Create(dict =>
+                .CombineLatest(InputRepeaterKey.ValueChanged, InputMapper.ValueChanged,
+                    (times, repeater, mapper) => Contextual.Create(dict =>
                         Pattern.Repeat<int>(times?.Invoke(dict) ?? 0)
                         .Select(r =>
                         {
@@ -46,7 +51,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
                                     [rKey.Total] = r.Total,
                                 }
                             };
-                        })));
+                        })
+                        .Select(d => (mapper ?? DefaultMapper).Invoke(d ?? Parameter.Empty))));
         }
     }
 }

@@ -57,14 +57,21 @@ namespace LinqSTG.Expression.ToLua
                     ParserOf(node, inputs, "pattern"),
                     ParserOf(node, inputs, "movement")), PortShape.Unknown),
 
-                "RepeatWithIntervalPattern" => new TypedLuaParser(_parser.RepeatWithIntervalPattern(
-                    InputOrConstant(node, inputs, "times").LuaParser,
-                    InputOrConstant(node, inputs, "interval").LuaParser,
-                    InputOrDefaultRepeater(inputs, "repeater").LuaParser), PortShape.Unknown),
+                // The repeat nodes embed MapPattern (an optional per-element
+                // transformation); an unconnected mapper degrades to the identity,
+                // matching the ViewModel preview's DefaultMapper fallback.
+                "RepeatWithIntervalPattern" => new TypedLuaParser(_parser.MapPattern(
+                    _parser.RepeatWithIntervalPattern(
+                        InputOrConstant(node, inputs, "times").LuaParser,
+                        InputOrConstant(node, inputs, "interval").LuaParser,
+                        InputOrDefaultRepeater(inputs, "repeater").LuaParser),
+                    InputOrEmpty(inputs, "mapper").LuaParser), PortShape.Unknown),
 
-                "RepeatPattern" => new TypedLuaParser(_parser.RepeatPattern(
-                    InputOrConstant(node, inputs, "times").LuaParser,
-                    InputOrDefaultRepeater(inputs, "repeater").LuaParser), PortShape.Unknown),
+                "RepeatPattern" => new TypedLuaParser(_parser.MapPattern(
+                    _parser.RepeatPattern(
+                        InputOrConstant(node, inputs, "times").LuaParser,
+                        InputOrDefaultRepeater(inputs, "repeater").LuaParser),
+                    InputOrEmpty(inputs, "mapper").LuaParser), PortShape.Unknown),
 
                 "RepeaterKey" => new TypedLuaParser(_parser.Repeater(
                     InputOrLiteral(inputs, "id_key", "ID").LuaParser,
