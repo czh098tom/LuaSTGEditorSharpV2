@@ -20,6 +20,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
             if (string.IsNullOrEmpty(query)) return 0;
             if (string.IsNullOrEmpty(candidate)) return null;
 
+            // An exact title match always outranks partial ones, so searching
+            // "float" puts "Float" ahead of suffixed titles like "External Variable (Float)".
+            var exactBonus = string.Equals(query, candidate, StringComparison.OrdinalIgnoreCase) ? 1000 : 0;
+
             int score = 0;
             int queryIndex = 0;
             int previousMatchIndex = int.MinValue;
@@ -48,7 +52,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
                 queryIndex++;
             }
 
-            return queryIndex < query.Length ? null : score;
+            return queryIndex < query.Length ? null : score + exactBonus;
         }
 
         /// <summary>

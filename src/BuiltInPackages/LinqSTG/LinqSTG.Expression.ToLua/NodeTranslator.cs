@@ -348,6 +348,16 @@ namespace LinqSTG.Expression.ToLua
                         InputOrUnknown(node, inputs, "vector2").LuaParser), PortShape.Scalar),
                     _ => Unknown(node, portName)
                 },
+                // The variable node's name output passes the resolved key through
+                // (string ports carry bare Lua text), while the value output binds
+                // the same key via TakeVariableFromContext like the standalone node.
+                "Variable" => portName switch
+                {
+                    "key" => InputOrConstant(node, inputs, "key"),
+                    "value" => new TypedLuaParser(_parser.TakeVariableFromContext(
+                        InputOrConstant(node, inputs, "key").LuaParser), PortShape.Scalar),
+                    _ => Unknown(node, portName)
+                },
                 _ => Translate(node, inputs)
             };
         }

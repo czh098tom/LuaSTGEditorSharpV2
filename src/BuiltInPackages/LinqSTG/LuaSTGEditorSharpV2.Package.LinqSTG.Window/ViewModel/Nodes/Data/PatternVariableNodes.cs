@@ -27,7 +27,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
         }
     }
 
-    /// <summary>Variable reference producing a float value; mirrors float-typed list entries.</summary>
+    /// <summary>External variable reference producing a float value; mirrors float-typed list entries.</summary>
     [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_variableFloat", Order = 5)]
     public class PatternVariableFloatNode : PatternVariableNodeBase
     {
@@ -49,7 +49,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
         }
     }
 
-    /// <summary>Variable reference producing an int value; mirrors int-typed list entries.</summary>
+    /// <summary>External variable reference producing an int value; mirrors int-typed list entries.</summary>
     [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_variableInt", Order = 6)]
     public class PatternVariableIntNode : PatternVariableNodeBase
     {

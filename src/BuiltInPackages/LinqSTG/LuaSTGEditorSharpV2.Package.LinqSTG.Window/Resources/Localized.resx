@@ -194,10 +194,13 @@
     <value>Take Variable</value>
   </data>
   <data name="linqstg_window_node_variableFloat" xml:space="preserve">
-    <value>Variable (Float)</value>
+    <value>External Variable (Float)</value>
   </data>
   <data name="linqstg_window_node_variableInt" xml:space="preserve">
-    <value>Variable (Int)</value>
+    <value>External Variable (Int)</value>
+  </data>
+  <data name="linqstg_window_node_variable" xml:space="preserve">
+    <value>Variable</value>
   </data>
   <data name="linqstg_window_node_infinite" xml:space="preserve">
     <value>Infinite</value>

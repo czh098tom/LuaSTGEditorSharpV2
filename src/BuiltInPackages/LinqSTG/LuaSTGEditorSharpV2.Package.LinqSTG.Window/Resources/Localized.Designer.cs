@@ -596,6 +596,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         }
 
         /// <summary>
+        ///   查找类似 linqstg_window_node_variable 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_variable {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_variable", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 linqstg_window_node_movementPredict 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_node_movementPredict {
