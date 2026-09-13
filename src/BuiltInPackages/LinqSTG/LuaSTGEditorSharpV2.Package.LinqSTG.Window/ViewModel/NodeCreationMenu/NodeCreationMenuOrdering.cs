@@ -33,19 +33,20 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
     /// The single place that declares the display order of every category level of the
     /// node creation menu. The menu is built from the NodeCreationMenuAttribute
     /// annotations on the nodes; orders declared here are looked up by raw category path.
+    /// The top-level order follows the authoring pipeline (data source -> operation ->
+    /// assignment -> pattern -> movement -> shoot), which also matches the observed
+    /// per-category usage frequency.
     /// </summary>
     [NodeCreationMenuOrder("Data", 0)]
     [NodeCreationMenuOrder("Operator", 1)]
     [NodeCreationMenuOrder("Operator/Math", 0)]
-    [NodeCreationMenuOrder("Operator/Conversion", 1)]
-    [NodeCreationMenuOrder("Operator/Context", 2)]
-    [NodeCreationMenuOrder("Movement", 2)]
-    [NodeCreationMenuOrder("MovementOperator", 3)]
-    [NodeCreationMenuOrder("MovementTransform", 4)]
-    [NodeCreationMenuOrder("Pattern", 5)]
-    [NodeCreationMenuOrder("PatternOperator", 6)]
-    [NodeCreationMenuOrder("Transformation", 7)]
-    [NodeCreationMenuOrder("Shoot", 8)]
+    [NodeCreationMenuOrder("Operator/Context", 1)]
+    [NodeCreationMenuOrder("Assignment", 2)]
+    [NodeCreationMenuOrder("Pattern", 3)]
+    [NodeCreationMenuOrder("Pattern/Operator", 0)]
+    [NodeCreationMenuOrder("Movement", 4)]
+    [NodeCreationMenuOrder("Movement/Operator", 0)]
+    [NodeCreationMenuOrder("Shoot", 5)]
     public static class NodeCreationMenuOrdering
     {
     }

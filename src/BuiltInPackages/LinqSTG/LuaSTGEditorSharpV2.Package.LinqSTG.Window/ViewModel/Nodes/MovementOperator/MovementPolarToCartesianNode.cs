@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     /// 输出 center + (√(x²+y²), atan2(y,x)·180/π)。θ 为度（与 LuaSTG 运行时及
     /// <see cref="MovementCartesianToPolarNode"/> 的度制约定一致）。
     /// </summary>
-    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementPolarToCartesian")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementPolarToCartesian", Order = 10)]
     public class MovementPolarToCartesianNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }

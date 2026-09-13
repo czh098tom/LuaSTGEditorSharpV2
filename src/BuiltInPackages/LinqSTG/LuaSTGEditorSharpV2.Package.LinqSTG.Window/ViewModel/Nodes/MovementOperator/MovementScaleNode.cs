@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator
 {
-    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementScale")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementScale", Order = 8)]
     public class MovementScaleNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }

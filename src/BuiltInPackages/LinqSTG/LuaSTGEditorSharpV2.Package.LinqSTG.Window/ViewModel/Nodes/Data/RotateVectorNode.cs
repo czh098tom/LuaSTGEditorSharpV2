@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
     /// 预览上屏前会对 Y 取负（见 MainViewModel.UpdatePrediction），故界面上正角度即为逆时针。
     /// 未连接的向量输入按零向量处理，与代码生成的零向量降级保持一致。
     /// </summary>
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_rotateVector", Order = 7)]
+    [NodeCreationMenu("Operator", TitleKey = "linqstg_window_node_rotateVector", Order = 9)]
     public class RotateVectorNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel AngleEditor { get; } = new();
@@ -32,7 +32,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
             AddEditor("angle", AngleEditor);
 
             Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_rotateVector;
-            TitleColor = NodeColors.Data;
+            TitleColor = NodeColors.Operator;
 
             OutputVector2.Value = InputVector2.ValueChanged
                 .CombineLatest(InputAngle.ValueChanged, (vector2, angle)

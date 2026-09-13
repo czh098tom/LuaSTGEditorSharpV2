@@ -17,7 +17,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
     /// 未连接的向量端点按零向量处理，与代码生成的零向量降级保持一致
     /// （同 <see cref="Data.RotateVectorNode"/>）。
     /// </summary>
-    [NodeCreationMenu("Operator/Conversion", TitleKey = "linqstg_window_node_sample01MinMaxVector2")]
+    [NodeCreationMenu("Operator", TitleKey = "linqstg_window_node_sample01MinMaxVector2", Order = 7)]
     public class Sample01MinMaxVector2Node : LinqSTGNodeViewModel
     {
         public IntervalTypeEditorViewModel IntervalTypeEditor { get; } = new();

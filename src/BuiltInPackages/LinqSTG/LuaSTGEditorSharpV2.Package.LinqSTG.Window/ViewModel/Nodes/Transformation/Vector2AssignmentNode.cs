@@ -10,7 +10,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transforma
     /// 的两个分量分别写入 key_x/key_y 两个命名变量（可选内联字符串编辑器，默认 x、y），
     /// 即 <c>Floats[key_x] = value.X; Floats[key_y] = value.Y</c>；未连接时取零向量。
     /// </summary>
-    [NodeCreationMenu("Transformation", TitleKey = "linqstg_window_node_vector2Assignment")]
+    [NodeCreationMenu("Assignment", TitleKey = "linqstg_window_node_vector2Assignment", Order = 1)]
     public class Vector2AssignmentNode : LinqSTGNodeViewModel
     {
         public StringValueEditorViewModel KeyXEditor { get; } = new() { RawValue = "x" };
@@ -39,7 +39,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transforma
 
             Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_vector2Assignment;
 
-            TitleColor = NodeColors.Transformation;
+            TitleColor = NodeColors.Assignment;
 
             OutputTransformation.Value = InputTransformation.ValueChanged
                 .CombineLatest(InputKeyX.ValueChanged, InputKeyY.ValueChanged, InputValue.ValueChanged,

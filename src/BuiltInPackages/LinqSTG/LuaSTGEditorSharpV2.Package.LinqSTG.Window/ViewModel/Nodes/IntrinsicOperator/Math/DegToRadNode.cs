@@ -4,7 +4,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator.Math
 {
-    [NodeCreationMenu("Operator/Math", EnglishTitle = "Deg To Rad")]
+    [NodeCreationMenu("Operator/Math", EnglishTitle = "Deg To Rad", Order = 7)]
     public class DegToRadNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputXEditor { get; } = new();

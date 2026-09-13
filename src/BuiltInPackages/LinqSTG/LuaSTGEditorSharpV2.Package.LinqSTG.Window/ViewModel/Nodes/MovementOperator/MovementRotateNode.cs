@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator
 {
-    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementRotate")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementRotate", Order = 7)]
     public class MovementRotateNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputAngleEditor { get; } = new();

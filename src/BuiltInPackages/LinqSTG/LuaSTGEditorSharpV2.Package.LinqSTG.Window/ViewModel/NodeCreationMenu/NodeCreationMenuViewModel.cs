@@ -128,12 +128,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
 
         private static NodeCreationCategoryViewModel ToCategoryViewModel(NodeCreationCategory category)
         {
-            var childCategories = category.Subcategories.Select(ToCategoryViewModel).Cast<object>();
+            // Flat node entries render before the nested category expanders so the
+            // high-frequency items of a category stay visible without scrolling past
+            // its subcategory headers.
             var childNodes = category.Nodes.Select(ToNodeItemViewModel).Cast<object>();
+            var childCategories = category.Subcategories.Select(ToCategoryViewModel).Cast<object>();
             return new NodeCreationCategoryViewModel
             {
                 Name = category.Name,
-                Items = childCategories.Concat(childNodes).ToList(),
+                Items = childNodes.Concat(childCategories).ToList(),
             };
         }
 

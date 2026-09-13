@@ -112,6 +112,38 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             var math = @operator.Subcategories.Single(c => c.Name == "Math");
             Assert.Contains(math.Nodes, n => n.NodeType == typeof(Nodes.IntrinsicOperator.Math.SinNode));
             Assert.Equal("Operator / Math", math.Path);
+
+            // Usage-role placement: random value generators are Data sources;
+            // context readers are deferred context lookups, not parameter-scope
+            // variables, so they live in Operator/Context; connection-required
+            // value operators (vector rotate/split) sit in Operator directly.
+            var data = categories.Single(c => c.Name == "Data");
+            Assert.Contains(data.Nodes, n => n.NodeType == typeof(Nodes.IntrinsicOperator.Math.RandomFloatNode));
+            var context = @operator.Subcategories.Single(c => c.Name == "Context");
+            Assert.Contains(context.Nodes, n => n.NodeType == typeof(Nodes.IntrinsicOperator.TakeVariableFromContextNode));
+            Assert.Contains(context.Nodes, n => n.NodeType == typeof(Nodes.IntrinsicOperator.TakeRepeaterFromContextNode));
+            Assert.Contains(@operator.Nodes, n => n.NodeType == typeof(Nodes.Data.RotateVectorNode));
+            Assert.Contains(@operator.Nodes, n => n.NodeType == typeof(Nodes.Data.Vector2SplitNode));
+
+            // Assignment (renamed from Transformation) holds both assignment nodes.
+            var assignment = categories.Single(c => c.Name == "Assignment");
+            Assert.Equal(
+                new[] { typeof(Nodes.Transformation.AssignNode), typeof(Nodes.Transformation.Vector2AssignmentNode) },
+                assignment.Nodes.Select(n => n.NodeType));
+
+            // Pattern generators stay flat; pattern operators are nested one level below.
+            var pattern = categories.Single(c => c.Name == "Pattern");
+            Assert.Contains(pattern.Nodes, n => n.NodeType == typeof(Nodes.Pattern.RepeatPatternNode));
+            var patternOperator = pattern.Subcategories.Single(c => c.Name == "Operator");
+            Assert.Contains(patternOperator.Nodes, n => n.NodeType == typeof(Nodes.PatternOperator.ExtrudePatternNode));
+
+            // Base movements stay flat; movement operators (including the former
+            // Movement Transform nodes) are nested one level below.
+            var movement = categories.Single(c => c.Name == "Movement");
+            Assert.Contains(movement.Nodes, n => n.NodeType == typeof(Nodes.Movement.UniformVelocityMovementNode));
+            var movementOperator = movement.Subcategories.Single(c => c.Name == "Operator");
+            Assert.Contains(movementOperator.Nodes, n => n.NodeType == typeof(Nodes.MovementOperator.MovementSumNode));
+            Assert.Contains(movementOperator.Nodes, n => n.NodeType == typeof(Nodes.MovementTransformOperator.MovementPredictNode));
         }
 
         [Fact]
@@ -170,11 +202,26 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             UseEnglish();
             var root = NodeCreationCatalog.GetCategories().Select(c => c.Name).ToList();
             Assert.Equal(
-                new[] { "Data", "Operator", "Movement", "Movement Operator", "Movement Transform", "Pattern", "Pattern Operator", "Transformation", "Shoot" },
+                new[] { "Data", "Operator", "Assignment", "Pattern", "Movement", "Shoot" },
                 root);
 
             var @operator = NodeCreationCatalog.GetCategories().Single(c => c.Name == "Operator");
-            Assert.Equal(new[] { "Math", "Conversion", "Context" }, @operator.Subcategories.Select(c => c.Name));
+            Assert.Equal(new[] { "Math", "Context" }, @operator.Subcategories.Select(c => c.Name));
+        }
+
+        [Fact]
+        public void Catalog_SortsMathBySimilarityClusters()
+        {
+            UseEnglish();
+            var math = NodeCreationCatalog.GetCategories().Single(c => c.Name == "Operator")
+                .Subcategories.Single(c => c.Name == "Math");
+            // trig -> inverse trig -> angle conversion -> rounding -> power/root/log ->
+            // range/bounds (MinMax next to Min/Max/Clamp) -> abs/sign
+            Assert.Equal(
+                new[] { "Sin", "Cos", "Tan", "ASin", "ACos", "ATan", "ATan2", "Deg To Rad", "Rad To Deg",
+                        "Floor", "Ceil", "Pow", "Sqrt", "Exp", "Log",
+                        "Min", "Max", "MinMax", "Clamp", "Lerp", "Abs", "Sign" },
+                math.Nodes.Select(n => n.EnglishTitle));
         }
 
         [Fact]
@@ -183,7 +230,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
             UseEnglish();
             var @operator = NodeCreationCatalog.GetCategories().Single(c => c.Name == "Operator");
             Assert.Equal(
-                new[] { "Add (+)", "Subtract (-)", "Multiply (*)", "Divide (/)", "Modulo (%)", "Negate" },
+                new[] { "Add (+)", "Subtract (-)", "Multiply (*)", "Divide (/)", "Modulo (%)", "Negate",
+                        "Remap Repeater", "Remap Repeater (Vector2)", "Normalize Repeater",
+                        "Rotate Vector", "Vector2 Split", "Float To Int", "Int To Float" },
                 @operator.Nodes.Select(n => n.EnglishTitle));
         }
 
@@ -197,7 +246,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                 .GetCustomAttributes<NodeCreationMenuOrderAttribute>(false)
                 .Select(a => a.CategoryPath)
                 .ToList();
-            Assert.Equal(12, declared.Count);
+            Assert.Equal(10, declared.Count);
 
             var nodePaths = typeof(Nodes.LinqSTGNodeViewModel).Assembly.GetTypes()
                 .Where(t => t.IsDefined(typeof(Nodes.NodeCreationMenuAttribute), false))
@@ -216,7 +265,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         {
             UseChinese();
             var @operator = NodeCreationCatalog.GetCategories().Single(c => c.Name == "运算符");
-            Assert.Equal(new[] { "数学", "类型转换", "上下文" }, @operator.Subcategories.Select(c => c.Name));
+            Assert.Equal(new[] { "数学", "上下文" }, @operator.Subcategories.Select(c => c.Name));
 
             var sin = NodeCreationCatalog.GetEntries().Single(e => e.NodeType == typeof(Nodes.IntrinsicOperator.Math.SinNode));
             Assert.Equal(new[] { "运算符", "数学" }, sin.CategorySegments);
@@ -233,7 +282,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                 var names = cats.Select(c => c.Name).ToList();
                 var dups = names.GroupBy(n => n).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
                 Assert.False(dups.Any(), $"culture={culture}: duplicates {string.Join("|", dups)} in [{string.Join(", ", names)}]");
-                Assert.Equal(9, names.Count);
+                Assert.Equal(6, names.Count);
             }
         }
 

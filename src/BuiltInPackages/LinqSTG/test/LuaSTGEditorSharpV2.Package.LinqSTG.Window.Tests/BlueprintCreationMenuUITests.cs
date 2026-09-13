@@ -241,7 +241,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                 $"UI run failed at stage '{result.Stage}': {result.Error}");
             Assert.True(result.RightClickHandled, "right-click should be handled by the window");
             Assert.True(result.PopupOpened, "the creation popup should open on right-click");
-            Assert.True(result.CategoryCount >= 8, $"expected the main categories, got: {result.CategoryNames}");
+            Assert.Equal(6, result.CategoryCount);
+            Assert.Equal("Data,Operator,Assignment,Pattern,Movement,Shoot", result.CategoryNames);
             Assert.Contains("Operator", result.CategoryNames.Split(','));
 
             Assert.True(result.EnglishSearchCount > 0, "English search 'sin' should find nodes");

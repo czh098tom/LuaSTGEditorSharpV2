@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator
 {
-    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementAfterTime")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementAfterTime", Order = 4)]
     public class MovementAfterTimeNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputSwitchTimeEditor { get; } = new();

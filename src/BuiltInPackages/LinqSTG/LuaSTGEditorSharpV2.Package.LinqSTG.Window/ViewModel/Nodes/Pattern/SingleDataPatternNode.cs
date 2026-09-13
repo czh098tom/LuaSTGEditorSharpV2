@@ -7,7 +7,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 {
     using Pattern = global::LinqSTG.Pattern;
 
-    [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_singlePattern")]
+    [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_singlePattern", Order = 2)]
     public class SingleDataPatternNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<Parameter>?> InputTransformation { get; }

@@ -138,19 +138,19 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
             }
         }
         /// <summary>
-        ///   查找类似 Movement Operator 的本地化字符串。
+        ///   查找类似 Assignment 的本地化字符串。
         /// </summary>
-        internal static string linqstg_window_menu_category_movementoperator {
+        internal static string linqstg_window_menu_category_assignment {
             get {
-                return ResourceManager.GetString("linqstg_window_menu_category_movementoperator", resourceCulture);
+                return ResourceManager.GetString("linqstg_window_menu_category_assignment", resourceCulture);
             }
         }
         /// <summary>
-        ///   查找类似 Movement Transform 的本地化字符串。
+        ///   查找类似 Operator 的本地化字符串。
         /// </summary>
-        internal static string linqstg_window_menu_category_movementtransform {
+        internal static string linqstg_window_menu_category_movement_operator {
             get {
-                return ResourceManager.GetString("linqstg_window_menu_category_movementtransform", resourceCulture);
+                return ResourceManager.GetString("linqstg_window_menu_category_movement_operator", resourceCulture);
             }
         }
         /// <summary>
@@ -162,11 +162,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
             }
         }
         /// <summary>
-        ///   查找类似 Conversion 的本地化字符串。
+        ///   查找类似 Math 的本地化字符串。
         /// </summary>
-        internal static string linqstg_window_menu_category_operator_conversion {
+        internal static string linqstg_window_menu_category_operator_math {
             get {
-                return ResourceManager.GetString("linqstg_window_menu_category_operator_conversion", resourceCulture);
+                return ResourceManager.GetString("linqstg_window_menu_category_operator_math", resourceCulture);
             }
         }
         /// <summary>
@@ -178,14 +178,6 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
             }
         }
         /// <summary>
-        ///   查找类似 Math 的本地化字符串。
-        /// </summary>
-        internal static string linqstg_window_menu_category_operator_math {
-            get {
-                return ResourceManager.GetString("linqstg_window_menu_category_operator_math", resourceCulture);
-            }
-        }
-        /// <summary>
         ///   查找类似 Pattern 的本地化字符串。
         /// </summary>
         internal static string linqstg_window_menu_category_pattern {
@@ -194,19 +186,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
             }
         }
         /// <summary>
-        ///   查找类似 Pattern Operator 的本地化字符串。
+        ///   查找类似 Operator 的本地化字符串。
         /// </summary>
-        internal static string linqstg_window_menu_category_patternoperator {
+        internal static string linqstg_window_menu_category_pattern_operator {
             get {
-                return ResourceManager.GetString("linqstg_window_menu_category_patternoperator", resourceCulture);
-            }
-        }
-        /// <summary>
-        ///   查找类似 Transformation 的本地化字符串。
-        /// </summary>
-        internal static string linqstg_window_menu_category_transformation {
-            get {
-                return ResourceManager.GetString("linqstg_window_menu_category_transformation", resourceCulture);
+                return ResourceManager.GetString("linqstg_window_menu_category_pattern_operator", resourceCulture);
             }
         }
         /// <summary>
@@ -331,6 +315,33 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources {
         internal static string linqstg_window_node_infinite {
             get {
                 return ResourceManager.GetString("linqstg_window_node_infinite", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Random Float 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_randomFloat {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_randomFloat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Random Int 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_randomInt {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_randomInt", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Random Sign 的本地化字符串。
+        /// </summary>
+        internal static string linqstg_window_node_randomSign {
+            get {
+                return ResourceManager.GetString("linqstg_window_node_randomSign", resourceCulture);
             }
         }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator
 {
-    [NodeCreationMenu("PatternOperator", TitleKey = "linqstg_window_node_extrudePattern")]
+    [NodeCreationMenu("Pattern/Operator", TitleKey = "linqstg_window_node_extrudePattern", Order = 0)]
     public class ExtrudePatternNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IPattern<Parameter, int>>?> InputPattern { get; }

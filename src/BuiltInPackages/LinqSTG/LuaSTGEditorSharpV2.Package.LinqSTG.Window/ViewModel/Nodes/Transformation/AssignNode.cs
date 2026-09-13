@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transformation
 {
-    [NodeCreationMenu("Transformation", TitleKey = "linqstg_window_node_assign")]
+    [NodeCreationMenu("Assignment", TitleKey = "linqstg_window_node_assign", Order = 0)]
     public class AssignNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputValueEditor { get; } = new();
@@ -34,7 +34,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Transforma
 
             Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_assign;
 
-            TitleColor = NodeColors.Transformation;
+            TitleColor = NodeColors.Assignment;
 
             OutputTransformation.Value = InputTransformation.ValueChanged
                 .CombineLatest(InputKey.ValueChanged, InputValue.ValueChanged,

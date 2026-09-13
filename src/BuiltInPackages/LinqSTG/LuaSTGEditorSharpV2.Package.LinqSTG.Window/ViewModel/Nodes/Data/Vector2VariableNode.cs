@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
     /// 原样输出变量名（string）与 "x"/"y" 分量输出（float，缺失时为 0），
     /// 另有 "vector2" 输出把两个变量直接组成 <see cref="Vector2"/> 端口。
     /// </summary>
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_vector2Variable", Order = 6.6)]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_vector2Variable", Order = 2)]
     public class Vector2VariableNode : LinqSTGNodeViewModel
     {
         public StringValueEditorViewModel KeyXEditor { get; } = new() { RawValue = "x" };

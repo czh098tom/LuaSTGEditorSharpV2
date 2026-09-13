@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOperator
 {
-    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementSum")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementSum", Order = 0)]
     public class MovementSumNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement1 { get; }

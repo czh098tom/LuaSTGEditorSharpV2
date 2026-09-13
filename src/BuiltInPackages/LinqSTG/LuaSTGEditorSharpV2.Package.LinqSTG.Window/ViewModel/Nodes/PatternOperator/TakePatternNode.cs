@@ -6,7 +6,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator
 {
-    [NodeCreationMenu("PatternOperator", TitleKey = "linqstg_window_node_takePattern")]
+    [NodeCreationMenu("Pattern/Operator", TitleKey = "linqstg_window_node_takePattern", Order = 8)]
     public class TakePatternNode : LinqSTGNodeViewModel
     {
         public IntegerValueEditorViewModel InputCountEditor { get; } = new();

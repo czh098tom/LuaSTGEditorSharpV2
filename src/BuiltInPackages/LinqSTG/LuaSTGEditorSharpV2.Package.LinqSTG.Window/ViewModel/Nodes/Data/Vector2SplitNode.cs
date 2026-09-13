@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
     /// 供用户在变换子图里把 InputPoint 的点拆成分量，喂给 Math 节点加工。
     /// 合成方向已有 <see cref="Vector2Node"/>（Float×2 → Vector2）。
     /// </summary>
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_vector2Split", Order = 6)]
+    [NodeCreationMenu("Operator", TitleKey = "linqstg_window_node_vector2Split", Order = 10)]
     public class Vector2SplitNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputVector2 { get; }
@@ -29,7 +29,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
             AddOutput("y", OutputY);
 
             Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_vector2Split;
-            TitleColor = NodeColors.Data;
+            TitleColor = NodeColors.Operator;
 
             OutputX.Value = InputVector2.ValueChanged
                 .Select(v => Contextual.Create(dict => (v?.Invoke(dict) ?? Vector2.Zero).X));

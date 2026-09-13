@@ -16,7 +16,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
     /// 与 Math 节点构造 φ(t)，可表达 <c>f(t) ↦ f(φ(t))</c>。
     /// 端口未连接时安全降级：零运动采样、t' 取 0。
     /// </summary>
-    [NodeCreationMenu("MovementTransform", TitleKey = "linqstg_window_node_movementPredict")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementPredict", Order = 6)]
     public class MovementPredictNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IParametric<float, Vector2>>?> InputMovement { get; }
@@ -34,7 +34,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
             AddOutput("point", OutputPoint);
 
             Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_movementPredict;
-            TitleColor = NodeColors.Operator;
+            TitleColor = NodeColors.Movement;
 
             OutputPoint.Value = InputMovement.ValueChanged
                 .CombineLatest(InputTime.ValueChanged, (movement, time)

@@ -4,7 +4,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator.Math
 {
-    [NodeCreationMenu("Operator/Math", EnglishTitle = "Random Int")]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_randomInt", Order = 8)]
     public class RandomIntNode : LinqSTGNodeViewModel
     {
         public IntegerValueEditorViewModel InputStartEditor { get; } = new();
@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
             AddEditor("start", InputStartEditor);
             AddEditor("end", InputEndEditor);
             Name = "RandomInt";
-            TitleColor = NodeColors.Operator;
+            TitleColor = NodeColors.Data;
             OutputValue.Value = InputStart.ValueChanged
                 .CombineLatest(InputEnd.ValueChanged,
                     (s, e) => Contextual.Create(dict =>

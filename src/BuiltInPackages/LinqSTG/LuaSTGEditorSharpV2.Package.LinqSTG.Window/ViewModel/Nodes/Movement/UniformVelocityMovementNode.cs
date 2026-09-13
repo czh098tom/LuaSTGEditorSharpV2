@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
 {
-    [NodeCreationMenu("Movement", TitleKey = "linqstg_window_node_uniformVelocityMovement")]
+    [NodeCreationMenu("Movement", TitleKey = "linqstg_window_node_uniformVelocityMovement", Order = 0)]
     public class UniformVelocityMovementNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputVelocity { get; }

@@ -214,6 +214,15 @@
   <data name="linqstg_window_node_infinite" xml:space="preserve">
     <value>Infinite</value>
   </data>
+  <data name="linqstg_window_node_randomFloat" xml:space="preserve">
+    <value>Random Float</value>
+  </data>
+  <data name="linqstg_window_node_randomInt" xml:space="preserve">
+    <value>Random Int</value>
+  </data>
+  <data name="linqstg_window_node_randomSign" xml:space="preserve">
+    <value>Random Sign</value>
+  </data>
   <data name="linqstg_window_node_selfPosition" xml:space="preserve">
     <value>Self Position</value>
   </data>
@@ -473,35 +482,29 @@
   <data name="linqstg_window_menu_category_data" xml:space="preserve">
     <value>Data</value>
   </data>
+  <data name="linqstg_window_menu_category_assignment" xml:space="preserve">
+    <value>Assignment</value>
+  </data>
   <data name="linqstg_window_menu_category_movement" xml:space="preserve">
     <value>Movement</value>
   </data>
-  <data name="linqstg_window_menu_category_movementoperator" xml:space="preserve">
-    <value>Movement Operator</value>
-  </data>
-  <data name="linqstg_window_menu_category_movementtransform" xml:space="preserve">
-    <value>Movement Transform</value>
+  <data name="linqstg_window_menu_category_movement_operator" xml:space="preserve">
+    <value>Operator</value>
   </data>
   <data name="linqstg_window_menu_category_operator" xml:space="preserve">
     <value>Operator</value>
   </data>
-  <data name="linqstg_window_menu_category_operator_conversion" xml:space="preserve">
-    <value>Conversion</value>
+  <data name="linqstg_window_menu_category_operator_math" xml:space="preserve">
+    <value>Math</value>
   </data>
   <data name="linqstg_window_menu_category_operator_context" xml:space="preserve">
     <value>Context</value>
   </data>
-  <data name="linqstg_window_menu_category_operator_math" xml:space="preserve">
-    <value>Math</value>
-  </data>
   <data name="linqstg_window_menu_category_pattern" xml:space="preserve">
     <value>Pattern</value>
   </data>
-  <data name="linqstg_window_menu_category_patternoperator" xml:space="preserve">
-    <value>Pattern Operator</value>
-  </data>
-  <data name="linqstg_window_menu_category_transformation" xml:space="preserve">
-    <value>Transformation</value>
+  <data name="linqstg_window_menu_category_pattern_operator" xml:space="preserve">
+    <value>Operator</value>
   </data>
   <data name="linqstg_window_menu_category_shoot" xml:space="preserve">
     <value>Shoot</value>

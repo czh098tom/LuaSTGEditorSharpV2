@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     /// 用于相位偏移（Δ&gt;0 前瞻、Δ&lt;0 滞后）。
     /// 属于时间重映射原语：新运动的 t 自包含在 Parametric 闭包里，不读 TransformContext。
     /// </summary>
-    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementShiftTime")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementShiftTime", Order = 2)]
     public class MovementShiftTimeNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputDeltaEditor { get; } = new();

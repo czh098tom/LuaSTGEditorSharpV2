@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Pattern
 {
     using Pattern = global::LinqSTG.Pattern;
 
-    [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_repeatWithIntervalPattern")]
+    [NodeCreationMenu("Pattern", TitleKey = "linqstg_window_node_repeatWithIntervalPattern", Order = 1)]
     public class RepeatWithIntervalPatternNode : LinqSTGNodeViewModel
     {
         private static readonly Contextual<Parameter> DefaultMapper = dict => new(dict);

@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Movement
 {
-    [NodeCreationMenu("Movement", TitleKey = "linqstg_window_node_uniformAccelerationMovement")]
+    [NodeCreationMenu("Movement", TitleKey = "linqstg_window_node_uniformAccelerationMovement", Order = 1)]
     public class UniformAccelerationMovementNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<Vector2>?> InputInitialVelocity { get; }

@@ -13,7 +13,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementOp
     /// 用于变速回放（a&gt;1 加速、0&lt;a&lt;1 减速、a&lt;0 反向）。
     /// 属于时间重映射原语：新运动的 t 自包含在 Parametric 闭包里，不读 TransformContext。
     /// </summary>
-    [NodeCreationMenu("MovementOperator", TitleKey = "linqstg_window_node_movementScaleTime")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_movementScaleTime", Order = 3)]
     public class MovementScaleTimeNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputFactorEditor { get; } = new();

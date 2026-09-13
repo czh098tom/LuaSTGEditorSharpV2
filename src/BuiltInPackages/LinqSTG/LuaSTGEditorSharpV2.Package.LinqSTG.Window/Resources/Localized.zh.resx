@@ -214,6 +214,15 @@
   <data name="linqstg_window_node_infinite" xml:space="preserve">
     <value>无限</value>
   </data>
+  <data name="linqstg_window_node_randomFloat" xml:space="preserve">
+    <value>随机浮点数</value>
+  </data>
+  <data name="linqstg_window_node_randomInt" xml:space="preserve">
+    <value>随机整数</value>
+  </data>
+  <data name="linqstg_window_node_randomSign" xml:space="preserve">
+    <value>随机符号</value>
+  </data>
   <data name="linqstg_window_node_selfPosition" xml:space="preserve">
     <value>自身坐标</value>
   </data>
@@ -473,35 +482,29 @@
   <data name="linqstg_window_menu_category_data" xml:space="preserve">
     <value>数据</value>
   </data>
+  <data name="linqstg_window_menu_category_assignment" xml:space="preserve">
+    <value>赋值</value>
+  </data>
   <data name="linqstg_window_menu_category_movement" xml:space="preserve">
     <value>运动</value>
   </data>
-  <data name="linqstg_window_menu_category_movementoperator" xml:space="preserve">
-    <value>运动运算符</value>
-  </data>
-  <data name="linqstg_window_menu_category_movementtransform" xml:space="preserve">
-    <value>运动变换</value>
+  <data name="linqstg_window_menu_category_movement_operator" xml:space="preserve">
+    <value>运算符</value>
   </data>
   <data name="linqstg_window_menu_category_operator" xml:space="preserve">
     <value>运算符</value>
   </data>
-  <data name="linqstg_window_menu_category_operator_conversion" xml:space="preserve">
-    <value>类型转换</value>
+  <data name="linqstg_window_menu_category_operator_math" xml:space="preserve">
+    <value>数学</value>
   </data>
   <data name="linqstg_window_menu_category_operator_context" xml:space="preserve">
     <value>上下文</value>
   </data>
-  <data name="linqstg_window_menu_category_operator_math" xml:space="preserve">
-    <value>数学</value>
-  </data>
   <data name="linqstg_window_menu_category_pattern" xml:space="preserve">
     <value>展开</value>
   </data>
-  <data name="linqstg_window_menu_category_patternoperator" xml:space="preserve">
-    <value>展开运算符</value>
-  </data>
-  <data name="linqstg_window_menu_category_transformation" xml:space="preserve">
-    <value>变换</value>
+  <data name="linqstg_window_menu_category_pattern_operator" xml:space="preserve">
+    <value>运算符</value>
   </data>
   <data name="linqstg_window_menu_category_shoot" xml:space="preserve">
     <value>发射</value>

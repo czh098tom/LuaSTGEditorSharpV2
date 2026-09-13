@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator
 {
-    [NodeCreationMenu("PatternOperator", TitleKey = "linqstg_window_node_mapPattern")]
+    [NodeCreationMenu("Pattern/Operator", TitleKey = "linqstg_window_node_mapPattern", Order = 3)]
     public class MapPatternNode : LinqSTGNodeViewModel
     {
         private static readonly Contextual<Parameter> DefaultMapper = dict => new(dict);

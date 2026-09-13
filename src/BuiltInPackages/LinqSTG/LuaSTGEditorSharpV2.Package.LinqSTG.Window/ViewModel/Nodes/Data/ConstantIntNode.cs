@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
 {
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_int", Order = 1)]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_int", Order = 13)]
     public class ConstantIntNode : LinqSTGNodeViewModel
     {
         public IntegerValueEditorViewModel ValueEditor { get; } = new IntegerValueEditorViewModel();

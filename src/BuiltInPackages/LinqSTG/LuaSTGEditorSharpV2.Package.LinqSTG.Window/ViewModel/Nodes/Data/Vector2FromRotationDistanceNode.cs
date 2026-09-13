@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
 {
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_vector2FromRotationDistance", Order = 5)]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_vector2FromRotationDistance", Order = 3)]
     public class Vector2FromRotationDistanceNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel RotationEditor { get; } = new();

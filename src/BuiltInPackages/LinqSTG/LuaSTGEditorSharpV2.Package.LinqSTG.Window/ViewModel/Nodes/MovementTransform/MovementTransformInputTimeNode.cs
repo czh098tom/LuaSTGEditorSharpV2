@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
     /// 作用域外返回 0（安全降级）。
     /// 配合 Math 节点可拼出时间重映射表达式 φ(t)（如 a·t、t+Δ）。
     /// </summary>
-    [NodeCreationMenu("MovementTransform", TitleKey = "linqstg_window_node_transformInputTime")]
+    [NodeCreationMenu("Movement/Operator", TitleKey = "linqstg_window_node_transformInputTime", Order = 5)]
     public class MovementTransformInputTimeNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeOutputViewModel<Contextual<float>> OutputTime { get; }
@@ -24,7 +24,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.MovementTr
             AddOutput("time", OutputTime);
 
             Name = global::LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Resources.Localized.linqstg_window_node_transformInputTime;
-            TitleColor = NodeColors.TransformInput;
+            TitleColor = NodeColors.Movement;
 
             OutputTime.Value = Observable.Return(
                 Contextual.Create(dict => dict.Transform?.Time ?? 0f));

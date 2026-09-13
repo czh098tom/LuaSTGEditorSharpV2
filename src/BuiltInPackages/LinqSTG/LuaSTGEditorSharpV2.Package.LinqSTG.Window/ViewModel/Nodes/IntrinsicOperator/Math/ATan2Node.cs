@@ -4,7 +4,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator.Math
 {
-    [NodeCreationMenu("Operator/Math", EnglishTitle = "ATan2")]
+    [NodeCreationMenu("Operator/Math", EnglishTitle = "ATan2", Order = 6)]
     public class ATan2Node : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputYEditor { get; } = new();

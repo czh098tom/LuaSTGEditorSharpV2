@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator
 {
-    [NodeCreationMenu("PatternOperator", TitleKey = "linqstg_window_node_filterPattern")]
+    [NodeCreationMenu("Pattern/Operator", TitleKey = "linqstg_window_node_filterPattern", Order = 4)]
     public class FilterPatternNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IPattern<Parameter, int>>?> InputPattern { get; }

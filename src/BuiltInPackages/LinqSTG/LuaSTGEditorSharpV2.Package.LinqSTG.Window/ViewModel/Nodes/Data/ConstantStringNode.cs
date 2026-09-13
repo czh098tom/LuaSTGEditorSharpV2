@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
 {
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_string", Order = 2)]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_string", Order = 12)]
     public class ConstantStringNode : LinqSTGNodeViewModel
     {
         public StringValueEditorViewModel ValueEditor { get; } = new StringValueEditorViewModel();

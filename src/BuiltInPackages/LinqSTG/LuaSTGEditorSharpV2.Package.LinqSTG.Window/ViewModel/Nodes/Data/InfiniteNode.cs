@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
     /// its own value); translation always emits the outer-scope Lua variable
     /// verbatim.
     /// </summary>
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_infinite", Order = 7)]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_infinite", Order = 6)]
     public class InfiniteNode : LinqSTGNodeViewModel
     {
         public const string PreviewValueInputKey = "preview_value";

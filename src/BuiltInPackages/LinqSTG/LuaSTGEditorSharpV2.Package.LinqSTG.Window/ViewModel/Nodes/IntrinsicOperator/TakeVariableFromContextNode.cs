@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
-    [NodeCreationMenu("Operator/Context", TitleKey = "linqstg_window_node_takeVariable")]
+    [NodeCreationMenu("Operator/Context", TitleKey = "linqstg_window_node_takeVariable", Order = 0)]
     public class TakeVariableFromContextNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<string>?> InputValue { get; }

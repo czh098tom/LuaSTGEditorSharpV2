@@ -12,7 +12,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
     /// <c>player.x</c>/<c>player.y</c>.
     /// Created by dragging the locked list entry into the blueprint area.
     /// </summary>
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_playerPosition", Order = 9)]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_playerPosition", Order = 11)]
     public class PlayerPositionNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeOutputViewModel<Contextual<Vector2>> OutputPosition { get; }

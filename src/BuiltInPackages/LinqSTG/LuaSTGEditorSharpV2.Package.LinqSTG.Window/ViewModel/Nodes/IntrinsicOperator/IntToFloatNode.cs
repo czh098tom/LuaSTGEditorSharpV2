@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
-    [NodeCreationMenu("Operator/Conversion", TitleKey = "linqstg_window_node_intToFloat")]
+    [NodeCreationMenu("Operator", TitleKey = "linqstg_window_node_intToFloat", Order = 12)]
     public class IntToFloatNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<int>?> InputInt { get; }

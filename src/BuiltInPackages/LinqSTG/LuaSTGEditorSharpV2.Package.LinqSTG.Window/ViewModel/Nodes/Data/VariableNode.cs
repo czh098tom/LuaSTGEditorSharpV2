@@ -11,7 +11,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
     /// "key" 原样输出变量名（string），"value" 按 <see cref="IntrinsicOperator.TakeVariableFromContextNode"/>
     /// 的逻辑从参数层取 float 值（缺失时为 0）。
     /// </summary>
-    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_variable", Order = 6.5)]
+    [NodeCreationMenu("Data", TitleKey = "linqstg_window_node_variable", Order = 1)]
     public class VariableNode : LinqSTGNodeViewModel
     {
         public StringValueEditorViewModel KeyEditor { get; } = new();

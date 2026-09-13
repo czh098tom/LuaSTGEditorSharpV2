@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.PatternOperator
 {
-    [NodeCreationMenu("PatternOperator", TitleKey = "linqstg_window_node_extrudeConcatPattern")]
+    [NodeCreationMenu("Pattern/Operator", TitleKey = "linqstg_window_node_extrudeConcatPattern", Order = 1)]
     public class ExtrudeConcatPatternNode : LinqSTGNodeViewModel
     {
         public LinqSTGNodeInputViewModel<Contextual<IPattern<Parameter, int>>?> InputPattern { get; }

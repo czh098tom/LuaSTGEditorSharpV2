@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicOperator
 {
-    [NodeCreationMenu("Operator/Conversion", TitleKey = "linqstg_window_node_sample01MinMax")]
+    [NodeCreationMenu("Operator", TitleKey = "linqstg_window_node_sample01MinMax", Order = 6)]
     public class Sample01MinMaxNode : LinqSTGNodeViewModel
     {
         public FloatValueEditorViewModel InputLowerBoundEditor { get; } = new();
