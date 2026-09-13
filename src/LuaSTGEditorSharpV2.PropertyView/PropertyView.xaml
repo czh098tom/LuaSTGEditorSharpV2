@@ -19,6 +19,7 @@
     <lwc:BoolToVisibilityConverter x:Key="ConflictToCollapsedConverter"
                                    PositiveVisibility="Collapsed"
                                    NegativeVisibility="Visible"/>
+    <lpvc:ArgbTextToPreviewConverter x:Key="ArgbTextToPreviewConverter"/>
     <Style TargetType="{x:Type lsv:PropertyItemGrid}">
         <Setter Property="lpv:BoundEditor.ConflictText"
                 Value="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"/>
@@ -186,8 +187,23 @@
                         Height="14"
                         Padding="0"
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        IsEnabled="{Binding IsPreviewAvailable}">
+                        VerticalAlignment="Center">
+                    <Button.IsEnabled>
+                        <Binding Path="IsAvailable"
+                                 FallbackValue="False"/>
+                    </Button.IsEnabled>
+                    <Button.DataContext>
+                        <MultiBinding Converter="{StaticResource ArgbTextToPreviewConverter}">
+                            <Binding Path="Children[2].Children[0].Text"
+                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                            <Binding Path="Children[2].Children[1].Text"
+                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                            <Binding Path="Children[2].Children[2].Text"
+                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                            <Binding Path="Children[2].Children[3].Text"
+                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                        </MultiBinding>
+                    </Button.DataContext>
                     <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid>
@@ -196,18 +212,20 @@
                                     BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
                                     BorderThickness="1"
                                     CornerRadius="1"
-                                    Visibility="{Binding IsPreviewAvailable, Converter={StaticResource ConflictToVisibilityConverter}}">
+                                    Visibility="{Binding IsAvailable, FallbackValue=False, Converter={StaticResource ConflictToVisibilityConverter}}">
                                 <Border.Background>
-                                    <SolidColorBrush Color="{Binding PreviewColor}"/>
+                                    <SolidColorBrush Color="{Binding Color, FallbackValue=Transparent}"/>
                                 </Border.Background>
                             </Border>
-                            <Border Width="12"
-                                    Height="12"
-                                    Background="Transparent"
-                                    BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
-                                    BorderThickness="1"
-                                    CornerRadius="1"
-                                    Visibility="{Binding IsPreviewAvailable, Converter={StaticResource ConflictToCollapsedConverter}}"/>
+                            <Path Width="12"
+                                  Height="12"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Stretch="Uniform"
+                                  Stroke="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                                  StrokeThickness="1"
+                                  Data="{DynamicResource ResourceKey=editor:nocolor}"
+                                  Visibility="{Binding IsAvailable, FallbackValue=False, Converter={StaticResource ConflictToCollapsedConverter}}"/>
                         </Grid>
                     </ControlTemplate>
                 </Button.Template>

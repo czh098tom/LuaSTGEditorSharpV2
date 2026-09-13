@@ -4,32 +4,56 @@ namespace LuaSTGEditorSharpV2.Core.Parsing.Argb;
 
 public static class ArgbExpressionCodec
 {
-    public static ArgbExpressionForm Decode(string expression)
+    public static ArgbExpression? Decode(string expression)
     {
         var result = LuaExpressionLexer.Tokenize(expression);
         if (!result.Success)
         {
-            return Invalid();
+            return null;
         }
 
         var components = SplitComponents(result.Value);
         if (components.Length != 4 ||
             components.Any(component => component.Length == 0))
         {
-            return Invalid();
+            return null;
         }
 
-        var values = components
-            .Select(LuaExpressionTokenSequence.GetText)
-            .ToArray();
-        var argb = new ArgbExpression(
-            values[0],
-            values[1],
-            values[2],
-            values[3]);
-        var preview = BuildPreview(components);
+        return new ArgbExpression(
+            LuaExpressionTokenSequence.GetText(components[0]),
+            LuaExpressionTokenSequence.GetText(components[1]),
+            LuaExpressionTokenSequence.GetText(components[2]),
+            LuaExpressionTokenSequence.GetText(components[3]));
+    }
 
-        return new ArgbExpressionForm(argb, preview);
+    public static ArgbPreview? CreatePreview(ArgbExpression expression)
+    {
+        if (!TryCreatePreviewChannel(
+                expression.Alpha,
+                out var alpha,
+                out var alphaIsLiteral) ||
+            !TryCreatePreviewChannel(
+                expression.Red,
+                out var red,
+                out var redIsLiteral) ||
+            !TryCreatePreviewChannel(
+                expression.Green,
+                out var green,
+                out var greenIsLiteral) ||
+            !TryCreatePreviewChannel(
+                expression.Blue,
+                out var blue,
+                out var blueIsLiteral))
+        {
+            return null;
+        }
+
+        return alphaIsLiteral ||
+               redIsLiteral ||
+               greenIsLiteral ||
+               blueIsLiteral
+            ? new ArgbPreview(alpha, red, green, blue)
+            : null;
     }
 
     public static string Compose(ArgbExpression expression)
@@ -37,9 +61,6 @@ public static class ArgbExpressionCodec
            $"{expression.Red.Trim()}, " +
            $"{expression.Green.Trim()}, " +
            $"{expression.Blue.Trim()}";
-
-    private static ArgbExpressionForm Invalid()
-        => new(null, null);
 
     private static LuaExpressionToken[][] SplitComponents(
         IReadOnlyList<LuaExpressionToken> tokens)
@@ -73,43 +94,42 @@ public static class ArgbExpressionCodec
             Text: ",",
         };
 
-    private static ArgbPreview? BuildPreview(
-        LuaExpressionToken[][] components)
+    private static bool TryCreatePreviewChannel(
+        string expression,
+        out byte value,
+        out bool isLiteral)
     {
-        var channels = new ArgbPreviewChannel[components.Length];
-        var hasNumber = false;
+        value = default;
+        isLiteral = false;
 
-        for (var i = 0; i < components.Length; i++)
+        var result = LuaExpressionLexer.Tokenize(expression);
+        if (!result.Success)
         {
-            if (TryGetNumber(components[i], out var value))
-            {
-                hasNumber = true;
-                if (double.IsNaN(value) ||
-                    value < 0 ||
-                    value > byte.MaxValue)
-                {
-                    return null;
-                }
-
-                channels[i] = new ArgbPreviewChannel(
-                    (byte)Math.Floor(value),
-                    false);
-            }
-            else
-            {
-                channels[i] = new ArgbPreviewChannel(
-                    byte.MaxValue,
-                    true);
-            }
+            return false;
         }
 
-        return hasNumber
-            ? new ArgbPreview(
-                channels[0],
-                channels[1],
-                channels[2],
-                channels[3])
-            : null;
+        var tokens = LuaExpressionTokenSequence.Trim(result.Value);
+        if (tokens.Length == 0)
+        {
+            return false;
+        }
+
+        if (!TryGetNumber(tokens, out var number))
+        {
+            value = byte.MaxValue;
+            return true;
+        }
+
+        if (double.IsNaN(number) ||
+            number < 0 ||
+            number > byte.MaxValue)
+        {
+            return false;
+        }
+
+        value = (byte)Math.Floor(number);
+        isLiteral = true;
+        return true;
     }
 
     private static bool TryGetNumber(
