@@ -1182,14 +1182,19 @@ namespace LinqSTG.Expression.ToLua
                 Single("local __status = true", 1),
                 Single("while __status do", 1),
                 Single("__status = false", 2),
+                // wait 标记只统计「本拍确实有协程 yield」的拍数：__status 在 resume
+                // 之前置位，协程跑完剩余代码直接死亡的那一拍没有推进时间，若按
+                // __status 计数，每层 Reverse 都会让时间轴膨胀 1 帧。
+                Single("local __yielded = false", 2),
                 Single("for i = 1, #__rev_co do", 2),
                 Single("if coroutine.status(__rev_co[i]) ~= 'dead' then", 3),
                 Single("__status = true", 4),
                 Single("local __ok, __err = coroutine.resume(__rev_co[i])", 4),
                 Single("if not __ok then error(__err) end", 4),
+                Single("if coroutine.status(__rev_co[i]) == 'suspended' then __yielded = true end", 4),
                 Single("end", 3),
                 Single("end", 2),
-                Single("if __status then", 2),
+                Single("if __yielded then", 2),
                 Single("if type(__rev_buf[#__rev_buf]) == 'number' then", 3),
                 Single("__rev_buf[#__rev_buf] = __rev_buf[#__rev_buf] + 1", 4),
                 Single("else", 3),
