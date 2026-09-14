@@ -29,7 +29,27 @@ namespace LuaSTGEditorSharpV2.WPF.Controls
             set => SetValue(StepProperty, value);
         }
 
-        public static readonly DependencyProperty WatermarkProperty =
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register(nameof(Maximum), typeof(decimal?), typeof(ExpressionSpinner),
+            new PropertyMetadata(null));
+
+        public decimal? Maximum
+        {
+            get => (decimal?)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
+        }
+
+		public static readonly DependencyProperty MinimumProperty =
+			DependencyProperty.Register(nameof(Minimum), typeof(decimal?), typeof(ExpressionSpinner),
+			new PropertyMetadata(null));
+
+		public decimal? Minimum
+		{
+			get => (decimal?)GetValue(MinimumProperty);
+			set => SetValue(MinimumProperty, value);
+		}
+
+		public static readonly DependencyProperty WatermarkProperty =
             DependencyProperty.Register(nameof(Watermark), typeof(object), typeof(ExpressionSpinner),
                 new PropertyMetadata(null));
 
@@ -65,25 +85,30 @@ namespace LuaSTGEditorSharpV2.WPF.Controls
 
             base.OnSpin(e);
             var step = e.Direction == SpinDirection.Increase ? Step : -Step;
-            Text = SpinHelper.Spin(Text, step);
+            Text = SpinHelper.Spin(Text, step, Minimum, Maximum);
         }
     }
 
     /// <summary>
     /// Helper class for expression spin operations.
     /// </summary>
-    public static class SpinHelper
+    internal static class SpinHelper
     {
         /// <summary>
         /// Spins the expression by adding step to the last numeric term.
         /// </summary>
-        public static string Spin(string expression, decimal step)
+        public static string Spin(string expression, decimal step, decimal? minimum, decimal? maximum)
         {
             if (string.IsNullOrEmpty(expression))
                 return step.ToString(null, CultureInfo.InvariantCulture);
 
             if (decimal.TryParse(expression, CultureInfo.InvariantCulture, out var singleNumber))
-                return (singleNumber + step).ToString("G29", CultureInfo.InvariantCulture);
+            {
+                var value = (singleNumber + step);
+				if (minimum.HasValue) value = Math.Max(minimum.Value, value);
+				if (maximum.HasValue) value = Math.Min(maximum.Value, value);
+				return value.ToString("G29", CultureInfo.InvariantCulture);
+            }
 
             var fragments = FragmentParser.Parse(expression);
             var terms = AdditiveParser.Parse(fragments);
@@ -91,6 +116,8 @@ namespace LuaSTGEditorSharpV2.WPF.Controls
             if (decimal.TryParse(FormatTerm(terms[^1]), CultureInfo.InvariantCulture, out var lastNumberTerm))
             {
                 var newLastTerm = lastNumberTerm + step;
+                if (minimum.HasValue) newLastTerm = Math.Max(minimum.Value, newLastTerm);
+                if (maximum.HasValue) newLastTerm = Math.Min(maximum.Value, newLastTerm);
                 if (newLastTerm == 0)
                 {
                     terms.RemoveAt(terms.Count - 1);
