@@ -290,6 +290,17 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.CodeGenerator
                     break;
                 }
             }
+            if (rootIdx < 0)
+            {
+                for (int i = 0; i < model.Nodes.Length; i++)
+                {
+                    if (model.Nodes[i].NodeType != "Preview" && !hasOutgoing.Contains(i))
+                    {
+                        rootIdx = i;
+                        break;
+                    }
+                }
+            }
             if (rootIdx < 0) return (null, warnings);
 
             return (ResolveNode(rootIdx)?.LuaParser, warnings);
