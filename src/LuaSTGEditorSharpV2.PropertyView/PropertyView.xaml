@@ -15,8 +15,8 @@
     <lpvc:BooleanConflictConverter x:Key="BooleanConflictConverter"/>
     <lpvc:ConflictsToEnabledConverter x:Key="ConflictsToEnabledConverter"/>
     <lwc:BoolNegationConverter x:Key="ConflictToEnabledConverter"/>
-    <lwc:BoolToVisibilityConverter x:Key="ConflictToVisibilityConverter"/>
-    <lwc:BoolToVisibilityConverter x:Key="ConflictToCollapsedConverter"
+    <lwc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <lwc:BoolToVisibilityConverter x:Key="InversedBoolToVisibilityConverter"
                                    PositiveVisibility="Collapsed"
                                    NegativeVisibility="Visible"/>
     <lpvc:ArgbTextToPreviewConverter x:Key="ArgbTextToPreviewConverter"/>
@@ -212,7 +212,7 @@
                                     BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
                                     BorderThickness="1"
                                     CornerRadius="1"
-                                    Visibility="{Binding IsAvailable, FallbackValue=False, Converter={StaticResource ConflictToVisibilityConverter}}">
+                                    Visibility="{Binding IsAvailable, FallbackValue=False, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Border.Background>
                                     <SolidColorBrush Color="{Binding Color, FallbackValue=Transparent}"/>
                                 </Border.Background>
@@ -225,7 +225,7 @@
                                   Stroke="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
                                   StrokeThickness="1"
                                   Data="{DynamicResource ResourceKey=editor:nocolor}"
-                                  Visibility="{Binding IsAvailable, FallbackValue=False, Converter={StaticResource ConflictToCollapsedConverter}}"/>
+                                  Visibility="{Binding IsAvailable, FallbackValue=False, Converter={StaticResource InversedBoolToVisibilityConverter}}"/>
                         </Grid>
                     </ControlTemplate>
                 </Button.Template>
@@ -481,15 +481,15 @@
                 <Grid>
                     <TextBlock Margin="5,0,5,0"
                                Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multi_selection_conflict}"
-                               Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToVisibilityConverter}}"/>
-                    <ContentControl Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource ConflictToCollapsedConverter}}">
+                               Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ContentControl Visibility="{Binding ValueProperty.HasConflict, Converter={StaticResource InversedBoolToVisibilityConverter}}">
                         <Grid DataContext="{Binding ValueProperty.Value, Converter={StaticResource ImagePathToPreviewConverter}}">
                             <TextBlock Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:image_preview_unavailable}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       Visibility="{Binding IsAvailable, Converter={StaticResource ConflictToCollapsedConverter}}"/>
+                                       Visibility="{Binding IsAvailable, Converter={StaticResource InversedBoolToVisibilityConverter}}"/>
                             <lw:AutoScaleImage Source="{Binding Source}"
-                                               Visibility="{Binding IsAvailable, Converter={StaticResource ConflictToVisibilityConverter}}"/>
+                                               Visibility="{Binding IsAvailable, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </Grid>
                     </ContentControl>
                 </Grid>
