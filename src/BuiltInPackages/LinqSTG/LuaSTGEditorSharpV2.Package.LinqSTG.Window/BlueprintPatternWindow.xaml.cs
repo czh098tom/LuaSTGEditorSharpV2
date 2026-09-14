@@ -3,6 +3,7 @@ using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -48,6 +49,31 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
                 _viewModel.NetworkJson = value;
                 _viewModel.Load();
             }
+        }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key != Key.A || Keyboard.Modifiers != ModifierKeys.Shift)
+            {
+                return;
+            }
+            if (Keyboard.FocusedElement is TextBoxBase or PasswordBox)
+            {
+                return;
+            }
+
+            var mousePosition = Mouse.GetPosition(NetworkView);
+            if (mousePosition.X < 0 || mousePosition.Y < 0
+                || mousePosition.X > NetworkView.ActualWidth
+                || mousePosition.Y > NetworkView.ActualHeight)
+            {
+                return;
+            }
+
+            _pendingNodePosition = ScreenToNetwork(mousePosition);
+            OpenNodeCreationPopup(mousePosition);
+            e.Handled = true;
         }
 
         protected override void OnClosing(CancelEventArgs e)
