@@ -36,6 +36,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 
         public IObservable<Contextual<IEnumerable<PointPrediction>>> Result { get; }
 
+        public override IObservable<Contextual<IEnumerable<PointPrediction>>> PreviewResult => Result;
+
         public ShootNode()
         {
             DiameterEditor.RawValue = DefaultDiameter;

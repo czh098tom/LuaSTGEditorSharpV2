@@ -1,5 +1,8 @@
 ﻿using DynamicData;
 using NodeNetwork.ViewModels;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +19,35 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
         private readonly Dictionary<string, NodeEndpointEditorViewModel> editorDict = [];
         private readonly Dictionary<string, NodeInputViewModel> inputDict = [];
         private readonly Dictionary<string, NodeOutputViewModel> outputDict = [];
+        private bool isPreviewEnabled;
 
         public IReadOnlyDictionary<string, NodeEndpointEditorViewModel> EditorDict => editorDict;
         public IReadOnlyDictionary<string, NodeInputViewModel> InputDict => inputDict;
         public IReadOnlyDictionary<string, NodeOutputViewModel> OutputDict => outputDict;
 
         public Color TitleColor { get; protected init; } = DefaultTitleColor;
+
+        public string Category => GetType().Namespace?.Split('.').LastOrDefault() switch
+        {
+            "Data" => "Data",
+            "IntrinsicOperator" => "Value Operators",
+            "Movement" => "Movement",
+            "MovementOperator" => "Movement Operators",
+            "Pattern" => "Patterns",
+            "PatternOperator" => "Pattern Operators",
+            "Transformation" => "Transformations",
+            _ => "Output"
+        };
+
+        public bool SupportsPreview => PreviewResult is not null;
+
+        public bool IsPreviewEnabled
+        {
+            get => isPreviewEnabled;
+            set => this.RaiseAndSetIfChanged(ref isPreviewEnabled, value);
+        }
+
+        public virtual IObservable<Contextual<IEnumerable<PointPrediction>>>? PreviewResult => null;
 
         public virtual string NodeType
         {

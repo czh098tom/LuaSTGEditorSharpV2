@@ -102,7 +102,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
                 }
             }
 
-            return new(viewModel.NodeType, x, y, editors);
+            bool? previewEnabled = viewModel.SupportsPreview ? viewModel.IsPreviewEnabled : null;
+            return new(viewModel.NodeType, x, y, editors, previewEnabled);
         }
 
         private static LinqSTGNodeViewModel CreateNodeViewModel(NodeModel model)
@@ -114,6 +115,10 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.Serialization
             var viewModel = (LinqSTGNodeViewModel?)Activator.CreateInstance(type)
                 ?? throw new InvalidOperationException($"Could not create instance of type '{type.AssemblyQualifiedName}'.");
             viewModel.Position = new(model.X, model.Y);
+            if (viewModel.SupportsPreview && model.PreviewEnabled is bool previewEnabled)
+            {
+                viewModel.IsPreviewEnabled = previewEnabled;
+            }
 
             foreach (var editor in model.Editors)
             {

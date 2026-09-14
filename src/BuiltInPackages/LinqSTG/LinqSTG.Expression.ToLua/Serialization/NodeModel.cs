@@ -8,6 +8,7 @@ namespace LinqSTG.Expression.ToLua.Serialization
         [property: JsonProperty("type", Required = Required.Always)] string NodeType,
         [property: JsonProperty("x")] double X,
         [property: JsonProperty("y")] double Y,
-        [property: JsonProperty("editors", Required = Required.Always)] JObject Editors
+        [property: JsonProperty("editors", Required = Required.Always)] JObject Editors,
+        [property: JsonProperty("previewEnabled", NullValueHandling = NullValueHandling.Ignore)] bool? PreviewEnabled = null
     );
 }
