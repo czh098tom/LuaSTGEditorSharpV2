@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ using System.Windows.Threading;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged, IDisposable
     {
         public string? NetworkJson { get; set; }
 
@@ -150,7 +151,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         }
         private NetworkViewModel network = new();
 
-        private ShootNode shootNode;
+        private readonly CompositeDisposable disposables = new();
+        private readonly SerialDisposable previewResultSubscription = new();
+        private LinqSTGNodeViewModel? activePreviewSource;
+        private Contextual<IEnumerable<PointPrediction>>? activePreviewResult;
+        private bool isUpdatingPreviewSelection;
 
         public NodeCreationMenuViewModel NodeCreationMenu { get; } = new();
 
@@ -174,61 +179,45 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             {
                 seed = value;
                 RaisePropertyChanged();
-                UpdatePattern();
+                UpdatePreviewPattern();
             }
         }
         private int seed;
 
         private IEnumerable<PointPrediction> pointPredictions = [];
 
-        /// <summary>Latest pattern producers of all Shoot nodes; re-invoked whenever the variable list changes.</summary>
-        private IReadOnlyList<Contextual<IEnumerable<PointPrediction>>> shootResults = Array.Empty<Contextual<IEnumerable<PointPrediction>>>();
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainViewModel()
         {
-            shootNode = new ShootNode();
-            network.Nodes.Add(shootNode);
             network.ConnectionFactory = (input, output) => new LinqSTGConnectionViewModel(network, input, output);
 
-            var modifyNodes = network.Nodes
+            previewResultSubscription.DisposeWith(disposables);
+            network.Nodes
                 .Connect()
-                .ToCollection()
-                .SelectMany(c => c
-                    .OfType<ShootNode>()
-                    .Select(s => s.Result)
-                    .CombineLatest())
-                .Subscribe(ls =>
-                {
-                    shootResults = ls.ToArray();
-                    UpdatePattern();
-                });
+                .SubscribeMany(ObservePreviewSource)
+                .Subscribe()
+                .DisposeWith(disposables);
 
-            VariableList.Changed += (_, _) => UpdatePattern();
+            var shootNode = new ShootNode { IsPreviewEnabled = true };
+            network.Nodes.Add(shootNode);
+
+            VariableList.Changed += (_, _) => UpdatePreviewPattern();
         }
 
-        /// <summary>
-        /// Re-materializes the Shoot patterns against the current variable list:
-        /// the list entries are seeded into the root parameter's float scope, so
-        /// <see cref="ViewModel.Nodes.Data.PatternVariableNode"/> reads them by
-        /// name during preview evaluation.
-        /// </summary>
-        private void UpdatePattern()
+        private Parameter CreatePreviewParameter()
         {
-            // DemoScript 宿主的 GeneratePredictions：求值后立刻物化（ToArray），
-            // PointShooter.Shoot 是 yield 迭代器、SelectMany 也是惰性的——不物化的话
-            // UpdatePrediction 每次遍历（拖动进度条每一帧）都会重新枚举整个模式、
-            // 重新执行蓝图求值（含随机抽样）。
-            // 随机源对应 TestRandom 顶部的 var randomizer = new Random(seed)：
-            // 每次物化新建并挂到根环境，随机值只在模式枚举期抽取。
-            var root = new Parameter
+            return new Parameter
             {
                 Floats = new FloatScope(VariableList.ToFloats()),
                 Vectors = new VectorScope(VariableList.ToVectors()),
                 Randomizer = new Random(seed),
             };
-            pointPredictions = shootResults.SelectMany(pred => pred.Invoke(root)).ToArray();
+        }
+
+        private void UpdatePreviewPattern()
+        {
+            pointPredictions = activePreviewResult?.Invoke(CreatePreviewParameter()).ToArray() ?? [];
             UpdatePrediction();
         }
 
@@ -250,6 +239,92 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             }
             Points = list;
             RaisePropertyChanged(nameof(Points));
+        }
+
+        private IDisposable ObservePreviewSource(NodeViewModel node)
+        {
+            if (node is not LinqSTGNodeViewModel source || !source.SupportsPreview)
+            {
+                return Disposable.Empty;
+            }
+
+            PropertyChangedEventHandler handler = (_, e) =>
+            {
+                if (e.PropertyName == nameof(LinqSTGNodeViewModel.IsPreviewEnabled))
+                {
+                    OnPreviewEnabledChanged(source);
+                }
+            };
+            source.PropertyChanged += handler;
+
+            if (source.IsPreviewEnabled)
+            {
+                ActivatePreviewSource(source);
+            }
+
+            return Disposable.Create(() =>
+            {
+                source.PropertyChanged -= handler;
+                if (ReferenceEquals(activePreviewSource, source))
+                {
+                    ClearPreviewSource();
+                }
+            });
+        }
+
+        private void OnPreviewEnabledChanged(LinqSTGNodeViewModel source)
+        {
+            if (isUpdatingPreviewSelection)
+            {
+                return;
+            }
+            if (source.IsPreviewEnabled)
+            {
+                ActivatePreviewSource(source);
+            }
+            else if (ReferenceEquals(activePreviewSource, source))
+            {
+                ClearPreviewSource();
+            }
+        }
+
+        private void ActivatePreviewSource(LinqSTGNodeViewModel source)
+        {
+            isUpdatingPreviewSelection = true;
+            try
+            {
+                foreach (var other in network.Nodes.Items
+                    .OfType<LinqSTGNodeViewModel>()
+                    .Where(node => !ReferenceEquals(node, source) && node.SupportsPreview && node.IsPreviewEnabled))
+                {
+                    other.IsPreviewEnabled = false;
+                }
+            }
+            finally
+            {
+                isUpdatingPreviewSelection = false;
+            }
+
+            activePreviewSource = source;
+            activePreviewResult = null;
+            pointPredictions = [];
+            UpdatePrediction();
+            previewResultSubscription.Disposable = source.PreviewResult!.Subscribe(
+                result =>
+                {
+                    activePreviewResult = result;
+                    UpdatePreviewPattern();
+                },
+                _ => ClearPreviewSource());
+        }
+
+        private void ClearPreviewSource()
+        {
+            activePreviewSource = null;
+            activePreviewResult = null;
+            previewResultSubscription.Disposable = Disposable.Empty;
+            pointPredictions = [];
+            UpdatePrediction();
         }
 
         /// <summary>
@@ -318,9 +393,22 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             try
             {
                 var model = JsonConvert.DeserializeObject<NetworkModel>(NetworkJson);
-                Seed = model?.Seed ?? 0;
-                model?.ApplyToNetwork(network);
-                VariableList.LoadFrom(model?.Variables);
+                if (model is null)
+                {
+                    return;
+                }
+                Seed = model.Seed;
+                bool hasStoredPreviewSelection = model.Nodes.Any(node => node.PreviewEnabled.HasValue);
+                model.ApplyToNetwork(network);
+                VariableList.LoadFrom(model.Variables);
+                if (!hasStoredPreviewSelection)
+                {
+                    var defaultPreviewSource = network.Nodes.Items.OfType<ShootNode>().FirstOrDefault();
+                    if (defaultPreviewSource is not null)
+                    {
+                        defaultPreviewSource.IsPreviewEnabled = true;
+                    }
+                }
             }
             catch (Exception)
             {
@@ -332,6 +420,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         private void RaisePropertyChanged([CallerMemberName] string caller = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
+        }
+
+        public void Dispose()
+        {
+            Pause();
+            disposables.Dispose();
         }
     }
 }

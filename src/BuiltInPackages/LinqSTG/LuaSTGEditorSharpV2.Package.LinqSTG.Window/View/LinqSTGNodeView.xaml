@@ -70,6 +70,7 @@
             </ControlTemplate>
 
             <wpf:NullVisibilityConverter x:Key="NullConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             
             <ControlTemplate x:Key="LeftAlignedEndpoint">
                 <Grid Margin="10,0,0,5">
@@ -269,12 +270,36 @@
                                                 </Border.Background>
                                                 <StackPanel>
                                                     <Canvas x:Name="HeaderTopMargin" Width="auto" Height="5"/>
-                                                    <DockPanel>
+                                                    <DockPanel LastChildFill="False">
                                                         <Image x:Name="HeaderIcon" MaxWidth="{TemplateBinding ArrowSize}" MaxHeight="{TemplateBinding ArrowSize}" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                                         <TextBlock x:Name="NameLabel" TextWrapping="Wrap" Background="Transparent" Foreground="{TemplateBinding Foreground}" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center"
                                                                    FontFamily="{TemplateBinding TitleFontFamily}" FontSize="{TemplateBinding TitleFontSize}" Margin="10,0,0,0"/>
+                                                        <ToggleButton x:Name="PreviewToggleButton"
+                                                                      Width="22" Height="22" DockPanel.Dock="Right"
+                                                                      Margin="8,0,10,0" VerticalAlignment="Center"
+                                                                      IsChecked="{Binding IsPreviewEnabled, Mode=TwoWay}"
+                                                                      Visibility="{Binding SupportsPreview, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                      IsTabStop="False" ToolTip="Use this node for preview">
+                                                            <ToggleButton.Style>
+                                                                <Style TargetType="ToggleButton">
+                                                                    <Setter Property="Background" Value="#22000000"/>
+                                                                    <Setter Property="BorderBrush" Value="#88FFFFFF"/>
+                                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                                    <Style.Triggers>
+                                                                        <Trigger Property="IsChecked" Value="True">
+                                                                            <Setter Property="Background" Value="#FF2E7D32"/>
+                                                                            <Setter Property="BorderBrush" Value="#FFA5D6A7"/>
+                                                                        </Trigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </ToggleButton.Style>
+                                                            <Grid Width="14" Height="10">
+                                                                <Ellipse Stroke="White" StrokeThickness="1.5"/>
+                                                                <Ellipse Width="4" Height="4" Fill="White"/>
+                                                            </Grid>
+                                                        </ToggleButton>
                                                         <controls:ArrowToggleButton x:Name="CollapseButton" Width="{TemplateBinding ArrowSize}" Height="{TemplateBinding ArrowSize}" DockPanel.Dock="Right" 
-                                                                      HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20,0,10,0" Template="{StaticResource ResourceKey=ArrowTemplate}">
+                                                                      HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,0,0,0" Template="{StaticResource ResourceKey=ArrowTemplate}">
                                                         </controls:ArrowToggleButton>
                                                     </DockPanel>
                                                     <Canvas x:Name="HeaderBottomMargin" Width="auto" Height="5"/>
