@@ -7,6 +7,7 @@
                     xmlns:lpve="clr-namespace:LuaSTGEditorSharpV2.PropertyView.Editor"
                     xmlns:lsv="clr-namespace:LuaSTGEditorSharpV2.View;assembly=LuaSTGEditorSharpV2.View"
                     xmlns:lw="clr-namespace:LuaSTGEditorSharpV2.WPF;assembly=LuaSTGEditorSharpV2.WPF"
+                    xmlns:lwmb="clr-namespace:LuaSTGEditorSharpV2.WPF.MarkupExtensions.Brushes;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lwc="clr-namespace:LuaSTGEditorSharpV2.WPF.Converter;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lwctrl="clr-namespace:LuaSTGEditorSharpV2.WPF.Controls;assembly=LuaSTGEditorSharpV2.WPF"
                     xmlns:lpv="clr-namespace:LuaSTGEditorSharpV2.PropertyView"
@@ -165,62 +166,63 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <lwctrl:ExpressionSpinner Grid.Column="0"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
+                <lwctrl:ExpressionSpinner Grid.Column="0" Minimum="0" Maximum="255"
                                           lpv:BoundEditor.Property="{Binding AlphaProperty}"/>
-                <lwctrl:ExpressionSpinner Grid.Column="1"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
+				<lwctrl:ExpressionSpinner Grid.Column="1" Minimum="0" Maximum="255"
                                           lpv:BoundEditor.Property="{Binding RedProperty}"/>
-                <lwctrl:ExpressionSpinner Grid.Column="2"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
+				<lwctrl:ExpressionSpinner Grid.Column="2" Minimum="0" Maximum="255"
                                           lpv:BoundEditor.Property="{Binding GreenProperty}"/>
-                <lwctrl:ExpressionSpinner Grid.Column="3"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
+				<lwctrl:ExpressionSpinner Grid.Column="3" Minimum="0" Maximum="255"
                                           lpv:BoundEditor.Property="{Binding BlueProperty}"/>
             </Grid>
-                <Button Grid.Column="2"
-                        Width="14"
-                        Height="14"
-                        Padding="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center">
-                    <Button.IsEnabled>
-                        <Binding Path="IsAvailable"
-                                 FallbackValue="False"/>
-                    </Button.IsEnabled>
-                    <Button.DataContext>
-                        <MultiBinding Converter="{StaticResource ArgbTextToPreviewConverter}">
-                            <Binding Path="Children[2].Children[0].Text"
-                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
-                            <Binding Path="Children[2].Children[1].Text"
-                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
-                            <Binding Path="Children[2].Children[2].Text"
-                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
-                            <Binding Path="Children[2].Children[3].Text"
-                                     RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
-                        </MultiBinding>
-                    </Button.DataContext>
-                    <Button.Template>
+            <Button Grid.Column="2"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center">
+                <Button.IsEnabled>
+                    <Binding Path="IsAvailable"
+                             FallbackValue="False"/>
+                </Button.IsEnabled>
+                <Button.DataContext>
+                    <MultiBinding Converter="{StaticResource ArgbTextToPreviewConverter}">
+                        <Binding Path="Children[2].Children[0].Text"
+                                 RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                        <Binding Path="Children[2].Children[1].Text"
+                                 RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                        <Binding Path="Children[2].Children[2].Text"
+                                 RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                        <Binding Path="Children[2].Children[3].Text"
+                                 RelativeSource="{RelativeSource AncestorType={x:Type lsv:PropertyItemGrid}}"/>
+                    </MultiBinding>
+                </Button.DataContext>
+                <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid>
-                            <Border Width="12"
-                                    Height="12"
-                                    BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+							<Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
                                     BorderThickness="1"
                                     CornerRadius="1"
                                     Visibility="{Binding IsAvailable, FallbackValue=False, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <Border.Background>
-                                    <SolidColorBrush Color="{Binding Color, FallbackValue=Transparent}"/>
-                                </Border.Background>
+								<Grid>
+									<Border>
+										<Border.Background>
+											<SolidColorBrush Color="{Binding OpaquePreview}"/>
+										</Border.Background>
+                                    </Border>
+									<Border Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                                            VerticalAlignment="Top"
+                                            BorderThickness="0"
+                                            Background="{lwmb:CheckerboardBrush}"/>
+									<Border Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}"
+                                            VerticalAlignment="Top"
+                                            BorderThickness="0">
+										<Border.Background>
+											<SolidColorBrush Color="{Binding Color}"/>
+										</Border.Background>
+									</Border>
+								</Grid>
                             </Border>
-                            <Path Width="12"
-                                  Height="12"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
+                            <Path HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
                                   Stretch="Uniform"
                                   Stroke="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
                                   StrokeThickness="1"

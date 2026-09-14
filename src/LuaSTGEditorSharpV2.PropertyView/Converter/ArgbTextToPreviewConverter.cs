@@ -6,10 +6,11 @@ using LuaSTGEditorSharpV2.Core.Parsing.Argb;
 
 namespace LuaSTGEditorSharpV2.PropertyView.Converter;
 
-public sealed record ArgbPreviewResult(Color Color, bool IsAvailable)
+public sealed record ArgbPreviewResult(
+    Color Color, bool IsAvailable, Color OpaquePreview)
 {
     public static ArgbPreviewResult Unavailable { get; } =
-        new(Colors.Transparent, false);
+        new(Colors.Transparent, false, Colors.White);
 }
 
 [ValueConversion(typeof(object[]), typeof(ArgbPreviewResult))]
@@ -29,7 +30,11 @@ public sealed class ArgbTextToPreviewConverter : IMultiValueConverter
                     value.Red,
                     value.Green,
                     value.Blue),
-                true)
+                true,
+                Color.FromRgb(
+                    value.Red,
+                    value.Green,
+                    value.Blue))
             : ArgbPreviewResult.Unavailable;
     }
 
