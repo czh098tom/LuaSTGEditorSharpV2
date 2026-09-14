@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
 {
+    [NodeCreationMenu("Shoot", EnglishTitle = "Preview", Order = 1)]
     public class PreviewNode : LinqSTGNodeViewModel
     {
         public const string ShapeEditorKey = "shape";
