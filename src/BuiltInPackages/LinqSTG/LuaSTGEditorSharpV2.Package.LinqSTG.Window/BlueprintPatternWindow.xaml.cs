@@ -235,7 +235,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
                 return;
             }
 
-            ShowCompatibleNodeMenu(dropped);
+            // Open after the current input event has fully completed: a StaysOpen=False
+            // popup opened while the mouse release is still in flight dismisses itself
+            // as soon as the button is released outside of it.
+            Dispatcher.BeginInvoke(new Action(() => ShowCompatibleNodeMenu(dropped)),
+                DispatcherPriority.Input);
         }
 
         private void ShowCompatibleNodeMenu(PendingConnectionViewModel pending)
