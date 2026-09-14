@@ -1,5 +1,8 @@
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel;
 using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu;
+using LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes;
+using DynamicData;
+using NodeNetwork.ViewModels;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +24,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         private MainViewModel _viewModel = null!;
         private NodeCreationMenuViewModel? _nodeCreationMenu;
         private Point _pendingNodePosition;
+        private PendingConnectionViewModel? _connectionDropPending;
+        private int _connectionCountAtDropStart;
 
         private VariableItemViewModel? _variableDragItem;
         private Point _variableDragStart;
@@ -39,6 +44,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             // Keep the content of both areas centered while the splitter or the window resizes them.
             PreviewCanvas.SizeChanged += PreviewCanvas_SizeChanged;
             NetworkView.SizeChanged += NetworkView_SizeChanged;
+            _viewModel.Network.PropertyChanged += Network_PropertyChanged;
         }
 
         public string? NetworkJson
@@ -198,6 +204,140 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             double scaleX = NetworkView.ActualWidth > 0 ? region.Width / NetworkView.ActualWidth : 1.0;
             double scaleY = NetworkView.ActualHeight > 0 ? region.Height / NetworkView.ActualHeight : 1.0;
             return new Point(region.X + position.X * scaleX, region.Y + position.Y * scaleY);
+        }
+
+        private Point NetworkToScreen(Point position)
+        {
+            var region = NetworkView.NetworkViewportRegion;
+            double scaleX = region.Width > 0 ? NetworkView.ActualWidth / region.Width : 1.0;
+            double scaleY = region.Height > 0 ? NetworkView.ActualHeight / region.Height : 1.0;
+            return new Point((position.X - region.X) * scaleX, (position.Y - region.Y) * scaleY);
+        }
+
+        private void Network_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(NetworkViewModel.PendingConnection)) return;
+
+            var pending = _viewModel.Network.PendingConnection;
+            if (pending is not null)
+            {
+                _connectionDropPending = pending;
+                _connectionCountAtDropStart = _viewModel.Network.Connections.Count;
+                return;
+            }
+
+            var dropped = _connectionDropPending;
+            _connectionDropPending = null;
+            if (dropped is null
+                || _viewModel.Network.Connections.Count != _connectionCountAtDropStart
+                || (dropped.Input is not null && dropped.Output is not null))
+            {
+                return;
+            }
+
+            ShowCompatibleNodeMenu(dropped);
+        }
+
+        private void ShowCompatibleNodeMenu(PendingConnectionViewModel pending)
+        {
+            var entries = GetCompatibleNodeEntries(pending).ToList();
+            if (entries.Count == 0) return;
+
+            var position = NetworkToScreen(pending.LooseEndPoint);
+            var menu = new ContextMenu
+            {
+                PlacementTarget = NetworkView,
+                Placement = PlacementMode.Relative,
+                HorizontalOffset = position.X,
+                VerticalOffset = position.Y,
+            };
+
+            foreach (var entry in entries)
+            {
+                var menuItem = new MenuItem { Header = entry.Title };
+                menuItem.Click += (sender, args) => AddCompatibleNode(entry, pending);
+                menu.Items.Add(menuItem);
+            }
+
+            menu.IsOpen = true;
+        }
+
+        private static IEnumerable<NodeCreationEntry> GetCompatibleNodeEntries(PendingConnectionViewModel pending)
+        {
+            foreach (var entry in NodeCreationCatalog.GetEntries())
+            {
+                var node = entry.CreateNode();
+                var compatible = pending.Output is { } output
+                    ? node.Inputs.Items.Any(input => CanConnect(output, input))
+                    : pending.Input is { } input && node.Outputs.Items.Any(output => CanConnect(output, input));
+                if (compatible)
+                {
+                    yield return entry;
+                }
+            }
+        }
+
+        private static bool CanConnect(NodeOutputViewModel output, NodeInputViewModel input)
+        {
+            if (input.Port is null || output.Port is null || input.Connections.Count != 0)
+            {
+                return false;
+            }
+            if (input is ContextAwareNodeInputViewModel)
+            {
+                return true;
+            }
+
+            var expectedType = GetExpectedInputType(input);
+            var outputType = GetOutputValueType(output);
+            return expectedType is not null && outputType is not null && expectedType == outputType;
+        }
+
+        private static Type? GetExpectedInputType(NodeInputViewModel input)
+        {
+            var type = input.GetType();
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(LinqSTGNodeInputViewModel<>)
+                ? type.GetGenericArguments()[0]
+                : null;
+        }
+
+        private static Type? GetOutputValueType(NodeOutputViewModel output)
+        {
+            if (output is ContextAwareNodeOutputViewModel contextAware)
+            {
+                return contextAware.CurrentType;
+            }
+
+            var type = output.GetType();
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(LinqSTGNodeOutputViewModel<>)
+                ? type.GetGenericArguments()[0]
+                : null;
+        }
+
+        private void AddCompatibleNode(NodeCreationEntry entry, PendingConnectionViewModel pending)
+        {
+            var node = entry.CreateNode();
+            node.Position = pending.LooseEndPoint;
+            _viewModel.Network.Nodes.Add(node);
+
+            if (pending.Output is { } sourceOutput)
+            {
+                var targetInput = node.Inputs.Items.FirstOrDefault(input => CanConnect(sourceOutput, input));
+                if (targetInput is not null)
+                {
+                    _viewModel.Network.Connections.Add(
+                        new LinqSTGConnectionViewModel(_viewModel.Network, targetInput, sourceOutput));
+                }
+            }
+            else if (pending.Input is { } sourceInput)
+            {
+                var targetOutput = node.Outputs.Items.FirstOrDefault(output => CanConnect(output, sourceInput));
+                if (targetOutput is not null)
+                {
+                    _viewModel.Network.Connections.Add(
+                        new LinqSTGConnectionViewModel(_viewModel.Network, sourceInput, targetOutput));
+                }
+            }
         }
 
         private void PlaceNodeCreationPopup(Point clickPosition, Size menuSize)
