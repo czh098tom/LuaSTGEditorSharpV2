@@ -81,6 +81,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
 
         public string NoMatchLabel { get; private set; } = string.Empty;
 
+        public bool IsSearchBoxVisible { get; private set; } = true;
+
         public IReadOnlyList<NodeCreationNodeItemViewModel> SearchResults
         {
             get => searchResults;
@@ -110,9 +112,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
                 .Select(ToCategoryViewModel)
                 .ToList();
             NoMatchLabel = Localized.linqstg_window_menu_noMatch;
+            IsSearchBoxVisible = true;
             OnPropertyChanged(nameof(Categories));
             OnPropertyChanged(nameof(AllEntries));
             OnPropertyChanged(nameof(NoMatchLabel));
+            OnPropertyChanged(nameof(IsSearchBoxVisible));
             UpdateSearchResults();
         }
 
@@ -124,6 +128,24 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
         public void RaiseCloseRequested()
         {
             CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public static NodeCreationNodeItemViewModel CreateNodeItem(NodeCreationEntry entry)
+        {
+            return ToNodeItemViewModel(entry);
+        }
+
+        public void ShowItems(IReadOnlyList<NodeCreationNodeItemViewModel> items)
+        {
+            searchText = string.Empty;
+            SearchResults = items;
+            IsSearching = true;
+            IsNoMatch = false;
+            IsSearchBoxVisible = false;
+            OnPropertyChanged(nameof(SearchText));
+            OnPropertyChanged(nameof(IsSearching));
+            OnPropertyChanged(nameof(IsNoMatch));
+            OnPropertyChanged(nameof(IsSearchBoxVisible));
         }
 
         private static NodeCreationCategoryViewModel ToCategoryViewModel(NodeCreationCategory category)

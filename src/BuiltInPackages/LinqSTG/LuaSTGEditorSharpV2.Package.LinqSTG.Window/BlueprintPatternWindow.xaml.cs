@@ -26,6 +26,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         private Point _pendingNodePosition;
         private PendingConnectionViewModel? _connectionDropPending;
         private int _connectionCountAtDropStart;
+        private PendingConnectionViewModel? _compatibleNodeMenuPending;
 
         private VariableItemViewModel? _variableDragItem;
         private Point _variableDragStart;
@@ -184,13 +185,21 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             _nodeCreationMenu ??= NodeCreationMenu.DataContext as NodeCreationMenuViewModel;
             _nodeCreationMenu?.Reload();
             _nodeCreationMenu!.SearchText = string.Empty;
+            _compatibleNodeMenuPending = null;
+            OpenNodeCreationPopupAt(screenPosition, focusSearch: true);
+        }
 
+        private void OpenNodeCreationPopupAt(Point screenPosition, bool focusSearch)
+        {
             NodeCreationPopup.HorizontalOffset = 0;
             NodeCreationPopup.VerticalOffset = 0;
             NodeCreationPopup.IsOpen = true;
             NodeCreationMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             PlaceNodeCreationPopup(screenPosition, NodeCreationMenu.DesiredSize);
-            NodeCreationMenu.FocusSearchBox();
+            if (focusSearch)
+            {
+                NodeCreationMenu.FocusSearchBox();
+            }
         }
 
         /// <summary>
@@ -247,23 +256,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             var entries = GetCompatibleNodeEntries(pending).ToList();
             if (entries.Count == 0) return;
 
-            var position = NetworkToScreen(pending.LooseEndPoint);
-            var menu = new ContextMenu
-            {
-                PlacementTarget = NetworkView,
-                Placement = PlacementMode.Relative,
-                HorizontalOffset = position.X,
-                VerticalOffset = position.Y,
-            };
+            _nodeCreationMenu ??= NodeCreationMenu.DataContext as NodeCreationMenuViewModel;
+            if (_nodeCreationMenu is null) return;
 
-            foreach (var entry in entries)
-            {
-                var menuItem = new MenuItem { Header = entry.Title };
-                menuItem.Click += (sender, args) => AddCompatibleNode(entry, pending);
-                menu.Items.Add(menuItem);
-            }
-
-            menu.IsOpen = true;
+            var items = entries
+                .Select(NodeCreationMenuViewModel.CreateNodeItem)
+                .ToList();
+            _nodeCreationMenu.ShowItems(items);
+            _compatibleNodeMenuPending = pending;
+            OpenNodeCreationPopupAt(NetworkToScreen(pending.LooseEndPoint), focusSearch: false);
         }
 
         private static IEnumerable<NodeCreationEntry> GetCompatibleNodeEntries(PendingConnectionViewModel pending)
@@ -363,7 +364,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         private void NodeCreationMenu_NodeSelected(NodeCreationNodeItemViewModel item)
         {
             NodeCreationPopup.IsOpen = false;
-            _viewModel.AddNode(item.Entry, _pendingNodePosition);
+            if (_compatibleNodeMenuPending is { } pending)
+            {
+                _compatibleNodeMenuPending = null;
+                AddCompatibleNode(item.Entry, pending);
+            }
+            else
+            {
+                _viewModel.AddNode(item.Entry, _pendingNodePosition);
+            }
         }
 
         #region Variable list

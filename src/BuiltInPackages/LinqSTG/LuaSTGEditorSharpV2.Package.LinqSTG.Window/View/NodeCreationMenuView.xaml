@@ -78,7 +78,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Margin="8,8,8,6">
+            <Grid Grid.Row="0" Margin="8,8,8,6"
+                  Visibility="{Binding IsSearchBoxVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBox x:Name="SearchBox"
                          Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Background="#FF333337" Foreground="#FFF0F0F0"
@@ -100,7 +101,8 @@
                 </TextBlock>
             </Grid>
 
-            <Rectangle Grid.Row="1" Fill="#FF3F3F46"/>
+            <Rectangle Grid.Row="1" Fill="#FF3F3F46"
+                       Visibility="{Binding IsSearchBoxVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"
                           MaxHeight="380" Margin="0,4,0,6">
