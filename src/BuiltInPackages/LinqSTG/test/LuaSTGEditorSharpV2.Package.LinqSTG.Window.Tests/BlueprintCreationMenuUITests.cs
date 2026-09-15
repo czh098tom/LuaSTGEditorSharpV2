@@ -105,7 +105,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
                     result.EnglishSearchFirst = menu.SearchResults.FirstOrDefault()?.Entry.NodeType.Name ?? "";
 
                     Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("zh-CN");
-                    menu.Reload();
+                    menu.ShowFullMenu(NodeCreationCatalog.GetCategories());
                     result.ChineseCategoryNames = string.Join(",", menu.Categories.Select(c => c.Name));
                     menu.SearchText = "浮点";
                     result.ChineseSearchCount = menu.SearchResults.Count;
@@ -113,7 +113,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
 
                     menu.SearchText = string.Empty;
                     int before = network.Nodes.Count;
-                    var entry = menu.AllEntries.Single(e => e.NodeType.Name == "SinNode");
+                    var entry = NodeCreationCatalog.GetEntries().Single(e => e.NodeType.Name == "SinNode");
                     var expectedPosition = new Point(123.5, -7.25);
                     typeof(BlueprintPatternWindow)
                         .GetField("_pendingNodePosition", BindingFlags.NonPublic | BindingFlags.Instance)!

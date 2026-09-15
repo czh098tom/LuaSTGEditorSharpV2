@@ -291,18 +291,46 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         {
             UseEnglish();
             var viewModel = new NodeCreationMenuViewModel();
-            viewModel.Reload();
+            viewModel.ShowFullMenu(NodeCreationCatalog.GetCategories());
             Assert.False(viewModel.IsSearching);
-            Assert.Empty(viewModel.SearchResults);
+            Assert.False(viewModel.IsListVisible);
+            Assert.NotEmpty(viewModel.SearchResults);
 
             viewModel.SearchText = "sin";
             Assert.True(viewModel.IsSearching);
+            Assert.True(viewModel.IsListVisible);
             Assert.NotEmpty(viewModel.SearchResults);
             Assert.Contains(viewModel.SearchResults, r => r.Entry.NodeType == typeof(Nodes.IntrinsicOperator.Math.SinNode));
 
             viewModel.SearchText = string.Empty;
             Assert.False(viewModel.IsSearching);
-            Assert.Empty(viewModel.SearchResults);
+            Assert.False(viewModel.IsListVisible);
+            Assert.NotEmpty(viewModel.SearchResults);
+        }
+
+        [Fact]
+        public void ViewModel_ShowItemsSearchesOnlySuppliedItems()
+        {
+            UseEnglish();
+            var viewModel = new NodeCreationMenuViewModel();
+            var entries = NodeCreationCatalog.GetEntries()
+                .Where(e => e.NodeType == typeof(Nodes.IntrinsicOperator.Math.SinNode)
+                    || e.NodeType == typeof(Nodes.IntrinsicOperator.Math.CosNode))
+                .ToList();
+            viewModel.ShowItems(entries);
+
+            Assert.False(viewModel.IsSearching);
+            Assert.True(viewModel.IsListVisible);
+            Assert.Empty(viewModel.Categories);
+            Assert.Equal(entries.Count, viewModel.SearchResults.Count);
+            Assert.False(string.IsNullOrWhiteSpace(viewModel.NoMatchLabel));
+
+            viewModel.SearchText = "cos";
+            Assert.Single(viewModel.SearchResults);
+            Assert.Equal(typeof(Nodes.IntrinsicOperator.Math.CosNode), viewModel.SearchResults[0].Entry.NodeType);
+
+            viewModel.SearchText = "add";
+            Assert.True(viewModel.IsNoMatch);
         }
 
         [Fact]
@@ -310,7 +338,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         {
             UseEnglish();
             var viewModel = new NodeCreationMenuViewModel();
-            viewModel.Reload();
+            viewModel.ShowFullMenu(NodeCreationCatalog.GetCategories());
             viewModel.SearchText = "zzzqqq";
             Assert.True(viewModel.IsSearching);
             Assert.True(viewModel.IsNoMatch);
@@ -322,7 +350,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Window.Tests
         {
             UseEnglish();
             var viewModel = new NodeCreationMenuViewModel();
-            viewModel.Reload();
+            viewModel.ShowFullMenu(NodeCreationCatalog.GetCategories());
             var entry = NodeCreationCatalog.GetEntries().First();
 
             NodeCreationNodeItemViewModel? selected = null;

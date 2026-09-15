@@ -183,23 +183,19 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
         private void OpenNodeCreationPopup(Point screenPosition)
         {
             _nodeCreationMenu ??= NodeCreationMenu.DataContext as NodeCreationMenuViewModel;
-            _nodeCreationMenu?.Reload();
-            _nodeCreationMenu!.SearchText = string.Empty;
+            _nodeCreationMenu!.ShowFullMenu(NodeCreationCatalog.GetCategories());
             _compatibleNodeMenuPending = null;
-            OpenNodeCreationPopupAt(screenPosition, focusSearch: true);
+            OpenNodeCreationPopupAt(screenPosition);
         }
 
-        private void OpenNodeCreationPopupAt(Point screenPosition, bool focusSearch)
+        private void OpenNodeCreationPopupAt(Point screenPosition)
         {
             NodeCreationPopup.HorizontalOffset = 0;
             NodeCreationPopup.VerticalOffset = 0;
             NodeCreationPopup.IsOpen = true;
             NodeCreationMenu.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             PlaceNodeCreationPopup(screenPosition, NodeCreationMenu.DesiredSize);
-            if (focusSearch)
-            {
-                NodeCreationMenu.FocusSearchBox();
-            }
+            NodeCreationMenu.FocusSearchBox();
         }
 
         /// <summary>
@@ -259,12 +255,9 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             _nodeCreationMenu ??= NodeCreationMenu.DataContext as NodeCreationMenuViewModel;
             if (_nodeCreationMenu is null) return;
 
-            var items = entries
-                .Select(NodeCreationMenuViewModel.CreateNodeItem)
-                .ToList();
-            _nodeCreationMenu.ShowItems(items);
+            _nodeCreationMenu.ShowItems(entries);
             _compatibleNodeMenuPending = pending;
-            OpenNodeCreationPopupAt(NetworkToScreen(pending.LooseEndPoint), focusSearch: false);
+            OpenNodeCreationPopupAt(NetworkToScreen(pending.LooseEndPoint));
         }
 
         private static IEnumerable<NodeCreationEntry> GetCompatibleNodeEntries(PendingConnectionViewModel pending)

@@ -78,8 +78,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Margin="8,8,8,6"
-                  Visibility="{Binding IsSearchBoxVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Grid.Row="0" Margin="8,8,8,6">
                 <TextBox x:Name="SearchBox"
                          Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Background="#FF333337" Foreground="#FFF0F0F0"
@@ -101,17 +100,16 @@
                 </TextBlock>
             </Grid>
 
-            <Rectangle Grid.Row="1" Fill="#FF3F3F46"
-                       Visibility="{Binding IsSearchBoxVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Rectangle Grid.Row="1" Fill="#FF3F3F46"/>
 
             <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"
                           MaxHeight="380" Margin="0,4,0,6">
                 <Grid>
                     <ItemsControl ItemsSource="{Binding Categories}"
-                                  Visibility="{Binding IsSearching, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                                  Visibility="{Binding IsListVisible, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
                     <ListBox x:Name="ResultList"
                              ItemsSource="{Binding SearchResults}"
-                             Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverter}}"
+                             Visibility="{Binding IsListVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                              Background="Transparent" BorderThickness="0"
                              HorizontalContentAlignment="Stretch"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"

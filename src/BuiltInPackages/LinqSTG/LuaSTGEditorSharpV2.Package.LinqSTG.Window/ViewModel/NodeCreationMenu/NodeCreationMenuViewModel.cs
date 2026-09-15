@@ -7,10 +7,14 @@ using System.Runtime.CompilerServices;
 
 namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
 {
+    public interface INodeCreationMenuItem
+    {
+    }
+
     /// <summary>
     /// A clickable node entry inside the creation menu (category tree or search results).
     /// </summary>
-    public sealed class NodeCreationNodeItemViewModel
+    public sealed class NodeCreationNodeItemViewModel : INodeCreationMenuItem
     {
         public required NodeCreationEntry Entry { get; init; }
 
@@ -27,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
     /// nested <see cref="NodeCreationCategoryViewModel"/> and
     /// <see cref="NodeCreationNodeItemViewModel"/> entries.
     /// </summary>
-    public sealed class NodeCreationCategoryViewModel : INotifyPropertyChanged
+    public sealed class NodeCreationCategoryViewModel : INotifyPropertyChanged, INodeCreationMenuItem
     {
         private bool isExpanded;
 
@@ -44,7 +48,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
             }
         }
 
-        public IReadOnlyList<object> Items { get; init; } = Array.Empty<object>();
+        public IReadOnlyList<INodeCreationMenuItem> Items { get; init; } = Array.Empty<INodeCreationMenuItem>();
 
         public event PropertyChangedEventHandler? PropertyChanged;
     }
@@ -56,11 +60,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
     public sealed class NodeCreationMenuViewModel : INotifyPropertyChanged
     {
         private string searchText = string.Empty;
+        private IReadOnlyList<NodeCreationNodeItemViewModel> searchSource = Array.Empty<NodeCreationNodeItemViewModel>();
         private IReadOnlyList<NodeCreationNodeItemViewModel> searchResults = Array.Empty<NodeCreationNodeItemViewModel>();
+        private bool showsFlatList;
 
         public IReadOnlyList<NodeCreationCategoryViewModel> Categories { get; private set; } = Array.Empty<NodeCreationCategoryViewModel>();
-
-        public IReadOnlyList<NodeCreationEntry> AllEntries { get; private set; } = Array.Empty<NodeCreationEntry>();
 
         /// <summary>Non-empty trimmed query switches the list into search mode.</summary>
         public string SearchText
@@ -81,7 +85,11 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
 
         public string NoMatchLabel { get; private set; } = string.Empty;
 
-        public bool IsSearchBoxVisible { get; private set; } = true;
+        /// <summary>
+        /// True while the flat result list replaces the category tree: either a query is active,
+        /// or the menu was opened with an explicit item list via <see cref="ShowItems"/>.
+        /// </summary>
+        public bool IsListVisible { get; private set; }
 
         public IReadOnlyList<NodeCreationNodeItemViewModel> SearchResults
         {
@@ -102,22 +110,16 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
-        /// Rebuilds the menu from the catalog. Called each time the menu opens so that
-        /// UI culture changes are picked up; the previous search is kept.
+        /// Shows the node catalog as a category tree. The caller supplies the data, so the menu
+        /// never reaches for the catalog itself, and the search scope is exactly what it displays.
         /// </summary>
-        public void Reload()
+        public void ShowFullMenu(IReadOnlyList<NodeCreationCategory> categories)
         {
-            AllEntries = NodeCreationCatalog.GetEntries();
-            Categories = NodeCreationCatalog.GetCategories()
+            Categories = categories
                 .Select(ToCategoryViewModel)
                 .ToList();
-            NoMatchLabel = Localized.linqstg_window_menu_noMatch;
-            IsSearchBoxVisible = true;
             OnPropertyChanged(nameof(Categories));
-            OnPropertyChanged(nameof(AllEntries));
-            OnPropertyChanged(nameof(NoMatchLabel));
-            OnPropertyChanged(nameof(IsSearchBoxVisible));
-            UpdateSearchResults();
+            ResetSearch(Flatten(Categories).ToList(), showsFlatList: false);
         }
 
         public void RaiseNodeSelected(NodeCreationNodeItemViewModel item)
@@ -130,22 +132,15 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
             CloseRequested?.Invoke(this, EventArgs.Empty);
         }
 
-        public static NodeCreationNodeItemViewModel CreateNodeItem(NodeCreationEntry entry)
+        /// <summary>
+        /// Shows a caller-supplied flat list of node entries instead of the category tree, e.g.
+        /// the nodes compatible with a connection that was dropped on empty space.
+        /// </summary>
+        public void ShowItems(IReadOnlyList<NodeCreationEntry> entries)
         {
-            return ToNodeItemViewModel(entry);
-        }
-
-        public void ShowItems(IReadOnlyList<NodeCreationNodeItemViewModel> items)
-        {
-            searchText = string.Empty;
-            SearchResults = items;
-            IsSearching = true;
-            IsNoMatch = false;
-            IsSearchBoxVisible = false;
-            OnPropertyChanged(nameof(SearchText));
-            OnPropertyChanged(nameof(IsSearching));
-            OnPropertyChanged(nameof(IsNoMatch));
-            OnPropertyChanged(nameof(IsSearchBoxVisible));
+            Categories = Array.Empty<NodeCreationCategoryViewModel>();
+            OnPropertyChanged(nameof(Categories));
+            ResetSearch(entries.Select(ToNodeItemViewModel).ToList(), showsFlatList: true);
         }
 
         private static NodeCreationCategoryViewModel ToCategoryViewModel(NodeCreationCategory category)
@@ -153,8 +148,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
             // Flat node entries render before the nested category expanders so the
             // high-frequency items of a category stay visible without scrolling past
             // its subcategory headers.
-            var childNodes = category.Nodes.Select(ToNodeItemViewModel).Cast<object>();
-            var childCategories = category.Subcategories.Select(ToCategoryViewModel).Cast<object>();
+            var childNodes = category.Nodes.Select(ToNodeItemViewModel).Cast<INodeCreationMenuItem>();
+            var childCategories = category.Subcategories.Select(ToCategoryViewModel).Cast<INodeCreationMenuItem>();
             return new NodeCreationCategoryViewModel
             {
                 Name = category.Name,
@@ -173,15 +168,65 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.NodeCreationMenu
             };
         }
 
+        /// <summary>
+        /// Points the menu at <paramref name="source"/> (the items currently on display) and
+        /// clears any previous query. Search only ever looks at this source.
+        /// </summary>
+        private void ResetSearch(IReadOnlyList<NodeCreationNodeItemViewModel> source, bool showsFlatList)
+        {
+            searchSource = source;
+            this.showsFlatList = showsFlatList;
+            NoMatchLabel = Localized.linqstg_window_menu_noMatch;
+            OnPropertyChanged(nameof(NoMatchLabel));
+            searchText = string.Empty;
+            OnPropertyChanged(nameof(SearchText));
+            UpdateSearchResults();
+        }
+
+        private static IEnumerable<NodeCreationNodeItemViewModel> Flatten(
+            IEnumerable<NodeCreationCategoryViewModel> categories)
+        {
+            foreach (var category in categories)
+            {
+                foreach (var node in Flatten(category))
+                {
+                    yield return node;
+                }
+            }
+        }
+
+        private static IEnumerable<NodeCreationNodeItemViewModel> Flatten(NodeCreationCategoryViewModel category)
+        {
+            foreach (var item in category.Items)
+            {
+                switch (item)
+                {
+                    case NodeCreationNodeItemViewModel node:
+                        yield return node;
+                        break;
+                    case NodeCreationCategoryViewModel subcategory:
+                        foreach (var nested in Flatten(subcategory))
+                        {
+                            yield return nested;
+                        }
+                        break;
+                }
+            }
+        }
+
         private void UpdateSearchResults()
         {
             var query = searchText.Trim();
             IsSearching = query.Length > 0;
-            SearchResults = NodeCreationSearch.Search(query, AllEntries)
-                .Select(ToNodeItemViewModel)
-                .ToList();
+            SearchResults = IsSearching
+                ? NodeCreationSearch.Search(query, searchSource.Select(item => item.Entry))
+                    .Select(ToNodeItemViewModel)
+                    .ToList()
+                : searchSource;
+            IsListVisible = IsSearching || showsFlatList;
             IsNoMatch = IsSearching && SearchResults.Count == 0;
             OnPropertyChanged(nameof(IsSearching));
+            OnPropertyChanged(nameof(IsListVisible));
             OnPropertyChanged(nameof(IsNoMatch));
         }
 
