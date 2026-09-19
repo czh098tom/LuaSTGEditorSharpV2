@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/LuaSTGEditorSharpV2.Core/LuaSTGEditorSharpV2.Core.csproj" />
+    <ProjectReference Include="../../src/LuaSTGEditorSharpV2.Core.CodeGenerator/LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
+    <ProjectReference Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.csproj" />
+    <ProjectReference Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator/package/LegacyNode/Nodes/Curve/*.cgen"
+          Link="package/LegacyNode/Nodes/Curve/%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode/package/LegacyNode/Nodes/Curve/*.default"
+          Link="package/LegacyNode/Nodes/Curve/%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
