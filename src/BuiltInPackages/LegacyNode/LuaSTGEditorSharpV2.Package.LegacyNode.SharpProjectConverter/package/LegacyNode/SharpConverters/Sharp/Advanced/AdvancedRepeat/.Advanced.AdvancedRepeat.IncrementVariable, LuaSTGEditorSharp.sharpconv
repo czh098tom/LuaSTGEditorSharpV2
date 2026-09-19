@@ -1,0 +1,13 @@
+{
+  "SharpName": ".Advanced.AdvancedRepeat.IncrementVariable, LuaSTGEditorSharp",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "initial_value",
+      "NewKey": "init"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "SharpName": ".Advanced.AdvancedRepeat.VariableCollection, LuaSTGEditorSharp",
+  "Converters": [
+    {
+      "$type": "Default"
+    }
+  ]
+}
