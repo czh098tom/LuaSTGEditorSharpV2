@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/LuaSTGEditorSharpV2.Core/LuaSTGEditorSharpV2.Core.csproj" />
+    <ProjectReference Include="../../src/LuaSTGEditorSharpV2.Core.CodeGenerator/LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
+    <ProjectReference Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua/LuaSTGEditorSharpV2.Package.Lua.csproj" />
+    <ProjectReference Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.CodeGenerator/LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.CodeGenerator/package/Lua/Nodes/Advanced/AdvancedRepeat/*.cgen"
+          Link="package/Lua/Nodes/Advanced/AdvancedRepeat/%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua/package/Lua/Nodes/Advanced/AdvancedRepeat/*.default"
+          Link="package/Lua/Nodes/Advanced/AdvancedRepeat/%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
