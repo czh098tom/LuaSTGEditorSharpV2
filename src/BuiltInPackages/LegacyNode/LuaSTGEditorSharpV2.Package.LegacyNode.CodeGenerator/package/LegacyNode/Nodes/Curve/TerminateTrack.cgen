@@ -1,0 +1,7 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "TerminateTrack",
+  "Language": "Lua",
+  "Head": [ "__terminated = true" ],
+  "IgnoreChildren": true
+}

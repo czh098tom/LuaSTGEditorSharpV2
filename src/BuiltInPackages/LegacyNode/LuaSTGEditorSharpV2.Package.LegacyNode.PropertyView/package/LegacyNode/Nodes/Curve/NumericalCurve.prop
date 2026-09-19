@@ -1,0 +1,42 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "NumericalCurve",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "offset"
+          },
+          "Caption": {
+            "Neutral": "Offset",
+            "Localized": {
+              "zh": "起始延迟"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "repeat_type"
+          },
+          "Caption": {
+            "Neutral": "Repeat type",
+            "Localized": {
+              "zh": "重复方式"
+            }
+          },
+          "Editor": {
+            "Name": "comboBox",
+            "Parameters": {
+              "Options": "lua_curve_repeat_type"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.Curve.TemplateCurvePointCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator",
+  "TypeUID": "NumericalPoint",
+  "Language": "Lua",
+  "Captures": {
+    "raw_time": { "Key": "time", "DisableMacro": true },
+    "raw_value": { "Key": "value", "DisableMacro": true },
+    "time": { "Key": "time" },
+    "value": { "Key": "value" },
+    "is_relative": { "Key": "is_relative", "DisableMacro": true }
+  },
+  "ConditionTemplates": { "relative": "'{{self.is_relative}}' != 'false'" },
+  "InterpolationCapture": { "Key": "interpolation" },
+  "InitialTime": [ "{{{self.raw_time}}}" ],
+  "InitialValue": [ "{{{self.raw_value}}}" ],
+  "PreviousValue": [ "{{{self.value}}}" ],
+  "Body": [
+    "curr = {{{self.value}}}\n", "ibeg = i\n",
+    "{{#condition.relative}}target = target + {{{self.time}}}",
+    "{{/condition.relative}}{{^condition.relative}}",
+    "target = {{{self.time}}} + offset{{/condition.relative}}\n",
+    "kx = target - ibeg\n", "ky = curr - prev\n", "while i < target do\n",
+    "{0:IND}{{args.variableName}} = ",
+    "{{#args.linear}}prev + ky * (i - ibeg) / kx{{/args.linear}}",
+    "{{^args.linear}}prev + ky * {{{args.interpolation}}}",
+    "((i - ibeg) / kx){{/args.linear}}\n",
+    "{0:IND}i = i + 1\n", "{0:IND}task.Wait()\n", "end\n",
+    "{{args.variableName}} = curr\n", "prev = curr"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "NumericalPoint",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "time"
+          },
+          "Caption": {
+            "Neutral": "Time",
+            "Localized": {
+              "zh": "时间"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "value"
+          },
+          "Caption": {
+            "Neutral": "Value",
+            "Localized": {
+              "zh": "值"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "interpolation"
+          },
+          "Caption": {
+            "Neutral": "Interpolation (empty = linear)",
+            "Localized": {
+              "zh": "插值函数（留空为线性）"
+            }
+          },
+          "Editor": { "Name": "default" }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "is_relative"
+          },
+          "Caption": {
+            "Neutral": "Relative time",
+            "Localized": {
+              "zh": "相对时间"
+            }
+          },
+          "Editor": {
+            "Name": "editorBoolean"
+          }
+        }
+      ]
+    }
+  ]
+}

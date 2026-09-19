@@ -1,0 +1,26 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.Curve.NumericalTrackCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator",
+  "TypeUID": "NumericalTrack",
+  "Language": "Lua",
+  "Captures": {
+    "target": { "Key": "target" },
+    "auto_terminate": { "Key": "auto_terminate", "DisableMacro": true }
+  },
+  "ConditionTemplates": { "autoTerminate": "{{self.auto_terminate}}" },
+  "MappingCapture": { "Key": "mapping" },
+  "VariableNameFormat": "_{0}",
+  "Head": [ "do\n", "{0:IND}local __terminated = false\n", "{0:IND}local __terminateCount = 0" ],
+  "MappingTask": [
+    "{0:IND}task.New({{{self.target}}}, function()\n",
+    "{0:IND}{0:IND}local self = task.GetSelf()\n",
+    "{0:IND}{0:IND}for _ = 1, _infinite do\n",
+    "{0:IND}{0:IND}{0:IND}{{{args.mapping}}}\n",
+    "{0:IND}{0:IND}{0:IND}if __terminated",
+    "{{#condition.autoTerminate}} or __terminateCount >= {{args.curveCount}}",
+    "{{/condition.autoTerminate}} then break end\n",
+    "{0:IND}{0:IND}{0:IND}task.Wait()\n",
+    "{0:IND}{0:IND}end\n",
+    "{0:IND}end)"
+  ],
+  "Tail": [ "end" ]
+}

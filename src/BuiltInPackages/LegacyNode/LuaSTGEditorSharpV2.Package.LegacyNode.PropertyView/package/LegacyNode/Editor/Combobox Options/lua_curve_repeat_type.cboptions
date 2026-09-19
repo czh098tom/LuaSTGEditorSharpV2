@@ -1,0 +1,11 @@
+{
+  "Name": "curve_repeat_type",
+  "Options": [
+    {
+      "Result": "None"
+    },
+    {
+      "Result": "Round Robin"
+    }
+  ]
+}

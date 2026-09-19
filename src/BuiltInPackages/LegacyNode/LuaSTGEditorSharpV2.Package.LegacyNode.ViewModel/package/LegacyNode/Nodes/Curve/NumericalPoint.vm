@@ -1,0 +1,25 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "NumericalPoint",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/NumericalPoint.png",
+  "Captures": [
+    {
+      "Key": "time"
+    },
+    {
+      "Key": "value"
+    },
+    {
+      "Key": "interpolation"
+    },
+    {
+      "Key": "is_relative"
+    }
+  ],
+  "Text": {
+    "Neutral": "Point ({1}, {2}), interpolation: {3}, relative time: {4}",
+    "Localized": {
+      "zh": "数值点（{1}，{2}），插值函数：{3}，相对时间：{4}"
+    }
+  }
+}

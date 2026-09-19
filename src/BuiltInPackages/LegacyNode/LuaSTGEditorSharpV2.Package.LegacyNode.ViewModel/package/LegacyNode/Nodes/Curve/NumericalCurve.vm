@@ -1,0 +1,19 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "NumericalCurve",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/NumericalCurve.png",
+  "Captures": [
+    {
+      "Key": "offset"
+    },
+    {
+      "Key": "repeat_type"
+    }
+  ],
+  "Text": {
+    "Neutral": "Curve, offset: {1}, repeat: {2}",
+    "Localized": {
+      "zh": "数值曲线，偏移：{1}，重复方式：{2}"
+    }
+  }
+}

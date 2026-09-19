@@ -1,0 +1,22 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.Curve.TemplateNumericalCurveCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator",
+  "TypeUID": "NumericalCurve",
+  "Language": "Lua",
+  "Captures": { "offset": { "Key": "offset" }, "repeat_type": { "Key": "repeat_type", "DisableMacro": true } },
+  "ContextCaptures": { "track": { "TypeUID": "NumericalTrack", "Property": { "target": { "Key": "target" } } } },
+  "ConditionTemplates": { "roundRobin": "'{{self.repeat_type}}' == 'Round Robin'" },
+  "Declaration": [ "local {{args.variableName}} = {{{args.initialValue}}}" ],
+  "TaskHead": [
+    "task.New({{{context.track.target}}}, function()\n",
+    "{0:IND}local self = task.GetSelf()\n",
+    "{0:IND}task.Wait({{{self.offset}}})\n",
+    "{0:IND}local i = 0\n",
+    "{0:IND}local offset = 0",
+    "{{#condition.roundRobin}}\n",
+    "{0:IND}for _ = 1, _infinite do{{/condition.roundRobin}}"
+  ],
+  "BodyHead": [ "local curr, ibeg, ky, kx\nlocal prev = {{{args.previousValue}}}\nlocal target = offset" ],
+  "BodyTail": [ "offset = target" ],
+  "TaskTail": [ "{{#condition.roundRobin}}{0:IND}end\n{{/condition.roundRobin}}{0:IND}__terminateCount = __terminateCount + 1\nend)" ],
+  "BodyIndention": [ "{{#condition.roundRobin}}2{{/condition.roundRobin}}{{^condition.roundRobin}}1{{/condition.roundRobin}}" ]
+}

@@ -1,0 +1,54 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "NumericalTrack",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "target"
+          },
+          "Caption": {
+            "Neutral": "Target",
+            "Localized": {
+              "zh": "目标"
+            }
+          },
+          "Editor": { "Name": "default" }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "mapping"
+          },
+          "Caption": {
+            "Neutral": "Mapping ({0}, {1}, ...)",
+            "Localized": {
+              "zh": "映射（{0}、{1}……）"
+            }
+          },
+          "Editor": {
+            "Name": "code"
+          }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "auto_terminate"
+          },
+          "Caption": {
+            "Neutral": "Auto terminate",
+            "Localized": {
+              "zh": "自动终止"
+            }
+          },
+          "Editor": {
+            "Name": "editorBoolean"
+          }
+        }
+      ]
+    }
+  ]
+}

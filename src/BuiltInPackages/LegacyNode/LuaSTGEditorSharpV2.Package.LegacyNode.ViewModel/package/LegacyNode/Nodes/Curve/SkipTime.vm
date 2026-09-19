@@ -1,0 +1,19 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "SkipTime",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/SkipTime.png",
+  "Captures": [
+    {
+      "Key": "time"
+    },
+    {
+      "Key": "is_relative"
+    }
+  ],
+  "Text": {
+    "Neutral": "Skip curve time: {1}, relative: {2}",
+    "Localized": {
+      "zh": "跳转曲线时间：{1}，相对跳转：{2}"
+    }
+  }
+}

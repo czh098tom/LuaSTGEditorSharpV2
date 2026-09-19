@@ -1,0 +1,9 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "SkipTime",
+  "Language": "Lua",
+  "Captures": { "time": { "Key": "time" }, "is_relative": { "Key": "is_relative", "DisableMacro": true } },
+  "ConditionTemplates": { "relative": "'{{self.is_relative}}' == 'true'" },
+  "Head": [ "{{#condition.relative}}i = i + {{{self.time}}}{{/condition.relative}}{{^condition.relative}}i = {{{self.time}}}{{/condition.relative}}" ],
+  "IgnoreChildren": true
+}

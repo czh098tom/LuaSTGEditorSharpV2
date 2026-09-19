@@ -1,0 +1,22 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "NumericalTrack",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/16x16/NumericalTrack.png",
+  "Captures": [
+    {
+      "Key": "target"
+    },
+    {
+      "Key": "mapping"
+    },
+    {
+      "Key": "auto_terminate"
+    }
+  ],
+  "Text": {
+    "Neutral": "Track on {1}, mapping: {2}, auto terminate: {3}",
+    "Localized": {
+      "zh": "数值轨道：{1}，映射：{2}，自动终止：{3}"
+    }
+  }
+}

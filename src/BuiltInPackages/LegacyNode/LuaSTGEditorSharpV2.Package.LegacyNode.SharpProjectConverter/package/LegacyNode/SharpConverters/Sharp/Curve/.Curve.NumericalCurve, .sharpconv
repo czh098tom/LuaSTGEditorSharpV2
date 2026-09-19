@@ -1,0 +1,8 @@
+{
+  "SharpName": ".Curve.NumericalCurve, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    }
+  ]
+}
