@@ -1,0 +1,22 @@
+{
+    "$type": "LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepeat.AdvancedRepeatCodeGeneration, LuaSTGEditorSharpV2.Package.Lua.CodeGenerator",
+    "TypeUID": "AdvancedRepeat",
+    "Language": "Lua",
+    "Captures": {
+        "times": {
+            "Key": "times"
+        }
+    },
+    "Head": [
+        "do"
+    ],
+    "LoopHead": [
+        "{0:IND}for _=1,{{{self.times}}} do"
+    ],
+    "LoopTail": [
+        "{0:IND}end"
+    ],
+    "Tail": [
+        "end"
+    ]
+}

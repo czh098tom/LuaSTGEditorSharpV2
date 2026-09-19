@@ -1,0 +1,10 @@
+{
+    "TypeUID": "LinearVariable",
+    "DefaultValue": {
+        "name": "",
+        "from": "0",
+        "to": "0",
+        "precisely": "false",
+        "mode": "MOVE_NORMAL"
+    }
+}

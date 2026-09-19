@@ -1,0 +1,6 @@
+{
+    "TypeUID": "AdvancedRepeat",
+    "DefaultValue": {
+        "times": "_infinite"
+    }
+}

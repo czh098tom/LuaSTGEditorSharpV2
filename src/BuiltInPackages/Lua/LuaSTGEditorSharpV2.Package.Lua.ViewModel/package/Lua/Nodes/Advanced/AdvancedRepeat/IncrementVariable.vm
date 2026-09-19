@@ -1,0 +1,22 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "IncrementVariable",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/LinearVariable.png",
+  "Captures": [
+    {
+      "Key": "name"
+    },
+    {
+      "Key": "init"
+    },
+    {
+      "Key": "increment"
+    }
+  ],
+  "Text": {
+    "Neutral": "{1}: {2}, +({3}) each loop",
+    "Localized": {
+      "zh": "{1}：初值 {2}，每轮增加 ({3})"
+    }
+  }
+}

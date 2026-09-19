@@ -1,0 +1,17 @@
+{
+  "Name": "lua_advanced_repeat_mode",
+  "Options": [
+    {
+      "Result": "MOVE_NORMAL"
+    },
+    {
+      "Result": "MOVE_ACCEL"
+    },
+    {
+      "Result": "MOVE_DECEL"
+    },
+    {
+      "Result": "MOVE_ACC_DEC"
+    }
+  ]
+}

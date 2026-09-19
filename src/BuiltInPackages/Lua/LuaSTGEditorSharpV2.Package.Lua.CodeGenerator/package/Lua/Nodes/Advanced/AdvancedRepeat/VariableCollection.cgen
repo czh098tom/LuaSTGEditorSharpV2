@@ -1,0 +1,5 @@
+{
+    "$type": "LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepeat.VariableCollectionCodeGeneration, LuaSTGEditorSharpV2.Package.Lua.CodeGenerator",
+    "TypeUID": "VariableCollection",
+    "Language": "Lua"
+}

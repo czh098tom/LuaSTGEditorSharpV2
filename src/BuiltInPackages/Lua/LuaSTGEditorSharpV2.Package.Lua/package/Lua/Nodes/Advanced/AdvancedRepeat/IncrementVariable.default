@@ -1,0 +1,8 @@
+{
+    "TypeUID": "IncrementVariable",
+    "DefaultValue": {
+        "name": "",
+        "init": "0",
+        "increment": "0"
+    }
+}

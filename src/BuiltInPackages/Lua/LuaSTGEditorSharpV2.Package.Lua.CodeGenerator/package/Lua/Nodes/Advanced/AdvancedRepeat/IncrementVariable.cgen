@@ -1,0 +1,23 @@
+{
+    "$type": "LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepeat.TemplateVariableTransformationCodeGeneration, LuaSTGEditorSharpV2.Package.Lua.CodeGenerator",
+    "TypeUID": "IncrementVariable",
+    "Language": "Lua",
+    "Captures": {
+        "name": {
+            "Key": "name",
+            "DisableMacro": true
+        },
+        "init": {
+            "Key": "init"
+        },
+        "increment": {
+            "Key": "increment"
+        }
+    },
+    "Initialization": [
+        "local {{self.name}}={{{self.init}}} local _d_{{self.name}}=({{{self.increment}}})"
+    ],
+    "Update": [
+        "{0:IND}{{self.name}}={{self.name}}+_d_{{self.name}}"
+    ]
+}

@@ -1,0 +1,16 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "AdvancedRepeat",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/advancedrepeat.png",
+  "Captures": [
+    {
+      "Key": "times"
+    }
+  ],
+  "Text": {
+    "Neutral": "repeat {1} times",
+    "Localized": {
+      "zh": "循环 {1} 次"
+    }
+  }
+}
