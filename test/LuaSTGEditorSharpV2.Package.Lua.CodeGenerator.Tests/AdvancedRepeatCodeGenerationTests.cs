@@ -77,6 +77,170 @@ public sealed class AdvancedRepeatCodeGenerationTests
         Assert.All(code, item => Assert.Equal(1, item.LineCount));
     }
 
+    [Fact]
+    public void RemainingVariablesLoadConcreteServicesAndDefaults()
+    {
+        using var fixture = new Fixture();
+        var rebounding = Node("ReboundingVariable");
+        var custom = Node("CustomInterpolationVariable");
+        var sineInterpolation = Node("SinusoidalInterpolationVariable");
+        var sineMovement = Node("SinusoidalMovementVariable");
+        var sineOscillation = Node("SinusoidalOscillationVariable");
+
+        Assert.IsType<TemplateVariableTransformationCodeGeneration>(fixture.Service(rebounding));
+        Assert.IsType<TemplateVariableTransformationCodeGeneration>(fixture.Service(custom));
+        Assert.IsType<TemplateVariableTransformationCodeGeneration>(fixture.Service(sineInterpolation));
+        Assert.IsType<TemplateVariableTransformationCodeGeneration>(fixture.Service(sineMovement));
+        Assert.IsType<TemplateVariableTransformationCodeGeneration>(fixture.Service(sineOscillation));
+
+        Assert.Equal("", fixture.Default(rebounding, "name"));
+        Assert.Equal("1", fixture.Default(rebounding, "initial_value"));
+        Assert.Equal("-1", fixture.Default(rebounding, "another_value"));
+        Assert.Equal("", fixture.Default(custom, "name"));
+        Assert.Equal("0", fixture.Default(custom, "from"));
+        Assert.Equal("0", fixture.Default(custom, "to"));
+        Assert.Equal("false", fixture.Default(custom, "precisely"));
+        Assert.Equal("function(x) return x end", fixture.Default(custom, "interpolationfunc"));
+        Assert.Equal("0", fixture.Default(sineInterpolation, "from"));
+        Assert.Equal("0", fixture.Default(sineInterpolation, "to"));
+        Assert.Equal("false", fixture.Default(sineInterpolation, "precisely"));
+        Assert.Equal("SINE_ACC_DEC", fixture.Default(sineInterpolation, "interpolation"));
+        Assert.Equal("-90", fixture.Default(sineMovement, "initial_phase"));
+        Assert.Equal("0", fixture.Default(sineMovement, "min"));
+        Assert.Equal("1", fixture.Default(sineMovement, "max"));
+        Assert.Equal("1", fixture.Default(sineMovement, "num_of_period"));
+        Assert.Equal("false", fixture.Default(sineMovement, "precisely"));
+        Assert.Equal("0", fixture.Default(sineOscillation, "initial_phase"));
+        Assert.Equal("-1", fixture.Default(sineOscillation, "min"));
+        Assert.Equal("1", fixture.Default(sineOscillation, "max"));
+        Assert.Equal("1.5", fixture.Default(sineOscillation, "omega"));
+    }
+
+    [Fact]
+    public void RemainingVariablesEmitV1Formulas()
+    {
+        using var fixture = new Fixture();
+        var repeat = Repeat("8");
+        var rebounding = Node("ReboundingVariable", ("name", "reb"), ("initial_value", "3"), ("another_value", "7"));
+        var custom = Node("CustomInterpolationVariable", ("name", "custom"), ("from", "0"), ("to", "8"),
+            ("precisely", "false"), ("interpolationfunc", "function(x) return x*x end"));
+        var sineInterpolation = Node("SinusoidalInterpolationVariable", ("name", "sineacc"), ("from", "0"),
+            ("to", "10"), ("precisely", "true"), ("interpolation", "SINE_ACCEL"));
+        var sineMovement = Node("SinusoidalMovementVariable", ("name", "sinemv"), ("initial_phase", "-90"),
+            ("min", "0"), ("max", "4"), ("num_of_period", "2"), ("precisely", "false"));
+        var sineOscillation = Node("SinusoidalOscillationVariable", ("name", "sineos"), ("initial_phase", "30"),
+            ("min", "-2"), ("max", "2"), ("omega", "1.5"));
+        var marker = Node("marker");
+        repeat.PhysicalChildren[0].Add(rebounding);
+        repeat.PhysicalChildren[0].Add(custom);
+        repeat.PhysicalChildren[0].Add(sineInterpolation);
+        repeat.PhysicalChildren[0].Add(sineMovement);
+        repeat.PhysicalChildren[0].Add(sineOscillation);
+        repeat.Add(marker);
+
+        var code = fixture.Generate(repeat);
+        Assert.Equal(new[]
+        {
+            "do\n",
+            " local reb=3 local _n_reb=(3)+(7)\n",
+            " local _beg_custom=0 local _func_custom=function(x) return x*x end local _w_custom=0 local _end_custom=8 local _d_w_custom=1/(8) local custom=(_end_custom-_beg_custom)*_func_custom(0)+_beg_custom\n",
+            " local _beg_sineacc=0 local sineacc=_beg_sineacc local _w_sineacc=-90 local _end_sineacc=10 local _d_w_sineacc=90/(8-1)\n",
+            " local _h_sinemv=(4-(0))/2 local _t_sinemv=(4+(0))/2 local sinemv=_h_sinemv*sin(-90)+_t_sinemv local _w_sinemv=-90 local _d_w_sinemv=2*360/(8)\n",
+            " local _h_sineos=(2-(-2))/2 local _t_sineos=(2+(-2))/2 local sineos=_h_sineos*sin(30)+_t_sineos local _w_sineos=30 local _d_w_sineos=1.5\n",
+            " for _=1,8 do\n",
+            "  marker\n",
+            "  reb=-(reb)+_n_reb\n",
+            "  _w_custom=_w_custom+_d_w_custom custom=(_end_custom-_beg_custom)*_func_custom(_w_custom)+_beg_custom\n",
+            "  _w_sineacc=_w_sineacc+_d_w_sineacc sineacc=(_end_sineacc-_beg_sineacc)*sin(_w_sineacc)+(_end_sineacc)\n",
+            "  _w_sinemv=_w_sinemv+_d_w_sinemv sinemv=_h_sinemv*sin(_w_sinemv)+_t_sinemv\n",
+            "  _w_sineos=_w_sineos+_d_w_sineos sineos=_h_sineos*sin(_w_sineos)+_t_sineos\n",
+            " end\n",
+            "end\n"
+        }, code.Select(item => item.Content));
+        Assert.Same(rebounding, code[1].Source);
+        Assert.Same(custom, code[2].Source);
+        Assert.Same(sineInterpolation, code[3].Source);
+        Assert.Same(sineMovement, code[4].Source);
+        Assert.Same(sineOscillation, code[5].Source);
+        Assert.Same(marker, code[7].Source);
+        Assert.Same(rebounding, code[8].Source);
+        Assert.Same(custom, code[9].Source);
+        Assert.Same(sineInterpolation, code[10].Source);
+        Assert.Same(sineMovement, code[11].Source);
+        Assert.Same(sineOscillation, code[12].Source);
+        Assert.All(code, item => Assert.Equal(1, item.LineCount));
+    }
+
+    [Theory]
+    [InlineData("SINE_ACCEL", "true", "local _w_position=-90 local _end_position=9 local _d_w_position=90/(3-1)", "_w_position=_w_position+_d_w_position position=(_end_position-_beg_position)*sin(_w_position)+(_end_position)")]
+    [InlineData("SINE_ACCEL", "false", "local _w_position=-90 local _end_position=9 local _d_w_position=90/(3)", "_w_position=_w_position+_d_w_position position=(_end_position-_beg_position)*sin(_w_position)+(_end_position)")]
+    [InlineData("SINE_DECEL", "false", "local _w_position=0 local _end_position=9 local _d_w_position=90/(3)", "_w_position=_w_position+_d_w_position position=(_end_position-_beg_position)*sin(_w_position)+(_beg_position)")]
+    [InlineData("SINE_ACC_DEC", "true", "local _w_position=-90 local _end_position=9 local _d_w_position=180/(3-1)", "_w_position=_w_position+_d_w_position position=(_end_position-_beg_position)/2*sin(_w_position)+((_end_position+_beg_position)/2)")]
+    [InlineData("SINE_ACC_DEC", "false", "local _w_position=-90 local _end_position=9 local _d_w_position=180/(3)", "_w_position=_w_position+_d_w_position position=(_end_position-_beg_position)/2*sin(_w_position)+((_end_position+_beg_position)/2)")]
+    [InlineData("unknown'quote", "false", "local _w_position=-90 local _end_position=9 local _d_w_position=180/(3)", "_w_position=_w_position+_d_w_position position=(_end_position-_beg_position)/2*sin(_w_position)+((_end_position+_beg_position)/2)")]
+    public void SinusoidalInterpolationModesPreserveV1(string mode, string precisely,
+        string initialization, string update)
+    {
+        using var fixture = new Fixture();
+        var repeat = Repeat("3");
+        var variable = Node("SinusoidalInterpolationVariable", ("name", "position"), ("from", "1"), ("to", "9"),
+            ("interpolation", mode), ("precisely", precisely));
+        repeat.PhysicalChildren[0].Add(variable);
+
+        var fragments = fixture.Generate(repeat).Where(item => ReferenceEquals(item.Source, variable)).ToArray();
+        Assert.Equal(2, fragments.Length);
+        Assert.Equal(" local _beg_position=1 local position=_beg_position " + initialization + "\n",
+            fragments[0].Content);
+        Assert.Equal("  " + update + "\n", fragments[1].Content);
+    }
+
+    [Theory]
+    [InlineData("true", "local _d_w_position=2*360/(3-1)")]
+    [InlineData("false", "local _d_w_position=2*360/(3)")]
+    public void SinusoidalMovementPreciseOnlyChangesTheStep(string precisely, string step)
+    {
+        using var fixture = new Fixture();
+        var repeat = Repeat("3");
+        var variable = Node("SinusoidalMovementVariable", ("name", "position"), ("initial_phase", "-90"),
+            ("min", "0"), ("max", "4"), ("num_of_period", "2"), ("precisely", precisely));
+        repeat.PhysicalChildren[0].Add(variable);
+
+        var fragments = fixture.Generate(repeat).Where(item => ReferenceEquals(item.Source, variable)).ToArray();
+        Assert.Equal(2, fragments.Length);
+        Assert.Equal(" local _h_position=(4-(0))/2 local _t_position=(4+(0))/2"
+            + " local position=_h_position*sin(-90)+_t_position local _w_position=-90 " + step + "\n",
+            fragments[0].Content);
+        Assert.Equal("  _w_position=_w_position+_d_w_position"
+            + " position=_h_position*sin(_w_position)+_t_position\n", fragments[1].Content);
+    }
+
+    [Fact]
+    public void SinusoidalOscillationUsesOmegaAsStepAndIgnoresRepeatTimes()
+    {
+        using var fixture = new Fixture();
+        var first = Oscillation(fixture, "3");
+        var second = Oscillation(fixture, "7");
+
+        Assert.Equal(first[0], second[0]);
+        Assert.Equal(first[1], second[1]);
+        Assert.Equal(" local _h_position=(4-(0))/2 local _t_position=(4+(0))/2"
+            + " local position=_h_position*sin(-90)+_t_position local _w_position=-90 local _d_w_position=2\n",
+            first[0]);
+        Assert.Equal("  _w_position=_w_position+_d_w_position position=_h_position*sin(_w_position)+_t_position\n",
+            first[1]);
+
+        static string[] Oscillation(Fixture fixture, string times)
+        {
+            var repeat = Repeat(times);
+            var variable = Node("SinusoidalOscillationVariable", ("name", "position"), ("initial_phase", "-90"),
+                ("min", "0"), ("max", "4"), ("omega", "2"));
+            repeat.PhysicalChildren[0].Add(variable);
+            return fixture.Generate(repeat)
+                .Where(item => ReferenceEquals(item.Source, variable))
+                .Select(item => item.Content).ToArray();
+        }
+    }
+
     [Theory]
     [InlineData("MOVE_NORMAL", "false", "3", "local _d_position=(_end_position-_beg_position)/(3)", "position=position+_d_position")]
     [InlineData("MOVE_NORMAL", "true", "3", "local _d_position=(_end_position-_beg_position)/(3-1)", "position=position+_d_position")]
