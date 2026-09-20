@@ -1,0 +1,31 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "SinusoidalMovementVariable",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/SinusoidalMovementVariable.png",
+  "Captures": [
+    {
+      "Key": "name"
+    },
+    {
+      "Key": "initial_phase"
+    },
+    {
+      "Key": "min"
+    },
+    {
+      "Key": "max"
+    },
+    {
+      "Key": "num_of_period"
+    },
+    {
+      "Key": "precisely"
+    }
+  ],
+  "Text": {
+    "Neutral": "{1}: sinusoidal movement between {3} <=> {4} with initial phase {2}, for {5} period(s), precisely: {6}",
+    "Localized": {
+      "zh": "{1}：在 {3} <=> {4} 之间正弦运动，初相 {2}，{5} 个周期，精确到达：{6}"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "SharpName": ".Advanced.AdvancedRepeat.ReboundingVariable, LuaSTGEditorSharp",
+  "Converters": [
+    {
+      "$type": "Default"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "CustomInterpolationVariable",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/CustomInterpolationVariable.png",
+  "Captures": [
+    {
+      "Key": "name"
+    },
+    {
+      "Key": "from"
+    },
+    {
+      "Key": "to"
+    },
+    {
+      "Key": "precisely"
+    },
+    {
+      "Key": "interpolationfunc"
+    }
+  ],
+  "Text": {
+    "Neutral": "{1}: {2} => {3}, precisely: {4}, interpolate by: {5}",
+    "Localized": {
+      "zh": "{1}：{2} → {3}，精确到达：{4}，插值函数：{5}"
+    }
+  }
+}

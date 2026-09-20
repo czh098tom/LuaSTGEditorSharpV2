@@ -1,0 +1,24 @@
+{
+    "$type": "LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepeat.TemplateVariableTransformationCodeGeneration, LuaSTGEditorSharpV2.Package.Lua.CodeGenerator",
+    "TypeUID": "ReboundingVariable",
+    "Language": "Lua",
+    "Captures": {
+        "name": {
+            "Key": "name",
+            "DisableMacro": true
+        },
+        "initial_value": {
+            "Key": "initial_value"
+        },
+        "another_value": {
+            "Key": "another_value"
+        }
+    },
+    "Initialization": [
+        "local {{self.name}}={{{self.initial_value}}}",
+        " local _n_{{self.name}}=({{{self.initial_value}}})+({{{self.another_value}}})"
+    ],
+    "Update": [
+        "{0:IND}{{self.name}}=-({{self.name}})+_n_{{self.name}}"
+    ]
+}

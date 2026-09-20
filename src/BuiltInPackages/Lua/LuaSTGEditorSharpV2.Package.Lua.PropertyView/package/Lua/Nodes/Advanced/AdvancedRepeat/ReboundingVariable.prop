@@ -1,0 +1,50 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "ReboundingVariable",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "name"
+          },
+          "Caption": {
+            "Neutral": "Name",
+            "Localized": {
+              "zh": "变量名"
+            }
+          },
+          "Editor": { "Name": "default" }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "initial_value"
+          },
+          "Caption": {
+            "Neutral": "Initial value",
+            "Localized": {
+              "zh": "初值"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "another_value"
+          },
+          "Caption": {
+            "Neutral": "Another value",
+            "Localized": {
+              "zh": "另一值"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        }
+      ]
+    }
+  ]
+}

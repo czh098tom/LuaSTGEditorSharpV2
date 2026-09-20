@@ -1,0 +1,80 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "CustomInterpolationVariable",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "name"
+          },
+          "Caption": {
+            "Neutral": "Name",
+            "Localized": {
+              "zh": "变量名"
+            }
+          },
+          "Editor": { "Name": "default" }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "from"
+          },
+          "Caption": {
+            "Neutral": "From",
+            "Localized": {
+              "zh": "起始值"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "to"
+          },
+          "Caption": {
+            "Neutral": "To",
+            "Localized": {
+              "zh": "终止值"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "precisely"
+          },
+          "Caption": {
+            "Neutral": "Precisely",
+            "Localized": {
+              "zh": "精确到达"
+            }
+          },
+          "Editor": {
+            "Name": "editorBoolean"
+          }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "interpolationfunc"
+          },
+          "Caption": {
+            "Neutral": "InterpolationFunc",
+            "Localized": {
+              "zh": "插值函数"
+            }
+          },
+          "Editor": {
+            "Name": "code"
+          }
+        }
+      ]
+    }
+  ]
+}

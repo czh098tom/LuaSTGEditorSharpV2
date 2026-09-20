@@ -1,0 +1,8 @@
+{
+  "SharpName": ".Advanced.AdvancedRepeat.SinusoidalOscillationVariable, LuaSTGEditorSharp",
+  "Converters": [
+    {
+      "$type": "Default"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+    "TypeUID": "SinusoidalInterpolationVariable",
+    "DefaultValue": {
+        "name": "",
+        "from": "0",
+        "to": "0",
+        "precisely": "false",
+        "interpolation": "SINE_ACC_DEC"
+    }
+}

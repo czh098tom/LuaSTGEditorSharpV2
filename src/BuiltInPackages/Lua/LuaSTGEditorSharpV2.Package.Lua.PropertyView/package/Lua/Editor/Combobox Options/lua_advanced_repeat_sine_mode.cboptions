@@ -1,0 +1,14 @@
+{
+  "Name": "lua_advanced_repeat_sine_mode",
+  "Options": [
+    {
+      "Result": "SINE_ACCEL"
+    },
+    {
+      "Result": "SINE_DECEL"
+    },
+    {
+      "Result": "SINE_ACC_DEC"
+    }
+  ]
+}

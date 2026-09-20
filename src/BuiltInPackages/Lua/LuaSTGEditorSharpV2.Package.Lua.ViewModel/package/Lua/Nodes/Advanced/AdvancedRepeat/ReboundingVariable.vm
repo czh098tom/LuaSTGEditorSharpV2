@@ -1,0 +1,22 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "ReboundingVariable",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/ReboundingVariable.png",
+  "Captures": [
+    {
+      "Key": "name"
+    },
+    {
+      "Key": "initial_value"
+    },
+    {
+      "Key": "another_value"
+    }
+  ],
+  "Text": {
+    "Neutral": "{1}: {2}(Initial) <=> {3}",
+    "Localized": {
+      "zh": "{1}：{2}(初值) <=> {3}"
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "SinusoidalMovementVariable",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "name"
+          },
+          "Caption": {
+            "Neutral": "Name",
+            "Localized": {
+              "zh": "变量名"
+            }
+          },
+          "Editor": { "Name": "default" }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "initial_phase"
+          },
+          "Caption": {
+            "Neutral": "Initial phase",
+            "Localized": {
+              "zh": "初相"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "min"
+          },
+          "Caption": {
+            "Neutral": "Min",
+            "Localized": {
+              "zh": "最小值"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "max"
+          },
+          "Caption": {
+            "Neutral": "Max",
+            "Localized": {
+              "zh": "最大值"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "num_of_period"
+          },
+          "Caption": {
+            "Neutral": "Num of period",
+            "Localized": {
+              "zh": "周期数"
+            }
+          },
+          "Editor": { "Name": "number", "Parameters": { "Step": "0.1" } }
+        },
+        {
+          "$type": "Default",
+          "Mapping": {
+            "Key": "precisely"
+          },
+          "Caption": {
+            "Neutral": "Precisely",
+            "Localized": {
+              "zh": "精确到达"
+            }
+          },
+          "Editor": {
+            "Name": "editorBoolean"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+    "TypeUID": "SinusoidalOscillationVariable",
+    "DefaultValue": {
+        "name": "",
+        "initial_phase": "0",
+        "min": "-1",
+        "max": "1",
+        "omega": "1.5"
+    }
+}

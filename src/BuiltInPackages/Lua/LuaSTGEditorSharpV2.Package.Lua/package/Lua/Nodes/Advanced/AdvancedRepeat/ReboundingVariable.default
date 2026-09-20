@@ -1,0 +1,8 @@
+{
+    "TypeUID": "ReboundingVariable",
+    "DefaultValue": {
+        "name": "",
+        "initial_value": "1",
+        "another_value": "-1"
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "SinusoidalOscillationVariable",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/SinusoidalOscillationVariable.png",
+  "Captures": [
+    {
+      "Key": "name"
+    },
+    {
+      "Key": "initial_phase"
+    },
+    {
+      "Key": "min"
+    },
+    {
+      "Key": "max"
+    },
+    {
+      "Key": "omega"
+    }
+  ],
+  "Text": {
+    "Neutral": "{1}: sinusoidal oscillation between {3} <=> {4} with initial phase {2} and omega {5}",
+    "Localized": {
+      "zh": "{1}：在 {3} <=> {4} 之间正弦振荡，初相 {2}，角速度 {5}"
+    }
+  }
+}

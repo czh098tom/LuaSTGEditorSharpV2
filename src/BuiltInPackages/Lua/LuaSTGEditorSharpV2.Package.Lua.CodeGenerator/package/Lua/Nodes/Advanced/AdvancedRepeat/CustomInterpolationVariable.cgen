@@ -1,0 +1,48 @@
+{
+    "$type": "LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepeat.TemplateVariableTransformationCodeGeneration, LuaSTGEditorSharpV2.Package.Lua.CodeGenerator",
+    "TypeUID": "CustomInterpolationVariable",
+    "Language": "Lua",
+    "Captures": {
+        "name": {
+            "Key": "name",
+            "DisableMacro": true
+        },
+        "from": {
+            "Key": "from"
+        },
+        "to": {
+            "Key": "to"
+        },
+        "precisely": {
+            "Key": "precisely",
+            "DisableMacro": true
+        },
+        "interpolationfunc": {
+            "Key": "interpolationfunc"
+        }
+    },
+    "ContextCaptures": {
+        "repeat": {
+            "TypeUID": "AdvancedRepeat",
+            "Property": {
+                "times": {
+                    "Key": "times"
+                }
+            }
+        }
+    },
+    "ConditionTemplates": {
+        "precise": "'{{self.precisely}}' == 'true'"
+    },
+    "Initialization": [
+        "local _beg_{{self.name}}={{{self.from}}}",
+        " local _func_{{self.name}}={{{self.interpolationfunc}}}",
+        " local _w_{{self.name}}=0 local _end_{{self.name}}={{{self.to}}}",
+        " local _d_w_{{self.name}}=1/({{{context.repeat.times}}}{{#condition.precise}}-1{{/condition.precise}})",
+        " local {{self.name}}=(_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(0)+_beg_{{self.name}}"
+    ],
+    "Update": [
+        "{0:IND}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}} {{self.name}}=(",
+        "_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(_w_{{self.name}})+_beg_{{self.name}}"
+    ]
+}
