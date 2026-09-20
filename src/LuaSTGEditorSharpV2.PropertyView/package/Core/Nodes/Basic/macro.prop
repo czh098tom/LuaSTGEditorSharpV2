@@ -1,0 +1,11 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "macro",
+  "Tabs": [{
+    "$type": "Default",
+    "Mapping": [
+      { "$type": "Default", "Mapping": { "Key": "replace" }, "Caption": { "Neutral": "Identifier", "Localized": { "zh": "标识符" } }, "Editor": { "Name": "default" } },
+      { "$type": "Default", "Mapping": { "Key": "by" }, "Caption": { "Neutral": "Replacement text", "Localized": { "zh": "替换文本" } }, "Editor": { "Name": "code" } }
+    ]
+  }]
+}
