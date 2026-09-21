@@ -34,11 +34,13 @@ namespace LinqSTG.Expression.ToLua.Tests
         }
 
         [Fact]
-        public void IntVariant_EmitsOuterScopeVariableAsScalar()
+        public void IntVariant_ConvertsOuterScopeVariableToInteger()
         {
             var lua = TranslateSingle(new NodeModel("PatternVariableInt", 0, 0, NameEditor("_infinite")));
 
-            Assert.Equal("local __val = _infinite", lua);
+            Assert.Contains("local __val = _infinite", lua);
+            Assert.Contains("math.floor(__number)", lua);
+            Assert.Contains("__rounded % 2 ~= 0", lua);
         }
 
         [Fact]
@@ -152,7 +154,7 @@ namespace LinqSTG.Expression.ToLua.Tests
 
             Assert.Equal("local __val = speed", lines.First(l => l.Text.StartsWith("local __val = ", StringComparison.Ordinal) && l.Text.EndsWith("speed", StringComparison.Ordinal)).Text);
             Assert.Contains("local __val = angle", text);
-            Assert.Contains("local __val = __lhs_1 + __rhs_2", text);
+            Assert.Contains("local __val = __lhs_2 + __rhs_3", text);
         }
 
         [Fact]

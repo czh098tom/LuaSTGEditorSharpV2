@@ -47,7 +47,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
                     (repeater, lower, upper, intervalType) => Contextual.Create(dict =>
                         (repeater?.Invoke(dict) ?? RepeaterKey.Default.GetRepeater(dict))
                             .Sample01(intervalType?.Invoke(dict) ?? IntervalType.HeadClosed)
-                            .MinMax(lower?.Invoke(dict) ?? 0f, upper?.Invoke(dict) ?? 0f)));
+                            .MinMax(lower?.Invoke(dict) ?? 0f, upper?.Invoke(dict) ?? 0f), OutputValue));
         }
     }
 }

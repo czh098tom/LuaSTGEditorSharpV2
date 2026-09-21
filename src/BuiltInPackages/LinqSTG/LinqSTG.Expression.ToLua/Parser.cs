@@ -175,10 +175,10 @@ namespace LinqSTG.Expression.ToLua
         {
             return intervalType switch
             {
-                IntervalType.Open => (inner) => Single($"local {name} = (__curr + 1) / (__max + 1)"),
-                IntervalType.HeadClosed => (inner) => Single($"local {name} = __curr / __max"),
-                IntervalType.TailClosed => (inner) => Single($"local {name} = (__curr + 1) / __max"),
-                IntervalType.BothClosed => (inner) => Single($"local {name} = __curr / (__max - 1)"),
+                IntervalType.Open => (inner) => Single($"local {name} = __max > 0 and ((__curr + 1) / (__max + 1)) or 0"),
+                IntervalType.HeadClosed => (inner) => Single($"local {name} = __max > 0 and (__curr / __max) or 0"),
+                IntervalType.TailClosed => (inner) => Single($"local {name} = __max > 0 and ((__curr + 1) / __max) or 0"),
+                IntervalType.BothClosed => (inner) => Single($"local {name} = __max > 1 and (__curr / (__max - 1)) or 0"),
                 _ => GetIntervalManipulater(name, IntervalType.HeadClosed)
             };
         }
@@ -225,7 +225,8 @@ namespace LinqSTG.Expression.ToLua
 
         public LuaParser TakeRepeaterFromContext(LuaParser repeaterKey)
         {
-            return repeaterKey;
+            return inner => Single(
+                $"(function(__total, __id) return {Int32Expression("__total")}, {Int32Expression("__id")} end)({FlatText(repeaterKey(inner))})");
         }
 
         public LuaParser ConstantFloat(float value)
@@ -717,15 +718,31 @@ namespace LinqSTG.Expression.ToLua
             );
         }
 
+        // Mirrors preview NumericConversion: invalid/out-of-range -> error, ties -> even.
+        // The argument is evaluated once, including random or contextual expressions.
+        private static string Int32Expression(string value)
+        {
+            return "(function(__number) "
+                + "if type(__number) ~= 'number' or __number ~= __number "
+                + "or __number == math.huge or __number == -math.huge then error('Cannot convert a non-finite or non-number value to Int32') end "
+                + "local __rounded = math.floor(__number); "
+                + "local __fraction = __number - __rounded; "
+                + "if __fraction > 0.5 or (__fraction == 0.5 and __rounded % 2 ~= 0) "
+                + "then __rounded = __rounded + 1 end "
+                + "if __rounded < -2147483648 or __rounded > 2147483647 then error('Rounded value is outside the Int32 range') end "
+                + $"return __rounded end)({value})";
+        }
+
         public LuaParser FloatToInt(LuaParser f)
         {
+            var value = GenId("__float_to_int_");
             return (inner) => Concat(
-                Single("local __f"),
+                Single($"local {value}"),
                 Single("do"),
                 Shift(f(inner), 1),
-                Single("__f = __val", 1),
+                Single($"{value} = __val", 1),
                 Single("end"),
-                Single("local __val = math.floor(__f + 0.5)")
+                Single($"local __val = {Int32Expression(value)}")
             );
         }
 

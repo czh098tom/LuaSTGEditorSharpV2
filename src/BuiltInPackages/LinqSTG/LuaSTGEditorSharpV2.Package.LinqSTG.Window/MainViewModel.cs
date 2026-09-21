@@ -25,6 +25,8 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
     {
         public string? NetworkJson { get; set; }
 
+        public string? PreviewError { get; private set; }
+
         public IReadOnlyList<BulletVisual> Points { get; private set; } = Array.Empty<BulletVisual>();
 
         public int Time
@@ -215,27 +217,58 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
             };
         }
 
+        private void ClearEvaluationErrors()
+        {
+            foreach (var port in network.Nodes.Items.SelectMany(node => node.Outputs.Items)
+                .Select(output => output.Port).OfType<LinqSTGPortViewModel>())
+            {
+                port.EvaluationError = null;
+            }
+            PreviewError = null;
+            RaisePropertyChanged(nameof(PreviewError));
+        }
+
         private void UpdatePreviewPattern()
         {
-            pointPredictions = activePreviewResult?.Invoke(CreatePreviewParameter()).ToArray() ?? [];
+            ClearEvaluationErrors();
+            try
+            {
+                pointPredictions = activePreviewResult?.Invoke(CreatePreviewParameter()).ToArray() ?? [];
+            }
+            catch (ContextualEvaluationException exception)
+            {
+                pointPredictions = [];
+                PreviewError = exception.Message;
+                RaisePropertyChanged(nameof(PreviewError));
+            }
             UpdatePrediction();
         }
 
         private void UpdatePrediction()
         {
             var list = new List<BulletVisual>();
-            foreach (var pred in pointPredictions)
+            try
             {
-                if (Time >= pred.StartTime)
+                foreach (var pred in pointPredictions)
                 {
-                    var point = pred.PointFunc.Predict(Time - pred.StartTime);
-                    if (float.IsNaN(point.X) || float.IsNaN(point.Y)) continue;
-                    var half = pred.Diameter / 2f;
-                    list.Add(new BulletVisual(
-                        new PointF(point.X - half, -point.Y - half),
-                        pred.Shape,
-                        pred.Diameter));
+                    if (Time >= pred.StartTime)
+                    {
+                        var point = pred.PointFunc.Predict(Time - pred.StartTime);
+                        if (float.IsNaN(point.X) || float.IsNaN(point.Y)) continue;
+                        var half = pred.Diameter / 2f;
+                        list.Add(new BulletVisual(
+                            new PointF(point.X - half, -point.Y - half),
+                            pred.Shape,
+                            pred.Diameter));
+                    }
                 }
+            }
+            catch (ContextualEvaluationException exception)
+            {
+                list.Clear();
+                pointPredictions = [];
+                PreviewError = exception.Message;
+                RaisePropertyChanged(nameof(PreviewError));
             }
             Points = list;
             RaisePropertyChanged(nameof(Points));
@@ -320,6 +353,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows
 
         private void ClearPreviewSource()
         {
+            ClearEvaluationErrors();
             activePreviewSource = null;
             activePreviewResult = null;
             previewResultSubscription.Disposable = Disposable.Empty;

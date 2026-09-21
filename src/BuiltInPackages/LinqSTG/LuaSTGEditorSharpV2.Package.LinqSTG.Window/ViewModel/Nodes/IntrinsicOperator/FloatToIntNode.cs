@@ -26,7 +26,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
             TitleColor = NodeColors.Operator;
 
             OutputInt.Value = InputFloat.ValueChanged
-                .Select(floatValue => Contextual.Create(dict => Convert.ToInt32(floatValue?.Invoke(dict) ?? 0)));
+                .Select(floatValue => Contextual.Create(dict => NumericConversion.ToInt32(floatValue?.Invoke(dict) ?? 0), OutputInt));
         }
     }
 }

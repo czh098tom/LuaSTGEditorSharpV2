@@ -67,7 +67,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.Data
 
             OutputValue.Value = NameEditor.ValueChanged
                 .Select(name => Contextual.Create<int>(dict =>
-                    Convert.ToInt32(dict.Floats.GetValueOrDefault(name?.Invoke(dict) ?? string.Empty, 0f))));
+                    NumericConversion.ToInt32(dict.Floats.GetValueOrDefault(name?.Invoke(dict) ?? string.Empty, 0f)), OutputValue));
         }
     }
 }

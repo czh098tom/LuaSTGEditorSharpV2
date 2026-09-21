@@ -57,11 +57,12 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.View
             this.WhenActivated(d =>
             {
                 this.WhenAnyValue(v => v.ViewModel).BindTo(this, v => v.PortView.ViewModel).DisposeWith(d);
-                this.OneWayBind(ViewModel, vm => vm.PortColor, 
+                this.OneWayBind(ViewModel, vm => vm.EvaluationError, v => v.ToolTip).DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.DisplayColor,
                     v => v.PortView.RegularStroke, c => new SolidColorBrush(c)).DisposeWith(d);
-                this.OneWayBind(ViewModel, vm => vm.PortColor,
+                this.OneWayBind(ViewModel, vm => vm.DisplayColor,
                     v => v.PortView.ConnectedStroke, c => new SolidColorBrush(c)).DisposeWith(d);
-                this.OneWayBind(ViewModel, vm => vm.PortColor,
+                this.OneWayBind(ViewModel, vm => vm.DisplayColor,
                     v => v.PortView.ConnectedFill, c => new SolidColorBrush(c)).DisposeWith(d);
             });
         }

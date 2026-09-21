@@ -54,7 +54,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
                         var lo = lowerBound?.Invoke(dict) ?? Vector2.Zero;
                         var hi = upperBound?.Invoke(dict) ?? Vector2.Zero;
                         return t * (hi - lo) + lo;
-                    }));
+                    }, OutputVector2));
         }
     }
 }

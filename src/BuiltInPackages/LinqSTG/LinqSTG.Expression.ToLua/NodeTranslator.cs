@@ -125,9 +125,10 @@ namespace LinqSTG.Expression.ToLua
 
                 // Variable list references: the name is assumed to be a variable
                 // defined in the outer scope (e.g. _infinite), so it is emitted
-                // verbatim as the scalar value. Both variants are Lua numbers.
+                // verbatim as the scalar value; integer references also apply conversion.
                 "PatternVariableFloat" => VariableFromEditor(node, "name"),
-                "PatternVariableInt" => VariableFromEditor(node, "name"),
+                "PatternVariableInt" => new TypedLuaParser(
+                    _parser.FloatToInt(VariableFromEditor(node, "name").LuaParser), PortShape.Scalar),
 
                 // The locked built-ins translate to their fixed outer-scope targets.
                 "Infinite" => new TypedLuaParser(

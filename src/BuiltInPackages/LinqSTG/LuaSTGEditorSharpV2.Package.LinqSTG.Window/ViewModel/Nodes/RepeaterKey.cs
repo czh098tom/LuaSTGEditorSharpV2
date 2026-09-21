@@ -14,7 +14,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes
         {
             var id = dict.Floats.GetValueOrDefault(ID, 0f);
             var total = dict.Floats.GetValueOrDefault(Total, 0f);
-            return new Repeater(Convert.ToInt32(id), Convert.ToInt32(total));
+            return new Repeater(NumericConversion.ToInt32(id), NumericConversion.ToInt32(total));
         }
     }
 }

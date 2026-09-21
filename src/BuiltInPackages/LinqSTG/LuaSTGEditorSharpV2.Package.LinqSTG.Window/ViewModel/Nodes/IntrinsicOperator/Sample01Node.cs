@@ -37,7 +37,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
                 .CombineLatest(InputIntervalType.ValueChanged, (repeater, intervalType) =>
                     Contextual.Create(dict =>
                         (repeater?.Invoke(dict) ?? RepeaterKey.Default.GetRepeater(dict))
-                            .Sample01(intervalType?.Invoke(dict) ?? IntervalType.HeadClosed)));
+                            .Sample01(intervalType?.Invoke(dict) ?? IntervalType.HeadClosed), OutputValue));
         }
     }
 }

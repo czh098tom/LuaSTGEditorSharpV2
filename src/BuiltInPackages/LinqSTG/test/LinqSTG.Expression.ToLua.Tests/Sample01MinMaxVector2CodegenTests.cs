@@ -27,7 +27,7 @@ namespace LinqSTG.Expression.ToLua.Tests
             Assert.Contains("__ubx, __uby = __valx, __valy", lua);
             // ... sampled with the default repeater and HeadClosed interval ...
             Assert.Contains("local __max, __curr = __t, __i", lua);
-            Assert.Contains("local __u = __curr / __max", lua);
+            Assert.Contains("local __u = __max > 0 and (__curr / __max) or 0", lua);
             // ... and remapped component-wise.
             Assert.Contains("local __valx = __u * (__ubx - __lbx) + __lbx", lua);
             Assert.Contains("local __valy = __u * (__uby - __lby) + __lby", lua);
@@ -50,7 +50,7 @@ namespace LinqSTG.Expression.ToLua.Tests
             Assert.Contains("__ubx, __uby = __valx, __valy", lua);
             Assert.DoesNotContain("local __valx, __valy = 0, 0", lua);
             // BothClosed (3) rescales the index by (total - 1).
-            Assert.Contains("local __u = __curr / (__max - 1)", lua);
+            Assert.Contains("local __u = __max > 1 and (__curr / (__max - 1)) or 0", lua);
             Assert.Contains("local __valx = __u * (__ubx - __lbx) + __lbx", lua);
             Assert.Contains("local __valy = __u * (__uby - __lby) + __lby", lua);
             Assert.DoesNotContain("UNKNOWN NODE", lua);

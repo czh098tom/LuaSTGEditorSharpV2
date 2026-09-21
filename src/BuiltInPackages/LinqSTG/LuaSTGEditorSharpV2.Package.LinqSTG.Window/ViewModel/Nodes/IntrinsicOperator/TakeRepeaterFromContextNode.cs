@@ -31,7 +31,7 @@ namespace LuaSTGEditorSharpV2.Package.LinqSTG.Windows.ViewModel.Nodes.IntrinsicO
                 {
                     var repeaterKey = key?.Invoke(dict) ?? RepeaterKey.Default;
                     return repeaterKey.GetRepeater(dict);
-                }));
+                }, OutputRepeater));
         }
     }
 }
