@@ -265,6 +265,53 @@
             </Grid>
         </lsv:PropertyItemGrid>
     </DataTemplate>
+    <DataTemplate x:Key="property:multiplefile">
+        <lsv:PropertyItemGrid>
+            <WrapPanel Grid.ColumnSpan="3">
+                <Button Margin="0,0,4,0" Padding="8,2"
+                        Content="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multiplefile_add}"
+                        Command="{Binding ShowEditWindow}"
+                        ToolTip="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multiplefile_invalid_count}"
+                        ToolTipService.IsEnabled="{Binding HasInvalidCount}"
+                        ToolTipService.ShowOnDisabled="True"/>
+                <Button Padding="8,2"
+                        Content="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multiplefile_clear}"
+                        Command="{Binding Clear}"
+                        ToolTip="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multiplefile_invalid_count}"
+                        ToolTipService.IsEnabled="{Binding HasInvalidCount}"
+                        ToolTipService.ShowOnDisabled="True"/>
+            </WrapPanel>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
+    <DataTemplate x:Key="property:multiplefileEntry">
+        <lsv:PropertyItemGrid>
+            <Grid Grid.ColumnSpan="3" Margin="0,4,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="65"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Margin="5,2"
+                           Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multiplefile_source}"/>
+                <xctk:WatermarkTextBox Grid.Row="0" Grid.Column="1"
+                                      HorizontalAlignment="Stretch" TextWrapping="Wrap"
+                                      lpv:BoundEditor.Property="{Binding SourceProperty}"/>
+                <TextBlock Grid.Row="1" Margin="5,2"
+                           Text="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multiplefile_destination}"/>
+                <xctk:WatermarkTextBox Grid.Row="1" Grid.Column="1"
+                                      HorizontalAlignment="Stretch" TextWrapping="Wrap"
+                                      lpv:BoundEditor.Property="{Binding DestinationProperty}"/>
+                <Button Grid.Column="2" Grid.RowSpan="2" Margin="4,0,0,0" Padding="4,2"
+                        VerticalAlignment="Center"
+                        Content="{lex:Loc LuaSTGEditorSharpV2.PropertyView:Localized:multiplefile_remove}"
+                        Command="{Binding Delete}"/>
+            </Grid>
+        </lsv:PropertyItemGrid>
+    </DataTemplate>
     <DataTemplate x:Key="property:file">
         <lsv:PropertyItemGrid>
             <TextBlock Text="{Binding Name}" 

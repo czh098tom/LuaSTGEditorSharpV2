@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.Dialog.Services;
+using LuaSTGEditorSharpV2.PropertyView.Specialized.MultipleFile;
 using LuaSTGEditorSharpV2.PropertyView.Specialized.Vector;
 using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.WPF.Services;
@@ -18,6 +19,22 @@ public class PropertyEditWizardRegisterer : IServiceInstanceProvider<PropertyEdi
     {
         var arr = new List<PropertyEditWizardBase>
         {
+            PropertyEditWizard.Create("multiplefile", serviceProvider, (viewModel, _) =>
+            {
+                var viewModelWithCount = (MultipleFileCountPropertyItemViewModel)viewModel;
+                if (!viewModelWithCount.CanEdit)
+                {
+                    return null;
+                }
+                var localizationService = serviceProvider.GetRequiredService<LocalizationService>();
+                var paths = serviceProvider.GetRequiredService<FileDialogService>()
+                    .ShowOpenFileDialogForMultipleFile(
+                        "property_choose_file",
+                        localizationService.GetString(
+                            "fileDialog_chooseFileExtension",
+                            typeof(PropertyEditWizardRegisterer).Assembly));
+                return viewModelWithCount.CreateAppendEdit(paths);
+            }),
             PropertyEditWizard.Create("file", serviceProvider, (viewModel, _) =>
             {
                 var vm = (BasicPropertyItemViewModel)viewModel;
