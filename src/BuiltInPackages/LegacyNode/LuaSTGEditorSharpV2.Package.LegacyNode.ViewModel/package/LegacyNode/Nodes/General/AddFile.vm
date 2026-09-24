@@ -1,0 +1,23 @@
+{
+    "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.SingleListViewModelProvider, LuaSTGEditorSharpV2.ViewModel",
+    "TypeUID": "AddFile",
+    "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Package.LegacyNode.Resources.Shared;component/images/nodes/pack.png",
+    "Captures": [
+        { "Key": "count", "DefaultValue": "0" }
+    ],
+    "CountCapture": { "Key": "count", "DefaultValue": "0" },
+    "SubCaptureRule": [
+        { "Key": "source_{0}" }
+    ],
+    "SubCaptureFormat": {
+        "Neutral": [
+            { "Text": "\n\"{2}\"" }
+        ]
+    },
+    "Text": {
+        "Neutral": "Add {1} file(s) to pack{2}",
+        "Localized": {
+            "zh": "添加 {1} 个文件到资源包{2}"
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "TypeUID": "AddFile",
+    "DefaultValue": {
+        "count": "0"
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView",
+    "TypeUID": "AddFile",
+    "Tabs": [
+        {
+            "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.SingleListTabTerm`1[[LuaSTGEditorSharpV2.PropertyView.Specialized.MultipleFile.MultipleFilePropertyViewItemListTerm, LuaSTGEditorSharpV2.PropertyView]], LuaSTGEditorSharpV2.PropertyView",
+            "Caption": {
+                "Neutral": "Files",
+                "Localized": {
+                    "zh": "文件"
+                }
+            },
+            "Count": {
+                "$type": "MultipleFile",
+                "Mapping": {
+                    "Key": "count",
+                    "DefaultValue": "0"
+                },
+                "Files": {
+                    "Source": {
+                        "Key": "source_{0}"
+                    },
+                    "Destination": {
+                        "Key": "destination_{0}"
+                    }
+                }
+            },
+            "VariableProperty": {
+                "Files": {
+                    "Count": {
+                        "Key": "count",
+                        "DefaultValue": "0"
+                    },
+                    "Source": {
+                        "Key": "source_{0}"
+                    },
+                    "Destination": {
+                        "Key": "destination_{0}"
+                    }
+                }
+            }
+        }
+    ]
+}
