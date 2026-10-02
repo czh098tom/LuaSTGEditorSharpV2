@@ -12,6 +12,9 @@
       "$type": "NodePropertyRemapping",
       "OriginalKey": "redirect_self",
       "NewKey": "redirect_self_to_target"
+    },
+    {
+      "$type": "LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter.StageBodyTaskUnwrapper, LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter"
     }
   ]
 }

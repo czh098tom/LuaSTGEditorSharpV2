@@ -14,6 +14,9 @@
         "target": "self",
         "redirect": "false"
       }
+    },
+    {
+      "$type": "LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter.StageBodyTaskUnwrapper, LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter"
     }
   ]
 }

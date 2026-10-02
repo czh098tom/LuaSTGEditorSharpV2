@@ -21,6 +21,10 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             var outputName = ResolveDefaultOutputName(raw);
             var resources = SharpResourceMigrationAnalyzer.Analyze(raw, inputFilePath, outputFilePath);
             resources.Apply();
+            // The user-defined node layer is resolved in the editor, not in the game, so its instances
+            // become plain Code nodes. This must happen after the migration plan has been applied and
+            // before the formatter, so the definitions are still readable under their V1 captions.
+            UserDefinedNodeConverter.RewriteAll(raw);
             var doc = WrapSharpV2Structure(raw);
             ApplyFormatter(doc);
             InjectDefaultBuildingNode(doc, outputName);
