@@ -1,22 +1,12 @@
 {
-	"SharpName": ".Bullet.BulletClear, LuaSTGSharp",
-	"Converters": [
-		{
-			"$type": "StripNamespaceInType"
-		},
-		{
-			"$type": "NodeTypeRemapping",
-			"To": "ClearBullet"
-		},
-		{
-			"$type": "NodePropertyRemapping",
-			"OriginalKey": "ConvToFaith",
-			"NewKey": "convert_to_faith"
-		},
-		{
-			"$type": "NodePropertyRemapping",
-			"OriginalKey": "ClearIndest",
-			"NewKey": "include_indestructible"
-		}
-	]
+  "SharpName": ".Bullet.BulletClear, ",
+  "Converters": [
+    { "$type": "Default" },
+    { "$type": "NodeTypeRemapping", "To": "ClearBullet" },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "clear_indestructible",
+      "NewKey": "include_indestructible"
+    }
+  ]
 }

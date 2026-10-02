@@ -6,7 +6,7 @@
 		},
 		{
 			"$type": "NodePropertyRemapping",
-			"OriginalKey": "Parameters",
+			"OriginalKey": "Parameter List",
 			"NewKey": "parameters"
 		},
 		{
@@ -21,7 +21,7 @@
 		},
 		{
 			"$type": "NodePropertyRemapping",
-			"OriginalKey": "Stay",
+			"OriginalKey": "Stay on create",
 			"NewKey": "stay"
 		},
 		{

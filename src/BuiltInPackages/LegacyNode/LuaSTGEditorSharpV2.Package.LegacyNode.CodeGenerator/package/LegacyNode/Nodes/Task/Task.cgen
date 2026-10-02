@@ -9,7 +9,7 @@
 		{ "Text": "lasttask = task.New({1}, function()" },
 		{
 			"Text": "{0:IND}local self = task.GetSelf()",
-			"ConditionOn": "2"
+			"ConditionOn": 1
 		}
 	],
 	"Tail": [

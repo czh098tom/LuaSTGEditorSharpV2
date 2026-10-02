@@ -1,6 +1,11 @@
 {
 	"SharpName": ".Boss.BossInit, ",
 	"Converters": [
-		{ "$type":"Default" }
+		{ "$type":"Default" },
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "spell_card_background",
+			"NewKey": "scbg"
+		}
 	]
 }

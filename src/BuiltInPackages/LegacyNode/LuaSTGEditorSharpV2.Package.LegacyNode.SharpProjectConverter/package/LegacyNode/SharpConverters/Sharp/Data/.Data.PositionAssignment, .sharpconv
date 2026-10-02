@@ -1,0 +1,7 @@
+{
+  "SharpName": ".Data.PositionAssignment, ",
+  "Converters": [
+    { "$type": "Default" },
+    { "$type": "NodeTypeRemapping", "To": "SetPosition" }
+  ]
+}

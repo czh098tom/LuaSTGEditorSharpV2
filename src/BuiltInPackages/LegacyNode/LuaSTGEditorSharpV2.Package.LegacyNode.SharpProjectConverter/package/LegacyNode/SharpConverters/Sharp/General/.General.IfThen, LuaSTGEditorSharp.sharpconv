@@ -1,0 +1,12 @@
+{
+  "SharpName": ".General.IfThen, LuaSTGEditorSharp",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "If.Then"
+    }
+  ]
+}

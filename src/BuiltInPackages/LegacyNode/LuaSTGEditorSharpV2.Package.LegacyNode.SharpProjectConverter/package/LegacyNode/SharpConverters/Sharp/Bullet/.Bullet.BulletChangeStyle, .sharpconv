@@ -1,5 +1,5 @@
 {
-	"SharpName": ".Bullet.BulletChangeStyle, LuaSTGSharp",
+	"SharpName": ".Bullet.BulletChangeStyle, ",
 	"Converters": [
 		{
 			"$type": "StripNamespaceInType"

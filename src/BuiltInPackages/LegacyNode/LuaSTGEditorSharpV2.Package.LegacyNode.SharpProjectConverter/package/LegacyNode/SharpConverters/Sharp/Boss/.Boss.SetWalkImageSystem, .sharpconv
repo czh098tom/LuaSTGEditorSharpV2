@@ -1,5 +1,5 @@
 {
-  "SharpName": ".Boss.SetWalkImageSystem, ",
+  "SharpName": ".Boss.SetBossWalkImageSystem, ",
   "Converters": [
     {
       "$type": "Default"

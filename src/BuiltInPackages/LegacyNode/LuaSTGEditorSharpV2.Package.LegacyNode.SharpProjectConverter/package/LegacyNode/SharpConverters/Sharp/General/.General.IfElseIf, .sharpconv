@@ -1,0 +1,12 @@
+{
+  "SharpName": ".General.IfElseIf, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "If.ElseIf"
+    }
+  ]
+}
