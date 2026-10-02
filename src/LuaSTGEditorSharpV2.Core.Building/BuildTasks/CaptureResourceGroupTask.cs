@@ -21,6 +21,8 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
         public IOutputTargetVariable ResourcePathVariable { get; private set; }
         public IOutputTargetVariable ResourceNameInPackageVariable { get; private set; }
 
+        public string? InitialResourceGroup { get; set; }
+
         private readonly Func<GroupedResource, bool> groupFilter;
 
         public CaptureResourceGroupTask(IInputSourceVariable source, IOutputTargetVariable path,
@@ -51,11 +53,17 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
                 if (doc == null) continue;
                 NodeData root = doc.Root;
 
-                var files = context.ServiceProvider.GetRequiredService<ResourceGatheringServiceProvider>()
-                    .GetResourcesToPack(root, context.LocalParam)
+                var provider = context.ServiceProvider.GetRequiredService<ResourceGatheringServiceProvider>();
+                var documentDirectory = Path.GetDirectoryName(Path.GetFullPath(documentPath))!;
+                var files = provider.GetResourcesToPack(root, new LocalServiceParam(doc),
+                    (ResourceGatheringServiceSettings)provider.Settings, InitialResourceGroup)
                     .Where(groupFilter);
-                resourcePath.AddRange(files.Select(gr => gr.Path));
-                resourceNameInPackage.AddRange(files.Select(gr => gr.TargetName));
+                foreach (var file in files)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    resourcePath.Add(Path.GetFullPath(file.Path, documentDirectory));
+                    resourceNameInPackage.Add(file.TargetName);
+                }
                 await Task.Yield();
                 cancellationToken.ThrowIfCancellationRequested();
             }
