@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 {
@@ -17,9 +18,34 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
         public async Task Convert(CancellationToken cancellationToken)
         {
             var raw = await ConvertNodeAsync(cancellationToken);
+            var outputName = ResolveDefaultOutputName(raw);
+            var resources = SharpResourceMigrationAnalyzer.Analyze(raw, inputFilePath, outputFilePath);
+            resources.Apply();
             var doc = WrapSharpV2Structure(raw);
             ApplyFormatter(doc);
+            InjectDefaultBuildingNode(doc, outputName);
             doc.SaveAs(outputFilePath);
+        }
+
+        private string ResolveDefaultOutputName(NodeData? root)
+        {
+            // V1 uses only the first direct ProjSettings, even when it is disabled.
+            var settings = root?.PhysicalChildren.FirstOrDefault(node =>
+                SharpResourceMigrationAnalyzer.GetLegacyTypeName(node) == "ProjSettings");
+            var name = settings?.GetProperty("Output Name");
+            return string.IsNullOrEmpty(name) ? Path.GetFileNameWithoutExtension(inputFilePath) : name;
+        }
+
+        private static void InjectDefaultBuildingNode(DocumentModel document, string outputName)
+        {
+            var buildRoot = document.FindBuildRoot()
+                ?? throw new InvalidOperationException("The converted document has no build root.");
+            var build = new NodeData("DefaultLuaSTGBuilding");
+            build.Properties["task_name"] = "Default";
+            build.Properties["output_name"] = outputName;
+            build.Properties["initial_resource_group"] = "Default";
+            build.Properties["keep_first_resource_target"] = "true";
+            buildRoot.Insert(0, build);
         }
 
         private async Task<NodeData?> ConvertNodeAsync(CancellationToken cancellationToken)

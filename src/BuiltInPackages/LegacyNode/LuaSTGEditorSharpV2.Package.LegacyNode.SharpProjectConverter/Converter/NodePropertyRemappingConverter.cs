@@ -16,6 +16,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter
     {
         [JsonProperty] public string? OriginalKey { get; private set; } = string.Empty;
         [JsonProperty] public string? NewKey { get; private set; } = string.Empty;
+        [JsonProperty] public bool AsStringLiteral { get; private set; }
 
         public NodeData Convert(NodeData source, SharpNodeFormattingContext context)
         {
@@ -32,9 +33,42 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter
             var originalValue = source.Properties.GetValueOrDefault(OriginalKey, string.Empty);
             if (source.Properties.Remove(OriginalKey))
             {
-                source.Properties[NewKey] = originalValue;
+                source.Properties[NewKey] = AsStringLiteral ? AsLuaStringLiteral(originalValue) : originalValue;
             }
             return source;
+        }
+
+        // 归一化成 Lua 字符串字面量：字面量由属性值自身携带（Guideline.zh.md §2）。
+        // 已带成对引号的值原样返回，保证幂等；转义规则与 V1 StringParser.ParseLua 一致（转义 \ 、 ' 、 " ）。
+        private static string AsLuaStringLiteral(string value)
+        {
+            if (IsLuaStringLiteral(value))
+            {
+                return value;
+            }
+            var builder = new StringBuilder(value.Length + 2);
+            builder.Append('"');
+            foreach (char c in value)
+            {
+                if (c == '\\' || c == '\'' || c == '"')
+                {
+                    builder.Append('\\');
+                }
+                builder.Append(c);
+            }
+            builder.Append('"');
+            return builder.ToString();
+        }
+
+        // 首尾为同一类引号且长度不小于 2 的值视为已归一化。
+        private static bool IsLuaStringLiteral(string value)
+        {
+            if (value.Length < 2)
+            {
+                return false;
+            }
+            char quote = value[0];
+            return (quote == '"' || quote == '\'') && value[value.Length - 1] == quote;
         }
     }
 }

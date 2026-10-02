@@ -18,6 +18,12 @@
       "$type": "NodePropertyRemapping",
       "OriginalKey": "path",
       "NewKey": "file_path"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "resource_name",
+      "NewKey": "resource_name",
+      "AsStringLiteral": true
     }
   ]
 }
