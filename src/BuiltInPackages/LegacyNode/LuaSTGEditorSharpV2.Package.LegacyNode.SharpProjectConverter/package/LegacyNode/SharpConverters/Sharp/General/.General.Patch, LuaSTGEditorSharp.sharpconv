@@ -1,0 +1,17 @@
+{
+  "SharpName": ".General.Patch, LuaSTGEditorSharp",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "Include"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "source",
+      "NewKey": "path"
+    }
+  ]
+}
