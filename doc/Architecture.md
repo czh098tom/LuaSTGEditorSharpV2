@@ -203,6 +203,31 @@ abstract class ContextualNodeServiceProvider<TService, TContext, TSettings>
 
 ---
 
+### 3.7 代码生成上下文捕获
+
+`Configurable.ContextCapture` 与 `Configurable.Mustache.ContextCapture` 的选择器配置必须二选一：
+`TypeUID` 为非空单类型名；`AnyOfTypeUIDs` 为非空类型名数组，数组元素不得为 null、空串或纯空白。
+两个字段不能同时出现，显式 null 也无效；反序列化或 PopulateObject 校验失败时报告
+包含字段名的配置错误，包加载器沿用既有错误报告规则。
+单类型仍走 `PeekType`；系列类型沿 `EnumerateFromNearest()` 取最近的匹配节点，类型名大小写敏感，
+数组顺序不表示优先级。无匹配时属性捕获仍为空字符串。普通、条件、Mustache 和代码片段生成器
+共用此规则；`Property` 格式和既有两参数构造函数保持兼容。该扩展不新增 Provider 或服务短名。
+本次将系列字段 `TypeUIDs` 更名为 `AnyOfTypeUIDs`，系列配置须同步更新；单类型 `TypeUID` 不变。
+
+---
+
+### 3.8 Mustache 代码生成 helper
+
+`MustacheCodeGeneration` 与 `CodeFragmentTemplate.CreateModel` 的模型根提供
+`logicalChildrenCount` 无参 helper，绑定该次模型创建时的节点，返回其直接逻辑子节点数量。
+计数遵循 `GetLogicalChildren()`：排除禁用节点，不递归，也不根据子节点是否产码过滤。
+使用 `{{logicalChildrenCount}}` 或 `{{{logicalChildrenCount}}}` 调用；
+例如条件模板 `{{logicalChildrenCount}} > 0` 先由 Mustache 渲染，再交给 NCalc 求值。
+运行时采用 Stubble 支持的 `Func<object>` 委托，不使用 `Func<int>`；
+helper 不序列化到节点或配置，不新增 Provider、服务短名或 NCalc 函数。
+普通生成器递归时保留当前调用的模型，确保 Head/Tail 的 helper 与条件仍属于当前节点。
+既有 `ConditionTemplates` 和字符串捕获语义保持不变；本契约不扩展 ViewModel 模板。
+
 ## 四、主要数据流
 
 ### 4.1 启动加载流

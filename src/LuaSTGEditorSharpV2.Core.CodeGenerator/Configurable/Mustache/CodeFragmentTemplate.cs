@@ -30,7 +30,7 @@ public static class CodeFragmentTemplate
         foreach (var entry in contextCaptures)
         {
             var values = new Dictionary<string, object?>();
-            var contextNode = context.PeekType(entry.Value.TypeUID);
+            var contextNode = entry.Value.ResolveNode(context);
             foreach (var property in entry.Value.Property)
             {
                 values.Add(property.Key, contextNode is null
@@ -40,7 +40,14 @@ public static class CodeFragmentTemplate
             capturedContext.Add(entry.Key, values);
         }
 
-        var model = new { self, args = arguments ?? new Dictionary<string, object?>(), context = capturedContext, condition };
+        var model = new
+        {
+            self,
+            args = arguments ?? new Dictionary<string, object?>(),
+            context = capturedContext,
+            condition,
+            logicalChildrenCount = new Func<object>(() => node.GetLogicalChildren().Count())
+        };
         foreach (var entry in conditionTemplates)
         {
             var expression = new Expression(StaticStubbleRenderer.Render(entry.Value, model));
