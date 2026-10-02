@@ -1,9 +1,10 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LoadFX",
+	"IgnoreChildren": true,
 	"Captures": [
-		{ "Key": "resource_name" },
-		{ "Key": "file_path" }
+		{ "Key": "resource_name", "DisableMacro": true },
+		{ "Key": "destination", "DisableMacro": true }
 	],
-	"Head": "LoadFX({0},{1})"
+	"Head": "LoadFX('fx:'..{1},'{2}')"
 }

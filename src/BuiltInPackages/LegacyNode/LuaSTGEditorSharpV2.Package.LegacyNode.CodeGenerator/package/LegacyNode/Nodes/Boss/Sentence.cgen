@@ -4,16 +4,16 @@
 	"Captures": [
 		{ "Key": "image" },
 		{ "Key": "image_position" },
-		{ "Key": "text" },
+		{ "Key": "text", "DisableMacro": true },
 		{ "Key": "time" },
 		{ "Key": "scale" }
 	],
 	"Head": [
 		{
-			"Text": "{0:IND}boss.dialog.sentence(self,{0},{1},[===[{2}]===],"
+			"Text": "{0:IND}boss.dialog.sentence(self,{1},{2},[===[{3}]===],"
 		},
 		{
-			"Text": "{3},",
+			"Text": "{4},",
 			"ConditionOn": 3,
 			"UseExistanceInsteadOfBoolValue": true
 		},
@@ -24,7 +24,7 @@
 			"Inversed": true
 		},
 		{
-			"Text": "{4}",
+			"Text": "{5}",
 			"ConditionOn": 4,
 			"UseExistanceInsteadOfBoolValue": true
 		},
@@ -33,7 +33,8 @@
 			"ConditionOn": 4,
 			"UseExistanceInsteadOfBoolValue": true,
 			"Inversed": true
-		}
+		},
+		{ "Text": ")" }
 	],
 	"Tail": []
 }

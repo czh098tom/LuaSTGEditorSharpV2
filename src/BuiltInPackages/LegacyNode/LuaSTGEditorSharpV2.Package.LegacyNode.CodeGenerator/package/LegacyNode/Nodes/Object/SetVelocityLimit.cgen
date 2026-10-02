@@ -1,11 +1,11 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "SetVelocityLimit",
-	"Captures": [
-        { "Key": "target" },
-        { "Key": "max_velocity" },
-        { "Key": "max_x_velocity" },
-        { "Key": "max_y_velocity" }
-	],
-	"Head": "_forbid_v({1}, {2}, {3}, {4})"
+	"Captures": {
+		"target": { "Key": "target" },
+		"max_velocity": { "Key": "max_velocity" },
+		"max_x_velocity": { "Key": "max_x_velocity" },
+		"max_y_velocity": { "Key": "max_y_velocity" }
+	},
+	"Head": ["_forbid_v({{{self.target}}}, {{#self.max_velocity}}{{{self.max_velocity}}}{{/self.max_velocity}}{{^self.max_velocity}}'original'{{/self.max_velocity}}, {{#self.max_x_velocity}}{{{self.max_x_velocity}}}{{/self.max_x_velocity}}{{^self.max_x_velocity}}'original'{{/self.max_x_velocity}}, {{#self.max_y_velocity}}{{{self.max_y_velocity}}}{{/self.max_y_velocity}}{{^self.max_y_velocity}}'original'{{/self.max_y_velocity}})"]
 }

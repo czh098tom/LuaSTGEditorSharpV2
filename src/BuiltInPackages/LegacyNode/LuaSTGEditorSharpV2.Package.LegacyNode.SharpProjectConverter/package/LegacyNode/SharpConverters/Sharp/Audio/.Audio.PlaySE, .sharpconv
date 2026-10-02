@@ -1,0 +1,13 @@
+{
+	"SharpName": ".Audio.PlaySE, ",
+	"Converters": [
+		{
+			"$type": "Default"
+		},
+		{
+			"$type": "NodePropertyRemapping",
+			"OriginalKey": "ignore_default_volume",
+			"NewKey": "ignore_default"
+		}
+	]
+}

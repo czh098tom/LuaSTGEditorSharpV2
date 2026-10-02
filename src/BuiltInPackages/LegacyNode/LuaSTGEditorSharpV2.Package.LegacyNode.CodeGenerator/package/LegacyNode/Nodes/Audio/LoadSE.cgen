@@ -1,9 +1,10 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LoadSE",
+	"IgnoreChildren": true,
 	"Captures": [
-		{ "Key": "file_path" },
-		{ "Key": "resource_name" }
+		{ "Key": "resource_name", "DisableMacro": true },
+		{ "Key": "destination", "DisableMacro": true }
 	],
-	"Head": "MusicRecord({2}, {1})"
+	"Head": "LoadSound('se:'..{1},'{2}')"
 }

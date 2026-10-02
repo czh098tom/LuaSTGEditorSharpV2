@@ -6,5 +6,5 @@
             "Key": "position"
         }
     ],
-    "Head": "New(enemy_cast_ef, {1})"
+    "Head": "New(boss_cast_ef, {1})"
 }

@@ -22,7 +22,9 @@
 		}
 	],
 	"SubCaptureFormat": [
-		{ "Text": "lasttask = task.New({1},function()ex.SmoothSetValueTo({4},{5},{3},{6},nil,{2},{7})end)" }
+		{ "Text": "lasttask = task.New({1},function()ex.SmoothSetValueTo({4},{5},{3},{6},nil,{2},{7})end)",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": "true" }
 	],
 	"Head": "{4}"
 }

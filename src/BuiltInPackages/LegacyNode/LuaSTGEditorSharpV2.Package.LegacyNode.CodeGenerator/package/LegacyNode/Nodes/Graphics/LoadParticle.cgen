@@ -1,12 +1,13 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LoadParticle",
+	"IgnoreChildren": true,
 	"Captures": [
-		{ "Key": "resource_name" },
-		{ "Key": "file_path" },
+		{ "Key": "resource_name", "DisableMacro": true },
+		{ "Key": "destination", "DisableMacro": true },
 		{ "Key": "image" },
 		{ "Key": "collision_size" },
 		{ "Key": "rectangle_collision" }
 	],
-	"Head": "LoadPS({0},{1},{2},{3},{4})"
+	"Head": "LoadPS('particle:'..{1},'{2}',{3},{4},{5})"
 }

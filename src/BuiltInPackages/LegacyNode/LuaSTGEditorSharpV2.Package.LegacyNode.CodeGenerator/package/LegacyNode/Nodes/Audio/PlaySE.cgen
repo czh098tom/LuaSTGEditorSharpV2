@@ -7,5 +7,5 @@
 		{ "Key": "pan" },
 		{ "Key": "ignore_default" }
 	],
-	"Head": "PlaySound({0}, {1}, {2}, {3})"
+	"Head": "PlaySound({1}, {2}, {3}, {4})"
 }
