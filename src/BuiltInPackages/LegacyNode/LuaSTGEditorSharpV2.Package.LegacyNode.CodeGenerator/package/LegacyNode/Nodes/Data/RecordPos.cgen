@@ -1,0 +1,39 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.JoinedListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "RecordPos",
+  "Language": "Lua",
+  "IgnoreChildren": true,
+  "CountCapture": {
+    "DefaultValue": "0",
+    "Key": "count"
+  },
+  "MaximumCount": 100,
+  "RequiredCaptureName": "name",
+  "ItemCaptures": {
+    "name": {
+      "Key": "name_{0}",
+      "DisableMacro": true
+    },
+    "value": {
+      "Key": "object_{0}",
+      "DisableMacro": true
+    }
+  },
+  "Columns": {
+    "names": {
+      "Separator": ",",
+      "Template": [
+        "{{{args.item.name}}}"
+      ]
+    },
+    "values": {
+      "Separator": ",",
+      "Template": [
+        "{ x={{{args.item.value}}}.x ,y={{{args.item.value}}}.y }"
+      ]
+    }
+  },
+  "Head": [
+    "{{#args.hasItems}}local {{{args.columns.names}}}={{{args.columns.values}}}{{/args.hasItems}}"
+  ]
+}

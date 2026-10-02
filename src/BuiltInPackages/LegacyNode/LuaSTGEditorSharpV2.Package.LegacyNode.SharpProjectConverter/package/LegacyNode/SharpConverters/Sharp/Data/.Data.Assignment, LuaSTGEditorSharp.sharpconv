@@ -1,0 +1,29 @@
+{
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "IndexedListRemapping",
+      "OriginalCountKey": "number_of_var",
+      "NewCountKey": "count",
+      "OriginalIndexBase": 1,
+      "NewIndexBase": 0,
+      "MaximumCount": 100,
+      "PropertyRules": [
+        {
+          "OriginalKeyFormat": "var_{0}_name",
+          "ItemKey": "name",
+          "NewKeyFormat": "name_{0}"
+        },
+        {
+          "OriginalKeyFormat": "var_{0}_value",
+          "ItemKey": "value",
+          "NewKeyFormat": "value_{0}"
+        }
+      ],
+      "PreserveInactiveItems": true
+    }
+  ],
+  "SharpName": ".Data.Assignment, LuaSTGEditorSharp"
+}

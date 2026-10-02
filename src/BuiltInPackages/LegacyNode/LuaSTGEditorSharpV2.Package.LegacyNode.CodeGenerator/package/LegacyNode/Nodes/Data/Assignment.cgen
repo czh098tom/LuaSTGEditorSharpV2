@@ -1,0 +1,39 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.JoinedListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "Assignment",
+  "Language": "Lua",
+  "IgnoreChildren": true,
+  "CountCapture": {
+    "DefaultValue": "0",
+    "Key": "count"
+  },
+  "MaximumCount": 100,
+  "RequiredCaptureName": "name",
+  "ItemCaptures": {
+    "name": {
+      "Key": "name_{0}",
+      "DisableMacro": true
+    },
+    "value": {
+      "Key": "value_{0}",
+      "DisableMacro": false
+    }
+  },
+  "Columns": {
+    "names": {
+      "Separator": ",",
+      "Template": [
+        "{{{args.item.name}}}"
+      ]
+    },
+    "values": {
+      "Separator": ",",
+      "Template": [
+        "({{{args.item.value}}})"
+      ]
+    }
+  },
+  "Head": [
+    "{{#args.hasItems}}{{{args.columns.names}}}={{{args.columns.values}}}{{/args.hasItems}}"
+  ]
+}

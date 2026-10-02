@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Model
         public NodeData ToNodeData()
         {
             var n = new NodeData(Type ?? string.Empty);
-            foreach (var attr in SharpAttributes ?? [])
+            foreach (var attr in Converter.RecordPosConverter.NormalizeAttributes(this))
             {
                 if (attr != null)
                 {

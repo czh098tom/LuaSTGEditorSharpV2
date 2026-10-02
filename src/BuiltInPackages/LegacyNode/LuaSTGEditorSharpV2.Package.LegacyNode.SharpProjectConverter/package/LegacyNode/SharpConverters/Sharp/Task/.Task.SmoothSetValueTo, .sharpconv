@@ -1,0 +1,66 @@
+{
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "OriginalKey": "waiting_time",
+      "$type": "NodePropertyRemapping",
+      "NewKey": "delay"
+    },
+    {
+      "Key": "delay",
+      "DefaultValue": "0",
+      "$type": "PropertyDefaultValue"
+    },
+    {
+      "Key": "duration",
+      "DefaultValue": "1",
+      "$type": "PropertyDefaultValue"
+    },
+    {
+      "$type": "IndexedListRemapping",
+      "OriginalCountKey": "number_of_value",
+      "NewCountKey": "count",
+      "OriginalIndexBase": 1,
+      "NewIndexBase": 0,
+      "MaximumCount": 100,
+      "PropertyRules": [
+        {
+          "OriginalKeyFormat": "value_{0}_name",
+          "ItemKey": "name",
+          "NewKeyFormat": "variable_name{0}",
+          "DefaultValue": ""
+        },
+        {
+          "OriginalKeyFormat": "target_value_{0}",
+          "ItemKey": "target",
+          "NewKeyFormat": "target_value{0}",
+          "DefaultValue": ""
+        },
+        {
+          "OriginalKeyFormat": "interpolation_mode_{0}",
+          "ItemKey": "interpolation",
+          "NewKeyFormat": "interpolation_mode{0}",
+          "DefaultValue": ""
+        },
+        {
+          "OriginalKeyFormat": "modification_mode_{0}",
+          "ItemKey": "modification",
+          "NewKeyFormat": "modification_mode{0}",
+          "DefaultValue": ""
+        }
+      ],
+      "PreserveInactiveItems": true,
+      "ItemConverters": [
+        {
+          "AsStringLiteral": true,
+          "OriginalKey": "name",
+          "$type": "NodePropertyRemapping",
+          "NewKey": "name"
+        }
+      ]
+    }
+  ],
+  "SharpName": ".Task.SmoothSetValueTo, "
+}
