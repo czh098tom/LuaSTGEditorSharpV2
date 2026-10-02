@@ -1,7 +1,7 @@
 {
     "TypeUID": "DefineSpellCard",
     "DefaultValue": {
-        "spellcard_name": "",
+        "spellcard_name": "\"\"",
         "protect_time": "1",
         "resist_time": "3",
         "total_time": "30",

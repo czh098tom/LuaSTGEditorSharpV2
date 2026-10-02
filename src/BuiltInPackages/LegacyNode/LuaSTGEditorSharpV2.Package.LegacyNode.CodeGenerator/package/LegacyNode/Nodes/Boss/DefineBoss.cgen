@@ -1,23 +1,24 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineBoss",
-	"Captures": [
-		{ "Key": "identifier" },
-		{ "Key": "difficulty" },
-		{ "Key": "name" },
-		{ "Key": "background" },
-		{ "Key": "bgm" }
-	],
+	"Captures": {
+		"identifier": { "Key": "identifier", "DisableMacro": true },
+		"difficulty": { "Key": "difficulty", "DisableMacro": true },
+		"name": { "Key": "name", "DisableMacro": true },
+		"background": { "Key": "background" },
+		"bgm": { "Key": "bgm" }
+	},
+	"ConditionTemplates": {
+		"difficulty_is_all": "'{{{self.difficulty}}}' == '\"All\"'",
+		"has_background": "'{{{self.background}}}' != ''"
+	},
 	"Head": [
-		{ "Text": "local _temporary_class = Class(boss)" },
-		{ "Text": "_temporary_class.cards = {{}}" },
-		{ "Text": "_temporary_class.name = {3}" },
-		{ "Text": "_temporary_class.bgm = {5}" },
-		{ "Text": "_temporary_class._bg = {4}" },
-		{ "Text": "_temporary_class.difficulty = {2}" }
-	],
-	"Tail": [
-		{ "Text": "_editor_class[{1}..'@'..{2}] = _temporary_class" }
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}] = Class(boss)",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].cards = {}",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].name = {{{self.name}}}",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].bgm = {{{self.bgm}}}",
+		"{{#condition.has_background}}_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}]._bg = {{{self.background}}}{{/condition.has_background}}{{^condition.has_background}}_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}]._bg = nil{{/condition.has_background}}",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].difficulty = {{{self.difficulty}}}"
 	],
 	"IndentionIncrement": 0
 }

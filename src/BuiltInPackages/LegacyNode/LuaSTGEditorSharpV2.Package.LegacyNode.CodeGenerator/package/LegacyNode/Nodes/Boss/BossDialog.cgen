@@ -1,10 +1,41 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "BossDialog",
-	"Captures": [
-		{ "Key": "can_skip" },
-		{ "Key": "suspend_gameplay" }
+	"Captures": {
+		"can_skip": {
+			"Key": "can_skip"
+		},
+		"suspend_gameplay": {
+			"Key": "suspend_gameplay"
+		}
+	},
+	"ContextCaptures": {
+		"definition": {
+			"TypeUID": "DefineBoss",
+			"Property": {
+				"identifier": {
+					"Key": "identifier",
+					"DisableMacro": true
+				},
+				"difficulty": {
+					"Key": "difficulty",
+					"DisableMacro": true
+				}
+			}
+		}
+	},
+	"ConditionTemplates": {
+		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
+	},
+	"Head": [
+		"_tmp_sc = boss.dialog.New({{{self.can_skip}}})",
+		"function _tmp_sc:init()",
+		"{0:IND}lstg.player.dialog = {{{self.suspend_gameplay}}}",
+		"{0:IND}_dialog_can_skip = {{{self.can_skip}}}",
+		"{0:IND}self.dialog_displayer = New(dialog_displayer)"
 	],
-	"Head": "{0:IND}_tmp_sc = boss.dialog.New({0})\n{0:IND}function _tmp_sc:init()\n{0:IND}lstg.player.dialog = {1}\n{0:IND}_dialog_can_skip = {0}\n{0:IND}self.dialog_displayer = New(dialog_displayer)\n",
-	"Tail": "{0:IND}end\n{0:IND}table.insert(_temporary_class.cards, _tmp_sc)\n"
+	"Tail": [
+		"end",
+		"table.insert(_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].cards, _tmp_sc)"
+	]
 }

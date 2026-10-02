@@ -1,36 +1,64 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "EnemyInit",
-	"Captures": [
-		{ "Key": "parameters" },
-		{ "Key": "style" },
-		{ "Key": "hp" },
-		{ "Key": "power_amount" },
-		{ "Key": "faith_amount" },
-		{ "Key": "point_amount" },
-		{ "Key": "potect_time" },
-		{ "Key": "clear_bullet_when_killed" },
-		{ "Key": "bound" },
-		{ "Key": "collision_damage" }
-	],
+	"Captures": {
+		"parameters": {
+			"Key": "parameters"
+		},
+		"style": {
+			"Key": "style"
+		},
+		"hp": {
+			"Key": "hp"
+		},
+		"power_amount": {
+			"Key": "power_amount"
+		},
+		"faith_amount": {
+			"Key": "faith_amount"
+		},
+		"point_amount": {
+			"Key": "point_amount"
+		},
+		"potect_time": {
+			"Key": "potect_time"
+		},
+		"clear_bullet_when_killed": {
+			"Key": "clear_bullet_when_killed"
+		},
+		"bound": {
+			"Key": "bound"
+		},
+		"collision_damage": {
+			"Key": "collision_damage"
+		}
+	},
+	"ContextCaptures": {
+		"definition": {
+			"TypeUID": "DefineEnemy",
+			"Property": {
+				"identifier": {
+					"Key": "identifier",
+					"DisableMacro": true
+				},
+				"difficulty": {
+					"Key": "difficulty",
+					"DisableMacro": true
+				}
+			}
+		}
+	},
+	"ConditionTemplates": {
+		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
+	},
 	"Head": [
-		{
-			"Text": "function _temporary_class:init(self, _x, _y, {1})",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": "true"
-		},
-		{
-			"Text": "function _temporary_class:init(self, _x, _y)",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": "true",
-			"Inversed": "true"
-		},
-		{ "Text": "{0:IND}enemy.init(self, {2}, {3}, {8}, {9}, {10})"},
-		{ "Text": "{0:IND}self.x, self.y = _x, _y" },
-		{ "Text": "{0:IND}self.drop = {{{4}, {5}, {6}}}" },
-		{ "Text": "{0:IND}task.New(self, function() self.protect = true task.Wait({7}) self.protect = false end)" }
+		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, _x, _y{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})",
+		"{0:IND}enemy.init(self, {{{self.style}}}, {{{self.hp}}}, {{{self.clear_bullet_when_killed}}}, {{{self.bound}}}, {{{self.collision_damage}}})",
+		"{0:IND}self.x, self.y = _x, _y",
+		"{0:IND}self.drop = { {{{self.power_amount}}}, {{{self.faith_amount}}}, {{{self.point_amount}}} }",
+		"{0:IND}task.New(self, function() self.protect = true task.Wait({{{self.potect_time}}}) self.protect = false end)"
 	],
 	"Tail": [
-		{ "Text": "end" }
+		"end"
 	]
 }

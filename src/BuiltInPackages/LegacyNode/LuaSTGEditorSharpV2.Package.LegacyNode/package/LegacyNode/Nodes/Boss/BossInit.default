@@ -2,6 +2,6 @@
     "TypeUID": "BossInit",
     "DefaultValue": {
         "position": "240,384",
-        "scbg": ""
+        "scbg": "\"\""
     }
 }

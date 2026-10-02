@@ -1,7 +1,7 @@
 {
     "TypeUID": "DefineObject",
     "DefaultValue": {
-        "identifier": "",
-        "difficulty": "All"
+        "identifier": "\"\"",
+        "difficulty": "\"All\""
     }
 }

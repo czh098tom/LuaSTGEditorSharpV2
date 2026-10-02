@@ -1,42 +1,39 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineSpellCard",
-	"Captures": [
-		{ "Key": "spellcard_name" },
-		{ "Key": "protect_time" },
-		{ "Key": "resist_time" },
-		{ "Key": "total_time" },
-		{ "Key": "hp" },
-		{ "Key": "power_amount" },
-		{ "Key": "faith_amount" },
-		{ "Key": "point_amount" },
-		{ "Key": "bomb_immunity" },
-		{ "Key": "opening_performance" }
-	],
-	"ContextCaptures": [
-		{
+	"Captures": {
+		"spellcard_name": { "Key": "spellcard_name", "DisableMacro": true },
+		"protect_time": { "Key": "protect_time" },
+		"resist_time": { "Key": "resist_time" },
+		"total_time": { "Key": "total_time" },
+		"hp": { "Key": "hp" },
+		"power_amount": { "Key": "power_amount" },
+		"faith_amount": { "Key": "faith_amount" },
+		"point_amount": { "Key": "point_amount" },
+		"bomb_immunity": { "Key": "bomb_immunity" },
+		"opening_performance": { "Key": "opening_performance" },
+		"optional_id": { "Key": "optional_id" }
+	},
+	"ContextCaptures": {
+		"defineboss": {
 			"TypeUID": "DefineBoss",
-			"Property": [
-				{ "Key": "identifier" }
-			]
+			"Property": {
+				"identifier": { "Key": "identifier", "DisableMacro": true },
+				"difficulty": { "Key": "difficulty", "DisableMacro": true }
+			}
 		}
-	],
+	},
+	"ConditionTemplates": {
+		"has_optional_id": "'{{{self.optional_id}}}' != '' and '{{{self.optional_id}}}' != '\"\"'",
+		"spellcard_is_named": "'{{{self.spellcard_name}}}' != '' and '{{{self.spellcard_name}}}' != '\"\"'",
+		"boss_difficulty_is_all": "'{{{context.defineboss.difficulty}}}' == '\"All\"'"
+	},
 	"Head": [
-		{ "Text": "local _temporary_spellcard = boss.card.New({1}, {2}, {3}, {4}, {5}, {{{6}, {7}, {8}}}, {9})" },
-		{ "Text": "_temporary_class.cards = {{}}" },
-		{ "Text": "_temporary_class.name = {3}" },
-		{ "Text": "_temporary_class.bgm = {5}" },
-		{ "Text": "_temporary_class._bg = {4}" },
-		{ "Text": "_temporary_class.difficulty = {2}" }
+		"_tmp_sc = boss.card.New({{{self.spellcard_name}}}, {{{self.protect_time}}}, {{{self.resist_time}}}, {{{self.total_time}}}, {{{self.hp}}}, { {{{self.power_amount}}}, {{{self.faith_amount}}}, {{{self.point_amount}}} }, {{{self.bomb_immunity}}})",
+		"local _temporary_spellcard = _tmp_sc"
 	],
 	"Tail": [
-		{ "Text": "_temporary_spellcard.perform = {10}" },
-		{ "Text": "table.insert(_temporary_class.cards, _temporary_spellcard" },
-		{
-			"Text": "table.insert(_sc_table, {{{11}, {1}, _temporary_spellcard, #_temporary_class.cards, {10}}})",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": "true"
-		}
+		"_temporary_spellcard.perform = {{{self.opening_performance}}}{{#condition.has_optional_id}}\n_editor_cards.{{{self.optional_id}}} = _temporary_spellcard{{/condition.has_optional_id}}\ntable.insert(_editor_class[{{{context.defineboss.identifier}}}{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}].cards, _temporary_spellcard){{#condition.spellcard_is_named}}\ntable.insert(_sc_table, { {{{context.defineboss.identifier}}}{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}, {{{self.spellcard_name}}}, _temporary_spellcard, #_editor_class[{{{context.defineboss.identifier}}}{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}].cards, {{{self.opening_performance}}}}){{/condition.spellcard_is_named}}"
 	],
 	"IndentionIncrement": 0
 }

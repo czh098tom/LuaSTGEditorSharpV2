@@ -1,29 +1,49 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "BentLaserInit",
-	"Captures": [
-		{ "Key": "parameters" },
-		{ "Key": "color" },
-		{ "Key": "length" },
-		{ "Key": "width" },
-		{ "Key": "sampling" },
-		{ "Key": "node_size" }
-	],
+	"Captures": {
+		"parameters": {
+			"Key": "parameters"
+		},
+		"color": {
+			"Key": "color"
+		},
+		"length": {
+			"Key": "length"
+		},
+		"width": {
+			"Key": "width"
+		},
+		"sampling": {
+			"Key": "sampling"
+		},
+		"node_size": {
+			"Key": "node_size"
+		}
+	},
+	"ContextCaptures": {
+		"definition": {
+			"TypeUID": "DefineBentLaser",
+			"Property": {
+				"identifier": {
+					"Key": "identifier",
+					"DisableMacro": true
+				},
+				"difficulty": {
+					"Key": "difficulty",
+					"DisableMacro": true
+				}
+			}
+		}
+	},
+	"ConditionTemplates": {
+		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
+	},
 	"Head": [
-		{
-			"Text": "function _temporary_class:init(self, _x, _y, {1})",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": "true"
-		},
-		{
-			"Text": "function _temporary_class:init(self, _x, _y)",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": "true",
-			"Inversed": "true"
-		},
-		{ "Text": "{0:IND}laser_bent.init(self, {2}, _x, _y, {3}, {4}, {5}, {6})" }
+		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, _x, _y{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})",
+		"{0:IND}laser_bent.init(self, {{{self.color}}}, _x, _y, {{{self.length}}}, {{{self.width}}}, {{{self.sampling}}}, {{{self.node_size}}})"
 	],
 	"Tail": [
-		{ "Text": "end" }
+		"end"
 	]
 }

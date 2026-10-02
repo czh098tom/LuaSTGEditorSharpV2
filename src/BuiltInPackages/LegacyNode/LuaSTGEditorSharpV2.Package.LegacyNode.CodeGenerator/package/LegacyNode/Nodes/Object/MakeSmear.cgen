@@ -5,5 +5,7 @@
 		{ "Key": "target" },
 		{ "Key": "interval" }
 	],
-	"Head": "last = New(smear, {1}, {2})"
+	"Head": "last = New(smear, {1}, {2})",
+	"ChildHead": "do\n{0:IND}local self = last",
+	"ChildTail": "end"
 }

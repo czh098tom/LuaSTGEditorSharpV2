@@ -1,25 +1,37 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "BossInit",
-	"Captures": [
-		{ "Key": "position" },
-		{ "Key": "scbg" }
-	],
-	"Head": [
-		{ "Text": "function _temporary_class:init(self, cards)" },
-		{
-			"Text": "{0:IND}boss.init(self, {1}, _temporary_class.name, cards, New({2}), _temporary_class.difficulty",
-			"ConditionOn": 2,
-			"UseExistanceInsteadOfBoolValue": "true"
+	"Captures": {
+		"position": {
+			"Key": "position"
 		},
-		{
-			"Text": "{0:IND}boss.init(self, {1}, _temporary_class.name, cards, New(spellcard), _temporary_class.difficulty",
-			"ConditionOn": 2,
-			"UseExistanceInsteadOfBoolValue": "true",
-			"Inversed": "true"
+		"scbg": {
+			"Key": "scbg"
 		}
+	},
+	"ContextCaptures": {
+		"definition": {
+			"TypeUID": "DefineBoss",
+			"Property": {
+				"identifier": {
+					"Key": "identifier",
+					"DisableMacro": true
+				},
+				"difficulty": {
+					"Key": "difficulty",
+					"DisableMacro": true
+				}
+			}
+		}
+	},
+	"ConditionTemplates": {
+		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
+	},
+	"Head": [
+		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, cards)",
+		"{{#self.scbg}}{0:IND}boss.init(self, {{{self.position}}}, _editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].name, cards, New(_editor_class[{{{self.scbg}}}]), _editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].difficulty){{/self.scbg}}{{^self.scbg}}{0:IND}boss.init(self, {{{self.position}}}, _editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].name, cards, New(spellcard_background), _editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].difficulty){{/self.scbg}}"
 	],
 	"Tail": [
-		{ "Text": "end" }
+		"end"
 	]
 }

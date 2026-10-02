@@ -1,11 +1,15 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "DefineEnemy",
-	"Captures": [
-		{ "Key": "identifier" },
-		{ "Key": "difficulty" }
+	"Captures": {
+		"identifier": { "Key": "identifier", "DisableMacro": true },
+		"difficulty": { "Key": "difficulty", "DisableMacro": true }
+	},
+	"ConditionTemplates": {
+		"difficulty_is_all": "'{{{self.difficulty}}}' == '\"All\"'"
+	},
+	"Head": [
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}] = Class(enemy)"
 	],
-	"Head": "_temporary_class = Class(enemy)",
-	"Tail": "_editor_class[{1}..'@'..{2}] = _temporary_class",
 	"IndentionIncrement": 0
 }

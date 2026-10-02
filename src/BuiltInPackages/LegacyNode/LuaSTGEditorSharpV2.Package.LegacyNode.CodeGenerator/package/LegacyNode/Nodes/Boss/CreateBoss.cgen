@@ -6,11 +6,13 @@
 		{ "Key": "wait" }
 	],
 	"Head": [
-		{ "Text": "last = New(_editor_class[{1}], _editor_class[{1}].cards)" },
-		{ "Text": "local _ref = last" },
-		{
-			"Text": "while(IsValid(_ref))do task.Wait() end",
-			"Condition": 2
-		}
-	]
+		{ "Text": "local _boss_wait = {2}" },
+		{ "Text": "local _ref = New(_editor_class[{1}], _editor_class[{1}].cards)" },
+		{ "Text": "last = _ref" }
+	],
+	"Tail": [
+		{ "Text": "if _boss_wait then while IsValid(_ref) do task.Wait() end end" }
+	],
+	"ChildHead": "do\n{0:IND}local self = last",
+	"ChildTail": "end"
 }

@@ -7,6 +7,12 @@
     {
       "$type": "NodeTypeRemapping",
       "To": "DefineSCBG"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "name",
+      "NewKey": "identifier",
+      "AsStringLiteral": true
     }
   ]
 }

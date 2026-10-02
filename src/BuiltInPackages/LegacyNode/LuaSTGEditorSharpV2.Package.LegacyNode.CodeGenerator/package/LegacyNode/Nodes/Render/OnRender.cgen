@@ -3,18 +3,18 @@
 	"TypeUID": "OnRender",
 	"ContextCaptures": {
 		"definition": {
-			"TypeUID": "DefineObject",
+			"AnyOfTypeUIDs": [ "DefineObject", "DefineBullet", "DefineLaser", "DefineBentLaser", "DefineEnemy" ],
 			"Property": {
-				"identifier": { "Key": "identifier" },
-				"difficulty": { "Key": "difficulty" }
+				"identifier": { "Key": "identifier", "DisableMacro": true },
+				"difficulty": { "Key": "difficulty", "DisableMacro": true }
 			}
 		}
 	},
 	"ConditionTemplates": {
-		"has_difficulty": "'{{context.definition.difficulty}}' != ''"
+		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_editor_class[\"{{context.definition.identifier}}{{#condition.has_difficulty}}@{{context.definition.difficulty}}{{/condition.has_difficulty}}\"].render = function(self)"
+		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].render = function(self)"
 	],
 	"Tail": [
 		"end"

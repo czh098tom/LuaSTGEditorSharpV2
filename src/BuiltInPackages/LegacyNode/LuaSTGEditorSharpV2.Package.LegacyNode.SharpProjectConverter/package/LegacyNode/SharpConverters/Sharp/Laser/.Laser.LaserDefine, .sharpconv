@@ -11,7 +11,14 @@
     {
       "$type": "NodePropertyRemapping",
       "OriginalKey": "name",
-      "NewKey": "identifier"
+      "NewKey": "identifier",
+      "AsStringLiteral": true
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "difficulty",
+      "NewKey": "difficulty",
+      "AsStringLiteral": true
     }
   ]
 }

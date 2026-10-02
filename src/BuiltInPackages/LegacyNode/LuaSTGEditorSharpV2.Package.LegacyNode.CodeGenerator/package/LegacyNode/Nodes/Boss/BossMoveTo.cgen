@@ -1,10 +1,36 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "BossMoveTo",
-	"Captures": [
-		{ "Key": "position" },
-		{ "Key": "time" },
-		{ "Key": "mode" }
-	],
-	"Head": "table.insert(_temporary_class.cards, boss.move.New({1}, {2}, {3}))"
+	"Captures": {
+		"position": {
+			"Key": "position"
+		},
+		"time": {
+			"Key": "time"
+		},
+		"mode": {
+			"Key": "mode"
+		}
+	},
+	"ContextCaptures": {
+		"definition": {
+			"TypeUID": "DefineBoss",
+			"Property": {
+				"identifier": {
+					"Key": "identifier",
+					"DisableMacro": true
+				},
+				"difficulty": {
+					"Key": "difficulty",
+					"DisableMacro": true
+				}
+			}
+		}
+	},
+	"ConditionTemplates": {
+		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
+	},
+	"Head": [
+		"table.insert(_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].cards, boss.move.New({{{self.position}}}, {{{self.time}}}, {{{self.mode}}}))"
+	]
 }

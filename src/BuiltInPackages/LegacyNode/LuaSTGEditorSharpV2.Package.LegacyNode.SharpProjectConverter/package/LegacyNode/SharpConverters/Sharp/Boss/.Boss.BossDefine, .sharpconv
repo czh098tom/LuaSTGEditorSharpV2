@@ -9,17 +9,25 @@
     {
       "$type": "NodePropertyRemapping",
       "OriginalKey": "name",
-      "NewKey": "identifier"
+      "NewKey": "identifier",
+      "AsStringLiteral": true
     },
     {
       "$type": "NodePropertyRemapping",
       "OriginalKey": "displayed_name",
-      "NewKey": "name"
+      "NewKey": "name",
+      "AsStringLiteral": true
     },
     {
       "$type": "NodePropertyRemapping",
       "OriginalKey": "background_music",
       "NewKey": "bgm"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "difficulty",
+      "NewKey": "difficulty",
+      "AsStringLiteral": true
     }
   ]
 }
