@@ -6,5 +6,12 @@
 	},
 	"OutputNameCapture": {
 		"Key": "output_name"
+	},
+	"InitialResourceGroupCapture": {
+		"Key": "initial_resource_group"
+	},
+	"KeepFirstResourceTargetCapture": {
+		"Key": "keep_first_resource_target",
+		"DefaultValue": "false"
 	}
 }

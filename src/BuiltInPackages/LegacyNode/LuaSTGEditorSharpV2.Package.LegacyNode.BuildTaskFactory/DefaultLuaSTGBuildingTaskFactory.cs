@@ -34,6 +34,8 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
 
         [JsonProperty] public NodePropertyCapture? OutputNameCapture { get; private set; }
         [JsonProperty] public NodePropertyCapture? TaskNameCapture { get; private set; }
+        [JsonProperty] public NodePropertyCapture? InitialResourceGroupCapture { get; private set; }
+        [JsonProperty] public NodePropertyCapture? KeepFirstResourceTargetCapture { get; private set; }
 
         public override WeightedBuildingTask? CreateBuildingTask(NodeData nodeData, BuildTaskFactoryContext context)
         {
@@ -41,6 +43,16 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
 
             var outputName = OutputNameCapture?.Capture(token) ?? _defaultOutputNameIfNotConfiguredForService;
             var taskName = TaskNameCapture?.Capture(token) ?? _defaultTaskNameIfNotConfiguredForService;
+            // Absence opts out; an explicitly stored empty label remains a valid group.
+            var initialResourceGroup = InitialResourceGroupCapture != null
+                && nodeData.Properties.ContainsKey(InitialResourceGroupCapture.Key)
+                ? InitialResourceGroupCapture.Capture(token) : null;
+            var keepFirstText = KeepFirstResourceTargetCapture?.Capture(token) ?? bool.FalseString;
+            if (!bool.TryParse(keepFirstText, out var keepFirstResourceTarget))
+            {
+                throw new InvalidOperationException(
+                    $"Build node '{nodeData.TypeUID}': keep-first resource target must be true or false.");
+            }
 
             var task = new CompositeBuildingTask(
                 new ParseContextVariableTask(new EditorPathSource(),
@@ -51,13 +63,15 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
                     new TargetToContext(_codeGenerationVariableKey)),
                 new CaptureResourceGroupTask(new DocumentPathSource(),
                     new TargetToContext(_gatheredResourcePathVariableKey),
-                    new TargetToContext(_gatheredResourceTargetNameVariableKey)),
+                    new TargetToContext(_gatheredResourceTargetNameVariableKey))
+                    { InitialResourceGroup = initialResourceGroup },
                 new CopyTask(new SourceFromContext(_codeGenerationVariableKey),
                     new ConstantSource(_entryPointName),
                     new SourceFromContext(_outputTargetVariableKey)),
                 new CopyTask(new SourceFromContext(_gatheredResourcePathVariableKey),
                     new SourceFromContext(_gatheredResourceTargetNameVariableKey),
-                    new SourceFromContext(_outputTargetVariableKey)),
+                    new SourceFromContext(_outputTargetVariableKey))
+                    { KeepFirstTarget = keepFirstResourceTarget },
                 new CopyTask(new SourceFromContext(_rootLuaVariableKey),
                     new ConstantSource(_packageSupplementaryTargetName),
                     new SourceFromContext(_outputTargetVariableKey)));
