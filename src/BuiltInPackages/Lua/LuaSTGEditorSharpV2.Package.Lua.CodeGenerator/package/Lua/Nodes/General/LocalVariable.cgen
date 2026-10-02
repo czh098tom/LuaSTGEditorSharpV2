@@ -1,24 +1,33 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SingleListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "LocalVariable",
-	"Language": "Lua",
-	"Head": "{1}{2}",
-	"CountCapture": { "Key": "count" },
-	"SubCaptureRule": [
-		{ "Key": "name_{0}" },
-		{ "Key": "value_{0}" }
-	],
-	"SubCaptureFormat": [
-		{
-			"Text": "local {1} = {2}\n",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": true
-		},
-		{
-			"Text": "local {1}\n",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": true,
-			"Inversed": true
-		}
-	]
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.JoinedListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "LocalVariable",
+  "Language": "Lua",
+  "IgnoreChildren": true,
+  "CountCapture": {
+    "DefaultValue": "0",
+    "Key": "count"
+  },
+  "MaximumCount": 100,
+  "RequiredCaptureName": "name",
+  "ItemCaptures": {
+    "name": {
+      "Key": "name_{0}",
+      "DisableMacro": true
+    },
+    "value": {
+      "Key": "value_{0}",
+      "DisableMacro": false
+    }
+  },
+  "Columns": {
+    "declarations": {
+      "Separator": "\n",
+      "Template": [
+        "local {{{args.item.name}}}{{#args.rawItem.value}}=({{{args.item.value}}}){{/args.rawItem.value}}"
+      ]
+    }
+  },
+  "Head": [
+    "{{#args.hasItems}}{{{args.columns.declarations}}}{{/args.hasItems}}"
+  ]
 }

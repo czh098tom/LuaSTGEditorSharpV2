@@ -24,12 +24,15 @@
 			"UseExistanceInsteadOfBoolValue": true
 		},
 		{
-			"Text": "{0:IND}{2} = {2} + _d_{2}\n",
+			"Text": "{0:IND}{0:IND}{2} = {2} + _d_{2}\n",
 			"ConditionOn": 1,
 			"UseExistanceInsteadOfBoolValue": true
 		}
 	],
-	"Head": "for _ = 1, {1} do\n{2}{0:IND}do",
-	"Tail": "{0:IND}end\n{3}end",
-	"IndentionIncrement": 2
+	"Head": "do\n{2}{0:IND}for _ = 1, {1} do",
+	"Tail": "{3}{0:IND}end\nend",
+	"IndentionIncrement": 2,
+	"HeadWhenSubCapturesEmpty": "for _ = 1, {1} do",
+	"TailWhenSubCapturesEmpty": "end",
+	"IndentionIncrementWhenSubCapturesEmpty": 1
 }

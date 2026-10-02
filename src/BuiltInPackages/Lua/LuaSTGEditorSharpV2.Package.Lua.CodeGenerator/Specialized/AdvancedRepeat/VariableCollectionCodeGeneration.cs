@@ -1,4 +1,4 @@
-using LuaSTGEditorSharpV2.Core.CodeGenerator;
+﻿using LuaSTGEditorSharpV2.Core.CodeGenerator;
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepeat;
@@ -6,6 +6,13 @@ namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepe
 public sealed class VariableCollectionCodeGeneration(
     CodeGeneratorServiceProvider provider, IServiceProvider services) : CodeGenerationSubService(provider, services)
 {
+    // V1 does not override ToLua on the collection, so ordinary children are compiled in
+    // physical order at the collection's position inside the loop body, while variable
+    // children only contribute the separately prepared initialization/update phases.
+    protected override IEnumerable<CodeData> GenerateCodeWithContext(
+        NodeData collection, CodeGenerationContext context)
+        => NodeServiceProvider.GenerateForChildren(collection, context, 0);
+
     public IReadOnlyList<VariableTransformationOutput> Generate(
         NodeData collection, CodeGenerationContext context)
     {
@@ -15,8 +22,7 @@ public sealed class VariableCollectionCodeGeneration(
         {
             if (pair.Service is not VariableTransformationCodeGeneration variable)
             {
-                throw new AdvancedRepeatGenerationException(
-                    "VariableCollection has an incompatible active child.", pair.NodeData);
+                continue;
             }
             try
             {

@@ -1,0 +1,23 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "Break",
+	"Language": "Lua",
+	"Captures": [
+		{ "Key": "condition" },
+		{ "Key": "condition" }
+	],
+	"IgnoreChildren": true,
+	"Head": [
+		{
+			"Text": "{0:IND}if {1} then break end",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": true
+		},
+		{
+			"Text": "{0:IND}do break end",
+			"ConditionOn": 1,
+			"UseExistanceInsteadOfBoolValue": true,
+			"Inversed": true
+		}
+	]
+}
