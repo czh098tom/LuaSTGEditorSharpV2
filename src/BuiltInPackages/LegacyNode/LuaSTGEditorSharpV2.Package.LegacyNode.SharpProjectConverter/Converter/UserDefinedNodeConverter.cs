@@ -6,8 +6,9 @@ using LuaSTGEditorSharpV2.Core.Model;
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter;
 
 /// <summary>
-/// Rewrites every V1 <c>.Advanced.UnidentifiedNode</c> instance into a V2 <c>Code</c> node holding the
-/// Lua text the V1 editor would have emitted for it.
+/// Rewrites every V1 <c>.Advanced.UnidentifiedNode</c> instance into a V2 <c>CodeSegment</c> node whose
+/// <c>head</c> / <c>tail</c> carry the substituted definition rules, keeping the instance's children in
+/// the tree so that <c>CodeSegment</c> generates head → children → tail exactly like V1.
 /// <para>
 /// V1 treats a user-defined node as a template: a <c>.Advanced.UserDefinedNode</c> definition carries a
 /// <c>Head parse rule</c> / <c>Tail parse rule</c> pair plus a property list, and each
@@ -17,8 +18,13 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter
 /// </para>
 /// <para>
 /// Because the substitution happens in the editor rather than in the game, the result is ordinary Lua
-/// text. Translating the instance to <c>Code</c> therefore keeps the converted document semantically
-/// identical while removing the need for a V2 runtime implementation of the meta layer.
+/// text. Translating the instance to <c>CodeSegment</c> therefore keeps the converted document
+/// semantically identical while removing the need for a V2 runtime implementation of the meta layer.
+/// </para>
+/// <para>
+/// Two edge cases mirror <c>UnidentifiedNode.ToLua</c>: an inactive node skips its whole subtree, and an
+/// instance whose definition cannot be found is left untouched — the default code generator then emits
+/// its children only — with one diagnostic line on the console instead of aborting the conversion.
 /// </para>
 /// <para>
 /// Substitution follows <c>UnidentifiedNode.ToLua</c> exactly: a property whose
@@ -36,7 +42,7 @@ internal static class UserDefinedNodeConverter
     private const string UnidentifiedType = "UnidentifiedNode";
     private const string DefinitionType = "UserDefinedNode";
     private const string TypeAttribute = "Type";
-    private const string CodeType = "Code";
+    private const string CodeSegmentType = "CodeSegment";
 
     /// <summary>Rewrites the whole tree in place; call once, before formatting.</summary>
     internal static void RewriteAll(NodeData? root)
@@ -68,22 +74,28 @@ internal static class UserDefinedNodeConverter
 
     private static void Rewrite(NodeData node, Dictionary<string, UserDefinedTemplate> templates)
     {
+        // V1 ignores an inactive node together with its whole subtree, so leave the physical data alone.
+        if (!node.IsActive) return;
+
         foreach (var child in node.PhysicalChildren) Rewrite(child, templates);
-        if (!node.IsActive || !IsType(node, UnidentifiedType)) return;
+        if (!IsType(node, UnidentifiedType)) return;
 
         var typeName = node.GetProperty(TypeAttribute);
         if (!templates.TryGetValue(typeName, out var template))
         {
-            // V1 emits nothing for an unknown definition, but that would silently drop the node's
-            // children too, so refuse instead of losing them.
-            throw new InvalidDataException(
-                $"sharpconv user-defined node ({typeName}): no matching UserDefinedNode definition was found.");
+            // V1 emits nothing for an unknown definition but keeps the children. Leaving the node as-is
+            // routes it through the default code generator, which emits its children and nothing else.
+            System.Console.WriteLine(
+                $"sharpconv user-defined node ({typeName}): no matching UserDefinedNode definition was "
+                + "found; the node is kept as-is and only its children will be generated.");
+            return;
         }
 
-        var code = template.Substitute(node);
+        var (head, tail) = template.Substitute(node);
         node.Properties.Clear();
-        node.Properties["code"] = code;
-        node.TypeUID = CodeType;
+        node.Properties["head"] = head;
+        node.Properties["tail"] = tail;
+        node.TypeUID = CodeSegmentType;
     }
 
     /// <summary>One <c>.Advanced.UserDefinedNode</c> definition, in V1's own caption spelling.</summary>
@@ -115,8 +127,8 @@ internal static class UserDefinedNodeConverter
             => int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) && value > 0
                 ? value : 0;
 
-        /// <summary>Builds the Lua text for one instance.</summary>
-        internal string Substitute(NodeData instance)
+        /// <summary>Builds the head / tail text for one instance; the children stay in the tree.</summary>
+        internal (string Head, string Tail) Substitute(NodeData instance)
         {
             // The instance's `Type` attribute is the lookup key and is not one of the parameters;
             // the remaining attributes are the parameters in declaration order.
@@ -136,21 +148,7 @@ internal static class UserDefinedNodeConverter
                 rules[cursor] = _isString[cursor] ? EscapeLuaStringContent(string.Empty) : string.Empty;
                 cursor++;
             }
-            var head = FormatRule(_head, rules);
-            var tail = FormatRule(_tail, rules);
-            if (instance.PhysicalChildren.Count == 0) return head + tail;
-            if (tail.Length == 0)
-            {
-                throw new InvalidDataException(
-                    "sharpconv user-defined node: the definition has no tail rule, so child statements "
-                    + "cannot be placed after the node's own code.");
-            }
-            var builder = new StringBuilder(head);
-            foreach (var child in instance.PhysicalChildren)
-            {
-                if (child.IsActive) builder.Append('\n');
-            }
-            return builder.Append(tail).ToString();
+            return (FormatRule(_head, rules), FormatRule(_tail, rules));
         }
 
         private static string FormatRule(string rule, string[] rules)

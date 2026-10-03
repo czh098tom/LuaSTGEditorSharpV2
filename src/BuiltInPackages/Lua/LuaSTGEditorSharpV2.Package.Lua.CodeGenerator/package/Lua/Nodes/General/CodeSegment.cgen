@@ -1,0 +1,11 @@
+{
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "CodeSegment",
+  "Language": "Lua",
+  "Captures": {
+    "head": { "Key": "head" },
+    "tail": { "Key": "tail" }
+  },
+  "Head": [ "{{{self.head}}}" ],
+  "Tail": [ "{{{self.tail}}}" ]
+}

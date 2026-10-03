@@ -1,0 +1,29 @@
+{
+  "$type": "LuaSTGEditorSharpV2.PropertyView.Configurable.ConfigurablePropertyViewService, LuaSTGEditorSharpV2.PropertyView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "CodeSegment",
+  "Tabs": [
+    {
+      "$type": "Default",
+      "Mapping": [
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "head" },
+          "Caption": {
+            "Neutral": "Head",
+            "Localized": { "zh": "代码头" }
+          },
+          "Editor": { "Name": "code" }
+        },
+        {
+          "$type": "Default",
+          "Mapping": { "Key": "tail" },
+          "Caption": {
+            "Neutral": "Tail",
+            "Localized": { "zh": "代码尾" }
+          },
+          "Editor": { "Name": "code" }
+        }
+      ]
+    }
+  ]
+}
