@@ -68,6 +68,8 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
                 new CopyTask(new SourceFromContext(_codeGenerationVariableKey),
                     new ConstantSource(_entryPointName),
                     new SourceFromContext(_outputTargetVariableKey)),
+                new ParseContextVariableTask(new SourceFromContext(_gatheredResourceTargetNameVariableKey),
+                    new TargetToContext(_gatheredResourceTargetNameVariableKey), GetResourceOutputName),
                 new CopyTask(new SourceFromContext(_gatheredResourcePathVariableKey),
                     new SourceFromContext(_gatheredResourceTargetNameVariableKey),
                     new SourceFromContext(_outputTargetVariableKey))
@@ -78,6 +80,23 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.BuildTaskFactory
             var childTask = base.CreateBuildingTask(nodeData, context);
             return CompositeBuildingTask.LeastObjectCombine(new WeightedBuildingTask(task, 1), childTask)
                 ?.WithNameIfValid(taskName);
+        }
+
+        private static string GetResourceOutputName(string destination)
+        {
+            var path = destination.Replace('\\', '/');
+            if (path.Any(character => character < 32 || "<>:\"|?*".Contains(character)))
+            {
+                throw new InvalidOperationException(
+                    $"Invalid archive resource destination '{destination}'.");
+            }
+            if (!path.StartsWith('/')) return destination;
+            // V1 quick ZIP uses DropPathRoot, including its Windows root interpretation.
+            // Its root discovery inspects at most 258 characters; the key is not truncated.
+            var rootLength = Path.GetPathRoot(path[..Math.Min(path.Length, 258)])?.Length ?? 0;
+            // The node's destination and generated Lua keep the original archive key.
+            // CopyTask still rejects empty names and escapes from the actual output root.
+            return path[rootLength..].TrimStart('/');
         }
     }
 }

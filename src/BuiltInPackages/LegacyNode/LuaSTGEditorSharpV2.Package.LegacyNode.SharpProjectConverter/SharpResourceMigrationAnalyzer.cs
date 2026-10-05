@@ -50,7 +50,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
                             throw Diagnostic(node, location,
                                 "Archive Name must end with a directory separator; V1 registration and Lua references disagree otherwise.");
                         }
-                        ValidateDestination(node, location, value + "__archive_probe__");
+                        ValidateArchivePrefix(node, location, value);
                     }
                     prefix = value;
                     return;
@@ -136,13 +136,36 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             return string.Join(",", parts);
         }
 
+        private static void ValidateArchivePrefix(NodeData node, string location, string prefix)
+        {
+            // A leading separator belongs to the archive key, not the output filesystem.
+            // Map actual resource keys only at the resource-copy boundary.
+            if (prefix.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+            {
+                throw Diagnostic(node, location, $"Invalid archive prefix '{prefix}'.");
+            }
+            var depth = 0;
+            foreach (var part in prefix.Replace('\\', '/').Split('/'))
+            {
+                if (part is "" or ".") continue;
+                if (part == "..")
+                {
+                    if (--depth < 0)
+                    {
+                        throw Diagnostic(node, location, $"Archive prefix escapes the output root: '{prefix}'.");
+                    }
+                }
+                else depth++;
+            }
+        }
+
         private static void ValidateDestination(NodeData node, string location, string destination)
         {
             var path = destination.Replace('\\', '/');
-            if (string.IsNullOrWhiteSpace(path) || path.StartsWith('/')
+            if (string.IsNullOrWhiteSpace(path)
                 || path.Any(character => character < 32 || "<>:\"|?*".Contains(character)))
             {
-                throw Diagnostic(node, location, $"Invalid relative resource destination '{destination}'.");
+                throw Diagnostic(node, location, $"Invalid archive resource destination '{destination}'.");
             }
             if (path.Split('/')[^1] is "" or "." or "..")
             {

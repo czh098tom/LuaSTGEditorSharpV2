@@ -5,7 +5,7 @@
 | 数据 | 含义 | 示例 |
 | --- | --- | --- |
 | source | 源文件位置；由节点映射到 file_path、path 或 source_i | assets/boss.png |
-| destination | 输出根下的相对文件路径，包含文件名 | characters/boss.png |
+| destination | 归档内文件路径，包含文件名；可带归档根分隔符 | characters/boss.png、/characters/boss.png |
 | ResourceGroup | 收集、筛选使用的标签 | Default |
 
 运行时 resource_name / identifier 是第四种独立数据；它不是输出文件名。
@@ -92,6 +92,24 @@ CaptureResourceGroupTask 按每个被收集文档自身的目录解析相对 sou
 绝对 source 原样定位；解析不依赖启动 CLI 时的工作目录。
 导入到另一目录时，sharpconv 负责先把 V1 source 重定位到输出文档的基准。
 destination 不受该 source 重定位影响，仍表示归档目标。
+
+DefaultLuaSTGBuilding 在资源复制前用 ParseContextVariableTask 映射收集到的归档目标。
+前导 / 或 \ 不表示要写入操作系统根目录：/foo.lua → 输出根/foo.lua，
+/x/foo.lua → 输出根/x/foo.lua；普通相对目标保持。
+节点属性、GroupedResource.TargetName 和生成 Lua 的引用保留原始归档路径，
+不把它们改成文件系统路径；不新增节点字段或配置开关。
+原生 Windows 上，根路径映射沿用 V1 quick ZIP 的 SharpZipLib DropPathRoot 规则：
+通过 Path.GetPathRoot 识别前 258 字符的根长度，再去掉剩余前导分隔符；归档 key 不截断。
+重复前导分隔符不一律拒绝，也不简单全部 TrimStart：
+///x/foo.lua → x/foo.lua，//server/share/foo.lua → foo.lua，//x/foo.lua → 空目标并拒绝。
+这里只复刻 ZIP 条目名映射，不访问 UNC 网络共享；不能据此宣称其他平台/打包后端或引擎查找一致。
+映射前拒绝原 key 的控制字符、盘符及非法字符，防止它们在去根时被隐藏。
+映射后的空目标、非法名称及越界仍由 CopyTask 拒绝。
+真实包含检查使用当前输出根与规范化后的完整目标路径，不构造 probe 文件名。
+重复目标仍按 CopyTask 的规范化落盘路径判定，保留既有首次/覆盖策略。
+这项映射只属于 DefaultLuaSTGBuilding 的资源复制，不影响普通 CopyTask、生成 Lua 或 root.lua 的复制。
+含内部 .. 的目标沿用现有落盘规范化；V1 ZIP 可保留 .. 条目，
+其引擎查找是否等价需独立运行时证据，不能仅凭构建成功认定。
 
 CopyTask 创建每个目标文件的父目录，支持多层相对目标。
 空目标、绝对目标、盘符或 UNC 目标、非法名称和逃逸输出根的路径会报错。
