@@ -19,7 +19,7 @@
 	],
 	"SubCaptureFormat": [
 		{
-			"Text": "{0:IND}local {2} = {3} local _d_{2} = {4}\n",
+			"Text": "{0:IND}local {2}, _d_{2} = ({3}), ({4})\n",
 			"ConditionOn": 1,
 			"UseExistanceInsteadOfBoolValue": true
 		},
