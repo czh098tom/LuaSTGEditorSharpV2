@@ -4,6 +4,7 @@
 	"Captures": [
 		{ "Key": "variables" }
 	],
-	"Head": "do\n{0:IND}local {1} = {1}",
-	"Tail": "end"
+	"Head": "do\n{0:IND}local {1} = {1}\n{0:IND}do",
+	"Tail": "{0:IND}end\nend",
+	"IndentionIncrement": 2
 }
