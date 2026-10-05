@@ -1,5 +1,5 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.EscapedResourceCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LoadParticle",
 	"IgnoreChildren": true,
 	"Captures": [
