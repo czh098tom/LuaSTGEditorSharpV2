@@ -21,7 +21,7 @@
 			"Key": "point_amount"
 		},
 		"potect_time": {
-			"Key": "potect_time"
+			"Key": "protect_time"
 		},
 		"clear_bullet_when_killed": {
 			"Key": "clear_bullet_when_killed"
