@@ -4,7 +4,7 @@
 	"Captures": [
 		{ "Key": "show_hp_circle" },
 		{ "Key": "show_boss_name" },
-		{ "Key": "show_time_couunter" },
+		{ "Key": "show_time_counter" },
 		{ "Key": "show_spell_name" },
 		{ "Key": "show_boss_pointer" }
 	],
