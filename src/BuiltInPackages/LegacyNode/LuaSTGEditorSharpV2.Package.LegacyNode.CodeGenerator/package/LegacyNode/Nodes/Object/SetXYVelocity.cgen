@@ -1,10 +1,15 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "SetXYVelocity",
-	"Captures": [
-		{ "Key": "target" },
-		{ "Key": "velocity" },
-		{ "Key": "set_rotation" }
-	],
-	"Head": "{1}.vx, {1}.vy = {2}\nif {3} then {1}.rot = atan2({1}.vy, {1}.vx) end"
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "SetXYVelocity",
+  "Captures": {
+    "target": { "Key": "target" },
+    "velocity": { "Key": "velocity" },
+    "set_rotation": { "Key": "set_rotation", "DisableMacro": true }
+  },
+  "ConditionTemplates": {
+    "set_rotation": "'{{self.set_rotation}}' == 'true'"
+  },
+  "Head": [
+    "{{{self.target}}}.vx, {{{self.target}}}.vy = {{{self.velocity}}}{{#condition.set_rotation}}\n{{{self.target}}}.rot = atan2({{{self.target}}}.vy, {{{self.target}}}.vx){{/condition.set_rotation}}"
+  ]
 }
