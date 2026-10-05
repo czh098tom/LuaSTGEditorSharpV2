@@ -23,7 +23,7 @@
     "declarations": {
       "Separator": "\n",
       "Template": [
-        "local {{{args.item.name}}}{{#args.rawItem.value}}=({{{args.item.value}}}){{/args.rawItem.value}}"
+        "local {{{args.item.name}}}{{#args.rawItem.value.Length}}=({{{args.item.value}}}){{/args.rawItem.value.Length}}"
       ]
     }
   },
