@@ -17,7 +17,7 @@
 			"Inversed": true
 		},
 		{
-			"Text": ", {1})",
+			"Text": ", {2})",
 			"ConditionOn": 1,
 			"UseExistanceInsteadOfBoolValue": true
 		}
