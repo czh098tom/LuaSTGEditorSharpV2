@@ -1,0 +1,23 @@
+{
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"TypeUID": "CreateBulletGroup",
+	"IgnoreChildren": true,
+	"Captures": [
+		{ "Key": "style" },
+		{ "Key": "color" },
+		{ "Key": "position" },
+		{ "Key": "number" },
+		{ "Key": "interval" },
+		{ "Key": "velocity_begin" },
+		{ "Key": "velocity_end" },
+		{ "Key": "angle" },
+		{ "Key": "angle_spread" },
+		{ "Key": "aim_to_player" },
+		{ "Key": "rotation_velocity" },
+		{ "Key": "stay_on_create" },
+		{ "Key": "destroyable" },
+		{ "Key": "time" },
+		{ "Key": "rebound" }
+	],
+	"Head": "_create_bullet_group({1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},self)"
+}
