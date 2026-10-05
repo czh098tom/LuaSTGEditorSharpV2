@@ -3,7 +3,8 @@
 	"TypeUID": "LaserInit",
 	"Captures": {
 		"parameters": {
-			"Key": "parameters"
+			"Key": "parameters",
+			"DisableMacro": true
 		},
 		"color": {
 			"Key": "color"
@@ -46,12 +47,13 @@
 		}
 	},
 	"ConditionTemplates": {
-		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
+		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'",
+		"style_change": "'{{{self.style}}}' != '' && '{{{self.style}}}' != '1'"
 	},
 	"Head": [
 		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, _x, _y{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})",
 		"{0:IND}laser.init(self, {{{self.color}}}, _x, _y, 0, {{{self.head_length}}}, {{{self.body_length}}}, {{{self.tail_length}}}, {{{self.width}}}, {{{self.node_size}}}, {{{self.head_size}}})",
-		"{0:IND}laser.ChangeImage(self, {{{self.style}}})"
+		"{{#condition.style_change}}{0:IND}laser.ChangeImage(self, {{{self.style}}}){{/condition.style_change}}"
 	],
 	"Tail": [
 		"end"
