@@ -1,8 +1,14 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "ClearTasks",
-	"Captures": [
-		{ "Key": "keep_this" }
-	],
-	"Head": "task.Clear(self, {1})"
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "ClearTasks",
+  "IgnoreChildren": true,
+  "Captures": {
+    "keep_this": { "Key": "keep_this" }
+  },
+  "ConditionTemplates": {
+    "has_keep_this": "{{self.keep_this.Length}} > 0 && '{{self.keep_this}}' != 'false'"
+  },
+  "Head": [
+    "task.Clear(self{{#condition.has_keep_this}}, {{{self.keep_this}}}{{/condition.has_keep_this}})"
+  ]
 }

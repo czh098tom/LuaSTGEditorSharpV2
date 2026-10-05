@@ -1,0 +1,12 @@
+{
+  "SharpName": ".Task.TaskClear, ",
+  "Converters": [
+    {
+      "$type": "Default"
+    },
+    {
+      "$type": "NodeTypeRemapping",
+      "To": "ClearTasks"
+    }
+  ]
+}
