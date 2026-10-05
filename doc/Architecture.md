@@ -161,6 +161,10 @@ public interface IServiceInstanceProvider<TData> {
 `IndexedListRemapping`（有界索引属性列表重映射）、`PropertyDefaultValue`（缺失/空串默认值）。
 它们由既有 JsonTypeShortName/SerializationTypeBindingService 发现，不新增 Provider、扩展名或宿主注册。
 
+`IfBranchCompatibilityNormalization` 对应
+`Converter.IfBranchCompatibilityNormalizationConverter`，由既有 `sharpconv` Provider
+通过 `[JsonTypeShortName]` 发现，仅用于 V1 If 同级分支的兼容归一。
+
 当前实现中的配置多态短名由 `$type` 解析，登记如下；沿用 `prop` 服务文件加载入口。
 
 | JsonTypeShortName | 基接口 | 具体类型 | 所在模块 |

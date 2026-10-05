@@ -17,7 +17,8 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
     {
         public async Task Convert(CancellationToken cancellationToken)
         {
-            var raw = await ConvertNodeAsync(cancellationToken);
+            var context = new SharpNodeFormattingContext(inputFilePath, Console.WriteLine);
+            var raw = await ConvertNodeAsync(context, cancellationToken);
             var outputName = ResolveDefaultOutputName(raw);
             var resources = SharpResourceMigrationAnalyzer.Analyze(raw, inputFilePath, outputFilePath);
             resources.Apply();
@@ -26,7 +27,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             // before the formatter, so the definitions are still readable under their V1 captions.
             UserDefinedNodeConverter.RewriteAll(raw);
             var doc = WrapSharpV2Structure(raw);
-            ApplyFormatter(doc);
+            ApplyFormatter(doc, context);
             InjectDefaultBuildingNode(doc, outputName);
             doc.SaveAs(outputFilePath);
         }
@@ -52,12 +53,14 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             buildRoot.Insert(0, build);
         }
 
-        private async Task<NodeData?> ConvertNodeAsync(CancellationToken cancellationToken)
+        private async Task<NodeData?> ConvertNodeAsync(SharpNodeFormattingContext context,
+            CancellationToken cancellationToken)
         {
             SharpNodeSerializer serializer = new();
             NodeData? root = null;
             NodeData? prev = null;
             int prevLevel = -1;
+            int sourceLine = 0;
             int i;
             int levelgrad;
             char[] temp;
@@ -66,6 +69,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             while (!sr.EndOfStream)
             {
                 temp = ((await sr.ReadLineAsync(cancellationToken)) ?? string.Empty).ToCharArray();
+                sourceLine++;
                 i = 0;
                 while (temp[i] != ',')
                 {
@@ -83,6 +87,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
                         }
                     }
                     NodeData? tempN = serializer.DeserializeTreeNode(des) ?? new NodeData();
+                    context.RegisterSourceLine(tempN, sourceLine);
                     //tempN.FixAttrParent();
                     prev.Add(tempN);
                     prev = tempN;
@@ -91,6 +96,10 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
                 else
                 {
                     root = serializer.DeserializeTreeNode(des);
+                    if (root != null)
+                    {
+                        context.RegisterSourceLine(root, sourceLine);
+                    }
                     //root.FixAttrParent();
                     prev = root;
                     prevLevel = 0;
@@ -109,9 +118,8 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             return doc;
         }
 
-        private void ApplyFormatter(DocumentModel model)
+        private void ApplyFormatter(DocumentModel model, SharpNodeFormattingContext ctx)
         {
-            var ctx = new SharpNodeFormattingContext();
             do
             {
                 FormatOnce(model, ctx);

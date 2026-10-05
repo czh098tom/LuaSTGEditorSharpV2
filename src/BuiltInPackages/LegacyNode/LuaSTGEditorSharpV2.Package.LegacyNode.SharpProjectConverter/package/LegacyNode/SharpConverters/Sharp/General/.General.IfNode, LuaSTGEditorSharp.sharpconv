@@ -2,6 +2,9 @@
   "SharpName": ".General.IfNode, LuaSTGEditorSharp",
   "Converters": [
     {
+      "$type": "IfBranchCompatibilityNormalization"
+    },
+    {
       "$type": "Default"
     },
     {
