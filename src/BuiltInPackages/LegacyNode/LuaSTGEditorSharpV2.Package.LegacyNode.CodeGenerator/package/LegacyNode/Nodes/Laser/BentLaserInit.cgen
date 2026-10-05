@@ -3,7 +3,8 @@
 	"TypeUID": "BentLaserInit",
 	"Captures": {
 		"parameters": {
-			"Key": "parameters"
+			"Key": "parameters",
+			"DisableMacro": true
 		},
 		"color": {
 			"Key": "color"
