@@ -93,6 +93,14 @@ public abstract class BoundPropertyItemViewModelBase<TTerm> : PropertyItemViewMo
 
         _pulledValues[key] = rows;
         ApplyBindingValues(binding, rows);
+        OnBindingValuesApplied(key, binding, rows);
+    }
+
+    protected virtual void OnBindingValuesApplied(
+        string key,
+        PropertyBinding binding,
+        string[][] rows)
+    {
     }
 
     private static void ApplyBindingValues(
