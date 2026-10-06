@@ -8,9 +8,9 @@
 		"parameter": { "Key": "parameter" }
 	},
 	"Text": {
-		"Neutral": "Post Effect: Texture={texture}, Shader={shader}, Blend Mode={blend_mode}, Parameter={parameter}",
+		"Neutral": ["Post Effect: Texture={{{self.texture}}}, Shader={{{self.shader}}}, Blend Mode={{{self.blend_mode}}}, Parameter={{{self.parameter}}}"],
 		"Localized": {
-			"zh": "后处理：纹理={texture}，着色器={shader}，混合模式={blend_mode}，参数={parameter}"
+			"zh": ["后处理：纹理={{{self.texture}}}，着色器={{{self.shader}}}，混合模式={{{self.blend_mode}}}，参数={{{self.parameter}}}"]
 		}
 	}
 }

@@ -5,9 +5,9 @@
 		"name": { "Key": "name" }
 	},
 	"Text": {
-		"Neutral": "Create Render Target {name}",
+		"Neutral": ["Create Render Target {{{self.name}}}"],
 		"Localized": {
-			"zh": "创建渲染目标 {name}"
+			"zh": ["创建渲染目标 {{{self.name}}}"]
 		}
 	}
 }
