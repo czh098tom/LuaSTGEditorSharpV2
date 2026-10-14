@@ -157,6 +157,12 @@ public interface IServiceInstanceProvider<TData> {
 | `sharpconv` | — | `SharpNodeConverterServiceProvider` | Package.LegacyNode.SharpProjectConverter |
 | (无短名) | CLIPluginProvider | `CLIPluginProviderService` | CLI.Plugin（仅 `IServiceInstanceProvider`，不走文件扫描） |
 
+当前实现中的配置多态短名由 `$type` 解析，登记如下；沿用 `prop` 服务文件加载入口。
+
+| JsonTypeShortName | 基接口 | 具体类型 | 所在模块 |
+|---|---|---|---|
+| `Argb` | `IPropertyItemTerm` | `ArgbPropertyItemTerm` | PropertyView |
+
 ### 3.4 命令系统契约（`CommandBase` / `CommandBuffer`）
 
 ```csharp
