@@ -193,9 +193,9 @@ public sealed class AdvancedRepeatCodeGenerationTests
     [Theory]
     [InlineData("missing")]
     [InlineData("multiple")]
-    [InlineData("incompatible")]
+    [InlineData("ordinary")]
     [InlineData("disabled")]
-    public void ZeroOrManyCollectionsAreLegalAndIncompatibleChildrenKeepTheirSource(string kind)
+    public void ZeroOrManyCollectionsAreLegalAndOrdinaryChildrenKeepTheirSource(string kind)
     {
         using var fixture = new Fixture();
         var repeat = Node("AdvancedRepeat");
@@ -208,18 +208,20 @@ public sealed class AdvancedRepeatCodeGenerationTests
             {
                 repeat.Add(Node("VariableCollection"));
             }
-            if (kind == "incompatible")
+            if (kind == "ordinary")
             {
-                source = Node("ordinary");
+                source = Node("marker");
                 collection.Add(source);
             }
             collection.IsActive = kind != "disabled";
         }
 
-        if (kind == "incompatible")
+        if (kind == "ordinary")
         {
-            var error = Assert.Throws<AdvancedRepeatGenerationException>(() => fixture.Generate(repeat));
-            Assert.Same(source, error.SourceNode);
+            var code = fixture.Generate(repeat);
+            Assert.Equal(new[] { "do\n", " for _=1,_infinite do\n", "  marker\n", " end\n", "end\n" },
+                code.Select(item => item.Content));
+            Assert.Same(source, code[2].Source);
         }
         else
         {
