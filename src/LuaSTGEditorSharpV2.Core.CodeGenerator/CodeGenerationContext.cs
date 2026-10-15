@@ -84,13 +84,14 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 
         protected void Push(NodeData current, int indentionIncrement)
         {
-            IndentionLevel += indentionIncrement;
+            var nextIndentionLevel = checked(IndentionLevel + indentionIncrement);
+            var language = CodeGeneratorServiceProvider.GetLanguageOfNode(current);
             _contextVariables.Add(current, []);
-            var lang = CodeGeneratorServiceProvider.GetLanguageOfNode(current);
-            _languageEnvironment.Push(lang);
-            if (lang != null)
+            IndentionLevel = nextIndentionLevel;
+            _languageEnvironment.Push(_nearestLanguage);
+            if (language != null)
             {
-                _nearestLanguage = lang;
+                _nearestLanguage = language;
             }
             PushBasicInfo(current);
         }
@@ -100,11 +101,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
             var node = PopBasicInfo();
             IndentionLevel -= indentionIncrement;
             _contextVariables.Remove(node);
-            _languageEnvironment.Pop();
-            if (_languageEnvironment.Peek() != null)
-            {
-                _nearestLanguage = _languageEnvironment.Peek();
-            }
+            _nearestLanguage = _languageEnvironment.Pop();
             return node;
         }
 

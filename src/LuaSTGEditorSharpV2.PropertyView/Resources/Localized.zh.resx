@@ -144,4 +144,22 @@
   <data name="ribbon_buttom_property" xml:space="preserve">
     <value>属性</value>
   </data>
+  <data name="multiplefile_add" xml:space="preserve">
+    <value>添加文件</value>
+  </data>
+  <data name="multiplefile_clear" xml:space="preserve">
+    <value>清空文件</value>
+  </data>
+  <data name="multiplefile_remove" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="multiplefile_source" xml:space="preserve">
+    <value>源文件</value>
+  </data>
+  <data name="multiplefile_destination" xml:space="preserve">
+    <value>目标路径</value>
+  </data>
+  <data name="multiplefile_invalid_count" xml:space="preserve">
+    <value>文件数量必须是非负整数。</value>
+  </data>
 </root>

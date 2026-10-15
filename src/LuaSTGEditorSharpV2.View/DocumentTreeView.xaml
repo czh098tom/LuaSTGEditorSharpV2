@@ -9,7 +9,7 @@
                mc:Ignorable="d" 
                d:DesignHeight="450" d:DesignWidth="800"
                FontFamily="Terminal"
-               Grid.Column="2" VirtualizingPanel.IsVirtualizing="True"
+               Grid.Column="2"
                lw:TreeListBoxDragDropHelper.IsDragSource="True" 
                lw:TreeListBoxDragDropHelper.IsDropTarget="True"
                HierarchySource="{Binding Tree}"

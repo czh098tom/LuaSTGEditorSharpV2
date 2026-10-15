@@ -1,5 +1,5 @@
 using FluentAssertions;
-using LuaSTGEditorSharpV2.Core.Parsing;
+using LuaSTGEditorSharpV2.Core.Parsing.Legacy;
 using Xunit;
 
 namespace LuaSTGEditorSharpV2.Core.Tests.Parsing;

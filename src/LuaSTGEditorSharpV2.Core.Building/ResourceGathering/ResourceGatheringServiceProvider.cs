@@ -34,7 +34,17 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
         public IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalServiceParam localParam
             , ResourceGatheringServiceSettings serviceSettings)
         {
+            return GetResourcesToPack(nodeData, localParam, serviceSettings, null);
+        }
+
+        public IEnumerable<GroupedResource> GetResourcesToPack(NodeData nodeData, LocalServiceParam localParam,
+            ResourceGatheringServiceSettings serviceSettings, string? initialResourceGroup)
+        {
             var ctx = GetContextOfNode(nodeData, localParam, serviceSettings);
+            if (initialResourceGroup != null)
+            {
+                ctx.PushResourceGroup(initialResourceGroup);
+            }
             var service = GetServiceOfNode(nodeData);
             return service.GetResourcesToPackWithContext(nodeData, ctx);
         }

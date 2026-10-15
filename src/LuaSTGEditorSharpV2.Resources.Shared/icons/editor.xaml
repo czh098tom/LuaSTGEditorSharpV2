@@ -5,6 +5,11 @@
         <EllipseGeometry Center="8,8" RadiusX="1.5" RadiusY="1.5"/>
         <EllipseGeometry Center="13,8" RadiusX="1.5" RadiusY="1.5"/>
     </GeometryGroup>
+    <GeometryGroup x:Key="editor:nocolor">
+        <RectangleGeometry Rect="1,1,12,12"/>
+        <LineGeometry StartPoint="2,2" EndPoint="12,12"/>
+        <LineGeometry StartPoint="12,2" EndPoint="2,12"/>
+    </GeometryGroup>
     
     <GeometryGroup x:Key="editor:spinIncrease">
         <PathGeometry Figures="M4,1 L7,5 L1,5 Z" />

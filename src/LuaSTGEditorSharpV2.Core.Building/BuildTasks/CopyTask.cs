@@ -11,6 +11,7 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
         public IInputSourceVariable SourceVariable { get; set; }
         public IInputSourceVariable TargetNameVariable { get; set; }
         public IInputSourceVariable ArchivePathVariable { get; set; }
+        public bool KeepFirstTarget { get; set; }
 
         public CopyTask(IInputSourceVariable sourceVariable, IInputSourceVariable targetNameVariable,
             IInputSourceVariable archivePathVariable)
@@ -25,6 +26,12 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
             var outputBasePaths = ArchivePathVariable.GetVariable(context);
             var sourcePaths = SourceVariable.GetVariable(context);
             var targetNames = TargetNameVariable.GetVariable(context);
+            if (sourcePaths.Count != targetNames.Count)
+            {
+                throw new InvalidOperationException("Copy source and target counts must match.");
+            }
+            var copiedTargets = new Dictionary<string, string>(OperatingSystem.IsWindows()
+                ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
 
             foreach (var (source, targetName) in sourcePaths.Zip(targetNames))
             {
@@ -32,31 +39,64 @@ namespace LuaSTGEditorSharpV2.Core.Building.BuildTasks
                 {
                     await Task.Yield();
                     cancellationToken.ThrowIfCancellationRequested();
-                    await CopyWithRetry(source, targetName, outputPath, context, cancellationToken);
+                    var target = GetTargetPath(outputPath, targetName);
+                    if (copiedTargets.TryGetValue(target, out var previousSource))
+                    {
+                        context.LogWriter.WriteLine($"[CopyTask] Duplicate target \"{target}\": \"{previousSource}\" and \"{source}\". "
+                            + (KeepFirstTarget ? "Keeping the first source." : "Overwriting the previous source."));
+                        if (KeepFirstTarget) continue;
+                    }
+                    await CopyWithRetry(source, target, context, cancellationToken);
+                    copiedTargets[target] = source;
                 }
             }
         }
 
-        private static async Task CopyWithRetry(string source, string targetName, string outputPath, BuildingContext context, CancellationToken cancellationToken)
+        private static string GetTargetPath(string outputPath, string targetName)
         {
-            int retryCount = 5;
-            var target = Path.Combine(outputPath, targetName);
-            while (retryCount > 0)
+            if (string.IsNullOrWhiteSpace(targetName) || Path.IsPathRooted(targetName)
+                || targetName.StartsWith('\\') || targetName.Contains(':'))
             {
+                throw new InvalidOperationException($"Copy target '{targetName}' must be a relative file path.");
+            }
+            var normalizedName = targetName.Replace('\\', Path.DirectorySeparatorChar)
+                .Replace('/', Path.DirectorySeparatorChar);
+            var parts = normalizedName.Split(Path.DirectorySeparatorChar);
+            if (parts[^1] is "" or "." or ".."
+                || parts.Any(part => part.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
+                    || (part is not "." and not ".." && (part.EndsWith(' ') || part.EndsWith('.')))))
+            {
+                throw new InvalidOperationException($"Copy target '{targetName}' is not a valid file path.");
+            }
+            var outputRoot = Path.GetFullPath(outputPath);
+            var target = Path.GetFullPath(normalizedName, outputRoot);
+            var rootPrefix = Path.EndsInDirectorySeparator(outputRoot)
+                ? outputRoot : outputRoot + Path.DirectorySeparatorChar;
+            var comparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            if (!target.StartsWith(rootPrefix, comparison))
+            {
+                throw new InvalidOperationException($"Copy target '{targetName}' escapes output directory '{outputRoot}'.");
+            }
+            return target;
+        }
+
+        private static async Task CopyWithRetry(string source, string target, BuildingContext context, CancellationToken cancellationToken)
+        {
+            for (var attempt = 1; ; attempt++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
                 try
                 {
-                    if (!Directory.Exists(outputPath)) Directory.CreateDirectory(outputPath);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target)!);
                     File.Copy(source, target, true);
                     context.LogWriter.WriteLine($"[CopyTask] Copied \"{source}\" to \"{target}\"");
-                    retryCount = 0;
+                    return;
                 }
                 catch (IOException e)
                 {
-                    Console.WriteLine(e);
-                    retryCount--;
-                    if (retryCount < 0)
+                    if (attempt == 5)
                     {
-                        context.LogWriter.WriteLine($"[CopyTask] Copying \"{source}\" to \"{target}\" failed. Exception: \n{e}");
+                        context.LogWriter.WriteLine($"[CopyTask] Copying \"{source}\" to \"{target}\" failed after {attempt} attempts. Exception: \n{e}");
                         throw;
                     }
                     await Task.Delay(1000, cancellationToken);

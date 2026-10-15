@@ -144,4 +144,22 @@
   <data name="ribbon_buttom_property" xml:space="preserve">
     <value>Properties</value>
   </data>
+  <data name="multiplefile_add" xml:space="preserve">
+    <value>Add Files</value>
+  </data>
+  <data name="multiplefile_clear" xml:space="preserve">
+    <value>Clear Files</value>
+  </data>
+  <data name="multiplefile_remove" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="multiplefile_source" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="multiplefile_destination" xml:space="preserve">
+    <value>dest</value>
+  </data>
+  <data name="multiplefile_invalid_count" xml:space="preserve">
+    <value>The file count must be a non-negative integer.</value>
+  </data>
 </root>

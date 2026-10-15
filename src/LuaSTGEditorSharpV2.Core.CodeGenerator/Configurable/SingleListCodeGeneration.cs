@@ -17,6 +17,30 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
         [JsonProperty] public CaptureWithMacroOption?[]? SubCaptureRule { get; set; }
         [JsonProperty] public Selection[]? SubCaptureFormat { get; set; }
 
+        [JsonProperty] public string? HeadWhenSubCapturesEmpty { get; set; }
+        [JsonProperty] public string? TailWhenSubCapturesEmpty { get; set; }
+        [JsonProperty] public int? IndentionIncrementWhenSubCapturesEmpty { get; set; }
+
+        protected override (string? Head, string? Tail, int IndentionIncrement) ResolveLayout(string?[] captureResult)
+        {
+            var layout = base.ResolveLayout(captureResult);
+            if (CountCapture == null || SubCaptureRule == null || SubCaptureFormat == null || SubCaptureFormat.Length == 0)
+            {
+                return layout;
+            }
+            var firstSubCapture = base.GetCaptureCacheLength();
+            for (int i = 0; i < SubCaptureFormat.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(captureResult[firstSubCapture + i]))
+                {
+                    return layout;
+                }
+            }
+            return (HeadWhenSubCapturesEmpty ?? layout.Head,
+                TailWhenSubCapturesEmpty ?? layout.Tail,
+                IndentionIncrementWhenSubCapturesEmpty ?? layout.IndentionIncrement);
+        }
+
         protected override int GetCaptureCacheLength()
         {
             if (CountCapture != null && SubCaptureRule != null && SubCaptureFormat != null)
@@ -55,7 +79,12 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                             var sel = SubCaptureFormat[j];
                             if (sel.ShouldAppend(subCaptureResult))
                             {
-                                captureResultBuilder[j].Append(context.ApplyIndentedFormat(sel.Text, subCaptureResult));
+                                var formatted = context.Format(sel.Text, subCaptureResult);
+                                captureResultBuilder[j].Append(formatted);
+                                if (formatted.Length > 0 && !formatted.EndsWith('\n'))
+                                {
+                                    captureResultBuilder[j].Append('\n');
+                                }
                             }
                         }
                     }
