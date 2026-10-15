@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LuaSTGEditorSharpV2.Core\LuaSTGEditorSharpV2.Core.csproj" />
+    <ProjectReference Include="..\..\src\LuaSTGEditorSharpV2.Core.Building\LuaSTGEditorSharpV2.Core.Building.csproj" />
   </ItemGroup>
 
 </Project>

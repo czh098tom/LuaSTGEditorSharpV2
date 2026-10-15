@@ -4,24 +4,13 @@ using LuaSTGEditorSharpV2.Core;
 
 namespace LuaSTGEditorSharpV2.PropertyView;
 
-public record struct PropertyBinding(
-    IReadOnlyList<BoundProperty> BoundProperties,
+public sealed record PropertyBinding(
     NodePropertyCapture Capture,
-    Action<string> PullAction,
-    Func<EditResult> EditResultResolver
-)
+    IReadOnlyList<BoundProperty> BoundProperties,
+    Func<string, string[]> Decompose,
+    Func<string[], string> Compose,
+    bool ShouldRefreshView)
 {
-    private bool _hasConflict;
-    public bool HasConflict
-    {
-        get => _hasConflict;
-        set
-        {
-            _hasConflict = value;
-            foreach (var boundProperty in BoundProperties)
-            {
-                boundProperty.HasConflict = value;
-            }
-        }
-    }
-};
+    public string[] Pull(NodePropertyAccessToken source)
+        => Decompose(Capture.Capture(source));
+}

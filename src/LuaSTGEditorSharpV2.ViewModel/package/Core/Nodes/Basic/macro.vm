@@ -1,0 +1,7 @@
+{
+  "$type": "LuaSTGEditorSharpV2.ViewModel.Configurable.ConfigurableViewModelProvider, LuaSTGEditorSharpV2.ViewModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "TypeUID": "macro",
+  "Icon": "pack://application:,,,/LuaSTGEditorSharpV2.Resources.Shared;component/images/nodes/16x16/definemacro.png",
+  "Captures": [{ "Key": "replace" }, { "Key": "by" }],
+  "Text": { "Neutral": "Macro: {1} -> {2}", "Localized": { "zh": "宏替换：{1} -> {2}" } }
+}

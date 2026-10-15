@@ -24,6 +24,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
 
         protected override CodeGeneratorServiceBase DefaultService => _defaultService;
 
+        public CodeGeneratorServiceBase ResolveService(NodeData node) => GetServiceOfNode(node);
+
         public override sealed CodeGenerationContext GetEmptyContext(LocalServiceParam localSettings
             , CodeGenerationServiceSettings serviceSettings)
         {
@@ -49,6 +51,9 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
                 }
             }
         }
+
+        public IEnumerable<CodeData> GenerateCode(NodeData nodeData, CodeGenerationContext context)
+            => GetServiceOfNode(nodeData).GenerateCodeWithContext(nodeData, context);
 
         public IEnumerable<CodeData> GenerateCode(NodeData nodeData, LocalServiceParam param)
             => GenerateCode(nodeData, param, ServiceSettings);

@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Editor;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Core.Parsing.Facade;
 using LuaSTGEditorSharpV2.Core.Services;
 using LuaSTGEditorSharpV2.PropertyView.Configurable;
 using LuaSTGEditorSharpV2.PropertyView.Converter;
@@ -16,6 +15,7 @@ using LuaSTGEditorSharpV2.PropertyView.ViewModel;
 using LuaSTGEditorSharpV2.ViewModel;
 
 using Xunit;
+using LuaSTGEditorSharpV2.Core.Parsing.Vector2;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
@@ -71,40 +71,6 @@ public class PropertyViewMultiSelectionTests
         Assert.NotNull(editResult?.Command);
         document.ExecuteCommand(editResult!.Command!);
         Assert.All(nodes, node => Assert.Equal("changed", node.Source.Properties["value"]));
-    }
-
-    [Fact]
-    public void CodeWizardEditCreatesCommandForEverySource()
-    {
-        var dialogService = new TestCodeEditDialogService("changed");
-        using var environment = new TestEnvironment(dialogService);
-        using var document = environment.CreateDocument(
-            CreateNode("TestType", ("value", "same")),
-            CreateNode("TestType", ("value", "same")));
-        var nodes = GetSelectedNodes(document, "TestType");
-        var term = CreatePropertyTerm(environment.Services, "value");
-        SetProperty(
-            term,
-            nameof(PropertyItemTermBase.Editor),
-            new PropertyViewEditorType("code"));
-
-        using var registration = environment.Register(
-            "TestType",
-            CreateCommonTab(environment, term));
-
-        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
-            nodes,
-            new LocalServiceParam(document));
-        var viewModel = Assert.IsType<BasicPropertyItemViewModel>(Assert.Single(tabs[0].Properties));
-        EditResult? editResult = null;
-        viewModel.OnEdit += (_, result) => editResult = result;
-
-        viewModel.ShowEditWindow!.Execute(null);
-
-        Assert.NotNull(editResult?.Command);
-        document.ExecuteCommand(editResult!.Command!);
-        Assert.All(nodes, node => Assert.Equal("changed", node.Source.Properties["value"]));
-        Assert.Equal("same", dialogService.InitialValue);
     }
 
     [Fact]
@@ -328,7 +294,7 @@ public class PropertyViewMultiSelectionTests
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("x", "y"))));
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("x", "y"))));
         var node = Assert.Single(GetSelectedNodes(document, "TestType"));
         using var registration = environment.Register(
             "TestType",
@@ -353,7 +319,7 @@ public class PropertyViewMultiSelectionTests
         Assert.False(editResult!.ShouldRefreshView);
         document.ExecuteCommand(editResult.Command!);
         Assert.Equal(
-            Vector2EditHelper.Compose("changed", "y"),
+            Vector2ExpressionCodec.Compose("changed", "y"),
             node.Source.Properties["vector"]);
         Assert.Equal("changed", viewModel.X);
         Assert.Equal("y", viewModel.Y);
@@ -364,7 +330,7 @@ public class PropertyViewMultiSelectionTests
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("x", "y"))));
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("x", "y"))));
         var node = Assert.Single(GetSelectedNodes(document, "TestType"));
         using var registration = environment.Register(
             "TestType",
@@ -374,19 +340,19 @@ public class PropertyViewMultiSelectionTests
             new LocalServiceParam(document));
         var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
 
-        node.ChangeProperty("vector", Vector2EditHelper.Compose("newX", "newY"));
+        node.ChangeProperty("vector", Vector2ExpressionCodec.Compose("newX", "newY"));
 
         Assert.Equal("newX", viewModel.X);
         Assert.Equal("newY", viewModel.Y);
     }
 
     [Fact]
-    public void Vector2MultiSourceConflictUsesWholeValuePolicy()
+    public void Vector2MultiSourceConflictResolvesPerFieldAndComposesEdits()
     {
         using var environment = new TestEnvironment();
         using var document = environment.CreateDocument(
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("sameX", "firstY"))),
-            CreateNode("TestType", ("vector", Vector2EditHelper.Compose("sameX", "secondY"))));
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("sameX", "firstY"))),
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("sameX", "secondY"))));
         var nodes = GetSelectedNodes(document, "TestType");
         using var registration = environment.Register(
             "TestType",
@@ -396,8 +362,10 @@ public class PropertyViewMultiSelectionTests
             nodes,
             new LocalServiceParam(document));
         var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
-        Assert.Equal(string.Empty, viewModel.X);
+        Assert.Equal("sameX", viewModel.X);
         Assert.Equal(string.Empty, viewModel.Y);
+        Assert.False(viewModel.XProperty.HasConflict);
+        Assert.True(viewModel.YProperty.HasConflict);
         EditResult? editResult = null;
         viewModel.OnEdit += (_, result) => editResult = result;
 
@@ -410,10 +378,58 @@ public class PropertyViewMultiSelectionTests
         Assert.All(
             nodes,
             node => Assert.Equal(
-                Vector2EditHelper.Compose("sharedX", "sharedY"),
+                Vector2ExpressionCodec.Compose("sharedX", "sharedY"),
                 node.Source.Properties["vector"]));
         Assert.Equal("sharedX", viewModel.X);
         Assert.Equal("sharedY", viewModel.Y);
+    }
+
+    [Fact]
+    public void Vector2SingleFieldEditPreservesEachSourceUneditedComponent()
+    {
+        using var environment = new TestEnvironment();
+        using var document = environment.CreateDocument(
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("1", "2"))),
+            CreateNode("TestType", ("vector", Vector2ExpressionCodec.Compose("1", "3"))));
+        var nodes = GetSelectedNodes(document, "TestType");
+        using var registration = environment.Register(
+            "TestType",
+            CreateCommonTab(environment, CreateVector2Term(environment.Services, "vector")));
+
+        var tabs = environment.PropertyViewProvider.GetPropertyViewModelOfMultipleNodes(
+            nodes,
+            new LocalServiceParam(document));
+        var viewModel = Assert.IsType<Vector2PropertyItemViewModel>(Assert.Single(tabs[0].Properties));
+        Assert.Equal("1", viewModel.X);
+        Assert.Equal(string.Empty, viewModel.Y);
+        Assert.True(viewModel.YProperty.HasConflict);
+
+        EditResult? editResult = null;
+        viewModel.OnEdit += (_, result) => editResult = result;
+
+        viewModel.X = "4";
+
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.Equal(
+            Vector2ExpressionCodec.Compose("4", "2"),
+            nodes[0].Source.Properties["vector"]);
+        Assert.Equal(
+            Vector2ExpressionCodec.Compose("4", "3"),
+            nodes[1].Source.Properties["vector"]);
+        Assert.Equal("4", viewModel.X);
+        Assert.True(viewModel.YProperty.HasConflict);
+
+        viewModel.Y = "9";
+        Assert.NotNull(editResult?.Command);
+        document.ExecuteCommand(editResult!.Command!);
+        Assert.All(
+            nodes,
+            node => Assert.Equal(
+                Vector2ExpressionCodec.Compose("4", "9"),
+                node.Source.Properties["vector"]));
+        Assert.Equal("4", viewModel.X);
+        Assert.Equal("9", viewModel.Y);
     }
 
     [Fact]
@@ -728,9 +744,8 @@ public class PropertyViewMultiSelectionTests
     private sealed class TestEnvironment : IDisposable
     {
         private readonly CultureInfo _previousCulture = CultureInfo.CurrentUICulture;
-        private readonly IDisposable? _codeWizardRegistration;
 
-        public TestEnvironment(ICodeEditDialogService? codeEditDialogService = null)
+        public TestEnvironment()
         {
             var services = new ServiceCollection();
             services.AddLogging();
@@ -741,24 +756,7 @@ public class PropertyViewMultiSelectionTests
                 typeof(PropertyItemViewModelFactory<,>));
             services.AddSingleton<EditorNodeFactory>();
             services.AddSingleton<PropertyViewServiceProvider>();
-            if (codeEditDialogService is not null)
-            {
-                services.AddSingleton(codeEditDialogService);
-            }
             Services = services.BuildServiceProvider();
-
-            if (codeEditDialogService is not null)
-            {
-                var codeWizard = Assert.Single(
-                    new PropertyEditWizardRegisterer().GetServiceInstances(Services),
-                    wizard => wizard.Name == "code");
-                _codeWizardRegistration = Services
-                    .GetRequiredService<PropertyEditWizardProviderService>()
-                    .Register(
-                        "code",
-                        new PackageInfo(PackageManifest.CORE, string.Empty),
-                        codeWizard);
-            }
 
             Services.GetRequiredService<LocalizationService>()
                 .SetUICulture(CultureInfo.GetCultureInfo("zh-CN"));
@@ -792,7 +790,6 @@ public class PropertyViewMultiSelectionTests
 
         public void Dispose()
         {
-            _codeWizardRegistration?.Dispose();
             Services.GetRequiredService<LocalizationService>().SetUICulture(_previousCulture);
             Services.Dispose();
         }

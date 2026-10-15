@@ -39,7 +39,10 @@ actually do when generating code.
 `Tail` to declare the code generation result.
 `Head` means code generated before the chilren of the
 node, while `Tail` means code generated after the
-children. You can use `{0}` to refer to the indention.
+children. `{0}` is the context formatter and produces an empty string;
+use `{0:IND}` for indentation. Captured values start at `{1}`.
+Escape literal braces as `{{` and `}}`, for example `self.task = {{}}`.
+`IndentionIncrement` controls child indentation; `IgnoreChildren` skips child generation.
 
 ### Captures
 `ConfigurableCodeGeneration` uses "Captures" to obtain 
@@ -48,7 +51,7 @@ json object which declares where to find and how to
 pre-process those properties.
 ```
 "Captures": [
-    { "Capture": "{propertyName}" }
+    { "Key": "{propertyName}" }
 ]
 ```
 You can use the result of captures in `Head` and `Tail`
@@ -58,7 +61,7 @@ start with 1.
 - e.g.
 ```
 "Captures": [
-  { "Capture": "condition" }
+  { "Key": "condition" }
 ],
 "Head": "elseif ({1}) then"
 ```

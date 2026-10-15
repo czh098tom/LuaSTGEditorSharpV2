@@ -141,6 +141,12 @@
   <data name="vector2EditDialog_components" xml:space="preserve">
     <value>Components</value>
   </data>
+  <data name="vector2EditDialog_add_component" xml:space="preserve">
+    <value>Add component</value>
+  </data>
+  <data name="vector2EditDialog_remove_component" xml:space="preserve">
+    <value>Remove component</value>
+  </data>
   <data name="vector2EditDialog_sync_xy" xml:space="preserve">
     <value>Sync XY</value>
   </data>

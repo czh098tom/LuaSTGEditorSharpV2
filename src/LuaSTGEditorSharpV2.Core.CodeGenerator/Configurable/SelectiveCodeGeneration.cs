@@ -20,6 +20,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
         [JsonProperty] public Selection[]? Head { get; private set; } = [];
         [JsonProperty] public Selection[]? Tail { get; private set; } = [];
         [JsonProperty] public bool IgnoreChildren { get; private set; } = false;
+        [JsonProperty] public string? ChildHead { get; private set; }
+        [JsonProperty] public string? ChildTail { get; private set; }
         [JsonProperty] public int IndentionIncrement { get; private set; } = 1;
 
         private string[]? _captureResult;
@@ -27,35 +29,41 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
         internal protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
         {
             var token = new NodePropertyAccessToken(ServiceProvider, node, context);
-            _captureResult ??= new string[GetCaptureCacheLength()];
-            WriteCaptureResult(_captureResult, node, context);
+            _captureResult = new string[GetCaptureCacheLength()];
+            var captureResult = _captureResult;
+            WriteCaptureResult(captureResult, node, context);
             if (Head != null)
             {
                 StringBuilder sb = new();
                 for (int i = 0; i < Head.Length; i++)
                 {
-                    if (Head[i].ShouldAppend(_captureResult))
+                    if (Head[i].ShouldAppend(captureResult))
                     {
-                        sb.Append(context.ApplyIndentedFormat(Head[i].Text, _captureResult));
+                        sb.Append(context.ApplyIndentedFormat(Head[i].Text, captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);
             }
             if (!IgnoreChildren)
             {
+                var hasChildren = node.GetLogicalChildren().Any();
+                if (hasChildren && ChildHead != null) yield return new CodeData(context
+                    .ApplyIndentedFormat(ChildHead, captureResult).ToString(), node);
                 foreach (var cd in NodeServiceProvider.GenerateForChildren(node, context, IndentionIncrement))
                 {
                     yield return cd;
                 }
+                if (hasChildren && ChildTail != null) yield return new CodeData(context
+                    .ApplyIndentedFormat(ChildTail, captureResult).ToString(), node);
             }
             if (Tail != null)
             {
                 StringBuilder sb = new();
                 for (int i = 0; i < Tail.Length; i++)
                 {
-                    if (Tail[i].ShouldAppend(_captureResult))
+                    if (Tail[i].ShouldAppend(captureResult))
                     {
-                        sb.Append(context.ApplyIndentedFormat(Tail[i].Text, _captureResult));
+                        sb.Append(context.ApplyIndentedFormat(Tail[i].Text, captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);
@@ -85,7 +93,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
 			{
 				for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
 				{
-					var contextNode = context.PeekType(ContextCaptures[i].TypeUID);
+					var contextNode = ContextCaptures[i].ResolveNode(context);
 					if (contextNode != null)
 					{
 						var contextNodeToken = new NodePropertyAccessToken(ServiceProvider, contextNode, context);

@@ -20,9 +20,14 @@ namespace LuaSTGEditorSharpV2.Core.Building.ResourceGathering
         {
             var token = new NodePropertyAccessToken(ServiceProvider, node, context);
             string path = PathCapture?.Capture(token) ?? string.Empty;
-            string target = TargetNameCapture?.Capture(token) ?? Path.GetFileName(path);
-            if (!string.IsNullOrWhiteSpace(path))
+            string target = TargetNameCapture?.Capture(token) ?? string.Empty;
+            if (PathCapture != null)
             {
+                if (string.IsNullOrWhiteSpace(path) || string.IsNullOrWhiteSpace(target))
+                {
+                    throw new InvalidOperationException(
+                        $"Resource node '{node.TypeUID}': source and destination are required.");
+                }
                 foreach (var s in context.EnumerateResourceGroups())
                 {
                     yield return new GroupedResource(path, target, s);

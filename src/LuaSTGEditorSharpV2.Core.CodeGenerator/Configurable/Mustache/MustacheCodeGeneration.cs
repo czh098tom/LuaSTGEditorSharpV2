@@ -22,6 +22,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			public Dictionary<string, object?> self = [];
 			public Dictionary<string, Dictionary<string, object?>> context = [];
 			public Dictionary<string, bool> condition = [];
+			public Func<object>? logicalChildrenCount = null;
 			public CaptureResult() {}
 		}
 		[JsonProperty] public Dictionary<string, CaptureWithMacroOption> Captures { get; private set; } = [];
@@ -38,9 +39,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 		{
 			_captureResult = new();
 			WriteCaptureResult(ref _captureResult, node, context);
+			var captureResult = _captureResult;
 			if (Head.Length != 0)
 			{
-				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Head), _captureResult, context).ToString(), node);
+				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Head), captureResult, context).ToString(), node);
 			}
 			if (!IgnoreChildren)
 			{
@@ -51,12 +53,13 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			}
 			if (Tail.Length != 0)
 			{
-				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Tail), _captureResult, context).ToString(), node);
+				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Tail), captureResult, context).ToString(), node);
 			}
 		}
 
 		protected int WriteCaptureResult(ref CaptureResult captureResult, NodeData node, CodeGenerationContext context)
 		{
+			captureResult.logicalChildrenCount = () => node.GetLogicalChildren().Count();
 			var token = new NodePropertyAccessToken(ServiceProvider, node, context);
 			int n = 0;
 			foreach(var namedCapture in Captures)
@@ -68,8 +71,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			foreach (var namedContextCapture in ContextCaptures)
 			{
 				var contextCapture = namedContextCapture.Value;
-				var targetTypeUid = contextCapture.TypeUID;
-				var contextNode = context.PeekType(targetTypeUid);
+				var contextNode = contextCapture.ResolveNode(context);
 				captureResult.context[namedContextCapture.Key] = [];
 				foreach (var namedContextPropertyCapture in contextCapture.Property)
 				{
@@ -98,7 +100,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 
 		protected static StringBuilder RenderIndentedTemplate(string template, CaptureResult captureResult, CodeGenerationContext context)
 		{
-			return context.ApplyIndented(context.GetIndented(), StaticStubbleRenderer.Render(template, captureResult));
+			return context.ApplyIndented(context.GetIndented(), CodeFragmentTemplate.RenderText([template], captureResult, context));
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace LuaSTGEditorSharpV2.Core.Configurable
             if (!UseExistanceInsteadOfBoolValue)
             {
                 string captured = string.Empty;
-                if (ConditionOn.Value < captureResult.Length && ConditionOn.Value > 0)
+                if (ConditionOn.Value < captureResult.Length && ConditionOn.Value >= 0)
                 {
                     captured = captureResult[ConditionOn.Value];
                 }
@@ -34,7 +34,7 @@ namespace LuaSTGEditorSharpV2.Core.Configurable
             else
             {
                 string captured = string.Empty;
-                if (ConditionOn.Value < captureResult.Length && ConditionOn.Value > 0)
+                if (ConditionOn.Value < captureResult.Length && ConditionOn.Value >= 0)
                 {
                     captured = captureResult[ConditionOn.Value] ?? captured;
                 }

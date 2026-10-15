@@ -157,6 +157,12 @@ public interface IServiceInstanceProvider<TData> {
 | `sharpconv` | — | `SharpNodeConverterServiceProvider` | Package.LegacyNode.SharpProjectConverter |
 | (无短名) | CLIPluginProvider | `CLIPluginProviderService` | CLI.Plugin（仅 `IServiceInstanceProvider`，不走文件扫描） |
 
+当前实现中的配置多态短名由 `$type` 解析，登记如下；沿用 `prop` 服务文件加载入口。
+
+| JsonTypeShortName | 基接口 | 具体类型 | 所在模块 |
+|---|---|---|---|
+| `Argb` | `IPropertyItemTerm` | `ArgbPropertyItemTerm` | PropertyView |
+
 ### 3.4 命令系统契约（`CommandBase` / `CommandBuffer`）
 
 ```csharp
@@ -202,6 +208,79 @@ abstract class ContextualNodeServiceProvider<TService, TContext, TSettings>
 - `PackedDataBase` 子类默认支持 DI 反序列化
 
 ---
+
+### 3.7 代码生成上下文捕获
+
+`Configurable.ContextCapture` 与 `Configurable.Mustache.ContextCapture` 的选择器配置必须二选一：
+`TypeUID` 为非空单类型名；`AnyOfTypeUIDs` 为非空类型名数组，数组元素不得为 null、空串或纯空白。
+两个字段不能同时出现，显式 null 也无效；反序列化或 PopulateObject 校验失败时报告
+包含字段名的配置错误，包加载器沿用既有错误报告规则。
+单类型仍走 `PeekType`；系列类型沿 `EnumerateFromNearest()` 取最近的匹配节点，类型名大小写敏感，
+数组顺序不表示优先级。无匹配时属性捕获仍为空字符串。普通、条件、Mustache 和代码片段生成器
+共用此规则；`Property` 格式和既有两参数构造函数保持兼容。该扩展不新增 Provider 或服务短名。
+本次将系列字段 `TypeUIDs` 更名为 `AnyOfTypeUIDs`，系列配置须同步更新；单类型 `TypeUID` 不变。
+
+---
+
+### 3.8 Mustache 代码生成 helper
+
+`MustacheCodeGeneration` 与 `CodeFragmentTemplate.CreateModel` 的模型根提供
+`logicalChildrenCount` 无参 helper，绑定该次模型创建时的节点，返回其直接逻辑子节点数量。
+计数遵循 `GetLogicalChildren()`：排除禁用节点，不递归，也不根据子节点是否产码过滤。
+使用 `{{logicalChildrenCount}}` 或 `{{{logicalChildrenCount}}}` 调用；
+例如条件模板 `{{logicalChildrenCount}} > 0` 先由 Mustache 渲染，再交给 NCalc 求值。
+运行时采用 Stubble 支持的 `Func<object>` 委托，不使用 `Func<int>`；
+helper 不序列化到节点或配置，不新增 Provider、服务短名或 NCalc 函数。
+普通生成器递归时保留当前调用的模型，确保 Head/Tail 的 helper 与条件仍属于当前节点。
+既有 `ConditionTemplates` 和字符串捕获语义保持不变；本契约不扩展 ViewModel 模板。
+
+### 3.9 普通生成器的子节点包裹与列表布局
+
+`ConfigurableCodeGeneration` 和 `SelectiveCodeGeneration` 的可选字符串字段
+`ChildHead` / `ChildTail` 在存在直接逻辑子节点且未启用 `IgnoreChildren` 时产出，
+顺序为 Head → ChildHead → 逻辑子树 → ChildTail → Tail。
+未配置字段默认为 null，不改变既有布局；计数不按实际产码过滤。
+
+`SingleListCodeGeneration` 的可选字段 `HeadWhenSubCapturesEmpty`、
+`TailWhenSubCapturesEmpty` 和 `IndentionIncrementWhenSubCapturesEmpty`
+仅在所有子捕获格式化输出均为空时替代对应布局，null 沿用原配置。
+判断不是 count == 0：非零列表中的空名称也可能不产生子捕获输出。
+子捕获使用 Format，只在非空且未以换行结尾时追加换行，避免二次缩进或多调用粘行。
+这些字段不新增 Provider 或服务短名，旧 JSON 无需增加字段。
+
+### 3.10 V1 数字属性列表迁移与按列产码
+
+`IndexedListRemapping` 配置 `OriginalCountKey`、`NewCountKey`、`OriginalIndexBase`（缺省1）、
+`NewIndexBase`（缺省0）、`MaximumCount`（缺省100，允许0–100）、`PropertyRules`、
+`ItemConverters`（缺省空数组）和 `PreserveInactiveItems`（缺省false）。每条规则有
+`OriginalKeyFormat`、`ItemKey`、`NewKeyFormat`、可选 `DefaultValue`；键格式用 `{0}` 表示索引。
+计数按 V1 int.TryParse 解析，失败归0，负数/超限夹到范围内；节点值仍为字符串。
+先快照、展开并检查源/目标重叠和既有目标碰撞，再提交；允许源目标交叉搬移，不覆盖无关字段。
+空名称槽不压缩；保留inactive时搬移实际存在的字段，未配置默认值不凭空填项。
+ItemConverters复用既有格式转换器，但运行在无父子关系的隔离条目上，禁止换节点/类型/启用状态、
+增子树、结构重试或产生未声明的ItemKey；失败不改变原节点或共享格式上下文。
+`PropertyDefaultValue` 的 `Key` / `DefaultValue` 仅补缺失或空串，不将纯空白当作空值。
+
+RecordPos在SharpNode.ToNodeData建立字典前由专用RecordPosConverter按物理数组位置归一化caption：
+count、name1/object1、name2/object2……；输入caption可重复或已编号，值/槽顺序/禁用状态保持。
+空数组、null槽、残缺字段对或count超过物理槽给出诊断；不为其他节点吞重键，不按count分配。
+随后仍走Default和可配置索引映射；该入口不产Lua，也不解析或改写物理子树。
+
+`JoinedListCodeGeneration`复用CodeFragmentTemplate，不替代MustacheCodeGeneration或SingleListCodeGeneration。
+使用既有cgen Provider，通过程序集限定$type解析，不新增服务短名。
+配置 `CountCapture`、`MaximumCount`（缺省100，允许0–10000）、`ItemCaptures`、
+`RequiredCaptureName`、`Columns`、`Head` / `Tail`（缺省空数组）、`IgnoreChildren`（缺省false），
+以及既有 `Captures` / `ContextCaptures` / `ConditionTemplates`（缺省空字典）。
+每列仅有 `Template`（缺省空数组）和 `Separator`（缺省空串）；所有列共用原始必需值非空的行集合。
+每行捕获经ApplyMacroWithFormat独立展开，DisableMacro保持有效；args.item为展开后的行，
+args.rawItem保留展开前的捕获值，args.index为物理索引。可按原始初始化非空判断是否产出等号。
+最终args.columns为连接后的列，args.hasItems表示存在有效行；模板不再次展开宏，最终仅整体缩进一次。
+递归子树时保留本次模型，Head → children → Tail，不存在额外隐式列换行。
+本批LocalVariable配置逐项local、名称禁宏、非空RHS逐项宏展开后加括号（多返回仅取首值）；
+Assignment保留TypeUID输出单条并行赋值；RecordPos保留TypeUID输出单条联合local及坐标值快照，
+名称/对象均禁宏，不改成逐项local或保存对象引用。
+旧RepeatVariableConverter/SmoothSetValueToConverter仍可用于历史配置，本包改为可配置组合。
+本契约只覆盖迁移和产码，不承诺Assignment/RecordPos已有列表编辑器或工具箱入口。
 
 ## 四、主要数据流
 
