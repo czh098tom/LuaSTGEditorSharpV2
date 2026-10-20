@@ -268,10 +268,10 @@ helper 不序列化到节点或配置，不新增 Provider、服务短名或 NCa
 ItemConverters复用既有格式转换器，但运行在无父子关系的隔离条目上，禁止换节点/类型/启用状态、
 增子树、结构重试或产生未声明的ItemKey；失败不改变原节点或共享格式上下文。
 
-RecordPos在SharpNode.ToNodeData建立字典前由专用RecordPosConverter按物理数组位置归一化caption：
-count、name1/object1、name2/object2……；输入caption可重复或已编号，值/槽顺序/禁用状态保持。
-空数组、null槽、残缺字段对或count超过物理槽给出诊断；不为其他节点吞重键，不按count分配。
-随后仍走Default和可配置索引映射；该入口不产Lua，也不解析或改写物理子树。
+RecordPos的合法单项输入沿用普通SharpNode加载，不在字典建立前按节点类型改写属性标题。
+Default格式化属性键后，NodePropertyRemapping将number_of_var、use_var、to_record分别迁移为
+count、name_0、object_0，保留字符串值、显式空串及禁用状态。
+重复标题与其他节点一样在普通加载时失败，不按物理数组位置归一化多项输入。
 
 `JoinedListCodeGeneration`复用CodeFragmentTemplate，不替代MustacheCodeGeneration或SingleListCodeGeneration。
 使用既有cgen Provider，通过程序集限定$type解析，不新增服务短名。

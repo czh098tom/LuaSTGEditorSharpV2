@@ -200,7 +200,6 @@ public sealed class IndexedListRemappingTests
     [Theory]
     [InlineData("LocalVar", "LocalVariable", "init_value", "value_0")]
     [InlineData("Assignment", "Assignment", "value", "value_0")]
-    [InlineData("RecordPos", "RecordPos", "object", "object_0")]
     public void ActualPackageMappingsLoadAndKeepDisabledData(string legacyType, string expectedType,
         string legacyValueSuffix, string expectedValueKey)
     {

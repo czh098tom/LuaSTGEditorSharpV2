@@ -4,88 +4,64 @@ using LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Tests;
 
 public sealed class IndexedPackageLookupTests
 {
-    [Theory]
-    [InlineData("LocalVar", "init value", "LocalVariable", "value_0")]
-    [InlineData("Assignment", "value", "Assignment", "value_0")]
-    [InlineData("RecordPos", "object", "RecordPos", "object_0")]
-    public void SerializedSpellingsResolveActualPackageConfiguration(string legacyType,
-        string valueCaption, string expectedType, string expectedValueKey)
+    [Fact]
+    public void AllSharpConverterConfigurationsAreRegistered()
     {
+        var expected = Directory.GetFiles(Path.Combine(AppContext.BaseDirectory, "configs"),
+                "*.sharpconv", SearchOption.AllDirectories)
+            .Select(path => JObject.Parse(File.ReadAllText(path)).Value<string>("SharpName")!)
+            .ToArray();
+        Assert.NotEmpty(expected);
+        Assert.All(expected, name => Assert.False(string.IsNullOrWhiteSpace(name)));
+        Assert.Equal(expected.Length, expected.Distinct(StringComparer.Ordinal).Count());
+
         using var services = CreateServices();
         using var package = LoadPackage(services);
         var provider = services.GetRequiredService<SharpNodeConverterServiceProvider>();
-        foreach (var assemblyName in new[] { "", "LuaSTGEditorSharp" })
+        var registered = provider.GetRegisteredAvailableData();
+        Assert.Equal(expected.OrderBy(name => name, StringComparer.Ordinal),
+            registered.Keys.OrderBy(name => name, StringComparer.Ordinal));
+        foreach (var name in expected)
         {
-            foreach (var banned in new[] { false, true })
-            {
-                var raw = new SharpNode
-                {
-                    Type = $".Data.{legacyType}, {assemblyName}",
-                    IsBanned = banned,
-                    SharpAttributes =
-                    [
-                        Attribute("Number of Var", "1"),
-                        Attribute("Var 1 name", "a"),
-                        Attribute($"Var 1 {valueCaption}", "self")
-                    ]
-                };
-                var node = new SharpNodeSerializer().DeserializeTreeNode(JsonConvert.SerializeObject(raw))!;
-                Assert.Equal(raw.Type, node.TypeUID);
-                var converter = provider.GetConverter(node.TypeUID);
-                Assert.Equal(raw.Type, converter.SharpName);
-                converter.Convert(node, new());
-                Assert.Equal(expectedType, node.TypeUID);
-                Assert.Equal("1", node.GetProperty("count"));
-                Assert.Equal("a", node.GetProperty("name_0"));
-                Assert.Equal("self", node.GetProperty(expectedValueKey));
-                Assert.Equal(!banned, node.IsActive);
-                Assert.False(node.HasProperty("number_of_var"));
-                Assert.DoesNotContain(node.Properties.Keys,
-                    key => key.StartsWith("var_", StringComparison.Ordinal));
-            }
+            var converter = registered[name].data;
+            Assert.Equal(name, converter.SharpName);
+            Assert.Same(converter, provider.GetConverter(name));
         }
     }
 
-    [Theory]
-    [InlineData("", false)]
-    [InlineData("", true)]
-    [InlineData("LuaSTGEditorSharp", false)]
-    [InlineData("LuaSTGEditorSharp", true)]
-    public void RepeatedRecordPosCaptionsReachIndexedMapping(string assemblyName, bool banned)
+    [Fact]
+    public void RecordPosSingleItemMapsLegacyCaptions()
     {
         using var services = CreateServices();
         using var package = LoadPackage(services);
         var raw = new SharpNode
         {
-            Type = $".Data.RecordPos, {assemblyName}",
-            IsBanned = banned,
+            Type = ".Data.RecordPos, LuaSTGEditorSharp",
             SharpAttributes =
             [
-                Attribute("Number of Var", "2"),
-                Attribute("Use var", "p"), Attribute("To record", "self"),
-                Attribute("Use var", "q"), Attribute("To record", "p")
+                Attribute("Number of Var", "1"),
+                Attribute("Use var", "position"),
+                Attribute("To record", "self")
             ]
         };
         var node = new SharpNodeSerializer().DeserializeTreeNode(JsonConvert.SerializeObject(raw))!;
-        var converter = services.GetRequiredService<SharpNodeConverterServiceProvider>()
-            .GetConverter(node.TypeUID);
-        Assert.Equal(raw.Type, converter.SharpName);
-        converter.Convert(node, new());
+        services.GetRequiredService<SharpNodeConverterServiceProvider>()
+            .GetConverter(node.TypeUID).Convert(node, new());
+
         Assert.Equal("RecordPos", node.TypeUID);
-        Assert.Equal("2", node.GetProperty("count"));
-        Assert.Equal("p", node.GetProperty("name_0"));
-        Assert.Equal("self", node.GetProperty("object_0"));
-        Assert.Equal("q", node.GetProperty("name_1"));
-        Assert.Equal("p", node.GetProperty("object_1"));
-        Assert.Equal(!banned, node.IsActive);
-        Assert.Equal(new[] { "Number of Var", "Use var", "To record", "Use var", "To record" },
-            raw.SharpAttributes!.Select(attribute => attribute!.AttrCap));
+        Assert.Equal(new Dictionary<string, string>
+        {
+            ["count"] = "1",
+            ["name_0"] = "position",
+            ["object_0"] = "self"
+        }.OrderBy(pair => pair.Key), node.Properties.OrderBy(pair => pair.Key));
     }
 
     private static SharpAttribute Attribute(string caption, string value)

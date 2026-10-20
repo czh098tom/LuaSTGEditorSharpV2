@@ -4,25 +4,19 @@
       "$type": "Default"
     },
     {
-      "$type": "IndexedListRemapping",
-      "OriginalCountKey": "number_of_var",
-      "NewCountKey": "count",
-      "OriginalIndexBase": 1,
-      "NewIndexBase": 0,
-      "MaximumCount": 100,
-      "PropertyRules": [
-        {
-          "OriginalKeyFormat": "var_{0}_name",
-          "ItemKey": "name",
-          "NewKeyFormat": "name_{0}"
-        },
-        {
-          "OriginalKeyFormat": "var_{0}_object",
-          "ItemKey": "value",
-          "NewKeyFormat": "object_{0}"
-        }
-      ],
-      "PreserveInactiveItems": true
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "number_of_var",
+      "NewKey": "count"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "use_var",
+      "NewKey": "name_0"
+    },
+    {
+      "$type": "NodePropertyRemapping",
+      "OriginalKey": "to_record",
+      "NewKey": "object_0"
     }
   ],
   "SharpName": ".Data.RecordPos, "
