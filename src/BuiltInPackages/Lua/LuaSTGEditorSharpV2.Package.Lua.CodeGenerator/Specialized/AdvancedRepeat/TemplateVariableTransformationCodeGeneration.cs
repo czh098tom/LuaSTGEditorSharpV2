@@ -25,26 +25,10 @@ public sealed class TemplateVariableTransformationCodeGeneration(
 
     public override VariableTransformationOutput Generate(NodeData node, CodeGenerationContext context)
     {
-        try
-        {
-            ArgumentNullException.ThrowIfNull(Captures);
-            ArgumentNullException.ThrowIfNull(ContextCaptures);
-            ArgumentNullException.ThrowIfNull(ConditionTemplates);
-            ArgumentNullException.ThrowIfNull(Initialization);
-            ArgumentNullException.ThrowIfNull(Update);
-            var model = CodeFragmentTemplate.CreateModel(ServiceProvider, node, context,
-                Captures, ContextCaptures, ConditionTemplates);
-            return new VariableTransformationOutput(
-                CodeFragmentTemplate.Render(Initialization, model, node, context),
-                CodeFragmentTemplate.Render(Update, model, node, context));
-        }
-        catch (AdvancedRepeatGenerationException)
-        {
-            throw;
-        }
-        catch (System.Exception error)
-        {
-            throw new AdvancedRepeatGenerationException("Variable template rendering failed.", node, error);
-        }
+        var model = CodeFragmentTemplate.CreateModel(ServiceProvider, node, context,
+            Captures, ContextCaptures, ConditionTemplates);
+        return new VariableTransformationOutput(
+            CodeFragmentTemplate.Render(Initialization, model, node, context),
+            CodeFragmentTemplate.Render(Update, model, node, context));
     }
 }

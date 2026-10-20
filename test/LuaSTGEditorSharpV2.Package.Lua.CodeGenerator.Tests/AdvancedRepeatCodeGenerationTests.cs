@@ -484,7 +484,7 @@ public sealed class AdvancedRepeatCodeGenerationTests
     }
 
     [Fact]
-    public void EmptyParentTemplatesPreserveBodyAndRuntimeNullReportsRepeat()
+    public void EmptyParentTemplatesPreserveBody()
     {
         using var fixture = new Fixture();
         var repeat = Repeat("1");
@@ -500,12 +500,9 @@ public sealed class AdvancedRepeatCodeGenerationTests
         Assert.Single(code);
         Assert.Equal("  marker\n", code[0].Content);
         Assert.Same(marker, code[0].Source);
-
-        parent.Head = null!;
-        var error = Assert.Throws<AdvancedRepeatGenerationException>(() => fixture.Generate(repeat));
-        Assert.Same(repeat, error.SourceNode);
-        Assert.IsType<ArgumentNullException>(error.InnerException);
         Assert.Null(fixture.Context.Peek());
+        Assert.Equal(0, fixture.Context.IndentionLevel);
+        Assert.Empty(fixture.Context.ContextVariables);
     }
 
     [Fact]
@@ -631,10 +628,11 @@ public sealed class AdvancedRepeatCodeGenerationTests
     }
 
     [Fact]
-    public void PrecollectionExceptionRestoresContextAndKeepsVariableSource()
+    public void PrecollectionExceptionPropagatesOriginalAndRestoresContext()
     {
         using var fixture = new Fixture();
-        fixture.Register("throwing", new Probe(fixture.Generator, fixture.Services, true));
+        var probe = new Probe(fixture.Generator, fixture.Services, true);
+        fixture.Register("throwing", probe);
         var parent = Node("parent");
         var repeat = Repeat("1");
         var variable = Node("throwing");
@@ -642,11 +640,29 @@ public sealed class AdvancedRepeatCodeGenerationTests
         repeat.PhysicalChildren[0].Add(variable);
         using var scope = fixture.Context.AcquireContextHandle(parent, 1);
 
-        var error = Assert.Throws<AdvancedRepeatGenerationException>(() => fixture.Generate(repeat));
-        Assert.Same(variable, error.SourceNode);
-        Assert.IsType<InvalidOperationException>(error.InnerException);
+        Assert.Same(probe.Error, Assert.Throws<InvalidOperationException>(() => fixture.Generate(repeat)));
         Assert.Same(parent, fixture.Context.Peek());
         Assert.Equal(1, fixture.Context.IndentionLevel);
+        Assert.Single(fixture.Context.ContextVariables);
+    }
+
+    [Fact]
+    public void VariableConditionFailurePropagatesAndRestoresPrecollectionScope()
+    {
+        using var fixture = new Fixture();
+        var parent = Node("parent");
+        var repeat = Repeat("1");
+        var variable = Node("IncrementVariable", ("name", "counter"), ("increment", "1"));
+        repeat.PhysicalChildren[0].Add(variable);
+        parent.Add(repeat);
+        var service = (TemplateVariableTransformationCodeGeneration)fixture.Service(variable);
+        service.ConditionTemplates["enabled"] = "{{self.increment}}";
+        using var scope = fixture.Context.AcquireContextHandle(parent, 2);
+
+        var error = Assert.Throws<InvalidOperationException>(() => fixture.Generate(repeat));
+        Assert.Equal("Condition 'enabled' must evaluate to a Boolean.", error.Message);
+        Assert.Same(parent, fixture.Context.Peek());
+        Assert.Equal(2, fixture.Context.IndentionLevel);
         Assert.Single(fixture.Context.ContextVariables);
     }
 
@@ -663,6 +679,9 @@ public sealed class AdvancedRepeatCodeGenerationTests
         using (var iterator = fixture.Generator.GenerateCode(repeat, fixture.Context).GetEnumerator())
         {
             Assert.True(iterator.MoveNext());
+            Assert.Same(parent, fixture.Context.Peek());
+            Assert.Equal(3, fixture.Context.IndentionLevel);
+            Assert.Single(fixture.Context.ContextVariables);
             Assert.True(iterator.MoveNext());
             Assert.True(iterator.MoveNext());
             Assert.Equal("     marker\n", iterator.Current.Content);
@@ -777,6 +796,7 @@ public sealed class AdvancedRepeatCodeGenerationTests
         : VariableTransformationCodeGeneration(provider, services)
     {
         public int Calls { get; private set; }
+        public InvalidOperationException Error { get; } = new("expected");
         public NodeData? CapturedRepeat { get; private set; }
         public NodeData[] Ancestors { get; private set; } = [];
 
@@ -787,7 +807,7 @@ public sealed class AdvancedRepeatCodeGenerationTests
             Ancestors = context.EnumerateFromFarest().ToArray();
             if (throws)
             {
-                throw new InvalidOperationException("expected");
+                throw Error;
             }
             return new VariableTransformationOutput(
                 [new CodeData(context.ApplyIndentedFormat("probe-init").ToString(), node)],

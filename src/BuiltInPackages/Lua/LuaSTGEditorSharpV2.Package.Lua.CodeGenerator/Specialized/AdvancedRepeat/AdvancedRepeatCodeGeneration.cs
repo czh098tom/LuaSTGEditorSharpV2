@@ -31,27 +31,15 @@ public sealed class AdvancedRepeatCodeGeneration(
 
     protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData repeat, CodeGenerationContext context)
     {
-        CodeFragment head;
-        CodeFragment loopHead;
-        CodeFragment loopTail;
-        CodeFragment tail;
+        var model = CodeFragmentTemplate.CreateModel(ServiceProvider, repeat, context,
+            Captures, ContextCaptures, ConditionTemplates);
+        var head = CodeFragmentTemplate.Render(Head, model, repeat, context);
+        var loopHead = CodeFragmentTemplate.Render(LoopHead, model, repeat, context);
+        var loopTail = CodeFragmentTemplate.Render(LoopTail, model, repeat, context);
+        var tail = CodeFragmentTemplate.Render(Tail, model, repeat, context);
         IReadOnlyList<VariableTransformationOutput> variables;
-        try
+        using (context.AcquireContextHandle(repeat, 1))
         {
-            ArgumentNullException.ThrowIfNull(Captures);
-            ArgumentNullException.ThrowIfNull(ContextCaptures);
-            ArgumentNullException.ThrowIfNull(ConditionTemplates);
-            ArgumentNullException.ThrowIfNull(Head);
-            ArgumentNullException.ThrowIfNull(LoopHead);
-            ArgumentNullException.ThrowIfNull(LoopTail);
-            ArgumentNullException.ThrowIfNull(Tail);
-            var model = CodeFragmentTemplate.CreateModel(ServiceProvider, repeat, context,
-                Captures, ContextCaptures, ConditionTemplates);
-            head = CodeFragmentTemplate.Render(Head, model, repeat, context);
-            loopHead = CodeFragmentTemplate.Render(LoopHead, model, repeat, context);
-            loopTail = CodeFragmentTemplate.Render(LoopTail, model, repeat, context);
-            tail = CodeFragmentTemplate.Render(Tail, model, repeat, context);
-            using var scope = context.AcquireContextHandle(repeat, 1);
             var variablesList = new List<VariableTransformationOutput>();
             foreach (var collection in NodeServiceProvider
                 .GetServicesPairForLogicalChildrenOfType<VariableCollectionCodeGeneration>(repeat))
@@ -59,14 +47,6 @@ public sealed class AdvancedRepeatCodeGeneration(
                 variablesList.AddRange(collection.Service.Generate(collection.NodeData, context));
             }
             variables = variablesList.AsReadOnly();
-        }
-        catch (AdvancedRepeatGenerationException)
-        {
-            throw;
-        }
-        catch (System.Exception error)
-        {
-            throw new AdvancedRepeatGenerationException("AdvancedRepeat preparation failed.", repeat, error);
         }
 
         foreach (var code in head)

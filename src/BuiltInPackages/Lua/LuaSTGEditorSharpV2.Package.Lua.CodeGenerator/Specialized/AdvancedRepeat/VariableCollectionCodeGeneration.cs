@@ -24,23 +24,12 @@ public sealed class VariableCollectionCodeGeneration(
             {
                 continue;
             }
-            try
+            var result = variable.Generate(pair.NodeData, context);
+            if (result is null)
             {
-                var result = variable.Generate(pair.NodeData, context);
-                if (result is null)
-                {
-                    throw new AdvancedRepeatGenerationException("Variable service returned no output.", pair.NodeData);
-                }
-                output.Add(result);
+                throw new AdvancedRepeatGenerationException("Variable service returned no output.", pair.NodeData);
             }
-            catch (AdvancedRepeatGenerationException)
-            {
-                throw;
-            }
-            catch (System.Exception error)
-            {
-                throw new AdvancedRepeatGenerationException("Variable generation failed.", pair.NodeData, error);
-            }
+            output.Add(result);
         }
         return output.AsReadOnly();
     }
