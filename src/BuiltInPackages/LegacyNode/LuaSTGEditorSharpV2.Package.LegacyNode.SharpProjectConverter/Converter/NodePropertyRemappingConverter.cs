@@ -38,8 +38,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter
             return source;
         }
 
-        // 归一化成 Lua 字符串字面量：字面量由属性值自身携带（Guideline.zh.md §2）。
-        // 已带成对引号的值原样返回，保证幂等；转义规则与 V1 StringParser.ParseLua 一致（转义 \ 、 ' 、 " ）。
+        // Keep values with matching outer quotes; otherwise escape backslashes and quotes.
         private static string AsLuaStringLiteral(string value)
         {
             if (IsLuaStringLiteral(value))
@@ -60,7 +59,6 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter
             return builder.ToString();
         }
 
-        // 首尾为同一类引号且长度不小于 2 的值视为已归一化。
         private static bool IsLuaStringLiteral(string value)
         {
             if (value.Length < 2)
