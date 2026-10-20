@@ -174,41 +174,27 @@ public sealed class IndexedListRemappingTests
         Assert.Same(node, child.PhysicalParent);
     }
 
-    [Theory]
-    [InlineData(null, "0")]
-    [InlineData("", "0")]
-    [InlineData(" ", " ")]
-    [InlineData("2", "2")]
-    public void DefaultValueOnlyFillsMissingOrEmptyStrings(string? input, string expected)
-    {
-        var converter = JsonConvert.DeserializeObject<PropertyDefaultValueConverter>("""
-            {"Key":"delay","DefaultValue":"0"}
-            """)!;
-        var node = new NodeData("SmoothSetValueTo");
-        if (input is not null) node.Properties["delay"] = input;
-        converter.Convert(node, new());
-        Assert.Equal(expected, node.GetProperty("delay"));
-    }
-
     [Fact]
-    public void ConverterShortNamesResolveAndSurviveConfigurationRoundtrip()
+    public void IndexedListShortNameSurvivesConfigurationRoundtrip()
     {
         using var services = new ServiceCollection().BuildServiceProvider();
         var settings = Settings(services);
-        foreach (var json in new[]
+        var config = JObject.Parse(Mapping);
+        config["$type"] = "IndexedListRemapping";
+        var converter = JsonConvert.DeserializeObject<ISharpNodeFormatConverter>(config.ToString(), settings)!;
+        var serialized = JObject.Parse(JsonConvert.SerializeObject(converter));
+        serialized["$type"] = "IndexedListRemapping";
+        var restored = JsonConvert.DeserializeObject<ISharpNodeFormatConverter>(serialized.ToString(), settings)!;
+        var node = Node("2", ("var_1_name", "a"), ("var_2_name", ""), ("var_2_value", "4"));
+        restored.Convert(node, new());
+
+        Assert.Equal(new Dictionary<string, string>
         {
-            JObject.Parse(Mapping).ToString(),
-            "{\"Key\":\"delay\",\"DefaultValue\":\"0\"}"
-        })
-        {
-            var config = JObject.Parse(json);
-            config["$type"] = config.ContainsKey("Key") ? "PropertyDefaultValue" : "IndexedListRemapping";
-            var converter = JsonConvert.DeserializeObject<ISharpNodeFormatConverter>(config.ToString(), settings)!;
-            Assert.NotNull(converter);
-            var serialized = JObject.Parse(JsonConvert.SerializeObject(converter));
-            serialized["$type"] = config["$type"];
-            Assert.IsType(converter.GetType(), JsonConvert.DeserializeObject<ISharpNodeFormatConverter>(serialized.ToString(), settings));
-        }
+            ["count"] = "2",
+            ["name_0"] = "a",
+            ["name_1"] = "",
+            ["value_1"] = "4"
+        }.OrderBy(pair => pair.Key), node.Properties.OrderBy(pair => pair.Key));
     }
 
     [Theory]
@@ -237,7 +223,7 @@ public sealed class IndexedListRemappingTests
     }
 
     [Fact]
-    public void RepeatPackageCompositionMatchesHistoricalConverter()
+    public void RepeatPackageCompositionReindexesDeclaredSlotsAndPreservesEmptyAndInactiveData()
     {
         using var services = new ServiceCollection().BuildServiceProvider();
         var converter = Load(".General.Repeat, LuaSTGEditorSharp.sharpconv", services);
@@ -249,15 +235,27 @@ public sealed class IndexedListRemappingTests
         node.Properties["Var 2 name"] = "";
         node.Properties["Var 2 init value"] = "";
         node.Properties["Var 2 increment"] = "";
-        var expected = node.DeepClone();
-        new DefaultSharpNodeFormatConverter().Convert(expected, new());
-        new RepeatVariableConverter().Convert(expected, new());
+        node.Properties["Var 3 name"] = "inactive";
+        node.Properties["Times"] = "12";
         converter.Convert(node, new());
-        Assert.Equal(expected.Properties, node.Properties);
+
+        Assert.Equal("Repeat", node.TypeUID);
+        Assert.Equal(new Dictionary<string, string>
+        {
+            ["count"] = "2",
+            ["name_0"] = "a",
+            ["init_0"] = "0",
+            ["increment_0"] = "1/t",
+            ["name_1"] = "",
+            ["init_1"] = "",
+            ["increment_1"] = "",
+            ["var_3_name"] = "inactive",
+            ["times"] = "12"
+        }.OrderBy(pair => pair.Key), node.Properties.OrderBy(pair => pair.Key));
     }
 
     [Fact]
-    public void SmoothPackageCompositionMatchesHistoricalConverterIncludingInactiveFields()
+    public void SmoothPackageCompositionPreservesEmptyTimesAndQuotesActiveAndInactiveNames()
     {
         using var services = new ServiceCollection().BuildServiceProvider();
         var converter = Load(".Task.SmoothSetValueTo, .sharpconv", services);
@@ -268,11 +266,21 @@ public sealed class IndexedListRemappingTests
         node.Properties["Value 1 name"] = "alpha";
         node.Properties["Value 2 name"] = "x'y";
         node.Properties["Target value 2"] = "15";
-        var expected = node.DeepClone();
-        new DefaultSharpNodeFormatConverter().Convert(expected, new());
-        new SmoothSetValueToConverter().Convert(expected, new());
         converter.Convert(node, new());
-        Assert.Equal(expected.Properties.OrderBy(pair => pair.Key), node.Properties.OrderBy(pair => pair.Key));
+
+        Assert.Equal("SmoothSetValueTo", node.TypeUID);
+        Assert.Equal(new Dictionary<string, string>
+        {
+            ["count"] = "1",
+            ["delay"] = "",
+            ["duration"] = "",
+            ["variable_name0"] = "\"alpha\"",
+            ["target_value0"] = "",
+            ["interpolation_mode0"] = "",
+            ["modification_mode0"] = "",
+            ["variable_name1"] = "\"x\\'y\"",
+            ["target_value1"] = "15"
+        }.OrderBy(pair => pair.Key), node.Properties.OrderBy(pair => pair.Key));
     }
 
     private static SharpNodeFormatConverter Load(string file, IServiceProvider services)

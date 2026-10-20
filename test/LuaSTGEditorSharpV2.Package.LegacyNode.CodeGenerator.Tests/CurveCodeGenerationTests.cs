@@ -465,9 +465,10 @@ public sealed class CurveCodeGenerationTests
                 .AddSingleton<CodeGeneratorServiceProvider>()
                 .AddSingleton<DefaultValueServiceProvider>();
             services.Add(typeof(DefaultValueService).GetCustomAttribute<InjectAttribute>()!.ToDescriptor(typeof(DefaultValueService)));
-            services.Add(typeof(CodeGeneratorServiceBase).GetCustomAttribute<InjectAttribute>()!.ToDescriptor(typeof(CodeGeneratorServiceBase)));
-            services.Add(typeof(MustacheCodeGeneration).GetCustomAttribute<InjectAttribute>()!.ToDescriptor(typeof(MustacheCodeGeneration)));
-            foreach (var type in typeof(NumericalTrackCodeGeneration).Assembly.GetTypes()
+            foreach (var type in new[]
+            {
+                typeof(CodeGeneratorServiceBase).Assembly, typeof(NumericalTrackCodeGeneration).Assembly
+            }.SelectMany(assembly => assembly.GetTypes())
                 .Where(type => !type.IsAbstract && typeof(CodeGeneratorServiceBase).IsAssignableFrom(type)))
             {
                 services.Add(type.GetCustomAttribute<InjectAttribute>()!.ToDescriptor(type));

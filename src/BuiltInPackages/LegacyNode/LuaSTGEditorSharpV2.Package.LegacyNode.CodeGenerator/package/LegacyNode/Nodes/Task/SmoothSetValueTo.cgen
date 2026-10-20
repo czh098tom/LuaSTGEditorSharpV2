@@ -1,30 +1,35 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SingleListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-	"TypeUID": "SmoothSetValueTo",
-	"Captures": [
-		{ "Key": "target" },
-		{ "Key": "delay" },
-		{ "Key": "duration" }
-	],
-	"CountCapture": { "Key": "count" },
-	"SubCaptureRule": [
-		{
-			"Key": "variable_name{0}"
-		},
-		{
-			"Key": "target_value{0}"
-		},
-		{
-			"Key": "interpolation_mode{0}"
-		},
-		{
-			"Key": "modification_mode{0}"
-		}
-	],
-	"SubCaptureFormat": [
-		{ "Text": "lasttask = task.New({1},function()ex.SmoothSetValueTo({4},{5},{3},{6},nil,{2},{7})end)",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": "true" }
-	],
-	"Head": "{4}"
+  "$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.JoinedListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator",
+  "TypeUID": "SmoothSetValueTo",
+  "Language": "Lua",
+  "CountCapture": { "Key": "count" },
+  "MaximumCount": 100,
+  "Captures": {
+    "target": { "Key": "target" },
+    "delay": { "Key": "delay" },
+    "duration": { "Key": "duration" }
+  },
+  "RequiredCaptureName": "value",
+  "ItemCaptures": {
+    "name": { "Key": "variable_name{0}", "DisableMacro": true },
+    "value": { "Key": "target_value{0}" },
+    "interpolation": { "Key": "interpolation_mode{0}" },
+    "modification": { "Key": "modification_mode{0}" }
+  },
+  "Columns": {
+    "tasks": {
+      "Separator": "",
+      "Template": [
+        "{{#args.item.value.Length}}",
+        "lasttask = task.New({{{self.target}}},function()ex.SmoothSetValueTo(",
+        "{{{args.item.name}}},{{{args.item.value}}},",
+        "{{#self.duration.Length}}{{{self.duration}}}{{/self.duration.Length}}{{^self.duration.Length}}1{{/self.duration.Length}},",
+        "{{{args.item.interpolation}}},nil,",
+        "{{#self.delay.Length}}{{{self.delay}}}{{/self.delay.Length}}{{^self.delay.Length}}0{{/self.delay.Length}},",
+        "{{{args.item.modification}}})end)\n",
+        "{{/args.item.value.Length}}"
+      ]
+    }
+  },
+  "Head": [ "{{{args.columns.tasks}}}" ]
 }

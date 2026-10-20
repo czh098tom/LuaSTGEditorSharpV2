@@ -19,14 +19,18 @@
     <ProjectReference Include="../../src/LuaSTGEditorSharpV2.Core.CodeGenerator/LuaSTGEditorSharpV2.Core.CodeGenerator.csproj" />
     <ProjectReference Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.csproj" />
     <ProjectReference Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.csproj" />
+    <ProjectReference Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter/LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator/package/LegacyNode/Nodes/Curve/*.cgen"
-          Link="package/LegacyNode/Nodes/Curve/%(Filename)%(Extension)"
+    <None Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator/package/**/*"
+          Link="package/%(RecursiveDir)%(Filename)%(Extension)"
           CopyToOutputDirectory="PreserveNewest" />
-    <None Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode/package/LegacyNode/Nodes/Curve/*.default"
-          Link="package/LegacyNode/Nodes/Curve/%(Filename)%(Extension)"
+    <None Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode/package/**/*"
+          Link="package/%(RecursiveDir)%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/BuiltInPackages/LegacyNode/LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter/package/**/*"
+          Link="package/%(RecursiveDir)%(Filename)%(Extension)"
           CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

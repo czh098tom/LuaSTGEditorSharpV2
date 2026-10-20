@@ -158,8 +158,8 @@ public interface IServiceInstanceProvider<TData> {
 | (无短名) | CLIPluginProvider | `CLIPluginProviderService` | CLI.Plugin（仅 `IServiceInstanceProvider`，不走文件扫描） |
 
 `sharpconv` 的 `ISharpNodeFormatConverter` 新增配置子类型短名：
-`IndexedListRemapping`（有界索引属性列表重映射）、`PropertyDefaultValue`（缺失/空串默认值）。
-它们由既有 JsonTypeShortName/SerializationTypeBindingService 发现，不新增 Provider、扩展名或宿主注册。
+`IndexedListRemapping`（有界索引属性列表重映射）。
+它由既有 JsonTypeShortName/SerializationTypeBindingService 发现，不新增 Provider、扩展名或宿主注册。
 
 `IfBranchCompatibilityNormalization` 对应
 `Converter.IfBranchCompatibilityNormalizationConverter`，由既有 `sharpconv` Provider
@@ -267,7 +267,6 @@ helper 不序列化到节点或配置，不新增 Provider、服务短名或 NCa
 空名称槽不压缩；保留inactive时搬移实际存在的字段，未配置默认值不凭空填项。
 ItemConverters复用既有格式转换器，但运行在无父子关系的隔离条目上，禁止换节点/类型/启用状态、
 增子树、结构重试或产生未声明的ItemKey；失败不改变原节点或共享格式上下文。
-`PropertyDefaultValue` 的 `Key` / `DefaultValue` 仅补缺失或空串，不将纯空白当作空值。
 
 RecordPos在SharpNode.ToNodeData建立字典前由专用RecordPosConverter按物理数组位置归一化caption：
 count、name1/object1、name2/object2……；输入caption可重复或已编号，值/槽顺序/禁用状态保持。
@@ -287,7 +286,12 @@ args.rawItem保留展开前的捕获值，args.index为物理索引。可按原�
 本批LocalVariable配置逐项local、名称禁宏、非空RHS逐项宏展开后加括号（多返回仅取首值）；
 Assignment保留TypeUID输出单条并行赋值；RecordPos保留TypeUID输出单条联合local及坐标值快照，
 名称/对象均禁宏，不改成逐项local或保存对象引用。
-旧RepeatVariableConverter/SmoothSetValueToConverter仍可用于历史配置，本包改为可配置组合。
+Repeat与SmoothSetValueTo的导入均使用可配置IndexedListRemapping组合，不再保留旧专用转换器。
+SmoothSetValueTo使用JoinedListCodeGeneration，按物理索引顺序生成目标值非空的任务；
+目标值在宏展开后为空时不产任务，纯空白保持原值，名称字面量不展开宏。
+delay/duration在生成时先展开宏，再对空串分别回退为0/1，不回写节点属性；
+导入保留显式空串，缺失时间字段保持缺失并由默认值服务读取delay=0、duration=60。
+新建节点duration的默认值仍为60。
 本契约只覆盖迁移和产码，不承诺Assignment/RecordPos已有列表编辑器或工具箱入口。
 
 ## 四、主要数据流
