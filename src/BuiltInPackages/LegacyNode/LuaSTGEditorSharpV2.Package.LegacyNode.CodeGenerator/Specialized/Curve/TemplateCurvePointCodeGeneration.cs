@@ -40,59 +40,39 @@ public sealed class TemplateCurvePointCodeGeneration(
         string variableName,
         bool isFirstPoint)
     {
-        try
+        var token = new NodePropertyAccessToken(ServiceProvider, point, context);
+        var interpolation = InterpolationCapture.ApplyMacro(token, context);
+        var arguments = new Dictionary<string, object?>
         {
-            ArgumentNullException.ThrowIfNull(Captures);
-            ArgumentNullException.ThrowIfNull(ContextCaptures);
-            ArgumentNullException.ThrowIfNull(ConditionTemplates);
-            ArgumentNullException.ThrowIfNull(InterpolationCapture);
-            ArgumentNullException.ThrowIfNull(InitialTime);
-            ArgumentNullException.ThrowIfNull(InitialValue);
-            ArgumentNullException.ThrowIfNull(PreviousValue);
-            ArgumentNullException.ThrowIfNull(Body);
-
-            var token = new NodePropertyAccessToken(ServiceProvider, point, context);
-            var interpolation = InterpolationCapture.ApplyMacro(token, context);
-            var arguments = new Dictionary<string, object?>
+            ["variableName"] = variableName,
+            ["interpolation"] = interpolation,
+            ["linear"] = string.IsNullOrWhiteSpace(interpolation)
+        };
+        var model = CodeFragmentTemplate.CreateModel(
+            ServiceProvider,
+            point,
+            context,
+            Captures,
+            ContextCaptures,
+            ConditionTemplates,
+            arguments);
+        string? initialValue = null;
+        string? previousValue = null;
+        if (isFirstPoint)
+        {
+            var initialTime = CodeFragmentTemplate.RenderText(InitialTime, model, context);
+            if (Convert.ToInt32(initialTime) != 0)
             {
-                ["variableName"] = variableName,
-                ["interpolation"] = interpolation,
-                ["linear"] = string.IsNullOrWhiteSpace(interpolation)
-            };
-            var model = CodeFragmentTemplate.CreateModel(
-                ServiceProvider,
-                point,
-                context,
-                Captures,
-                ContextCaptures,
-                ConditionTemplates,
-                arguments);
-            string? initialValue = null;
-            string? previousValue = null;
-            if (isFirstPoint)
-            {
-                var initialTime = CodeFragmentTemplate.RenderText(InitialTime, model, context);
-                if (Convert.ToInt32(initialTime) != 0)
-                {
-                    throw new CurveGenerationException(
-                        "The first NumericalPoint time must be zero.",
-                        point);
-                }
-                initialValue = CodeFragmentTemplate.RenderText(InitialValue, model, context);
-                previousValue = CodeFragmentTemplate.RenderText(PreviousValue, model, context);
+                throw new CurveGenerationException(
+                    "The first NumericalPoint time must be zero.",
+                    point);
             }
-            return new CurvePointOutput(
-                initialValue,
-                previousValue,
-                CodeFragmentTemplate.Render(Body, model, point, context));
+            initialValue = CodeFragmentTemplate.RenderText(InitialValue, model, context);
+            previousValue = CodeFragmentTemplate.RenderText(PreviousValue, model, context);
         }
-        catch (CurveGenerationException)
-        {
-            throw;
-        }
-        catch (Exception error)
-        {
-            throw new CurveGenerationException("NumericalPoint generation failed.", point, error);
-        }
+        return new CurvePointOutput(
+            initialValue,
+            previousValue,
+            CodeFragmentTemplate.Render(Body, model, point, context));
     }
 }

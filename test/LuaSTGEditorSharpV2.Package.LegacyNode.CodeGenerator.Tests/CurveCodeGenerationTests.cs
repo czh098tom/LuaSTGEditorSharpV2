@@ -40,7 +40,6 @@ public sealed class CurveCodeGenerationTests
     [Theory]
     [InlineData("0", true, "disabled")]
     [InlineData("1", false, "zero")]
-    [InlineData("x", false, "NumericalPoint")]
     public void InvalidFirstPhysicalPointReportsItsSource(string time, bool disabled, string message)
     {
         using var fixture = new Fixture();
@@ -92,8 +91,7 @@ public sealed class CurveCodeGenerationTests
         Assert.Contains("{0} = _0; _1", text);
         Assert.Contains("__terminateCount >= 2", text);
         track.Properties["mapping"] = "{2}";
-        var error = Assert.Throws<CurveGenerationException>(() => fixture.Generate(track));
-        Assert.Same(track, error.SourceNode);
+        Assert.Throws<FormatException>(() => fixture.Generate(track));
     }
 
     [Fact]
@@ -150,13 +148,13 @@ public sealed class CurveCodeGenerationTests
     }
 
     [Fact]
-    public void MappingEscapesBracesAndBadIndexesReportTrack()
+    public void MappingEscapesBracesAndBadIndexesPropagateFormatException()
     {
         using var fixture = new Fixture();
         var track = Track("{{0}}={0}", Curve("0", "None", Point("0", "1")));
         Assert.Contains("{0}=_0", string.Concat(fixture.Generate(track).Select(item => item.Content)));
         track.Properties["mapping"] = "{9}";
-        Assert.Same(track, Assert.Throws<CurveGenerationException>(() => fixture.Generate(track)).SourceNode);
+        Assert.Throws<FormatException>(() => fixture.Generate(track));
     }
 
     [Fact]
@@ -182,12 +180,21 @@ public sealed class CurveCodeGenerationTests
     }
 
     [Fact]
-    public void ThrowingAndNullProtocolResultsReportTheOffendingChild()
+    public void ThrowingCurvePropagatesOriginalExceptionAndNullPointStillReportsItsSource()
     {
         using var fixture = new Fixture();
         var throwing = Node("throwingCurve");
-        fixture.Register("throwingCurve", new ThrowingCurve(fixture.Generator, fixture.Services));
-        Assert.Same(throwing, Assert.Throws<CurveGenerationException>(() => fixture.Generate(Track("", throwing))).SourceNode);
+        var service = new ThrowingCurve(fixture.Generator, fixture.Services);
+        fixture.Register("throwingCurve", service);
+        var track = Track("", throwing);
+        var parent = Node("parent");
+        parent.Add(track);
+        using var scope = fixture.Context.AcquireContextHandle(parent, 2);
+
+        Assert.Same(service.Error, Assert.Throws<InvalidOperationException>(() => fixture.Generate(track)));
+        Assert.Same(parent, fixture.Context.Peek());
+        Assert.Equal(2, fixture.Context.IndentionLevel);
+        Assert.Single(fixture.Context.ContextVariables);
         var nullPoint = Node("nullPoint");
         fixture.Register("nullPoint", new NullPoint(fixture.Generator, fixture.Services));
         Assert.Same(nullPoint, Assert.Throws<CurveGenerationException>(() => fixture.Generate(Track("", Curve("0", "None", nullPoint)))).SourceNode);
@@ -295,15 +302,35 @@ public sealed class CurveCodeGenerationTests
     public void PointFailureRestoresBothCurveAndTrackScopes()
     {
         using var fixture = new Fixture();
-        var point = Point("invalid", "0");
+        var point = Point("x", "0");
         var track = Track("", Curve("0", "Round Robin", point));
         var parent = Node("parent");
         parent.Add(track);
         using var scope = fixture.Context.AcquireContextHandle(parent, 3);
 
-        var error = Assert.Throws<CurveGenerationException>(() => fixture.Generate(track));
-        Assert.Same(point, error.SourceNode);
-        Assert.IsType<FormatException>(error.InnerException);
+        Assert.Throws<FormatException>(() => fixture.Generate(track));
+        Assert.Same(parent, fixture.Context.Peek());
+        Assert.Equal(3, fixture.Context.IndentionLevel);
+        Assert.Single(fixture.Context.ContextVariables);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void OrdinaryChildFailurePropagatesOriginalExceptionAndRestoresCallerScope(bool insideCurve)
+    {
+        using var fixture = new Fixture();
+        var failure = new InvalidOperationException("ordinary child failure");
+        fixture.Register("throwingStatement", new ThrowingStatement(fixture.Generator, fixture.Services, failure));
+        var child = Node("throwingStatement");
+        var track = insideCurve
+            ? Track("", Curve("0", "None", Point("0", "1"), child))
+            : Track("", child);
+        var parent = Node("parent");
+        parent.Add(track);
+        using var scope = fixture.Context.AcquireContextHandle(parent, 3);
+
+        Assert.Same(failure, Assert.Throws<InvalidOperationException>(() => fixture.Generate(track)));
         Assert.Same(parent, fixture.Context.Peek());
         Assert.Equal(3, fixture.Context.IndentionLevel);
         Assert.Single(fixture.Context.ContextVariables);
@@ -328,8 +355,6 @@ public sealed class CurveCodeGenerationTests
         Assert.Equal("head1\n", code[0].Content);
         Assert.Equal("{literal}=custom_0\n", code[^1].Content);
         Assert.Contains("local custom_0 = 1", string.Concat(code.Select(item => item.Content)));
-        service.Head = null!;
-        Assert.Same(track, Assert.Throws<CurveGenerationException>(() => fixture.Generate(track)).SourceNode);
     }
 
     [Fact]
@@ -519,7 +544,19 @@ public sealed class CurveCodeGenerationTests
     }
     private sealed class ThrowingCurve(CodeGeneratorServiceProvider provider, IServiceProvider services) : NumericalCurveCodeGeneration(provider, services)
     {
-        public override CurveOutput Generate(NodeData node, CodeGenerationContext context, string name) => throw new InvalidOperationException();
+        public InvalidOperationException Error { get; } = new("expected");
+
+        public override CurveOutput Generate(NodeData node, CodeGenerationContext context, string name) => throw Error;
+    }
+    private sealed class ThrowingStatement(
+        CodeGeneratorServiceProvider provider, IServiceProvider services, InvalidOperationException failure)
+        : CodeGeneratorServiceBase(provider, services)
+    {
+        protected override IEnumerable<CodeData> GenerateCodeWithContext(NodeData node, CodeGenerationContext context)
+        {
+            yield return new CodeData(context.ApplyIndentedFormat("before-error").ToString(), node);
+            throw failure;
+        }
     }
     private sealed class NullPoint(CodeGeneratorServiceProvider provider, IServiceProvider services) : CurvePointCodeGeneration(provider, services)
     {

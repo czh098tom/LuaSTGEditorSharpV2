@@ -43,122 +43,87 @@ public sealed class TemplateNumericalCurveCodeGeneration(
         CodeGenerationContext context,
         string variableName)
     {
-        try
+        var arguments = new Dictionary<string, object?> { ["variableName"] = variableName };
+        var model = CodeFragmentTemplate.CreateModel(
+            ServiceProvider,
+            curve,
+            context,
+            Captures,
+            ContextCaptures,
+            ConditionTemplates,
+            arguments);
+        var bodyIndention = int.Parse(
+            CodeFragmentTemplate.RenderText(BodyIndention, model, context),
+            CultureInfo.InvariantCulture);
+        if (bodyIndention < 0)
         {
-            ArgumentNullException.ThrowIfNull(Captures);
-            ArgumentNullException.ThrowIfNull(ContextCaptures);
-            ArgumentNullException.ThrowIfNull(ConditionTemplates);
-            ArgumentNullException.ThrowIfNull(Declaration);
-            ArgumentNullException.ThrowIfNull(TaskHead);
-            ArgumentNullException.ThrowIfNull(BodyHead);
-            ArgumentNullException.ThrowIfNull(BodyTail);
-            ArgumentNullException.ThrowIfNull(TaskTail);
-            ArgumentNullException.ThrowIfNull(BodyIndention);
+            throw new CurveGenerationException("Curve body indention must be nonnegative.", curve);
+        }
+        var children = curve.PhysicalChildren
+            .Select(child => (Node: child, Service: NodeServiceProvider.ResolveService(child)))
+            .ToArray();
+        var first = children.FirstOrDefault(pair => pair.Service is CurvePointCodeGeneration);
+        if (first.Node is null)
+        {
+            throw new CurveGenerationException("NumericalCurve requires a first NumericalPoint.", curve);
+        }
+        if (!first.Node.IsActive)
+        {
+            throw new CurveGenerationException("The first physical NumericalPoint is disabled.", first.Node);
+        }
 
-            var arguments = new Dictionary<string, object?> { ["variableName"] = variableName };
-            var model = CodeFragmentTemplate.CreateModel(
-                ServiceProvider,
-                curve,
-                context,
-                Captures,
-                ContextCaptures,
-                ConditionTemplates,
-                arguments);
-            var bodyIndention = int.Parse(
-                CodeFragmentTemplate.RenderText(BodyIndention, model, context),
-                CultureInfo.InvariantCulture);
-            if (bodyIndention < 0)
+        var body = new List<CodeData>();
+        using (context.AcquireContextHandle(curve, bodyIndention))
+        {
+            CurvePointOutput? firstOutput = null;
+            foreach (var child in children)
             {
-                throw new CurveGenerationException("Curve body indention must be nonnegative.", curve);
-            }
-            var children = curve.PhysicalChildren
-                .Select(child => (Node: child, Service: NodeServiceProvider.ResolveService(child)))
-                .ToArray();
-            var first = children.FirstOrDefault(pair => pair.Service is CurvePointCodeGeneration);
-            if (first.Node is null)
-            {
-                throw new CurveGenerationException("NumericalCurve requires a first NumericalPoint.", curve);
-            }
-            if (!first.Node.IsActive)
-            {
-                throw new CurveGenerationException("The first physical NumericalPoint is disabled.", first.Node);
-            }
-
-            var body = new List<CodeData>();
-            using (context.AcquireContextHandle(curve, bodyIndention))
-            {
-                CurvePointOutput? firstOutput = null;
-                foreach (var child in children)
+                if (!child.Node.IsActive)
                 {
-                    if (!child.Node.IsActive)
-                    {
-                        continue;
-                    }
-                    try
-                    {
-                        if (child.Service is CurvePointCodeGeneration point)
-                        {
-                            var pointOutput = point.Generate(
-                                child.Node,
-                                context,
-                                variableName,
-                                ReferenceEquals(child.Node, first.Node));
-                            if (pointOutput is null)
-                            {
-                                throw new CurveGenerationException(
-                                    "Curve point service returned no output.",
-                                    child.Node);
-                            }
-                            if (ReferenceEquals(child.Node, first.Node))
-                            {
-                                firstOutput = pointOutput;
-                            }
-                            body.AddRange(pointOutput.Body);
-                        }
-                        else
-                        {
-                            body.AddRange(new CodeFragment(
-                                NodeServiceProvider.GenerateCode(child.Node, context)));
-                        }
-                    }
-                    catch (CurveGenerationException)
-                    {
-                        throw;
-                    }
-                    catch (Exception error)
+                    continue;
+                }
+                if (child.Service is CurvePointCodeGeneration point)
+                {
+                    var pointOutput = point.Generate(
+                        child.Node,
+                        context,
+                        variableName,
+                        ReferenceEquals(child.Node, first.Node));
+                    if (pointOutput is null)
                     {
                         throw new CurveGenerationException(
-                            "NumericalCurve child generation failed.",
-                            child.Node,
-                            error);
+                            "Curve point service returned no output.",
+                            child.Node);
                     }
+                    if (ReferenceEquals(child.Node, first.Node))
+                    {
+                        firstOutput = pointOutput;
+                    }
+                    body.AddRange(pointOutput.Body);
                 }
-                if (firstOutput?.InitialValue is null || firstOutput.PreviousValue is null)
+                else
                 {
-                    throw new CurveGenerationException(
-                        "The first NumericalPoint returned incomplete metadata.",
-                        first.Node);
+                    body.AddRange(new CodeFragment(
+                        NodeServiceProvider.GenerateCode(child.Node, context)));
                 }
-                arguments["initialValue"] = firstOutput.InitialValue;
-                arguments["previousValue"] = firstOutput.PreviousValue;
-                body.InsertRange(0, CodeFragmentTemplate.Render(BodyHead, model, curve, context));
-                body.AddRange(CodeFragmentTemplate.Render(BodyTail, model, curve, context));
             }
+            if (firstOutput?.InitialValue is null || firstOutput.PreviousValue is null)
+            {
+                throw new CurveGenerationException(
+                    "The first NumericalPoint returned incomplete metadata.",
+                    first.Node);
+            }
+            arguments["initialValue"] = firstOutput.InitialValue;
+            arguments["previousValue"] = firstOutput.PreviousValue;
+            body.InsertRange(0, CodeFragmentTemplate.Render(BodyHead, model, curve, context));
+            body.AddRange(CodeFragmentTemplate.Render(BodyTail, model, curve, context));
+        }
 
-            var declaration = CodeFragmentTemplate.Render(Declaration, model, curve, context);
-            var task = new List<CodeData>();
-            task.AddRange(CodeFragmentTemplate.Render(TaskHead, model, curve, context));
-            task.AddRange(body);
-            task.AddRange(CodeFragmentTemplate.Render(TaskTail, model, curve, context));
-            return new CurveOutput(declaration, task);
-        }
-        catch (CurveGenerationException)
-        {
-            throw;
-        }
-        catch (Exception error)
-        {
-            throw new CurveGenerationException("NumericalCurve generation failed.", curve, error);
-        }
+        var declaration = CodeFragmentTemplate.Render(Declaration, model, curve, context);
+        var task = new List<CodeData>();
+        task.AddRange(CodeFragmentTemplate.Render(TaskHead, model, curve, context));
+        task.AddRange(body);
+        task.AddRange(CodeFragmentTemplate.Render(TaskTail, model, curve, context));
+        return new CurveOutput(declaration, task);
     }
 }
