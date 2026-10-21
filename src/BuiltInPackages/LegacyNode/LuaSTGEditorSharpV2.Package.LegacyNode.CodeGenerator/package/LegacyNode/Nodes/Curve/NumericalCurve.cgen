@@ -12,11 +12,19 @@
     "{0:IND}task.Wait({{{self.offset}}})\n",
     "{0:IND}local i = 0\n",
     "{0:IND}local offset = 0",
-    "{{#condition.roundRobin}}\n",
+      "{{#condition.roundRobin}}\n",
     "{0:IND}for _ = 1, _infinite do{{/condition.roundRobin}}"
   ],
-  "BodyHead": [ "local curr, ibeg, ky, kx\nlocal prev = {{{args.previousValue}}}\nlocal target = offset" ],
+  "BodyHead": [
+    "local curr, ibeg, ky, kx\n",
+    "local prev = {{{args.previousValue}}}\n",
+    "local target = offset"
+  ],
   "BodyTail": [ "offset = target" ],
-  "TaskTail": [ "{{#condition.roundRobin}}{0:IND}end\n{{/condition.roundRobin}}{0:IND}__terminateCount = __terminateCount + 1\nend)" ],
+  "TaskTail": [
+    "{{#condition.roundRobin}}{0:IND}end\n{{/condition.roundRobin}}",
+    "{0:IND}__terminateCount = __terminateCount + 1\n",
+    "end)"
+  ],
   "BodyIndention": [ "{{#condition.roundRobin}}2{{/condition.roundRobin}}{{^condition.roundRobin}}1{{/condition.roundRobin}}" ]
 }

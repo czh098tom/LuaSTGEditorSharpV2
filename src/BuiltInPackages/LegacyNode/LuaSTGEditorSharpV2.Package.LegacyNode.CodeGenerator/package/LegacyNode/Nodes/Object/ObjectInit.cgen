@@ -49,7 +49,10 @@
 		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, _x, _y{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})\n",
+		"_editor_class[{{{context.definition.identifier}}}",
+			"{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}",
+			"].init = function(self, _x, _y",
+			"{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})\n",
 		"{0:IND}self.x, self.y = _x, _y\n",
 		"{0:IND}self.img = {{{self.image}}}\n",
 		"{0:IND}self.layer = {{{self.layer}}}\n",

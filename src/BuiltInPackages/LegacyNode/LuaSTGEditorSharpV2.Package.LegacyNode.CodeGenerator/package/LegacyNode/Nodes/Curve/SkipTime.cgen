@@ -4,6 +4,9 @@
   "Language": "Lua",
   "Captures": { "time": { "Key": "time" }, "is_relative": { "Key": "is_relative", "DisableMacro": true } },
   "ConditionTemplates": { "relative": "'{{self.is_relative}}' == 'true'" },
-  "Head": [ "{{#condition.relative}}i = i + {{{self.time}}}{{/condition.relative}}{{^condition.relative}}i = {{{self.time}}}{{/condition.relative}}" ],
+  "Head": [
+    "{{#condition.relative}}i = i + {{{self.time}}}{{/condition.relative}}",
+      "{{^condition.relative}}i = {{{self.time}}}{{/condition.relative}}"
+  ],
   "IgnoreChildren": true
 }

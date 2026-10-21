@@ -7,5 +7,10 @@
 		"max_x_velocity": { "Key": "max_x_velocity" },
 		"max_y_velocity": { "Key": "max_y_velocity" }
 	},
-	"Head": ["_forbid_v({{{self.target}}}, {{#self.max_velocity}}{{{self.max_velocity}}}{{/self.max_velocity}}{{^self.max_velocity}}'original'{{/self.max_velocity}}, {{#self.max_x_velocity}}{{{self.max_x_velocity}}}{{/self.max_x_velocity}}{{^self.max_x_velocity}}'original'{{/self.max_x_velocity}}, {{#self.max_y_velocity}}{{{self.max_y_velocity}}}{{/self.max_y_velocity}}{{^self.max_y_velocity}}'original'{{/self.max_y_velocity}})"]
+	"Head": [
+		"_forbid_v({{{self.target}}}, ",
+			"{{#self.max_velocity}}{{{self.max_velocity}}}{{/self.max_velocity}}{{^self.max_velocity}}'original'{{/self.max_velocity}}, ",
+			"{{#self.max_x_velocity}}{{{self.max_x_velocity}}}{{/self.max_x_velocity}}{{^self.max_x_velocity}}'original'{{/self.max_x_velocity}}, ",
+			"{{#self.max_y_velocity}}{{{self.max_y_velocity}}}{{/self.max_y_velocity}}{{^self.max_y_velocity}}'original'{{/self.max_y_velocity}})"
+	]
 }

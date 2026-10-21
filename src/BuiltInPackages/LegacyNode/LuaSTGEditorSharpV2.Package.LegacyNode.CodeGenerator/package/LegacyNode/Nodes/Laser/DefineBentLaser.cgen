@@ -9,7 +9,9 @@
 		"difficulty_is_all": "'{{{self.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}] = Class(laser_bent)"
+		"_editor_class[{{{self.identifier}}}",
+			"{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}",
+			"] = Class(laser_bent)"
 	],
 	"IndentionIncrement": "0"
 }

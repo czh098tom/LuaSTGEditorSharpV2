@@ -38,7 +38,10 @@
 		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, _x, _y{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})\n",
+		"_editor_class[{{{context.definition.identifier}}}",
+			"{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}",
+			"].init = function(self, _x, _y",
+			"{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})\n",
 		"{0:IND}bullet.init(self,{{{self.style}}},{{{self.color}}},{{{self.stay}}},{{{self.destroyable}}})\n",
 		"{0:IND}self.x, self.y = _x, _y"
 	],

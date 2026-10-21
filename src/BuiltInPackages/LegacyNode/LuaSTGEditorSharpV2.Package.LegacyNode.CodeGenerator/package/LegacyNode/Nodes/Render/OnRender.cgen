@@ -14,7 +14,9 @@
 		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].render = function(self)"
+		"_editor_class[{{{context.definition.identifier}}}",
+			"{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}",
+			"].render = function(self)"
 	],
 	"Tail": [
 		"end"

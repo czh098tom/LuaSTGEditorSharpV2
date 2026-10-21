@@ -36,6 +36,8 @@
 	],
 	"Tail": [
 		"end\n",
-		"table.insert(_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].cards, _tmp_sc)"
+		"table.insert(_editor_class[{{{context.definition.identifier}}}",
+			"{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}",
+			"].cards, _tmp_sc)"
 	]
 }

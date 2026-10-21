@@ -31,6 +31,8 @@
 		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"table.insert(_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].cards, boss.move.New({{{self.position}}}, {{{self.time}}}, {{{self.mode}}}))"
+		"table.insert(_editor_class[{{{context.definition.identifier}}}",
+			"{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}",
+			"].cards, boss.move.New({{{self.position}}}, {{{self.time}}}, {{{self.mode}}}))"
 	]
 }

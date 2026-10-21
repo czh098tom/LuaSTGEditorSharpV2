@@ -10,6 +10,8 @@
     "set_rotation": "'{{self.set_rotation}}' == 'true'"
   },
   "Head": [
-    "{{{self.target}}}.vx, {{{self.target}}}.vy = {{{self.velocity}}}{{#condition.set_rotation}}\n{{{self.target}}}.rot = atan2({{{self.target}}}.vy, {{{self.target}}}.vx){{/condition.set_rotation}}"
+    "{{{self.target}}}.vx, {{{self.target}}}.vy = {{{self.velocity}}}",
+      "{{#condition.set_rotation}}\n",
+    "{{{self.target}}}.rot = atan2({{{self.target}}}.vy, {{{self.target}}}.vx){{/condition.set_rotation}}"
   ]
 }

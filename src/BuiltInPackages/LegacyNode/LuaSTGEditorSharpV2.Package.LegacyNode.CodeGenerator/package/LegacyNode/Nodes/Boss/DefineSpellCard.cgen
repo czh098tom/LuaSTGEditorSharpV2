@@ -29,10 +29,21 @@
 		"boss_difficulty_is_all": "'{{{context.defineboss.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_tmp_sc = boss.card.New({{{self.spellcard_name}}}, {{{self.protect_time}}}, {{{self.resist_time}}}, {{{self.total_time}}}, {{{self.hp}}}, { {{{self.power_amount}}}, {{{self.faith_amount}}}, {{{self.point_amount}}} }, {{{self.bomb_immunity}}})"
+		"_tmp_sc = boss.card.New({{{self.spellcard_name}}}, {{{self.protect_time}}}, {{{self.resist_time}}}, {{{self.total_time}}}, ",
+			"{{{self.hp}}}, { {{{self.power_amount}}}, {{{self.faith_amount}}}, {{{self.point_amount}}} }, {{{self.bomb_immunity}}})"
 	],
 	"Tail": [
-		"_tmp_sc.perform = {{{self.opening_performance}}}{{#condition.has_optional_id}}\n_editor_cards.{{{self.optional_id}}} = _tmp_sc{{/condition.has_optional_id}}\ntable.insert(_editor_class[{{{context.defineboss.identifier}}}{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}].cards, _tmp_sc){{#condition.spellcard_is_named}}\ntable.insert(_sc_table, { {{{context.defineboss.identifier}}}{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}, {{{self.spellcard_name}}}, _tmp_sc, #_editor_class[{{{context.defineboss.identifier}}}{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}].cards, {{{self.opening_performance}}}}){{/condition.spellcard_is_named}}"
+		"_tmp_sc.perform = {{{self.opening_performance}}}{{#condition.has_optional_id}}\n",
+		"_editor_cards.{{{self.optional_id}}} = _tmp_sc{{/condition.has_optional_id}}\n",
+		"table.insert(_editor_class[{{{context.defineboss.identifier}}}",
+			"{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}",
+			"].cards, _tmp_sc){{#condition.spellcard_is_named}}\n",
+		"table.insert(_sc_table, { ",
+			"{{{context.defineboss.identifier}}}",
+			"{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}",
+			", {{{self.spellcard_name}}}, _tmp_sc, #_editor_class[{{{context.defineboss.identifier}}}",
+			"{{^condition.boss_difficulty_is_all}} .. ':' .. {{{context.defineboss.difficulty}}}{{/condition.boss_difficulty_is_all}}",
+			"].cards, {{{self.opening_performance}}}}){{/condition.spellcard_is_named}}"
 	],
 	"IndentionIncrement": 0
 }

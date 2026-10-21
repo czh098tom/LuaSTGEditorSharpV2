@@ -17,6 +17,11 @@
 		"is_colli": "'{{self.type}}'=='colli'",
 		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
-	"Head": ["_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].{{{self.type}}} = function(self{{#condition.is_colli}}, other{{/condition.is_colli}})"],
+	"Head": [
+		"_editor_class[{{{context.definition.identifier}}}",
+			"{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}",
+			"].{{{self.type}}} = function(self",
+			"{{#condition.is_colli}}, other{{/condition.is_colli}})"
+	],
 	"Tail": ["end"]
 }

@@ -13,5 +13,9 @@
 		"is_colli": "'{{context.callback.type}}'=='colli'",
 		"has_callback": "'{{context.callback.type}}'!=''"
 	},
-	"Head": ["{{#condition.has_callback}}self.class.base.{{context.callback.type}}(self{{#condition.is_colli}}, other{{/condition.is_colli}}){{/condition.has_callback}}{{^condition.has_callback}}self.class.base.render(self){{/condition.has_callback}}"]
+	"Head": [
+		"{{#condition.has_callback}}self.class.base.{{context.callback.type}}(self",
+			"{{#condition.is_colli}}, other{{/condition.is_colli}}){{/condition.has_callback}}",
+			"{{^condition.has_callback}}self.class.base.render(self){{/condition.has_callback}}"
+	]
 }
