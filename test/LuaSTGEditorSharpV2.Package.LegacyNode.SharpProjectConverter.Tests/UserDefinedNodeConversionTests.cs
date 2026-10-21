@@ -92,7 +92,7 @@ public sealed class UserDefinedNodeConversionTests
         var root = new NodeData("root");
         root.Add(definition);
         root.Add(instance);
-        var context = new SharpNodeFormattingContext(root, string.Empty, _ => { });
+        var context = new SharpNodeFormattingContext(root, string.Empty, NullLogger.Instance);
 
         provider.GetConverter(definition.TypeUID).Convert(definition, context);
         provider.GetConverter(instance.TypeUID).Convert(instance, context);

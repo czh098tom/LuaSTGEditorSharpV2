@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 {
-    public class SharpProjectConverter(SharpNodeConverterServiceProvider converterServiceProvider, 
-        string inputFilePath, string outputFilePath)
+    public class SharpProjectConverter(SharpNodeConverterServiceProvider converterServiceProvider,
+        ILogger<SharpProjectConverter> logger, string inputFilePath, string outputFilePath)
     {
         public async Task Convert(CancellationToken cancellationToken)
         {
@@ -20,7 +21,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             var outputName = ResolveDefaultOutputName(raw);
             var resources = SharpResourceMigrationAnalyzer.Analyze(raw, inputFilePath, outputFilePath);
             resources.Apply();
-            var context = new SharpNodeFormattingContext(raw, inputFilePath, Console.WriteLine);
+            var context = new SharpNodeFormattingContext(raw, inputFilePath, logger);
             foreach (var (node, line) in sourceLines)
             {
                 context.RegisterSourceLine(node, line);
@@ -145,11 +146,12 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
     }
 
     [Inject(ServiceLifetime.Singleton)]
-    public class SharpProjectConverterFactory(SharpNodeConverterServiceProvider converterServiceProvider)
+    public class SharpProjectConverterFactory(SharpNodeConverterServiceProvider converterServiceProvider,
+        ILogger<SharpProjectConverter> logger)
     {
         public SharpProjectConverter Create(string inputFilePath, string outputFilePath)
         {
-            return new SharpProjectConverter(converterServiceProvider, inputFilePath, outputFilePath);
+            return new SharpProjectConverter(converterServiceProvider, logger, inputFilePath, outputFilePath);
         }
     }
 }

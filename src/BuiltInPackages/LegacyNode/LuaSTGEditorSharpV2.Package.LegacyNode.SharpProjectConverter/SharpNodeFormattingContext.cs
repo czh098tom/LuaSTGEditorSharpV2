@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+
 using LuaSTGEditorSharpV2.Core.Model;
 using LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter;
 
@@ -14,18 +17,18 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
         private readonly HashSet<NodeData> _parsedNodes = [];
         private readonly Dictionary<NodeData, int> _sourceLines = [];
         private readonly string _inputFilePath;
-        private readonly Action<string> _diagnosticReporter;
+        private readonly ILogger _logger;
 
         public SharpNodeFormattingContext()
-            : this(null, string.Empty, Console.WriteLine)
+            : this(null, string.Empty, NullLogger.Instance)
         {
         }
 
         public SharpNodeFormattingContext(NodeData? root, string inputFilePath,
-            Action<string> diagnosticReporter)
+            ILogger logger)
         {
             _inputFilePath = inputFilePath;
-            _diagnosticReporter = diagnosticReporter;
+            _logger = logger;
             var userDefinedNodes = UserDefinedNodeConverter.CollectTemplates(root);
             UserDefinedTemplates = userDefinedNodes.Templates;
             UserDefinedInstances = userDefinedNodes.Instances;
@@ -47,7 +50,8 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 
         public void ReportDiagnostic(NodeData node, string message)
         {
-            _diagnosticReporter($"{_inputFilePath}:{GetSourceLine(node)?.ToString() ?? "?"}: {message}");
+            _logger.LogWarning("{InputFilePath}:{SourceLine}: {Diagnostic}",
+                _inputFilePath, GetSourceLine(node), message);
         }
 
         public void MakeParsed(NodeData nodeData)
