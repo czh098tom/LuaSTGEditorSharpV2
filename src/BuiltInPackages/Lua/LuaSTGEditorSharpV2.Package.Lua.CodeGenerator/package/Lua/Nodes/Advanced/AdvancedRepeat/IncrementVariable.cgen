@@ -15,7 +15,8 @@
         }
     },
     "Initialization": [
-        "local {{self.name}}={{{self.init}}} local _d_{{self.name}}=({{{self.increment}}})"
+        "local {{self.name}}={{{self.init}}}",
+            " local _d_{{self.name}}=({{{self.increment}}})"
     ],
     "Update": [
         "{0:IND}{{self.name}}={{self.name}}+_d_{{self.name}}"

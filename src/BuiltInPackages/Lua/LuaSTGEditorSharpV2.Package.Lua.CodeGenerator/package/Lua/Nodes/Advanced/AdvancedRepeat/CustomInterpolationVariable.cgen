@@ -36,13 +36,14 @@
     },
     "Initialization": [
         "local _beg_{{self.name}}={{{self.from}}}",
-        " local _func_{{self.name}}={{{self.interpolationfunc}}}",
-        " local _w_{{self.name}}=0 local _end_{{self.name}}={{{self.to}}}",
-        " local _d_w_{{self.name}}=1/({{{context.repeat.times}}}{{#condition.precise}}-1{{/condition.precise}})",
-        " local {{self.name}}=(_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(0)+_beg_{{self.name}}"
+            " local _func_{{self.name}}={{{self.interpolationfunc}}}",
+            " local _w_{{self.name}}=0",
+            " local _end_{{self.name}}={{{self.to}}}",
+            " local _d_w_{{self.name}}=1/({{{context.repeat.times}}}{{#condition.precise}}-1{{/condition.precise}})",
+            " local {{self.name}}=(_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(0)+_beg_{{self.name}}"
     ],
     "Update": [
-        "{0:IND}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}} {{self.name}}=(",
-        "_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(_w_{{self.name}})+_beg_{{self.name}}"
+        "{0:IND}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}}",
+            " {{self.name}}=(_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(_w_{{self.name}})+_beg_{{self.name}}"
     ]
 }

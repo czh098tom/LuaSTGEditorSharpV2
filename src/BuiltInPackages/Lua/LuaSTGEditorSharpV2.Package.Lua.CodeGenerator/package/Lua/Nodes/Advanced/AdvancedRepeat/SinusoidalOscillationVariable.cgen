@@ -22,12 +22,13 @@
     },
     "Initialization": [
         "local _h_{{self.name}}=({{{self.max}}}-({{{self.min}}}))/2",
-        " local _t_{{self.name}}=({{{self.max}}}+({{{self.min}}}))/2",
-        " local {{self.name}}=_h_{{self.name}}*sin({{{self.initial_phase}}})+_t_{{self.name}}",
-        " local _w_{{self.name}}={{{self.initial_phase}}}",
-        " local _d_w_{{self.name}}={{{self.omega}}}"
+            " local _t_{{self.name}}=({{{self.max}}}+({{{self.min}}}))/2",
+            " local {{self.name}}=_h_{{self.name}}*sin({{{self.initial_phase}}})+_t_{{self.name}}",
+            " local _w_{{self.name}}={{{self.initial_phase}}}",
+            " local _d_w_{{self.name}}={{{self.omega}}}"
     ],
     "Update": [
-        "{0:IND}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}} {{self.name}}=_h_{{self.name}}*sin(_w_{{self.name}})+_t_{{self.name}}"
+        "{0:IND}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}}",
+            " {{self.name}}=_h_{{self.name}}*sin(_w_{{self.name}})+_t_{{self.name}}"
     ]
 }
