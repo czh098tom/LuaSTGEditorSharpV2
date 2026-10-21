@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -42,7 +41,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			var captureResult = _captureResult;
 			if (Head.Length != 0)
 			{
-				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Head), captureResult, context).ToString(), node);
+				foreach (var code in CodeFragmentTemplate.Render(Head, captureResult, node, context))
+				{
+					yield return code;
+				}
 			}
 			if (!IgnoreChildren)
 			{
@@ -53,7 +55,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			}
 			if (Tail.Length != 0)
 			{
-				yield return new CodeData(RenderIndentedTemplate(string.Join('\n', Tail), captureResult, context).ToString(), node);
+				foreach (var code in CodeFragmentTemplate.Render(Tail, captureResult, node, context))
+				{
+					yield return code;
+				}
 			}
 		}
 
@@ -98,9 +103,5 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			return n;
 		}
 
-		protected static StringBuilder RenderIndentedTemplate(string template, CaptureResult captureResult, CodeGenerationContext context)
-		{
-			return context.ApplyIndented(context.GetIndented(), CodeFragmentTemplate.RenderText([template], captureResult, context));
-		}
 	}
 }
