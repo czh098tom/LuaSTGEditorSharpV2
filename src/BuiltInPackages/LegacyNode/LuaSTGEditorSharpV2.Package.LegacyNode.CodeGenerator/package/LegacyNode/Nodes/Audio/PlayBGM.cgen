@@ -11,6 +11,14 @@
 		"stage_frame_set": "'{{{self.time}}}' != '' && '{{{self.set_stage_time}}}' != ''"
 	},
 	"Head": [
-		"{{^condition.time_set}}LoadMusicRecord({{{self.name}}})\n_play_music({{{self.name}}}){{/condition.time_set}}{{#condition.time_set}}LoadMusicRecord({{{self.name}}})\n_play_music({{{self.name}}},{{{self.time}}}){{#condition.stage_frame_set}}\n{0:IND}if {{{self.set_stage_time}}} then ex.stageframe=int({{{self.time}}}*60) end{{/condition.stage_frame_set}}{{/condition.time_set}}"
+		"{{^condition.time_set}}",
+		"LoadMusicRecord({{{self.name}}})\n",
+		"_play_music({{{self.name}}})",
+		"{{/condition.time_set}}{{#condition.time_set}}",
+		"LoadMusicRecord({{{self.name}}})\n",
+		"_play_music({{{self.name}}},{{{self.time}}})",
+		"{{#condition.stage_frame_set}}\n",
+		"{0:IND}if {{{self.set_stage_time}}} then ex.stageframe=int({{{self.time}}}*60) end",
+		"{{/condition.stage_frame_set}}{{/condition.time_set}}"
 	]
 }

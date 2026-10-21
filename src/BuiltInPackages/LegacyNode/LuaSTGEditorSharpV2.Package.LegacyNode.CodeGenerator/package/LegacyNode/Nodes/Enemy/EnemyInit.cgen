@@ -52,10 +52,10 @@
 		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, _x, _y{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})",
-		"{0:IND}enemy.init(self, {{{self.style}}}, {{{self.hp}}}, {{{self.clear_bullet_when_killed}}}, {{{self.bound}}}, {{{self.collision_damage}}})",
-		"{0:IND}self.x, self.y = _x, _y",
-		"{0:IND}self.drop = { {{{self.power_amount}}}, {{{self.faith_amount}}}, {{{self.point_amount}}} }",
+		"_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].init = function(self, _x, _y{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})\n",
+		"{0:IND}enemy.init(self, {{{self.style}}}, {{{self.hp}}}, {{{self.clear_bullet_when_killed}}}, {{{self.bound}}}, {{{self.collision_damage}}})\n",
+		"{0:IND}self.x, self.y = _x, _y\n",
+		"{0:IND}self.drop = { {{{self.power_amount}}}, {{{self.faith_amount}}}, {{{self.point_amount}}} }\n",
 		"{0:IND}task.New(self, function() self.protect = true task.Wait({{{self.potect_time}}}) self.protect = false end)"
 	],
 	"Tail": [

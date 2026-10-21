@@ -13,11 +13,11 @@
 		"has_background": "'{{{self.background}}}' != ''"
 	},
 	"Head": [
-		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}] = Class(boss)",
-		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].cards = {}",
-		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].name = {{{self.name}}}",
-		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].bgm = {{{self.bgm}}}",
-		"{{#condition.has_background}}_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}]._bg = {{{self.background}}}{{/condition.has_background}}{{^condition.has_background}}_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}]._bg = nil{{/condition.has_background}}",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}] = Class(boss)\n",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].cards = {}\n",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].name = {{{self.name}}}\n",
+		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].bgm = {{{self.bgm}}}\n",
+		"{{#condition.has_background}}_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}]._bg = {{{self.background}}}{{/condition.has_background}}{{^condition.has_background}}_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}]._bg = nil{{/condition.has_background}}\n",
 		"_editor_class[{{{self.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{self.difficulty}}}{{/condition.difficulty_is_all}}].difficulty = {{{self.difficulty}}}"
 	],
 	"IndentionIncrement": 0

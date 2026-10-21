@@ -28,14 +28,14 @@
 		"difficulty_is_all": "'{{{context.definition.difficulty}}}' == '\"All\"'"
 	},
 	"Head": [
-		"_tmp_sc = boss.dialog.New({{{self.can_skip}}})",
-		"function _tmp_sc:init()",
-		"{0:IND}lstg.player.dialog = {{{self.suspend_gameplay}}}",
-		"{0:IND}_dialog_can_skip = {{{self.can_skip}}}",
+		"_tmp_sc = boss.dialog.New({{{self.can_skip}}})\n",
+		"function _tmp_sc:init()\n",
+		"{0:IND}lstg.player.dialog = {{{self.suspend_gameplay}}}\n",
+		"{0:IND}_dialog_can_skip = {{{self.can_skip}}}\n",
 		"{0:IND}self.dialog_displayer = New(dialog_displayer)"
 	],
 	"Tail": [
-		"end",
+		"end\n",
 		"table.insert(_editor_class[{{{context.definition.identifier}}}{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}].cards, _tmp_sc)"
 	]
 }
