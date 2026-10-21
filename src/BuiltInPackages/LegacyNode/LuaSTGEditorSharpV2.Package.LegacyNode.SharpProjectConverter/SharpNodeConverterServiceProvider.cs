@@ -17,7 +17,8 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 
         public SharpNodeFormatConverter GetConverter(string sharpNodeType)
         {
-            return GetDataOfID(sharpNodeType) ?? _default;
+            var shortName = sharpNodeType.Split(',')[0].Split('.')[^1];
+            return GetDataOfID(sharpNodeType) ?? GetDataOfID(shortName) ?? _default;
         }
     }
 }

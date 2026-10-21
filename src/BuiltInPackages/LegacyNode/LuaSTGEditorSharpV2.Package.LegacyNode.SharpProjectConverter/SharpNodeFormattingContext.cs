@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LuaSTGEditorSharpV2.Core.Model;
+using LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 {
@@ -16,15 +17,23 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
         private readonly Action<string> _diagnosticReporter;
 
         public SharpNodeFormattingContext()
-            : this(string.Empty, Console.WriteLine)
+            : this(null, string.Empty, Console.WriteLine)
         {
         }
 
-        public SharpNodeFormattingContext(string inputFilePath, Action<string> diagnosticReporter)
+        public SharpNodeFormattingContext(NodeData? root, string inputFilePath,
+            Action<string> diagnosticReporter)
         {
             _inputFilePath = inputFilePath;
             _diagnosticReporter = diagnosticReporter;
+            var userDefinedNodes = UserDefinedNodeConverter.CollectTemplates(root);
+            UserDefinedTemplates = userDefinedNodes.Templates;
+            UserDefinedInstances = userDefinedNodes.Instances;
         }
+
+        internal IReadOnlyDictionary<string, UserDefinedNodeConverter.UserDefinedTemplate>
+            UserDefinedTemplates { get; }
+        internal IReadOnlySet<NodeData> UserDefinedInstances { get; }
 
         public bool ShouldRetry { get; set; } = false;
 

@@ -2,6 +2,9 @@
   "SharpName": "UnidentifiedNode",
   "Converters": [
     {
+      "$type": "UserDefinedNode"
+    },
+    {
       "$type": "Default"
     }
   ]

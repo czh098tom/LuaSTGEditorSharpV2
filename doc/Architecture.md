@@ -165,6 +165,9 @@ public interface IServiceInstanceProvider<TData> {
 `Converter.IfBranchCompatibilityNormalizationConverter`，由既有 `sharpconv` Provider
 通过 `[JsonTypeShortName]` 发现，仅用于 V1 If 同级分支的兼容归一。
 
+`UserDefinedNode` 对应 `Converter.UserDefinedNodeConverter`，由既有 `sharpconv` Provider
+通过 `[JsonTypeShortName]` 发现，展开 V1 自定义节点实例，不新增 Provider 或服务扩展名。
+
 当前实现中的配置多态短名由 `$type` 解析，登记如下；沿用 `prop` 服务文件加载入口。
 
 | JsonTypeShortName | 基接口 | 具体类型 | 所在模块 |

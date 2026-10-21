@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.Model;
-using LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter.Converter;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
 {
@@ -17,15 +16,15 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
     {
         public async Task Convert(CancellationToken cancellationToken)
         {
-            var context = new SharpNodeFormattingContext(inputFilePath, Console.WriteLine);
-            var raw = await ConvertNodeAsync(context, cancellationToken);
+            var (raw, sourceLines) = await ConvertNodeAsync(cancellationToken);
             var outputName = ResolveDefaultOutputName(raw);
             var resources = SharpResourceMigrationAnalyzer.Analyze(raw, inputFilePath, outputFilePath);
             resources.Apply();
-            // The user-defined node layer is resolved in the editor, not in the game, so its instances
-            // become plain Code nodes. This must happen after the migration plan has been applied and
-            // before the formatter, so the definitions are still readable under their V1 captions.
-            UserDefinedNodeConverter.RewriteAll(raw);
+            var context = new SharpNodeFormattingContext(raw, inputFilePath, Console.WriteLine);
+            foreach (var (node, line) in sourceLines)
+            {
+                context.RegisterSourceLine(node, line);
+            }
             var doc = WrapSharpV2Structure(raw);
             ApplyFormatter(doc, context);
             InjectDefaultBuildingNode(doc, outputName);
@@ -53,10 +52,11 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
             buildRoot.Insert(0, build);
         }
 
-        private async Task<NodeData?> ConvertNodeAsync(SharpNodeFormattingContext context,
+        private async Task<(NodeData? Root, Dictionary<NodeData, int> SourceLines)> ConvertNodeAsync(
             CancellationToken cancellationToken)
         {
             SharpNodeSerializer serializer = new();
+            var sourceLines = new Dictionary<NodeData, int>();
             NodeData? root = null;
             NodeData? prev = null;
             int prevLevel = -1;
@@ -87,7 +87,7 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
                         }
                     }
                     NodeData? tempN = serializer.DeserializeTreeNode(des) ?? new NodeData();
-                    context.RegisterSourceLine(tempN, sourceLine);
+                    sourceLines[tempN] = sourceLine;
                     //tempN.FixAttrParent();
                     prev.Add(tempN);
                     prev = tempN;
@@ -98,14 +98,14 @@ namespace LuaSTGEditorSharpV2.Package.LegacyNode.SharpProjectConverter
                     root = serializer.DeserializeTreeNode(des);
                     if (root != null)
                     {
-                        context.RegisterSourceLine(root, sourceLine);
+                        sourceLines[root] = sourceLine;
                     }
                     //root.FixAttrParent();
                     prev = root;
                     prevLevel = 0;
                 }
             }
-            return root;
+            return (root, sourceLines);
         }
 
         private DocumentModel WrapSharpV2Structure(NodeData? nodeData)
