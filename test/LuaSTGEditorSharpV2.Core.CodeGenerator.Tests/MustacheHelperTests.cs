@@ -36,7 +36,12 @@ public sealed class MustacheHelperTests
             JsonConvert.PopulateObject(JsonConvert.SerializeObject(new
             {
                 IgnoreChildren = true,
-                Head = new[] { template },
+                Head = new[]
+                {
+                    "{{logicalChildrenCount}}:",
+                    "{{#condition.has_children}}yes{{/condition.has_children}}",
+                    "{{^condition.has_children}}no{{/condition.has_children}}"
+                },
                 ConditionTemplates = conditions
             }), generator);
             using var registration = provider.Register("Helper", CreatePackage(), generator);
@@ -67,8 +72,8 @@ public sealed class MustacheHelperTests
         var generator = new MustacheCodeGeneration(provider, services);
         JsonConvert.PopulateObject("""
             {
-              "Head": ["H{{logicalChildrenCount}}{{#condition.two}}T{{/condition.two}}"],
-              "Tail": ["T{{logicalChildrenCount}}{{#condition.two}}T{{/condition.two}}"],
+              "Head": ["H", "{{logicalChildrenCount}}", "{{#condition.two}}T{{/condition.two}}"],
+              "Tail": ["T", "{{logicalChildrenCount}}", "{{#condition.two}}T{{/condition.two}}"],
               "ConditionTemplates": { "two": "{{logicalChildrenCount}} == 2" }
             }
             """, generator);
@@ -94,8 +99,8 @@ public sealed class MustacheHelperTests
         JsonConvert.PopulateObject(JsonConvert.SerializeObject(new
         {
             Captures = new { value = new { Key = "value", DisableMacro = true } },
-            Head = new[] { template },
-            Tail = new[] { template },
+            Head = new[] { "{0:IND}", "{{{self.value}}}" },
+            Tail = new[] { "{0:IND}", "{{{self.value}}}" },
             IgnoreChildren = true
         }), generator);
         using var registration = provider.Register("Indent", CreatePackage(), generator);
@@ -125,7 +130,7 @@ public sealed class MustacheHelperTests
         JsonConvert.PopulateObject("""
             {
               "Captures": { "parameters": { "Key": "parameters", "DisableMacro": true } },
-              "Head": [ "function(self{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})" ],
+              "Head": [ "function(self", "{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}}", ")" ],
               "IgnoreChildren": true
             }
             """, generator);
