@@ -46,6 +46,7 @@ public static class CodeFragmentTemplate
             args = arguments ?? new Dictionary<string, object?>(),
             context = capturedContext,
             condition,
+            indent = context.Format("{0:IND}"),
             logicalChildrenCount = new Func<object>(() => node.GetLogicalChildren().Count())
         };
         foreach (var entry in conditionTemplates)

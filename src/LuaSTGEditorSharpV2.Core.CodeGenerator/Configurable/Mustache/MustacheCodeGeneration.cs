@@ -22,6 +22,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			public Dictionary<string, Dictionary<string, object?>> context = [];
 			public Dictionary<string, bool> condition = [];
 			public Func<object>? logicalChildrenCount = null;
+			public string indent = string.Empty;
 			public CaptureResult() {}
 		}
 		[JsonProperty] public Dictionary<string, CaptureWithMacroOption> Captures { get; private set; } = [];
@@ -65,6 +66,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 		protected int WriteCaptureResult(ref CaptureResult captureResult, NodeData node, CodeGenerationContext context)
 		{
 			captureResult.logicalChildrenCount = () => node.GetLogicalChildren().Count();
+			captureResult.indent = context.Format("{0:IND}");
 			var token = new NodePropertyAccessToken(ServiceProvider, node, context);
 			int n = 0;
 			foreach(var namedCapture in Captures)
