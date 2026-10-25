@@ -234,12 +234,7 @@ helper 不序列化到节点或配置，不新增 Provider、服务短名或 NCa
 普通生成器递归时保留当前调用的模型，确保 Head/Tail 的 helper 与条件仍属于当前节点。
 既有 `ConditionTemplates` 和字符串捕获语义保持不变；本契约不扩展 ViewModel 模板。
 
-### 3.9 普通生成器的子节点包裹与列表布局
-
-`ConfigurableCodeGeneration` 和 `SelectiveCodeGeneration` 的可选字符串字段
-`ChildHead` / `ChildTail` 在存在直接逻辑子节点且未启用 `IgnoreChildren` 时产出，
-顺序为 Head → ChildHead → 逻辑子树 → ChildTail → Tail。
-未配置字段默认为 null，不改变既有布局；计数不按实际产码过滤。
+### 3.9 列表布局
 
 `SingleListCodeGeneration` 的可选字段 `HeadWhenSubCapturesEmpty`、
 `TailWhenSubCapturesEmpty` 和 `IndentionIncrementWhenSubCapturesEmpty`
