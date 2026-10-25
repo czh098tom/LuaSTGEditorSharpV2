@@ -8,6 +8,8 @@ description: 为 LuaSTGSharpEditor 项目编写、拆分和审查 Mustache 代�
 先从配置的 `$type` 确认实际消费方和字段类型，避免把普通字符串、旧 Selection 配置或显示文本误当成代码模板数组。
 
 - 代码模板数组是按顺序直接拼接的片段。JSON 中分成多项不增加 Lua 换行；输出需要换行时在字符串内写 `\n`，需要空格时保留空格。
+- 同一输出行拆成多个片段时，首片段用正常 JSON 数组缩进，续片段额外缩进一级，输出换行后恢复；归属缩进放在 JSON 字符串引号外。
+- 按“非空白”选择字符串参数时，可用 `{{#self.parameters.Trim.Length}}...{{/self.parameters.Trim.Length}}`，内容仍输出 `{{{self.parameters}}}`。直接字符串 section 也会把 `"0"`、`"false"` 判为假，不能等同于非空白检查。
 - 多行模板和过长的单行都可以拆。优先在语句、分支或参数边界拆分，保留 Mustache 标签、必要空白和条件段的范围；不要为了 JSON 排版给输出增加换行。
 - 迁移原先依赖隐式换行的数组时，把旧分隔符明确写进片段。检查迁移前后传入渲染器的完整模板文本，而不是只检查数组项数或排版。
 - 额外一级 Lua 缩进使用模型根的 `{{{indent}}}`，值为一个配置缩进单位；当前层级的累计缩进由渲染器添加。捕获值中的 Mustache 标签保持原文，不会再次解释。
@@ -20,8 +22,8 @@ description: 为 LuaSTGSharpEditor 项目编写、拆分和审查 Mustache 代�
 ```json
 "Head": [
   "local value = ",
-  "{{{self.value}}}",
-  "\n"
+    "{{{self.value}}}",
+    "\n"
 ]
 ```
 

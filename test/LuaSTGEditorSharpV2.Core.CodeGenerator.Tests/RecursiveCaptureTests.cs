@@ -24,8 +24,6 @@ public sealed class RecursiveCaptureTests
             """);
         configuration["Head"] = CreateSection(generatorType, "H{1}:{2}");
         configuration["Tail"] = CreateSection(generatorType, "T{1}:{2}");
-        configuration["ChildHead"] = "CH{1}:{2}";
-        configuration["ChildTail"] = "CT{1}:{2}";
         JsonConvert.PopulateObject(configuration.ToString(), generator);
         using var registration = provider.Register("Recursive", CreatePackage(), generator);
         var parent = CreateNode("parent");
@@ -37,9 +35,8 @@ public sealed class RecursiveCaptureTests
         parent.Add(disabled);
 
         Assert.Equal(new[] {
-            "Hparent:", "CHparent:", "Hchild:parent", "CHchild:parent",
-            "Hleaf:child", "Tleaf:child", "CTchild:parent", "Tchild:parent",
-            "CTparent:", "Tparent:"
+            "Hparent:", "Hchild:parent", "Hleaf:child",
+            "Tleaf:child", "Tchild:parent", "Tparent:"
         }, Render(provider, parent, CreateContext(services)));
         Assert.Equal(2, parent.PhysicalChildren.Count);
         Assert.False(parent.PhysicalChildren[1].IsActive);

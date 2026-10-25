@@ -19,8 +19,6 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
         [JsonProperty] public string? Head { get; private set; }
         [JsonProperty] public string? Tail { get; private set; }
         [JsonProperty] public bool IgnoreChildren { get; private set; } = false;
-        [JsonProperty] public string? ChildHead { get; private set; }
-        [JsonProperty] public string? ChildTail { get; private set; }
         [JsonProperty] public int IndentionIncrement { get; private set; } = 1;
 
         protected string[]? _captureResult;
@@ -35,15 +33,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 .ApplyIndentedFormat(head, captureResult).ToString(), node);
             if (!IgnoreChildren)
             {
-                var hasChildren = node.GetLogicalChildren().Any();
-                if (hasChildren && ChildHead != null) yield return new CodeData(context
-                    .ApplyIndentedFormat(ChildHead, captureResult).ToString(), node);
                 foreach (var cd in NodeServiceProvider.GenerateForChildren(node, context, indentionIncrement))
                 {
                     yield return cd;
                 }
-                if (hasChildren && ChildTail != null) yield return new CodeData(context
-                    .ApplyIndentedFormat(ChildTail, captureResult).ToString(), node);
             }
             if (tail != null) yield return new CodeData(context
                 .ApplyIndentedFormat(tail, captureResult).ToString(), node);
