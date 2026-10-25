@@ -30,7 +30,7 @@
 			"{{{self.accel_angle}}}, {{{self.max_velocity}}}, {{{self.shuttle}}})",
 			"{{#condition.has_children}}\n",
 		"do\n",
-		"{0:IND}local self = last{{/condition.has_children}}"
+		"{{{indent}}}local self = last{{/condition.has_children}}"
 	],
 	"Tail": [
 		"{{#condition.has_children}}end{{/condition.has_children}}"
