@@ -1,24 +1,23 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "CreateObject",
-	"Captures": [
-		{ "Key": "identifier" },
-		{ "Key": "position" },
-		{ "Key": "parameters" }
-	],
+	"Captures": {
+		"identifier": {"Key": "identifier"},
+		"position": {"Key": "position"},
+		"parameters": {"Key": "parameters"}
+	},
+	"ConditionTemplates": {
+		"has_children": "{{logicalChildrenCount}} > 0"
+	},
 	"Head": [
-		{
-			"Text": "last = New(_editor_class[{1}], {2}, {3})",
-			"ConditionOn": 2,
-			"UseExistanceInsteadOfBoolValue": "true"
-		},
-		{
-			"Text": "last = New(_editor_class[{1}], {2})",
-			"ConditionOn": 2,
-			"UseExistanceInsteadOfBoolValue": "true",
-			"Inversed": "true"
-		}
+		"last = New(_editor_class[{{{self.identifier}}}], {{{self.position}}}",
+			"{{#self.parameters.Trim.Length}}, {{{self.parameters}}}{{/self.parameters.Trim.Length}}",
+			")",
+			"{{#condition.has_children}}\n",
+		"do\n",
+		"{0:IND}local self = last{{/condition.has_children}}"
 	],
-	"ChildHead": "do\n{0:IND}local self = last",
-	"ChildTail": "end"
+	"Tail": [
+		"{{#condition.has_children}}end{{/condition.has_children}}"
+	]
 }

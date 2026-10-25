@@ -1,24 +1,38 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "CreateSimpleBullet",
-	"Captures": [
-		{ "Key": "style" },
-		{ "Key": "color" },
-		{ "Key": "position" },
-		{ "Key": "velocity" },
-		{ "Key": "rotation" },
-		{ "Key": "aim" },
-		{ "Key": "omega" },
-		{ "Key": "stay" },
-		{ "Key": "destroyable" },
-		{ "Key": "delay" },
-		{ "Key": "rebound" },
-		{ "Key": "acceleration" },
-		{ "Key": "accel_angle" },
-		{ "Key": "max_velocity" },
-		{ "Key": "shuttle" }
+	"Captures": {
+		"style": {"Key": "style"},
+		"color": {"Key": "color"},
+		"position": {"Key": "position"},
+		"velocity": {"Key": "velocity"},
+		"rotation": {"Key": "rotation"},
+		"aim": {"Key": "aim"},
+		"omega": {"Key": "omega"},
+		"stay": {"Key": "stay"},
+		"destroyable": {"Key": "destroyable"},
+		"delay": {"Key": "delay"},
+		"rebound": {"Key": "rebound"},
+		"acceleration": {"Key": "acceleration"},
+		"accel_angle": {"Key": "accel_angle"},
+		"max_velocity": {"Key": "max_velocity"},
+		"shuttle": {"Key": "shuttle"}
+	},
+	"ConditionTemplates": {
+		"has_children": "{{logicalChildrenCount}} > 0"
+	},
+	"Head": [
+		"last = New(_straight, ",
+			"{{{self.style}}}, {{{self.color}}}, {{{self.position}}}, ",
+			"{{{self.velocity}}}, {{{self.rotation}}}, {{{self.aim}}}, ",
+			"{{{self.omega}}}, {{{self.stay}}}, {{{self.destroyable}}}, ",
+			"{{{self.delay}}}, {{{self.rebound}}}, {{{self.acceleration}}}, ",
+			"{{{self.accel_angle}}}, {{{self.max_velocity}}}, {{{self.shuttle}}})",
+			"{{#condition.has_children}}\n",
+		"do\n",
+		"{0:IND}local self = last{{/condition.has_children}}"
 	],
-	"Head": "last = New(_straight, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15})",
-	"ChildHead": "do\n{0:IND}local self = last",
-	"ChildTail": "end"
+	"Tail": [
+		"{{#condition.has_children}}end{{/condition.has_children}}"
+	]
 }

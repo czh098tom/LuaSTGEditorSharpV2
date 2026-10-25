@@ -1,11 +1,20 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.ConfigurableCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "MakeSmear",
-	"Captures": [
-		{ "Key": "target" },
-		{ "Key": "interval" }
+	"Captures": {
+		"target": {"Key": "target"},
+		"interval": {"Key": "interval"}
+	},
+	"ConditionTemplates": {
+		"has_children": "{{logicalChildrenCount}} > 0"
+	},
+	"Head": [
+		"last = New(smear, {{{self.target}}}, {{{self.interval}}})",
+			"{{#condition.has_children}}\n",
+		"do\n",
+		"{0:IND}local self = last{{/condition.has_children}}"
 	],
-	"Head": "last = New(smear, {1}, {2})",
-	"ChildHead": "do\n{0:IND}local self = last",
-	"ChildTail": "end"
+	"Tail": [
+		"{{#condition.has_children}}end{{/condition.has_children}}"
+	]
 }

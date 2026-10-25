@@ -1,18 +1,23 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SelectiveCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache.MustacheCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "CreateBoss",
-	"Captures": [
-		{ "Key": "identifier" },
-		{ "Key": "wait" }
-	],
+	"Captures": {
+		"identifier": {"Key": "identifier"},
+		"wait": {"Key": "wait"}
+	},
+	"ConditionTemplates": {
+		"has_children": "{{logicalChildrenCount}} > 0"
+	},
 	"Head": [
-		{ "Text": "local _boss_wait = {2}" },
-		{ "Text": "local _ref = New(_editor_class[{1}], _editor_class[{1}].cards)" },
-		{ "Text": "last = _ref" }
+		"local _boss_wait = {{{self.wait}}}\n",
+		"local _ref = New(_editor_class[{{{self.identifier}}}], _editor_class[{{{self.identifier}}}].cards)\n",
+		"last = _ref",
+			"{{#condition.has_children}}\n",
+		"do\n",
+		"{0:IND}local self = last{{/condition.has_children}}"
 	],
 	"Tail": [
-		{ "Text": "if _boss_wait then while IsValid(_ref) do task.Wait() end end" }
-	],
-	"ChildHead": "do\n{0:IND}local self = last",
-	"ChildTail": "end"
+		"{{#condition.has_children}}end\n{{/condition.has_children}}",
+		"if _boss_wait then while IsValid(_ref) do task.Wait() end end"
+	]
 }
