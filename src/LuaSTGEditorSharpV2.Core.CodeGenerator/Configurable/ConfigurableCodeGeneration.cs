@@ -28,7 +28,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             _captureResult = new string[GetCaptureCacheLength()];
             var captureResult = _captureResult;
             WriteCaptureResult(captureResult, node, context);
-            var (head, tail, indentionIncrement) = ResolveLayout(captureResult);
+            var (head, tail, indentionIncrement) = (Head, Tail, IndentionIncrement);
             if (head != null) yield return new CodeData(context
                 .ApplyIndentedFormat(head, captureResult).ToString(), node);
             if (!IgnoreChildren)
@@ -40,11 +40,6 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
             }
             if (tail != null) yield return new CodeData(context
                 .ApplyIndentedFormat(tail, captureResult).ToString(), node);
-        }
-
-        protected virtual (string? Head, string? Tail, int IndentionIncrement) ResolveLayout(string?[] captureResult)
-        {
-            return (Head, Tail, IndentionIncrement);
         }
 
         protected virtual int GetCaptureCacheLength()

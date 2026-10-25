@@ -114,7 +114,6 @@ public sealed class RecursiveCaptureTests
               "SubCaptureRule":[{"Key":"item_{0}"}],
               "SubCaptureFormat":[{"Text":"{2}"}],
               "Head":"H{1}:{2}","Tail":"T{1}:{2}",
-              "HeadWhenSubCapturesEmpty":"HE{1}","TailWhenSubCapturesEmpty":"TE{1}",
               "IndentionIncrement":0
             }
             """, generator);
@@ -130,8 +129,8 @@ public sealed class RecursiveCaptureTests
 
         Assert.Equal(new[] {
             "Hparent:outer-a\nouter-b",
-            childCount == 0 ? "HEchild" : "Hchild:inner",
-            childCount == 0 ? "TEchild" : "Tchild:inner",
+            childCount == 0 ? "Hchild:" : "Hchild:inner",
+            childCount == 0 ? "Tchild:" : "Tchild:inner",
             "Tparent:outer-a\nouter-b"
         }, Render(provider, parent, CreateContext(services)));
     }

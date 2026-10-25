@@ -245,14 +245,9 @@ helper 不序列化到节点或配置，不新增 Provider、服务短名或 NCa
 普通生成器递归时保留当前调用的模型，确保 Head/Tail 的 helper 与条件仍属于当前节点。
 既有 `ConditionTemplates` 和字符串捕获语义保持不变；本契约不扩展 ViewModel 模板。
 
-### 3.9 列表布局
+### 3.9 列表子捕获
 
-`SingleListCodeGeneration` 的可选字段 `HeadWhenSubCapturesEmpty`、
-`TailWhenSubCapturesEmpty` 和 `IndentionIncrementWhenSubCapturesEmpty`
-仅在所有子捕获格式化输出均为空时替代对应布局，null 沿用原配置。
-判断不是 count == 0：非零列表中的空名称也可能不产生子捕获输出。
 子捕获使用 Format，只在非空且未以换行结尾时追加换行，避免二次缩进或多调用粘行。
-这些字段不新增 Provider 或服务短名，旧 JSON 无需增加字段。
 
 ### 3.10 V1 数字属性列表迁移与按列产码
 
