@@ -710,7 +710,7 @@ public sealed class AdvancedRepeatCodeGenerationTests
         return repeat;
     }
 
-    private sealed class Fixture : IDisposable
+    internal sealed class Fixture : IDisposable
     {
         private static readonly PackageManifest Manifest = new("Lua", new Version(1, 0), 0f, null);
         private readonly List<IDisposable> _registrations = [];
@@ -726,9 +726,10 @@ public sealed class AdvancedRepeatCodeGenerationTests
                 .AddSingleton<CodeGeneratorServiceProvider>()
                 .AddSingleton<DefaultValueServiceProvider>();
             services.Add(typeof(DefaultValueService).GetCustomAttribute<InjectAttribute>()!.ToDescriptor(typeof(DefaultValueService)));
-            services.Add(typeof(CodeGeneratorServiceBase).GetCustomAttribute<InjectAttribute>()!.ToDescriptor(typeof(CodeGeneratorServiceBase)));
-            services.Add(typeof(MustacheCodeGeneration).GetCustomAttribute<InjectAttribute>()!.ToDescriptor(typeof(MustacheCodeGeneration)));
-            foreach (var type in typeof(AdvancedRepeatCodeGeneration).Assembly.GetTypes()
+            foreach (var type in new[]
+            {
+                typeof(CodeGeneratorServiceBase).Assembly, typeof(AdvancedRepeatCodeGeneration).Assembly
+            }.SelectMany(assembly => assembly.GetTypes())
                 .Where(type => !type.IsAbstract && typeof(CodeGeneratorServiceBase).IsAssignableFrom(type)))
             {
                 var attribute = type.GetCustomAttribute<InjectAttribute>();

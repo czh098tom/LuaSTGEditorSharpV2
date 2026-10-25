@@ -1,38 +1,10 @@
 {
-	"$type": "LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.SingleListCodeGeneration, LuaSTGEditorSharpV2.Core.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+	"$type": "LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.RepeatCodeGeneration, LuaSTGEditorSharpV2.Package.Lua.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "Repeat",
 	"Language": "Lua",
-	"Captures": [
-		{ "Key": "times" }
-	],
+	"TimesCapture": { "Key": "times" },
 	"CountCapture": { "Key": "count" },
-	"SubCaptureRule": [
-		{ "Key": "name_{0}" },
-		{
-			"Key": "init_{0}",
-			"DefaultValue": "0"
-		},
-		{
-			"Key": "increment_{0}",
-			"DefaultValue": "0"
-		}
-	],
-	"SubCaptureFormat": [
-		{
-			"Text": "{0:IND}local {2}, _d_{2} = ({3}), ({4})\n",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": true
-		},
-		{
-			"Text": "{0:IND}{0:IND}{2} = {2} + _d_{2}\n",
-			"ConditionOn": 1,
-			"UseExistanceInsteadOfBoolValue": true
-		}
-	],
-	"Head": "do\n{2}{0:IND}for _ = 1, {1} do",
-	"Tail": "{3}{0:IND}end\nend",
-	"IndentionIncrement": 2,
-	"HeadWhenSubCapturesEmpty": "for _ = 1, {1} do",
-	"TailWhenSubCapturesEmpty": "end",
-	"IndentionIncrementWhenSubCapturesEmpty": 1
+	"NameRule": { "Key": "name_{0}" },
+	"InitRule": { "Key": "init_{0}", "DefaultValue": "0" },
+	"IncrementRule": { "Key": "increment_{0}", "DefaultValue": "0" }
 }

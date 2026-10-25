@@ -22,11 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.CodeGenerator/package/Lua/Nodes/Advanced/AdvancedRepeat/*.cgen"
-          Link="package/Lua/Nodes/Advanced/AdvancedRepeat/%(Filename)%(Extension)"
+    <None Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua.CodeGenerator/package/**/*"
+          Link="package/%(RecursiveDir)%(Filename)%(Extension)"
           CopyToOutputDirectory="PreserveNewest" />
-    <None Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua/package/Lua/Nodes/Advanced/AdvancedRepeat/*.default"
-          Link="package/Lua/Nodes/Advanced/AdvancedRepeat/%(Filename)%(Extension)"
+    <None Include="../../src/BuiltInPackages/Lua/LuaSTGEditorSharpV2.Package.Lua/package/**/*"
+          Link="package/%(RecursiveDir)%(Filename)%(Extension)"
           CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
