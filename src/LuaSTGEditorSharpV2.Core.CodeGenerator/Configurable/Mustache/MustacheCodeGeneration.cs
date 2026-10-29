@@ -63,7 +63,7 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache
 			}
 		}
 
-		protected int WriteCaptureResult(ref CaptureResult captureResult, NodeData node, CodeGenerationContext context)
+		protected virtual int WriteCaptureResult(ref CaptureResult captureResult, NodeData node, CodeGenerationContext context)
 		{
 			captureResult.logicalChildrenCount = () => node.GetLogicalChildren().Count();
 			captureResult.indent = context.Format("{0:IND}");
