@@ -95,12 +95,12 @@ public sealed class MustacheHelperTests
         var node = new NodeData("Indent");
         node.Properties["value"] = "{0:IND}";
         var generator = new MustacheCodeGeneration(provider, services);
-        const string template = "{0:IND}{{{self.value}}}";
+        const string template = "{{{indent}}}{{{self.value}}}";
         JsonConvert.PopulateObject(JsonConvert.SerializeObject(new
         {
             Captures = new { value = new { Key = "value", DisableMacro = true } },
-            Head = new[] { "{0:IND}", "{{{self.value}}}" },
-            Tail = new[] { "{0:IND}", "{{{self.value}}}" },
+            Head = new[] { "{{{indent}}}", "{{{self.value}}}" },
+            Tail = new[] { "{{{indent}}}", "{{{self.value}}}" },
             IgnoreChildren = true
         }), generator);
         using var registration = provider.Register("Indent", CreatePackage(), generator);
