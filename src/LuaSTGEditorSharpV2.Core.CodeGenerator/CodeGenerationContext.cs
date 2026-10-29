@@ -64,6 +64,11 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public int IndentionLevel { get; private set; } = 0;
         public IReadOnlyDictionary<NodeData, Dictionary<string, string>> ContextVariables => _contextVariables;
 
+        /**TODO: temporary solution in case some cgen service needs to know settings.LineObfuscated to handle long strings,
+         * going to move postprocess(like obfuscation) to a isolated building stage.
+         */
+        public bool LineObfuscated => ServiceSettings.LineObfuscated;
+
         public CodeGenerationContext(IServiceProvider serviceProvider, LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings)
             : base(serviceProvider, localSettings, serviceSettings)
         {
