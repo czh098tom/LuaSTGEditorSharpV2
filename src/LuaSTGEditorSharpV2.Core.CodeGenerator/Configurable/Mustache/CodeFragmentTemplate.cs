@@ -88,7 +88,7 @@ public static class CodeFragmentTemplate
         {
             throw new ArgumentException("Template lines cannot be null.", nameof(template));
         }
-        return StaticStubbleRenderer.Render(string.Concat(template)
-            .Replace("{0:IND}", context.Format("{0:IND}"), StringComparison.Ordinal), model);
+
+        return StaticStubbleRenderer.Render(string.Concat(template), model);
     }
 }
