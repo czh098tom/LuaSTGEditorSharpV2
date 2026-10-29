@@ -19,6 +19,6 @@
         " local _n_{{self.name}}=({{{self.initial_value}}})+({{{self.another_value}}})"
     ],
     "Update": [
-        "{0:IND}{{self.name}}=-({{self.name}})+_n_{{self.name}}"
+        "{{{indent}}}{{self.name}}=-({{self.name}})+_n_{{self.name}}"
     ]
 }

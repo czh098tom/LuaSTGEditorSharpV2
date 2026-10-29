@@ -407,8 +407,8 @@ public sealed class AdvancedRepeatCodeGenerationTests
             { "limit": { "Key": "iterations", "DefaultValue": "6", "DisableMacro": true } }
             """)!;
         parent.Head = ["do -- configured"];
-        parent.LoopHead = ["{0:IND}for configured=1,{{{self.limit}}} do"];
-        parent.LoopTail = ["{0:IND}end -- loop"];
+        parent.LoopHead = ["{{{indent}}}for configured=1,{{{self.limit}}} do"];
+        parent.LoopTail = ["{{{indent}}}end -- loop"];
         parent.Tail = ["end -- scope"];
         var variable = (TemplateVariableTransformationCodeGeneration)fixture.Service(Node("LinearVariable"));
         variable.ContextCaptures["repeat"] = JsonConvert.DeserializeObject<ContextCapture>("""
@@ -517,7 +517,7 @@ public sealed class AdvancedRepeatCodeGenerationTests
         var model = CodeFragmentTemplate.CreateModel(fixture.Services, node, fixture.Context,
             new Dictionary<string, CaptureWithMacroOption>(), new Dictionary<string, ContextCapture>(),
             new Dictionary<string, string>(), arguments);
-        var fragment = CodeFragmentTemplate.Render(["{0:IND}local value={ text = '{{{args.literal}}}' }"], model, node, fixture.Context);
+        var fragment = CodeFragmentTemplate.Render(["{{{indent}}}local value={ text = '{{{args.literal}}}' }"], model, node, fixture.Context);
         Assert.Equal("  local value={ text = '{0:IND}<>&' }\n", fragment[0].Content);
         Assert.Same(node, fragment[0].Source);
         Assert.Empty(CodeFragmentTemplate.Render([], model, node, fixture.Context));
@@ -609,7 +609,7 @@ public sealed class AdvancedRepeatCodeGenerationTests
             Captures = JsonConvert.DeserializeObject<Dictionary<string, CaptureWithMacroOption>>(
                 """{ "value": { "Key": "value", "DisableMacro": true } }""")!,
             Initialization = ["{{{self.value}}}"],
-            Update = ["{0:IND}{{{self.value}}}"]
+            Update = ["{{{indent}}}{{{self.value}}}"]
         };
         var defaults = new CountingDefaultValueService(fixture.Services);
         fixture.Register("counted", transformation);

@@ -43,7 +43,7 @@
             " local {{self.name}}=(_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(0)+_beg_{{self.name}}"
     ],
     "Update": [
-        "{0:IND}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}}",
+        "{{{indent}}}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}}",
             " {{self.name}}=(_end_{{self.name}}-_beg_{{self.name}})*_func_{{self.name}}(_w_{{self.name}})+_beg_{{self.name}}"
     ]
 }

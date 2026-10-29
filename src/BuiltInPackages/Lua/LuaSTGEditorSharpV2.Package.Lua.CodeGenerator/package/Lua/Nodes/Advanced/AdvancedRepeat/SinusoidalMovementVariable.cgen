@@ -45,7 +45,7 @@
             " local _d_w_{{self.name}}={{{self.num_of_period}}}*360/({{{context.repeat.times}}}{{#condition.precise}}-1{{/condition.precise}})"
     ],
     "Update": [
-        "{0:IND}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}}",
+        "{{{indent}}}_w_{{self.name}}=_w_{{self.name}}+_d_w_{{self.name}}",
             " {{self.name}}=_h_{{self.name}}*sin(_w_{{self.name}})+_t_{{self.name}}"
     ]
 }

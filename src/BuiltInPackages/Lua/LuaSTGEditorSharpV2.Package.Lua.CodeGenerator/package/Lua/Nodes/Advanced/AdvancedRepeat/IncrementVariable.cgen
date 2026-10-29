@@ -19,6 +19,6 @@
             " local _d_{{self.name}}=({{{self.increment}}})"
     ],
     "Update": [
-        "{0:IND}{{self.name}}={{self.name}}+_d_{{self.name}}"
+        "{{{indent}}}{{self.name}}={{self.name}}+_d_{{self.name}}"
     ]
 }

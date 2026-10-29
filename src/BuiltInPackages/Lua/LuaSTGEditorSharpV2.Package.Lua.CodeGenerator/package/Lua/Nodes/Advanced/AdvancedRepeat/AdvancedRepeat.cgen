@@ -11,10 +11,10 @@
         "do"
     ],
     "LoopHead": [
-        "{0:IND}for _=1,{{{self.times}}} do"
+        "{{{indent}}}for _=1,{{{self.times}}} do"
     ],
     "LoopTail": [
-        "{0:IND}end"
+        "{{{indent}}}end"
     ],
     "Tail": [
         "end"
