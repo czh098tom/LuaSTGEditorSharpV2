@@ -397,7 +397,7 @@ public sealed class CurveCodeGenerationTests
         var model = CodeFragmentTemplate.CreateModel(fixture.Services, node, fixture.Context,
             new Dictionary<string, CaptureWithMacroOption>(), new Dictionary<string, ContextCapture>(),
             new Dictionary<string, string>(), new Dictionary<string, object?> { ["value"] = "{0:IND}<>&" });
-        string[] template = ["{0:", "IND}{{{args.value}}}"];
+        string[] template = ["{{{ind", "ent}}}{{{args.value}}}"];
 
         Assert.Equal(" {0:IND}<>&", CodeFragmentTemplate.RenderText(template, model, fixture.Context));
         Assert.Equal("    {0:IND}<>&\n", CodeFragmentTemplate.Render(template, model, node, fixture.Context)[0].Content);

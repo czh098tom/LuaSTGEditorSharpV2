@@ -20,11 +20,11 @@
     "{{/condition.relative}}{{^condition.relative}}",
     "target = {{{self.time}}} + offset{{/condition.relative}}\n",
     "kx = target - ibeg\n", "ky = curr - prev\n", "while i < target do\n",
-    "{0:IND}{{args.variableName}} = ",
+    "{{{indent}}}{{args.variableName}} = ",
     "{{#args.linear}}prev + ky * (i - ibeg) / kx{{/args.linear}}",
     "{{^args.linear}}prev + ky * {{{args.interpolation}}}",
     "((i - ibeg) / kx){{/args.linear}}\n",
-    "{0:IND}i = i + 1\n", "{0:IND}task.Wait()\n", "end\n",
+    "{{{indent}}}i = i + 1\n", "{{{indent}}}task.Wait()\n", "end\n",
     "{{args.variableName}} = curr\n", "prev = curr"
   ]
 }

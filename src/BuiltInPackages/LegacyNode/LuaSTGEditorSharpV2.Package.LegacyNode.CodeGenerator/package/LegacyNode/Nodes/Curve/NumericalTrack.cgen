@@ -9,18 +9,18 @@
   "ConditionTemplates": { "autoTerminate": "{{self.auto_terminate}}" },
   "MappingCapture": { "Key": "mapping" },
   "VariableNameFormat": "_{0}",
-  "Head": [ "do\n", "{0:IND}local __terminated = false\n", "{0:IND}local __terminateCount = 0" ],
+  "Head": [ "do\n", "{{{indent}}}local __terminated = false\n", "{{{indent}}}local __terminateCount = 0" ],
   "MappingTask": [
-    "{0:IND}task.New({{{self.target}}}, function()\n",
-    "{0:IND}{0:IND}local self = task.GetSelf()\n",
-    "{0:IND}{0:IND}for _ = 1, _infinite do\n",
-    "{0:IND}{0:IND}{0:IND}{{{args.mapping}}}\n",
-    "{0:IND}{0:IND}{0:IND}if __terminated",
+    "{{{indent}}}task.New({{{self.target}}}, function()\n",
+    "{{{indent}}}{{{indent}}}local self = task.GetSelf()\n",
+    "{{{indent}}}{{{indent}}}for _ = 1, _infinite do\n",
+    "{{{indent}}}{{{indent}}}{{{indent}}}{{{args.mapping}}}\n",
+    "{{{indent}}}{{{indent}}}{{{indent}}}if __terminated",
     "{{#condition.autoTerminate}} or __terminateCount >= {{args.curveCount}}",
     "{{/condition.autoTerminate}} then break end\n",
-    "{0:IND}{0:IND}{0:IND}task.Wait()\n",
-    "{0:IND}{0:IND}end\n",
-    "{0:IND}end)"
+    "{{{indent}}}{{{indent}}}{{{indent}}}task.Wait()\n",
+    "{{{indent}}}{{{indent}}}end\n",
+    "{{{indent}}}end)"
   ],
   "Tail": [ "end" ]
 }

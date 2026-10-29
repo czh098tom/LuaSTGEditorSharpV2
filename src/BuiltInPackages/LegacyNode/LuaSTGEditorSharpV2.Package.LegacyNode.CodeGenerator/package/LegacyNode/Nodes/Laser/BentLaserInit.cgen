@@ -45,7 +45,7 @@
 			"{{^condition.difficulty_is_all}} .. ':' .. {{{context.definition.difficulty}}}{{/condition.difficulty_is_all}}",
 			"].init = function(self, _x, _y",
 			"{{#self.parameters}}, {{{self.parameters}}}{{/self.parameters}})\n",
-		"{0:IND}laser_bent.init(self, {{{self.color}}}, _x, _y, ",
+		"{{{indent}}}laser_bent.init(self, {{{self.color}}}, _x, _y, ",
 			"{{{self.length}}}, {{{self.width}}}, {{{self.sampling}}}, {{{self.node_size}}})"
 	],
 	"Tail": [

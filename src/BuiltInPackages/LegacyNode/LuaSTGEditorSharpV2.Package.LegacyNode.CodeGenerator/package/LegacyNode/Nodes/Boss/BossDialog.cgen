@@ -30,9 +30,9 @@
 	"Head": [
 		"_tmp_sc = boss.dialog.New({{{self.can_skip}}})\n",
 		"function _tmp_sc:init()\n",
-		"{0:IND}lstg.player.dialog = {{{self.suspend_gameplay}}}\n",
-		"{0:IND}_dialog_can_skip = {{{self.can_skip}}}\n",
-		"{0:IND}self.dialog_displayer = New(dialog_displayer)"
+		"{{{indent}}}lstg.player.dialog = {{{self.suspend_gameplay}}}\n",
+		"{{{indent}}}_dialog_can_skip = {{{self.can_skip}}}\n",
+		"{{{indent}}}self.dialog_displayer = New(dialog_displayer)"
 	],
 	"Tail": [
 		"end\n",

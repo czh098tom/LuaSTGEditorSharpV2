@@ -8,12 +8,12 @@
   "Declaration": [ "local {{args.variableName}} = {{{args.initialValue}}}" ],
   "TaskHead": [
     "task.New({{{context.track.target}}}, function()\n",
-    "{0:IND}local self = task.GetSelf()\n",
-    "{0:IND}task.Wait({{{self.offset}}})\n",
-    "{0:IND}local i = 0\n",
-    "{0:IND}local offset = 0",
+    "{{{indent}}}local self = task.GetSelf()\n",
+    "{{{indent}}}task.Wait({{{self.offset}}})\n",
+    "{{{indent}}}local i = 0\n",
+    "{{{indent}}}local offset = 0",
       "{{#condition.roundRobin}}\n",
-    "{0:IND}for _ = 1, _infinite do{{/condition.roundRobin}}"
+    "{{{indent}}}for _ = 1, _infinite do{{/condition.roundRobin}}"
   ],
   "BodyHead": [
     "local curr, ibeg, ky, kx\n",
@@ -22,8 +22,8 @@
   ],
   "BodyTail": [ "offset = target" ],
   "TaskTail": [
-    "{{#condition.roundRobin}}{0:IND}end\n{{/condition.roundRobin}}",
-    "{0:IND}__terminateCount = __terminateCount + 1\n",
+    "{{#condition.roundRobin}}{{{indent}}}end\n{{/condition.roundRobin}}",
+    "{{{indent}}}__terminateCount = __terminateCount + 1\n",
     "end)"
   ],
   "BodyIndention": [ "{{#condition.roundRobin}}2{{/condition.roundRobin}}{{^condition.roundRobin}}1{{/condition.roundRobin}}" ]
