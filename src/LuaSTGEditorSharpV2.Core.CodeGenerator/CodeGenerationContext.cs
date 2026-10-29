@@ -173,8 +173,8 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
                     }
                     else
                     {
-                        builder.Append(indention);
-                        builder.Append(seg[i]);
+                        if (seg[i][0] == '\b') builder.Append(seg[i], 1, seg[i].Length - 1);
+                        else builder.Append(indention).Append(seg[i]);
                         if (!ServiceSettings.LineObfuscated)
                         {
                             builder.Append('\n');
