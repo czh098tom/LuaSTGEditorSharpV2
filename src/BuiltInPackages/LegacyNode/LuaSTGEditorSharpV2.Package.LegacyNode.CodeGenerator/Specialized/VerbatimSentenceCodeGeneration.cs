@@ -1,75 +1,63 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using LuaSTGEditorSharpV2.Core;
 using LuaSTGEditorSharpV2.Core.CodeGenerator;
-using LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable;
+using LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable.Mustache;
 using LuaSTGEditorSharpV2.Core.Configurable;
 using LuaSTGEditorSharpV2.Core.Model;
+using Newtonsoft.Json;
 
 namespace LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized;
 
 [Inject(ServiceLifetime.Transient)]
 public sealed class VerbatimSentenceCodeGeneration(
     CodeGeneratorServiceProvider provider, IServiceProvider services)
-    : SelectiveCodeGeneration(provider, services)
+    : MustacheCodeGeneration(provider, services)
 {
-    protected override IEnumerable<CodeData> GenerateCodeWithContext(
-        NodeData node, CodeGenerationContext context)
+    [JsonProperty(Required = Required.Always)]
+    public CaptureWithMacroOption TextCapture { get; private set; } = null!;
+
+    protected override int WriteCaptureResult(ref CaptureResult captureResult, NodeData node, CodeGenerationContext context)
     {
-        var result = new string[Captures.Length
-            + ContextCaptures.Sum(capture => capture.Property.Length)];
-        WriteCaptureResult(result, node, context);
-        var textIndex = Array.FindIndex(Captures, capture => capture.Key == "text");
-        if (textIndex < 0)
-        {
-            throw new InvalidOperationException("Sentence requires a text capture.");
-        }
+        var captureCount = base.WriteCaptureResult(ref captureResult, node, context);
+        var text = TextCapture.ApplyMacro(new NodePropertyAccessToken(ServiceProvider, node, context), context);
 
-        var text = result[textIndex];
-        var selections = (Head ?? Array.Empty<Selection>())
-            .Concat(Tail ?? Array.Empty<Selection>()).ToArray();
-        var marker = "__SENTENCE_VERBATIM_TEXT__";
-        while (result.Any(value => value.Contains(marker))
-            || selections.Any(selection => selection.Text.Contains(marker))
-            || context.Format("{0:IND}").Contains(marker))
+        if (context.LineObfuscated)
         {
-            marker = "_" + marker;
+            text = ToSingleLineLiteral(text);
         }
-
-        var masked = (string[])result.Clone();
-        masked[textIndex] = marker;
-        if (Head != null)
+        else
         {
-            yield return new CodeData(Render(Head), node);
+            var segs = text.Split(["\r\n", "\n\r", "\n", "\r"], StringSplitOptions.None);
+            text = "[===[\n\b" + string.Join("\n\b", segs) + "]===]";
         }
-        if (!IgnoreChildren)
-        {
-            foreach (var code in NodeServiceProvider.GenerateForChildren(
-                node, context, IndentionIncrement))
-            {
-                yield return code;
-            }
-        }
-        if (Tail != null)
-        {
-            yield return new CodeData(Render(Tail), node);
-        }
-
-        string Render(Selection[] section)
-        {
-            var builder = new StringBuilder();
-            foreach (var selection in section)
-            {
-                if (selection.ShouldAppend(result))
-                {
-                    builder.Append(context.ApplyIndentedFormat(
-                        selection.Text, masked).ToString().Replace(marker, text));
-                }
-            }
-            return builder.ToString();
-        }
+        
+        captureResult.self["textLiteral"] = text;
+        return captureCount + 1;
     }
+
+    private static string ToSingleLineLiteral(string text)
+    {
+        var builder = new StringBuilder(text.Length + 2).Append('"');
+        for (var i = 0; i < text.Length; i++)
+        {
+            var character = text[i];
+            if (character is '\r' or '\n')
+            {
+                if (i + 1 < text.Length && text[i + 1] != character && (text[i + 1] is '\r' or '\n')) i++;
+                builder.Append("\\n");
+            }
+            else if (character is '\\' or '"') builder.Append('\\').Append(character);
+            else if (character == '\t') builder.Append("\\t");
+            else if (character < ' ' || character == '\u007f')
+                builder.Append('\\').Append(((int)character).ToString("D3", CultureInfo.InvariantCulture));
+            else builder.Append(character);
+        }
+        return builder.Append('"').ToString();
+    }
+
 }

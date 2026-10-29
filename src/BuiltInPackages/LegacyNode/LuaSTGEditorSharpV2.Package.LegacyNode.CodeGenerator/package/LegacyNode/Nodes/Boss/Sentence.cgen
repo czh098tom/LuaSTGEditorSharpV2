@@ -1,40 +1,21 @@
 {
 	"$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.VerbatimSentenceCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "Sentence",
-	"Captures": [
-		{ "Key": "image" },
-		{ "Key": "image_position" },
-		{ "Key": "text", "DisableMacro": true },
-		{ "Key": "time" },
-		{ "Key": "scale" }
-	],
+	"Captures": {
+		"image": { "Key": "image" },
+		"image_position": { "Key": "image_position" },
+		"time": { "Key": "time" },
+		"scale": { "Key": "scale" }
+	},
+	"TextCapture": { "Key": "text", "DisableMacro": true },
 	"Head": [
-		{
-			"Text": "{0:IND}boss.dialog.sentence(self,{1},{2},[===[{3}]===],"
-		},
-		{
-			"Text": "{4},",
-			"ConditionOn": 3,
-			"UseExistanceInsteadOfBoolValue": true
-		},
-		{
-			"Text": "nil,",
-			"ConditionOn": 3,
-			"UseExistanceInsteadOfBoolValue": true,
-			"Inversed": true
-		},
-		{
-			"Text": "{5}",
-			"ConditionOn": 4,
-			"UseExistanceInsteadOfBoolValue": true
-		},
-		{
-			"Text": "nil,nil",
-			"ConditionOn": 4,
-			"UseExistanceInsteadOfBoolValue": true,
-			"Inversed": true
-		},
-		{ "Text": ")" }
+		"{{{indent}}}boss.dialog.sentence(self,",
+			"{{{self.image}}},{{{self.image_position}}},{{{self.textLiteral}}},\n",
+		"{{#self.time.Trim.Length}}{{{self.time}}}{{/self.time.Trim.Length}}",
+			"{{^self.time.Trim.Length}}nil{{/self.time.Trim.Length}},\n",
+		"{{#self.scale.Trim.Length}}{{{self.scale}}}{{/self.scale.Trim.Length}}",
+			"{{^self.scale.Trim.Length}}nil,nil{{/self.scale.Trim.Length}}",
+			"\n)"
 	],
 	"Tail": []
 }
