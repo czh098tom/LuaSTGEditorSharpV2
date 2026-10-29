@@ -35,9 +35,10 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 StringBuilder sb = new();
                 for (int i = 0; i < Head.Length; i++)
                 {
-                    if (Head[i].ShouldAppend(captureResult))
+                    var headSegment = Head[i];
+                    if (headSegment.ShouldAppend(captureResult))
                     {
-                        sb.Append(context.ApplyIndentedFormat(Head[i].Text, captureResult));
+                        sb.Append(context.ApplyIndentedFormat(headSegment.Text, captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);
@@ -54,16 +55,17 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 StringBuilder sb = new();
                 for (int i = 0; i < Tail.Length; i++)
                 {
-                    if (Tail[i].ShouldAppend(captureResult))
+                    var tailSegment = Tail[i];
+                    if (tailSegment.ShouldAppend(captureResult))
                     {
-                        sb.Append(context.ApplyIndentedFormat(Tail[i].Text, captureResult));
+                        sb.Append(context.ApplyIndentedFormat(tailSegment.Text, captureResult));
                     }
                 }
                 yield return new CodeData(sb.ToString(), node);
             }
         }
 
-        private int GetCaptureCacheLength()
+        protected virtual int GetCaptureCacheLength()
         {
             int l = Captures.Length;
             for (int i = 0; i < ContextCaptures.Length; i++)
@@ -71,36 +73,36 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator.Configurable
                 l += ContextCaptures[i].Property.Length;
             }
             return l;
-		}
+        }
 
-		protected virtual int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
-		{
-			var token = new NodePropertyAccessToken(ServiceProvider, node, context);
-			int n;
-			for (n = 0; n < Captures.Length; n++)
-			{
-				captureResult[n] = Captures[n].ApplyMacro(token, context);
-			}
+        protected virtual int WriteCaptureResult(string?[] captureResult, NodeData node, CodeGenerationContext context)
+        {
+            var token = new NodePropertyAccessToken(ServiceProvider, node, context);
+            int n;
+            for (n = 0; n < Captures.Length; n++)
+            {
+                captureResult[n] = Captures[n].ApplyMacro(token, context);
+            }
 
-			for (int i = 0; i < ContextCaptures.Length; i++)
-			{
-				for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
-				{
-					var contextNode = ContextCaptures[i].ResolveNode(context);
-					if (contextNode != null)
-					{
-						var contextNodeToken = new NodePropertyAccessToken(ServiceProvider, contextNode, context);
-						captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNodeToken, context);
-					}
-					else
-					{
-						captureResult[n] = string.Empty;
-					}
-					n++;
-				}
-			}
+            for (int i = 0; i < ContextCaptures.Length; i++)
+            {
+                for (int j = 0; j < ContextCaptures[i].Property.Length; j++)
+                {
+                    var contextNode = ContextCaptures[i].ResolveNode(context);
+                    if (contextNode != null)
+                    {
+                        var contextNodeToken = new NodePropertyAccessToken(ServiceProvider, contextNode, context);
+                        captureResult[n] = ContextCaptures[i].Property[j].ApplyMacro(contextNodeToken, context);
+                    }
+                    else
+                    {
+                        captureResult[n] = string.Empty;
+                    }
+                    n++;
+                }
+            }
 
-			return n;
-		}
-	}
+            return n;
+        }
+    }
 }
