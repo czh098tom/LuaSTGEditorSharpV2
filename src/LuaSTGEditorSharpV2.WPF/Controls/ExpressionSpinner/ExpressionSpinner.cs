@@ -1,7 +1,6 @@
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using LuaSTGEditorSharpV2.Core.Parsing.Legacy;
+using LuaSTGEditorSharpV2.Core.Parsing.Lua;
 using Xceed.Wpf.Toolkit;
 
 namespace LuaSTGEditorSharpV2.WPF.Controls
@@ -85,61 +84,7 @@ namespace LuaSTGEditorSharpV2.WPF.Controls
 
             base.OnSpin(e);
             var step = e.Direction == SpinDirection.Increase ? Step : -Step;
-            Text = SpinHelper.Spin(Text, step, Minimum, Maximum);
-        }
-    }
-
-    /// <summary>
-    /// Helper class for expression spin operations.
-    /// </summary>
-    internal static class SpinHelper
-    {
-        /// <summary>
-        /// Spins the expression by adding step to the last numeric term.
-        /// </summary>
-        public static string Spin(string expression, decimal step, decimal? minimum, decimal? maximum)
-        {
-            if (string.IsNullOrEmpty(expression))
-                return step.ToString(null, CultureInfo.InvariantCulture);
-
-            if (decimal.TryParse(expression, CultureInfo.InvariantCulture, out var singleNumber))
-            {
-                var value = (singleNumber + step);
-				if (minimum.HasValue) value = Math.Max(minimum.Value, value);
-				if (maximum.HasValue) value = Math.Min(maximum.Value, value);
-				return value.ToString("G29", CultureInfo.InvariantCulture);
-            }
-
-            var fragments = FragmentParser.Parse(expression);
-            var terms = AdditiveParser.Parse(fragments);
-
-            if (decimal.TryParse(FormatTerm(terms[^1]), CultureInfo.InvariantCulture, out var lastNumberTerm))
-            {
-                var newLastTerm = lastNumberTerm + step;
-                if (minimum.HasValue) newLastTerm = Math.Max(minimum.Value, newLastTerm);
-                if (maximum.HasValue) newLastTerm = Math.Min(maximum.Value, newLastTerm);
-                if (newLastTerm == 0)
-                {
-                    terms.RemoveAt(terms.Count - 1);
-                }
-                else
-                {
-                    terms[^1] = SignedParser.Parse(FragmentParser.Parse(
-                        newLastTerm.ToString("G29", CultureInfo.InvariantCulture)));
-                }
-            }
-            else
-            {
-                terms.Add(SignedParser.Parse(FragmentParser.Parse(
-                    step.ToString("G29", CultureInfo.InvariantCulture))));
-            }
-
-            return FragmentParser.Reconstruct(AdditiveParser.Reconstruct(terms));
-        }
-
-        private static string FormatTerm(SignedTerm term)
-        {
-            return FragmentParser.Reconstruct(SignedParser.Reconstruct(term));
+            SetCurrentValue(TextProperty, ScalarExpressionCodec.Spin(Text, step, Minimum, Maximum));
         }
     }
 }
