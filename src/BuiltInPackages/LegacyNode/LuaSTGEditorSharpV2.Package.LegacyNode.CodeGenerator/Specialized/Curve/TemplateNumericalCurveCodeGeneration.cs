@@ -103,8 +103,7 @@ public sealed class TemplateNumericalCurveCodeGeneration(
                 }
                 else
                 {
-                    body.AddRange(new CodeFragment(
-                        NodeServiceProvider.GenerateCode(child.Node, context)));
+                    body.AddRange(NodeServiceProvider.GenerateCode(child.Node, context));
                 }
             }
             if (firstOutput?.InitialValue is null || firstOutput.PreviousValue is null)

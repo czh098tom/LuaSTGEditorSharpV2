@@ -8,6 +8,6 @@ public sealed class CurvePointOutput(string? initialValue, string? previousValue
 
     public string? PreviousValue { get; } = previousValue;
 
-    public CodeFragment Body { get; } = new(
-        body ?? throw new ArgumentNullException(nameof(body)));
+    public IEnumerable<CodeData> Body { get; } =
+        body ?? throw new ArgumentNullException(nameof(body));
 }

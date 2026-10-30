@@ -92,8 +92,7 @@ public sealed class NumericalTrackCodeGeneration(
                 }
                 else
                 {
-                    mixed.AddRange(new CodeFragment(
-                        NodeServiceProvider.GenerateCode(child.Node, context)));
+                    mixed.AddRange(NodeServiceProvider.GenerateCode(child.Node, context));
                 }
             }
         }
