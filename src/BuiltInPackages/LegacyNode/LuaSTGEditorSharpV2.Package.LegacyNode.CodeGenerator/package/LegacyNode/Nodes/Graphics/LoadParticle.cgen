@@ -2,12 +2,12 @@
 	"$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.EscapedResourceCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LoadParticle",
 	"IgnoreChildren": true,
+	"EscapeRule": { "Key": "destination", "DisableMacro": true },
 	"Captures": [
 		{ "Key": "resource_name", "DisableMacro": true },
-		{ "Key": "destination", "DisableMacro": true },
 		{ "Key": "image" },
 		{ "Key": "collision_size" },
 		{ "Key": "rectangle_collision" }
 	],
-	"Head": "LoadPS('particle:'..{1},'{2}',{3},{4},{5})"
+	"Head": "LoadPS('particle:'..{1},'{5}',{2},{3},{4})"
 }

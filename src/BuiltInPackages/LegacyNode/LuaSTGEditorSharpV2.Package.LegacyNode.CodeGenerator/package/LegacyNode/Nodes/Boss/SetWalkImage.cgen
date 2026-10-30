@@ -2,13 +2,13 @@
 	"$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.EscapedResourceCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "SetWalkImage",
 	"IgnoreChildren": true,
+	"EscapeRule": { "Key": "destination", "DisableMacro": true },
 	"Captures": [
-		{ "Key": "destination", "DisableMacro": true },
 		{ "Key": "grid_size" },
 		{ "Key": "frames_per_line" },
 		{ "Key": "loop_frames_per_line" },
 		{ "Key": "animation_interval" },
 		{ "Key": "collision_size" }
 	],
-	"Head": "self._wisys = BossWalkImageSystem(self)\nself._wisys:SetImage(\"{1}\",{2},{{{3}}},{{{4}}},{5},{6})"
+	"Head": "self._wisys = BossWalkImageSystem(self)\nself._wisys:SetImage(\"{6}\",{1},{{{2}}},{{{3}}},{4},{5})"
 }

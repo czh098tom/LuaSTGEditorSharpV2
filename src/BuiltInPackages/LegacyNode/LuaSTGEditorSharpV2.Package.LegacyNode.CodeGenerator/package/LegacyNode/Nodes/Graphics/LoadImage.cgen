@@ -2,13 +2,13 @@
 	"$type": "LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator.Specialized.EscapedResourceCodeGeneration, LuaSTGEditorSharpV2.Package.LegacyNode.CodeGenerator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
 	"TypeUID": "LoadImage",
 	"IgnoreChildren": true,
+	"EscapeRule": { "Key": "destination", "DisableMacro": true },
 	"Captures": [
 		{ "Key": "resource_name", "DisableMacro": true },
-		{ "Key": "destination", "DisableMacro": true },
 		{ "Key": "mipmap" },
 		{ "Key": "collision_size" },
 		{ "Key": "rectangle_collision" },
 		{ "Key": "cut_edge" }
 	],
-	"Head": "_LoadImageFromFile('image:'..{1},'{2}',{3},{4},{5},{6})"
+	"Head": "_LoadImageFromFile('image:'..{1},'{6}',{2},{3},{4},{5})"
 }
