@@ -13,11 +13,11 @@ public sealed class CodeGenerationSubServiceTests
     {
         using var fixture = new Fixture();
         var increment = fixture.Repeat("increment", (node, _, times) =>
-            new RepeatResult(new CodeFragment([new(node.GetProperty("name") + times, node)]),
-                new CodeFragment([new("increment", node)])));
+            new RepeatResult([new(node.GetProperty("name") + times, node)],
+                [new("increment", node)]));
         var linear = fixture.Repeat("linear", (node, _, times) =>
-            new RepeatResult(new CodeFragment([new(node.GetProperty("target"), node)]),
-                new CodeFragment([new("linear" + times, node)])));
+            new RepeatResult([new(node.GetProperty("target"), node)],
+                [new("linear" + times, node)]));
         var first = fixture.Add("increment");
         var second = fixture.Add("linear");
         first.Properties["name"] = "left";
@@ -25,8 +25,8 @@ public sealed class CodeGenerationSubServiceTests
         using var scope = fixture.Context.AcquireContextHandle(fixture.Parent);
         var firstResult = fixture.FindRepeat(first).Generate(first, fixture.Context, "1");
         var secondResult = fixture.FindRepeat(second).Generate(second, fixture.Context, "2");
-        Assert.Equal("left1", firstResult.Initialization[0].Content);
-        Assert.Equal("linear2", secondResult.Update[0].Content);
+        Assert.Equal("left1", firstResult.Initialization.Single().Content);
+        Assert.Equal("linear2", secondResult.Update.Single().Content);
         Assert.Equal(1, increment.Calls);
         Assert.Equal(1, linear.Calls);
     }
@@ -36,13 +36,13 @@ public sealed class CodeGenerationSubServiceTests
     {
         using var fixture = new Fixture();
         var service = fixture.Curve("curve", (node, _, target, name) =>
-            new CurveResult(new CodeFragment([new("local " + name, node)]),
-                new CodeFragment([new("task(" + target + "," + name + ")", node)])));
+            new CurveResult([new("local " + name, node)],
+                [new("task(" + target + "," + name + ")", node)]));
         var node = fixture.Add("curve");
         using var scope = fixture.Context.AcquireContextHandle(fixture.Parent);
         var result = service.Generate(node, fixture.Context, "self", "_0");
-        Assert.Equal("local _0", result.Declaration[0].Content);
-        Assert.Equal("task(self,_0)", result.Task[0].Content);
+        Assert.Equal("local _0", result.Declaration.Single().Content);
+        Assert.Equal("task(self,_0)", result.Task.Single().Content);
     }
 
     [Fact]
@@ -51,8 +51,8 @@ public sealed class CodeGenerationSubServiceTests
         using var fixture = new Fixture();
         fixture.Register("ordinary", new MarkerService(fixture.Provider, fixture.Services));
         var service = fixture.Curve("curve", (node, _, target, name) =>
-            new CurveResult(new CodeFragment([new("declare " + name, node)]),
-                new CodeFragment([new("task " + target + " " + name, node)])));
+            new CurveResult([new("declare " + name, node)],
+                [new("task " + target + " " + name, node)]));
         var first = fixture.Add("curve");
         var ordinary = fixture.Add("ordinary");
         var second = fixture.Add("curve");
@@ -79,7 +79,7 @@ public sealed class CodeGenerationSubServiceTests
     public void InactiveLogicalChildrenAreNotReturnedByProtocolLookup()
     {
         using var fixture = new Fixture();
-        fixture.Curve("curve", (_, _, _, _) => new CurveResult(new CodeFragment([]), new CodeFragment([])));
+        fixture.Curve("curve", (_, _, _, _) => new CurveResult([], []));
         var active = fixture.Add("curve");
         var inactive = fixture.Add("curve");
         inactive.IsActive = false;
@@ -91,7 +91,7 @@ public sealed class CodeGenerationSubServiceTests
     public void SubserviceOrdinaryGenerationIsSilentAndCanBeExplicitlyOverridden()
     {
         using var fixture = new Fixture();
-        fixture.Repeat("silent", (_, _, _) => new RepeatResult(new CodeFragment([]), new CodeFragment([])));
+        fixture.Repeat("silent", (_, _, _) => new RepeatResult([], []));
         fixture.Register("ordinary", new OrdinaryService(fixture.Provider, fixture.Services));
         var silent = fixture.Add("silent");
         silent.Add(new NodeData("marker"));
@@ -112,16 +112,16 @@ public sealed class CodeGenerationSubServiceTests
         {
             using var scope = context.AcquireContextHandle(node);
             var nested = inner!.Generate(node.PhysicalChildren[0], context, "inner");
-            return new RepeatResult(new CodeFragment([new(times + nested.Update[0].Content, node)]),
-                new CodeFragment([]));
+            return new RepeatResult([new(times + nested.Update.Single().Content, node)],
+                []);
         });
         inner = fixture.Repeat("inner", (_, _, times) =>
-            new RepeatResult(new CodeFragment([]), new CodeFragment([new(times, fixture.Parent)])));
+            new RepeatResult([], [new(times, fixture.Parent)]));
         var outerNode = fixture.Add("outer");
         outerNode.Add(new NodeData("inner"));
         using var parentScope = fixture.Context.AcquireContextHandle(fixture.Parent);
         var result = outer.Generate(outerNode, fixture.Context, "outer");
-        Assert.Equal("outerinner", result.Initialization[0].Content);
+        Assert.Equal("outerinner", result.Initialization.Single().Content);
         Assert.Equal(1, outer.Calls);
         Assert.Equal(1, inner.Calls);
         Assert.Same(fixture.Parent, fixture.Context.Peek());
@@ -136,7 +136,7 @@ public sealed class CodeGenerationSubServiceTests
         var service = fixture.Repeat("child", (node, context, _) =>
         {
             Assert.Equal(new[] { root, container, fixture.Parent }, context.EnumerateFromFarest());
-            return new RepeatResult(new CodeFragment([]), new CodeFragment([]));
+            return new RepeatResult([], []);
         });
         root.Add(container);
         container.Add(fixture.Parent);
@@ -145,50 +145,6 @@ public sealed class CodeGenerationSubServiceTests
         using var containerScope = fixture.Context.AcquireContextHandle(container);
         using var parentScope = fixture.Context.AcquireContextHandle(fixture.Parent);
         service.Generate(child, fixture.Context, "1");
-    }
-
-    [Fact]
-    public void FragmentMaterializesCopiesAndPreservesSourceAndLineCount()
-    {
-        var source = new NodeData("source");
-        var input = new List<CodeData> { new("one\n", source) };
-        var fragment = new CodeFragment(input);
-        input.Clear();
-        Assert.Equal("one\n", fragment[0].Content);
-        Assert.Equal(1, fragment[0].LineCount);
-        Assert.Same(source, fragment[0].Source);
-        Assert.Throws<ArgumentNullException>(() => new CodeFragment(null!));
-    }
-
-    [Fact]
-    public void MaterializedResultSurvivesLaterNestedGenerationAndKeepsFixedIndention()
-    {
-        using var fixture = new Fixture();
-        var evaluations = 0;
-        IEnumerable<CodeData> Render(NodeData node, CodeGenerationContext context, string template)
-        {
-            evaluations++;
-            yield return new CodeData(context.ApplyIndentedFormat(template).ToString(), node);
-        }
-        var service = fixture.Repeat("repeat", (node, context, _) =>
-            new RepeatResult(
-                Render(node, context, "init"), Render(node, context, "{0:IND}update")));
-        var first = fixture.Add("repeat");
-        var nested = new NodeData("repeat");
-        first.Add(nested);
-        using var parentScope = fixture.Context.AcquireContextHandle(fixture.Parent, 1);
-        var saved = service.Generate(first, fixture.Context, "saved");
-        Assert.Equal(2, evaluations);
-        using (fixture.Context.AcquireContextHandle(first, 2))
-        {
-            var later = service.Generate(nested, fixture.Context, "later");
-            Assert.Equal("    update\n", later.Update[0].Content);
-            Assert.Equal(" ", fixture.Context.Format("{0:IND}"));
-        }
-        Assert.Equal(" init\n", saved.Initialization[0].Content);
-        Assert.Equal("  update\n", saved.Update[0].Content);
-        Assert.Equal(4, evaluations);
-        Assert.Equal(" ", fixture.Context.Format("{0:IND}"));
     }
 
     [Fact]
@@ -221,29 +177,6 @@ public sealed class CodeGenerationSubServiceTests
         }
         Assert.Same(fixture.Parent, fixture.Context.Peek());
         Assert.Equal(0, fixture.Context.IndentionLevel);
-    }
-
-    [Fact]
-    public void MaterializationFailureRestoresNestedScope()
-    {
-        using var fixture = new Fixture();
-        IEnumerable<CodeData> Fail(NodeData node)
-        {
-            yield return new CodeData("partial", node);
-            throw new InvalidOperationException("materialization failed");
-        }
-        var service = fixture.Repeat("outer", (node, context, _) =>
-        {
-            using var scope = context.AcquireContextHandle(node, 2);
-            return new RepeatResult([], Fail(node));
-        });
-        var child = fixture.Add("outer");
-        using var parentScope = fixture.Context.AcquireContextHandle(fixture.Parent, 1);
-        var error = Assert.Throws<InvalidOperationException>(() => service.Generate(child, fixture.Context, "1"));
-        Assert.Equal("materialization failed", error.Message);
-        Assert.Same(fixture.Parent, fixture.Context.Peek());
-        Assert.Equal(1, fixture.Context.IndentionLevel);
-        Assert.Single(fixture.Context.ContextVariables);
     }
 
     [Fact]
@@ -358,14 +291,14 @@ public sealed class CodeGenerationSubServiceTests
 
     private sealed class RepeatResult(IEnumerable<CodeData> initialization, IEnumerable<CodeData> update)
     {
-        public CodeFragment Initialization { get; } = new(initialization);
-        public CodeFragment Update { get; } = new(update);
+        public IEnumerable<CodeData> Initialization { get; } = initialization;
+        public IEnumerable<CodeData> Update { get; } = update;
     }
 
     private sealed class CurveResult(IEnumerable<CodeData> declaration, IEnumerable<CodeData> task)
     {
-        public CodeFragment Declaration { get; } = new(declaration);
-        public CodeFragment Task { get; } = new(task);
+        public IEnumerable<CodeData> Declaration { get; } = declaration;
+        public IEnumerable<CodeData> Task { get; } = task;
     }
 
     private abstract class RepeatService : CodeGenerationSubService

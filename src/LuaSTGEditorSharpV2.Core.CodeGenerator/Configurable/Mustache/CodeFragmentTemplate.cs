@@ -61,7 +61,7 @@ public static class CodeFragmentTemplate
         return model;
     }
 
-    public static CodeFragment Render(string[] template, object model, NodeData node, CodeGenerationContext context)
+    public static CodeData[] Render(string[] template, object model, NodeData node, CodeGenerationContext context)
     {
         ArgumentNullException.ThrowIfNull(template);
         ArgumentNullException.ThrowIfNull(model);
@@ -73,10 +73,10 @@ public static class CodeFragmentTemplate
         }
         if (template.Length == 0)
         {
-            return new CodeFragment([]);
+            return [];
         }
         var rendered = RenderText(template, model, context);
-        return new CodeFragment([new CodeData(context.ApplyIndented(context.GetIndented(), rendered).ToString(), node)]);
+        return [new CodeData(context.ApplyIndented(context.GetIndented(), rendered).ToString(), node)];
     }
 
     public static string RenderText(string[] template, object model, CodeGenerationContext context)
