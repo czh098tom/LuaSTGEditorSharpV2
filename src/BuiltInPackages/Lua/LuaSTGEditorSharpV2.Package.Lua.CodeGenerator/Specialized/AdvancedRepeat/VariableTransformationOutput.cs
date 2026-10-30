@@ -4,6 +4,8 @@ namespace LuaSTGEditorSharpV2.Package.Lua.CodeGenerator.Specialized.AdvancedRepe
 
 public sealed class VariableTransformationOutput(IEnumerable<CodeData> initialization, IEnumerable<CodeData> update)
 {
-    public CodeFragment Initialization { get; } = new(initialization);
-    public CodeFragment Update { get; } = new(update);
+    public IEnumerable<CodeData> Initialization { get; } =
+        initialization ?? throw new ArgumentNullException(nameof(initialization));
+    public IEnumerable<CodeData> Update { get; } =
+        update ?? throw new ArgumentNullException(nameof(update));
 }

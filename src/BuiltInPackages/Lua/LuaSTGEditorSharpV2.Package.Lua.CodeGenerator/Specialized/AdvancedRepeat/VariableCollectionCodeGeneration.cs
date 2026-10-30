@@ -29,7 +29,8 @@ public sealed class VariableCollectionCodeGeneration(
             {
                 throw new AdvancedRepeatGenerationException("Variable service returned no output.", pair.NodeData);
             }
-            output.Add(result);
+            output.Add(new VariableTransformationOutput(
+                result.Initialization.ToArray(), result.Update.ToArray()));
         }
         return output.AsReadOnly();
     }
