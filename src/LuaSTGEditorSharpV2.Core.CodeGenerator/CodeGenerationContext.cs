@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -64,10 +65,31 @@ namespace LuaSTGEditorSharpV2.Core.CodeGenerator
         public int IndentionLevel { get; private set; } = 0;
         public IReadOnlyDictionary<NodeData, Dictionary<string, string>> ContextVariables => _contextVariables;
 
-        /**TODO: temporary solution in case some cgen service needs to know settings.LineObfuscated to handle long strings,
-         * going to move postprocess(like obfuscation) to a isolated building stage.
-         */
-        public bool LineObfuscated => ServiceSettings.LineObfuscated;
+        // TODO: Temporary handling until obfuscation moves to a separate build stage.
+        public string ToStringLiteral(string text)
+        {
+            if (!ServiceSettings.LineObfuscated)
+            {
+                var segs = text.Split(["\r\n", "\n\r", "\n", "\r"], StringSplitOptions.None);
+                return "[===[\n\b" + string.Join("\n\b", segs) + "]===]";
+            }
+            var builder = new StringBuilder(text.Length + 2).Append('"');
+            for (var i = 0; i < text.Length; i++)
+            {
+                var character = text[i];
+                if (character is '\r' or '\n')
+                {
+                    if (i + 1 < text.Length && text[i + 1] != character && (text[i + 1] is '\r' or '\n')) i++;
+                    builder.Append("\\n");
+                }
+                else if (character is '\\' or '"') builder.Append('\\').Append(character);
+                else if (character == '\t') builder.Append("\\t");
+                else if (character < ' ' || character == '\u007f')
+                    builder.Append('\\').Append(((int)character).ToString("D3", CultureInfo.InvariantCulture));
+                else builder.Append(character);
+            }
+            return builder.Append('"').ToString();
+        }
 
         public CodeGenerationContext(IServiceProvider serviceProvider, LocalServiceParam localSettings, CodeGenerationServiceSettings serviceSettings)
             : base(serviceProvider, localSettings, serviceSettings)
